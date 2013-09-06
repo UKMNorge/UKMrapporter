@@ -1,0 +1,737 @@
+/* Kategori */
+.rapport_kategori {
+	display:inline-block;
+	float:left;
+	margin: 15px 0 15px 8px;
+}
+span > img {display:inline-block; float:left};
+
+/* Rapport-elementer */
+ul {}
+.rapportcontainer {
+	clear:both;
+}
+
+.rapport {
+	display:block;
+	float:left;
+	text-align:center;
+	width: 200px;
+	height:150px;
+	padding:10px 5px 0 5px;
+	margin: 0 5px 10px 5px;
+	border: 1px solid lightgray;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+.rapport .title {
+ font-weight: bold;
+  font-size:12px;
+	margin-bottom: 4px;
+}
+
+.dragable{cursor:move;}
+.clickable{cursor:pointer;}
+
+/* RAPPORTVALG */
+/* ******************************************** */
+/* NAVN PÃ
+ RAPPORTEN, TILPASSET SKJERM OG PAPIR */
+/* ******************************************** */
+	.rapportinfo div{ 
+		text-align: left;
+	}
+	.rapportinfo img {
+	 float: left;
+	 margin-right: 10px;
+	}
+	.rapportinfo div.navn {
+	  padding-top: 21px;
+	  font-size: 20px;
+	  font-weight: bold;
+	  padding-bottom: 1px;
+	}
+	.rapportinfo div.sted {
+	  padding-top: 0px;
+	  font-size: 13px;
+	  font-weight: bold;
+	 color: #0a6158;
+	}
+
+@media print {
+	.rapportinfo div{
+		text-align: center;
+	}
+	.rapportinfo img {
+		margin-top: 200px;
+		margin-left: 25%;
+		margin-bottom: 50px;
+		width: 400px;
+	}
+	.rapportinfo div.navn {
+	  padding-top: 21px;
+	  font-size: 50px;
+	  font-weight: bold;
+	  padding-bottom: 30px;
+	}
+	.rapportinfo div.sted {
+	  padding-top: 10px;
+	  font-size: 30px;
+	  font-weight: bold;
+	  color: #0a6158;
+	  page-break-after:always;
+	}
+}
+/* ******************************************** */
+.nokkeltallcontainer{
+ border: 2px solid lightgrey;
+  width: 550px;
+  margin-left: 28%;
+  padding: 10px;
+  background: #fefefe;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+  margin-bottom: 20px;
+  	  page-break-after:always;
+
+}
+
+.normal, ul.nokkeltall li div.normal {
+	font-weight: normal;
+}
+ul.nokkeltall li div.titler {
+  width: 40px;
+}
+ul.nokkeltall li div.personer {
+ width: 80px;
+}
+ul.nokkeltall li div.varighet {
+ width: 100px; 
+}
+h1.nokkeltall {
+ margin-bottom: 2px; 
+}
+ul.nokkeltall li div{
+  float: left;
+  width: 50px;
+  height: 20px;
+}
+ul.nokkeltall li div.label {
+ width: 200px; 
+}
+ul.nokkeltall li, ul.nokkeltall {
+ clear: both; 
+}
+ul.nokkeltall li div.normallabel {
+	width: 190px;
+  padding-left: 10px;
+}
+div.header {
+	font-weight: bold;
+}
+
+.contact_actions,
+.actions {
+ clear: both;
+  width: 1002px;
+  text-align: 
+}
+.contact_actions li img,
+.actions li img {
+	width: 35px;
+  float: left;
+}
+.contact_actions li .text,
+.actions li .text {
+  padding: 10px 0px 0px 45px;
+}
+ul.contact_actions li, .actions li {
+  -webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+ 
+ 	float: left;
+  font-size: 14px;
+  font-weight: bold;
+  background: #a0cf67;
+
+  width: 287px;
+  padding: 10px;
+  border: 2px solid #1e4a45;
+  margin: 10px;
+}
+ul.contact_actions li {
+  width: 453px;
+  background: #6dc6c1;
+}
+.contact_actions li#mail, 
+.actions li#skrivut {
+  margin-left: 0px;
+}
+.contact_actions li#sms,
+.actions li#excel {
+	margin-right: 0px;
+}
+input[type=radio], input[type=checkbox] {
+ margin-right: 4px; 
+}
+
+
+span.loading {
+	font-size: 16px;
+}
+span.loading > img {
+ margin-right: 10px; 
+}
+span.loading > div {
+ padding-top: 8px; 
+  margin-left: 10px;
+  font-weight: bold;
+}
+div.rapportvalg {
+	background: #eeeeee;
+  border: 2px solid #1e4a45;
+  padding: 10px;
+  width: 950px;
+}
+#report_container {
+  width: 950px;
+  padding-left: 10px;
+  margin-top: 20px;
+}
+ul.optGrp {
+	float:left;
+  margin-right: 30px;
+}
+ul.optGrp > li.name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+ul li {
+ padding-left: 25px; 
+}
+li.grp {
+	font-size: 30px;
+	font-weight: bold;
+  padding: 10px 10px 2px 0px;
+  margin-bottom: 10px;
+}
+input#filterReport {
+ 	float: right;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 8px 20px 8px 20px;
+  background: #a0cf67;
+}
+h2#rapportvalgheader {
+	margin-bottom: 10px;
+	font-size: 30px;
+}
+h2#rapportvalgheader > a {
+	font-size: 14px;
+}
+fieldset {
+ margin-left: 15px; 
+}
+#hva, #hvordan {
+ font-size: 25px;
+	margin-top: 10px;
+  margin-bottom: 10px;
+  color: #1e4a45;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 2px;
+}
+
+#velgalleingen {
+ float: right;
+  width: 100px;
+  margin-right: 50px;
+  font-weight: bold;
+}
+#velgalleingen a {
+ font-weight: normal; 
+}
+.seasonselector {
+	font-weight: bold;
+}
+.seasonselector select {
+	font-weight: normal;
+  margin-left: 20px;
+}
+
+div#velg_detaljer {
+ 	font-weight: bold; 
+}
+
+/* RAPPORTEN " PERSONER " */
+optGrp .name {
+	font-weight: bold;
+}
+div.b_name {
+	font-weight: bold;
+	font-size: 16px;
+	float: left;
+  color: #1e4a45;
+}
+div.b_name_cont > div.meta {
+	font-size: 12px;
+	font-weight: normal;
+	float: right;
+	width: 220px;
+  margin-bottom: 2px;
+}
+
+div.b_name_cont > div.small {
+	width: 100px;
+}
+div.b_name_cont {
+	width: 100%;
+  border-bottom: 2px solid #1e4a45;
+}
+div.desc {
+ padding-left: 15px; 
+}
+li.innslag {
+ margin-bottom:20px; 
+ width: 100%;
+}
+li.innslag > div {
+  margin-left: 10px;
+}
+li.innslag > div.b_name_cont {
+  margin-left: -5px; 
+}
+li.grp {
+  clear: both;
+}
+li.sum {
+ margin-bottom: 50px; 
+}
+li.sum div.label-head {
+ font-weight: bold;
+  font-size: 15px;
+}
+li.sum div {
+  color: #0a6158;
+  font-size: 14px;
+  float: right;
+}
+li.sum div.data,
+li.sum div.data-time { 
+	width: 110px;
+  text-align: right;
+  padding-left: 20px;
+	font-weight: bold;
+}
+li.sum div.label,
+li.sum div.label-time {
+  text-align: right; 
+}
+li.sum div.data-time,
+li.sum div.label-time {
+  font-size: 14px;
+  border-bottom: double;
+}
+li.sum div.label {
+  font-weight: normal;
+}
+.bold {
+	font-weight: bold;
+}
+
+/* *** *** *** *** *** *** */
+/* RAPPORT: KONTAKTLISTER  */
+/* *** *** *** *** *** *** */
+ul.kontaktlister {
+  
+}
+ul.kontaktlister li {
+  clear: both; 
+  height: 15px;
+  border-bottom: 1px solid #ccc;
+}
+ul.kontaktlister div {
+ float: left; 
+}
+ul.kontaktlister li div.navn {
+ 	width: 250px; 
+}
+ul.kontaktlister li div.alder {
+ width: 40px; 
+}
+ul.kontaktlister li div.mobil {
+ 	width: 70px; 
+}
+ul.kontaktlister li div.rolle {
+ width: 180px; 
+}
+ul.kontaktlister li div.epost {
+ 	width: 250px; 
+}
+ul.kontaktlister li div.innslag {
+ 	width: 200px; 
+}
+ul.kontaktlister li div.type {
+ width: 100px; 
+}
+ul.kontaktlister li div.geo {
+  width: 160px;
+}	
+ul.kontaktlister li.kontaktpers div {
+ font-weight: bold; 
+}
+ul.kontaktlister li div.adresse {
+ 	width: 250px; 
+}
+
+/* *** *** *** *** *** *** */
+/* RAPPORT: DUPLIKATE MOBILNUMMER  */
+/* *** *** *** *** *** *** */
+ul.duplikate_mobilnummer, ul.duplikate_mobilnummer li {
+ clear: both; 
+}
+ul.duplikate_mobilnummer > li > div {
+  float: left; 
+}
+ul.duplikate_mobilnummer > li > div.name {
+ 	width: 300px; 
+}
+ul.duplikate_mobilnummer > li > div.type {
+ 	width: 250px; 
+}
+ul.duplikate_mobilnummer > li > div.band {
+ 	width: 150px; 
+}
+ul.duplikate_mobilnummer > li.header > div {
+	font-weight: bold;
+  color: #0a6158;
+}
+h3.duplikate_mobilnummer {
+ color: #f3776f; 
+  font-size: 20px;
+  margin-bottom: 0px;
+  text-decoration: underline;
+}
+/* *** *** *** *** *** *** */
+/* RAPPORT: PROGRAM  */
+/* *** *** *** *** *** *** */
+h2#program-header { 
+  margin-bottom: 0px;
+  margin-top: 30px;
+  font-size: 20px;
+	clear: both;
+}
+div.kontaktperson {
+  clear: both;
+  margin-left: 3px;
+}
+div.kontaktperson .label {
+  font-weight: bold;
+  margin-right: 2px;
+}
+div.program-data {
+  clear: both;
+  margin-top: 4px;
+  margin-bottom: 20px;
+}
+div.program-varighet {
+  clear: both;
+ font-style: italic; 
+}
+div.program-data > div.tid {
+	float: left;
+  font-size: 15px;
+}
+div.program-data > div.sted {
+  margin-left: 6px;
+  font-size: 15px;
+  font-style: italic;
+	float: left;
+}
+ul.program {
+  clear: both;
+  page-break-after:always;
+}
+ul.program li {
+  padding: 10px;
+	clear: both;
+	page-break-inside: avoid;
+}
+ul.program > li div {
+ float: left;
+ page-break-inside: avoid;
+}
+ul.program > li > div.order,
+ul.program > li > div.name{
+ font-weight: bold;
+  font-size: 15px;
+  margin-right: 2px;
+}
+ul.program > li > div.katogsjan {
+  margin-left: 5px; 
+}
+ul.program > li > div.geografi {
+ clear: both; 
+}
+ul.program > li > div.titler,
+ul.program > li > div.deltakere {
+ clear: both; 
+}
+ul.program > li > div.titler div,
+ul.program > li > div.deltakere div{
+ margin-left: 3px;
+}
+ul.program > li > div.titler > div.titler-label,
+ul.program > li > div.deltakere > div.deltakere-label {
+ font-weight: bold; 
+  margin-right: 4px;
+	font-size: 13px;
+}
+ul.program > li > div.titler > div.detaljer,
+ul.program > li > div.deltakere > div.detaljer {
+	font-style: italic;
+}
+ul.program > li > div.deltakere > div.alder {
+	font-style: normal;
+}
+ul.program > li > div.titler > div.name,
+ul.program > li > div.deltakere > div.name {
+	font-size: 14px;
+}
+ul.program > li > div.titler > div.separator,
+ul.program > li > div.deltakere > div.separator {
+	margin-left: 1px;
+}
+/* *** *** *** *** *** *** */
+/* RAPPORT: TEKNISKE PROVER  */
+/* *** *** *** *** *** *** */
+ul.program > li > div.bokser {
+ clear: both; 
+ width: 100%;
+}
+ul.program > li > div.bokser div {
+	float: left;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  padding: 4px;
+  margin: 0.5%;
+page-break-inside: avoid;
+
+}
+ul.program > li > div.bokser div.liten {
+ 	height: 100px; 
+}
+ul.program > li > div.bokser div.stor {
+ 	height: 300px; 
+}
+ul.program > li > div.bokser div.tredjedel {
+  width: 30%;
+}
+ul.program > li > div.bokser div.halv {
+  width: 45%;
+}
+ul.program > li > div.bokser div.hel {
+  width: 90%;
+}
+/* *** *** *** *** *** *** *** *** */
+/* RAPPORT: INN- OG UTLEVERING     */
+/* *** *** *** *** *** *** *** *** */
+ul.levering {
+ clear: both; 
+}
+ul.levering > li {
+  clear: both;
+  height: 25px;
+}
+ul.levering > li.header {
+  font-weight: bold;
+}
+ul.levering > li > div {
+ 	float: left;
+  margin-left: 10px;
+}
+ul.levering > li > div.inn,
+ul.levering > li > div.ut {
+ 	width: 20px;
+}
+ul.levering > li.item > div.inn,
+ul.levering > li.item > div.ut {
+ 	border: 1px solid #000;
+  height: 20px;
+}
+ul.levering > li > div.navn {
+ 	width: 180px; 
+}
+ul.levering > li > div.inn_navn {
+ 	width: 140px;
+  overflow: hidden;
+}
+ul.levering > li > div.detaljer {
+	width: 130px;
+}
+ul.levering > li.item > div.detaljer {
+ 	font-size: 11px; 
+}
+ul.levering > li.item > div.sign {
+  height: 15px;
+ 	width: 120px;
+  border-bottom: 1px solid #000;
+}
+
+/* *** *** *** *** *** *** */
+/* RAPPORT: KUNSTKATALOG   */
+/* *** *** *** *** *** *** */
+ul.kunstkatalog {
+  clear: both;
+}
+ul.kunstkatalog li {
+  padding: 10px;
+	clear: both;
+}
+ul.kunstkatalog > li div {
+ float: left;
+}
+ul.kunstkatalog > li > div.order, 
+ul.kunstkatalog > li > div.name {
+ 	font-size: 15px;
+  font-weight: bold;
+  margin-right: 4px;
+}
+ul.kunstkatalog > li > div.geografi {
+ margin-left: 9px; 
+  font-size: 11px;
+}
+ul.kunstkatalog > li > div.geografi:before {
+  content: '(';
+}
+ul.kunstkatalog > li > div.geografi:after {
+ 	content: ')'; 
+}
+ul.kunstkatalog > li > div.av,
+ul.kunstkatalog > li > div.type {
+ clear: both; 
+}
+ul.kunstkatalog > li span.alder,
+ul.kunstkatalog > li span.funksjon {
+ margin-left: 4px; 
+}
+
+/* *** *** *** *** *** *** */
+/* RAPPORT: JURYSKJEMA   */
+/* *** *** *** *** *** *** */
+div.juryering {
+	clear: both; 
+}
+table.juryering_tall,
+table.juryering_kommentarer {
+  margin-top: 10px;
+	min-width: 600px;
+}
+table.juryering_tall tr.header th,
+table.juryering_tall tr.sum th,
+table.juryering_kommentarer tr.header th,
+table.juryering_kommentarer tr.header td {
+ 	background: #6dc6c1; 
+}
+table.juryering_tall th,
+table.juryering_kommentarer th {
+  text-align: left;
+  padding: 2px;
+}
+table.juryering_tall th.sum, 
+table.juryering_tall th.snitt {
+ text-align: right; 
+}
+table.juryering_tall th.medlem {
+ text-align: center; 
+}
+table.juryering_tall th.kriterie {
+ padding-right: 9px; 
+}
+table.juryering_tall td {
+  width: 70px;
+	text-align: right;
+  border-left: 1px solid #1e4a45;
+  padding: 2px;
+}
+table.juryering_kommentarer th.medlem {
+ 	width: 70px; 
+}
+table.juryering_kommentarer tr.kriterie th{
+  text-align: left;
+  font-size: 12px;
+  background: #fff7e1;
+  color: #1e4a45;
+  text-transform: capitalize;
+  border-bottom: 1px solid #1e4a45;
+  padding-left: 10px;
+}
+table.juryering_kommentarer td.spacer {
+ width: 10px; 
+}
+
+/* *** *** *** *** *** *** */
+/* RAPPORT: ANALOGT JURYSKJEMA   */
+/* *** *** *** *** *** *** */
+div.juryskjema div.left,
+div.juryskjema div.right,
+div.juryskjema div.wide {
+  width: 46%;
+  height: 150px;
+  border: 1px solid #000;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 2px;
+}
+div.juryskjema div.wide {
+  width: 98%;
+}
+div.juryskjema div.left {
+    float: left;
+}
+div.juryskjema div.right {
+ float: right; 
+}
+div.juryskjema div.deltakere-label {
+  clear: both;
+  width: 97%;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+}
+div.juryskjema h3 {
+  clear: both;
+  text-align: center;
+}
+
+/* *** *** *** *** *** *** */
+/* RAPPORT: VIDERESENDINGSSKJEMA */
+/* *** *** *** *** *** *** */
+
+table.videresendingsskjema td,
+table.videresendingsskjema th {
+  width: 170px;
+  min-width: 170px;
+  max-width: 170px;
+  text-align: left;
+}
+table.videresendingsskjema tr.vss_header th {
+   border-bottom: 1px solid #000;
+}
+table.videresendingsskjema tr.vss_sporsmal_rad td {
+ 	border-left: 1px solid #ccc; 
+  padding: 0px 3px 0px 3px;
+}
+
+table.videresendingsskjema tr.odd {
+	background: #eee;
+}
+
+
+
