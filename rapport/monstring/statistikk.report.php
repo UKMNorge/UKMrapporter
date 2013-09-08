@@ -161,18 +161,17 @@ class valgt_rapport extends rapport {
 				// Lagre statistikk for visning senere
 //				$this->_stat($nicename,$season, $r['p_deltakere'], $r['innslag']);
 				echo '<tr>';
+
+				echo '<td align="left">'.utf8_encode($nicename).'</td>';
+
 				// Loop alle kolonner i rad
 				foreach($r as $key => $val){
 					if(($person && $this->show('t_pers')) || (!$person && !$this->show('t_pers')))
 						$this->_summer($key, $val);
-					if($key == 'monstring'){
-						echo '<td align="left">'.utf8_encode($nicename).'</td>';
-					}else {
-						//if(($person && strpos($key, 'p_')!==0) || (!$person &&  strpos($key, 'p_')===0))
-						//	continue;
-						if(($person && $key != 'season') || (!$person)){
-							echo '<td align="right">'.$key.'<br />'.$val.'</td>';
-						}
+					//if(($person && strpos($key, 'p_')!==0) || (!$person &&  strpos($key, 'p_')===0))
+					//	continue;
+					if(($person && $key != 'season') || (!$person)){
+						echo '<td align="right">'.$key.'<br />'.$val.'</td>';
 					}
 				}
 				echo '</tr>';
