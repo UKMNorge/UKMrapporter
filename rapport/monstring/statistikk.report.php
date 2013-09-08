@@ -159,7 +159,7 @@ class valgt_rapport extends rapport {
 				echo '<tr>';
 				echo '<td align="left">'.utf8_encode($nicename).'</td>';
 				echo '<td align="left">'.$season.'</td>';
-
+				echo '<td align="left">TOTAL</td>';
 				// Loop alle kolonner i rad
 				foreach($r as $key => $val){
 					if(($person && $this->show('t_pers')) || (!$person && !$this->show('t_pers')))
