@@ -90,15 +90,16 @@ class valgt_rapport extends rapport {
 			
 			
 			
+			
 		$this->_plids();
-		
-		$all_rows = array();
 		
 		var_dump($this->pl_ids);
 		foreach($this->pl_ids as $pl_id) {
 			$monstring = new monstring($pl_id);
 			$stats = $monstring->statistikk();
 			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')] = $stats->getStatArrayPerson($monstring->get('season'));
+			
+			ksort($rows[$this->_correctMonstringName($monstring->get('pl_name'))]);
 			
 		}
 		// LOOP VALGTE MØNSTRINGER (_plids?)
