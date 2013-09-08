@@ -157,20 +157,20 @@ class valgt_rapport extends rapport {
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
 				echo '<tr>';
-				echo '<td align="left">'.utf8_encode($nicename).'</td>';
-				echo '<td align="left">'.$season.'</td>';
-				echo '<td align="left">TOTAL</td>';
-				// Loop alle kolonner i rad
-				foreach($r as $key => $val){
-					if(($person && $this->show('t_pers')) || (!$person && !$this->show('t_pers')))
-						$this->_summer($key, $val);
-					//if(($person && strpos($key, 'p_')!==0) || (!$person &&  strpos($key, 'p_')===0))
-					//	continue;
-					if(($person && $key != 'season') || (!$person)){
-						echo '<td align="right">'.$key.'<br />'.$val.'</td>';
-					}
-				}
-				echo '</tr>';
+					. '<td align="left">'.utf8_encode($nicename).'</td>'
+					. '<td align="left">'.$season.'</td>'
+					. '<td align="left">TOTAL</td>'
+					. '<td align="left">'.$r['bt_2'].'</td>'
+					. '<td align="left">'.$r['bt_3'].'</td>'
+					. '<td align="left">'.$r['bt_4'].'</td>'
+					. '<td align="left">'.$r['bt_5'].'</td>'
+					. '<td align="left">'.$r['bt_6'].'</td>'
+					. '<td align="left">'.$r['bt_7'].'</td>'
+					. '<td align="left">'.$r['bt_8'].'</td>'
+					. '<td align="left">'.$r['bt_9'].'</td>'
+					. '<td align="left">'.$r['bt_10'].'</td>'
+					. '<td align="left">'.$r['bt_1'].'</td>'
+				. '</tr>';
 			}
 			if($this->showformat('v_graf')&&$this->showformat('s_tidligere')){
 				echo '<tr><th colspan="17" align="right"><div style="width: 600px; height: 200px;" id="graph_'.($person?'person':'innslag').'_'.$this->_statname($nicename).'">graf</div></th></tr>';
