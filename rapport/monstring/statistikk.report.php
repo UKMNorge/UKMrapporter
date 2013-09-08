@@ -97,7 +97,7 @@ class valgt_rapport extends rapport {
 		foreach($this->pl_ids as $pl_id) {
 			$monstring = new monstring($pl_id);
 			$stats = $monstring->statistikk();
-			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')] = $stats->getStatArrayPerson();
+			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')] = $stats->getStatArrayPerson($monstring->get('season'));
 			
 		}
 		// LOOP VALGTE MØNSTRINGER (_plids?)
