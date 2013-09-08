@@ -171,7 +171,7 @@ class valgt_rapport extends rapport {
 						//if(($person && strpos($key, 'p_')!==0) || (!$person &&  strpos($key, 'p_')===0))
 						//	continue;
 						if(($person && $key != 'season') || (!$person)){
-							echo '<td align="right">'.$val.'</td>';
+							echo '<td align="right">'.$key.'<br />'.$val.'</td>';
 						}
 					}
 				}
