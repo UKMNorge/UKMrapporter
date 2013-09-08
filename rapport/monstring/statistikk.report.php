@@ -83,45 +83,15 @@ class valgt_rapport extends rapport {
 	
 	private function _preGenerate(){
 		UKM_loader('private');
-		if(($this->showformat('s_andre') || $this->showformat('s_order')) && $this->m->g('season') == 2013)
-			die('<strong>Beklager, 2013-tall er ikke tilgjengelig enda.</strong> Se de offentlige sidene for oppdaterte tall (<a href="http://ukm.no/din_monstring/" target="_blank">http://ukm.no/din_monstring/</a>)');
-		else
-			echo('<strong>Beklager, 2013-tall er ikke tilgjengelig enda.</strong> Se de offentlige sidene for oppdaterte tall (<a href="http://ukm.no/din_monstring/" target="_blank">http://ukm.no/din_monstring/</a>)');
-			
-			
-			
-			
 		$this->_plids();
-		
-		// var_dump($this->pl_ids);
 		foreach($this->pl_ids as $pl_id) {
 			$monstring = new monstring($pl_id);
 			$stats = $monstring->statistikk();
 			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')] = $stats->getStatArrayPerson($monstring->get('season'));
 			
-			ksort($rows[$this->_correctMonstringName($monstring->get('pl_name'))]);
-			
+			ksort($rows[$this->_correctMonstringName($monstring->get('pl_name'))]);		
 		}
 		echo("<br /><br />");
-		//var_dump($rows);
-		
-		
-		// LOOP VALGTE MØNSTRINGER (_plids?)
-		// FOREACH
-		//	$monstring->getUgly => $rows[[$pl->name][$season]] = $getUgly->return
-		
-//		$qry = new SQL($this->_qry());
-//		$res = $qry->run();
-//
-//		while($r = mysql_fetch_assoc($res)){
-//			// Lagre mønstringen i array med kommunenavn kommaseparert
-//			// (brukere herper mønstringsnavn...)
-//			if($r['season']!=2013) {
-//				$rows[$this->_correctMonstringName($r['monstring'])][$r['season']] = $r;
-//				// Sorter lokalmønstringen etter sesong
-//				ksort($rows[$this->_correctMonstringName($r['monstring'])]);
-//			}
-//		}
 
 		// Sorter lokalmønstringen etter "navn" (kommuneliste)
 		if(!$this->showformat('s_order'))
