@@ -159,7 +159,7 @@ class valgt_rapport extends rapport {
 				var_dump($season);
 				var_dump($r);
 				// Lagre statistikk for visning senere
-				$this->_stat($nicename,$season, $r['p_deltakere'], $r['innslag']);
+//				$this->_stat($nicename,$season, $r['p_deltakere'], $r['innslag']);
 				echo '<tr>';
 				// Loop alle kolonner i rad
 				foreach($r as $key => $val){
@@ -168,8 +168,8 @@ class valgt_rapport extends rapport {
 					if($key == 'monstring'){
 						echo '<td align="left">'.utf8_encode($nicename).'</td>';
 					}else {
-						if(($person && strpos($key, 'p_')!==0) || (!$person &&  strpos($key, 'p_')===0))
-							continue;
+						//if(($person && strpos($key, 'p_')!==0) || (!$person &&  strpos($key, 'p_')===0))
+						//	continue;
 						if(($person && $key != 'season') || (!$person)){
 							echo '<td align="right">'.$val.'</td>';
 						}
