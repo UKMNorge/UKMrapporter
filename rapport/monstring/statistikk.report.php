@@ -156,13 +156,9 @@ class valgt_rapport extends rapport {
 			}
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
-				var_dump($season);
-				var_dump($r);
-				// Lagre statistikk for visning senere
-//				$this->_stat($nicename,$season, $r['p_deltakere'], $r['innslag']);
 				echo '<tr>';
-
 				echo '<td align="left">'.utf8_encode($nicename).'</td>';
+				echo '<td align="left">'.$season.'</td>';
 
 				// Loop alle kolonner i rad
 				foreach($r as $key => $val){
