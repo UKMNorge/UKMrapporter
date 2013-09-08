@@ -1,4 +1,6 @@
 <?php
+include_once 'UKM/statistikk.class.php';
+
 class valgt_rapport extends rapport {
 	/**
 	 * class constructor
@@ -85,19 +87,35 @@ class valgt_rapport extends rapport {
 			die('<strong>Beklager, 2013-tall er ikke tilgjengelig enda.</strong> Se de offentlige sidene for oppdaterte tall (<a href="http://ukm.no/din_monstring/" target="_blank">http://ukm.no/din_monstring/</a>)');
 		else
 			echo('<strong>Beklager, 2013-tall er ikke tilgjengelig enda.</strong> Se de offentlige sidene for oppdaterte tall (<a href="http://ukm.no/din_monstring/" target="_blank">http://ukm.no/din_monstring/</a>)');
+			
+			
 		$this->_plids();
-		$qry = new SQL($this->_qry());
-		$res = $qry->run();
-
-		while($r = mysql_fetch_assoc($res)){
-			// Lagre mønstringen i array med kommunenavn kommaseparert
-			// (brukere herper mønstringsnavn...)
-			if($r['season']!=2013) {
-				$rows[$this->_correctMonstringName($r['monstring'])][$r['season']] = $r;
-				// Sorter lokalmønstringen etter sesong
-				ksort($rows[$this->_correctMonstringName($r['monstring'])]);
-			}
+		
+		$all_rows = array();
+		
+		foreach($this->pl_ids as $pl_id) {
+			$monstring = new monstring($pl_id);
+			$stats = $monstring->statistikk();
+			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')] = $stats->getStatArrayPerson();
+			
 		}
+		// LOOP VALGTE MØNSTRINGER (_plids?)
+		// FOREACH
+		//	$monstring->getUgly => $rows[[$pl->name][$season]] = $getUgly->return
+		
+//		$qry = new SQL($this->_qry());
+//		$res = $qry->run();
+//
+//		while($r = mysql_fetch_assoc($res)){
+//			// Lagre mønstringen i array med kommunenavn kommaseparert
+//			// (brukere herper mønstringsnavn...)
+//			if($r['season']!=2013) {
+//				$rows[$this->_correctMonstringName($r['monstring'])][$r['season']] = $r;
+//				// Sorter lokalmønstringen etter sesong
+//				ksort($rows[$this->_correctMonstringName($r['monstring'])]);
+//			}
+//		}
+
 		// Sorter lokalmønstringen etter "navn" (kommuneliste)
 		if(!$this->showformat('s_order'))
 			@ksort($rows);
