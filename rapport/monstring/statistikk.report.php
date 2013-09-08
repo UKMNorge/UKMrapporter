@@ -89,6 +89,7 @@ class valgt_rapport extends rapport {
 			echo('<strong>Beklager, 2013-tall er ikke tilgjengelig enda.</strong> Se de offentlige sidene for oppdaterte tall (<a href="http://ukm.no/din_monstring/" target="_blank">http://ukm.no/din_monstring/</a>)');
 			
 			
+			
 		$this->_plids();
 		
 		$all_rows = array();
