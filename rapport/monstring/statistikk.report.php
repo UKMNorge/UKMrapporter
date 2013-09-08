@@ -156,6 +156,37 @@ class valgt_rapport extends rapport {
 			}
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
+			
+				$subcats = array('musikk'=>0,
+								 'teater'=>0,
+								 'litteratur'=>0,
+								 'dans'=>0,
+								 'annet'=>0);
+								 
+				foreach($r as $cat => $count) {
+					if(strpos($cat, 'bt_') !== false) {
+						switch($cat) {
+							case 'musikk':
+							case 'music':
+								$subcats['musikk'] += $count;
+								break;
+							case 'teater':
+							case 'theater':
+								$subcats['teater'] += $count;
+								break;
+							case 'dans':
+								$subcats['dans'] += $count;
+								break;
+							case 'litteratur':
+							case 'litterature':
+								$subcats['litteratur'] += $count;
+								break;
+							default:
+								$subcats['annet'] += $count;
+						}
+					}
+				}
+			
 				echo '<tr>'
 					. '<td align="left">'.utf8_encode($nicename).'</td>'
 					. '<td align="left">'.$season.'</td>'
@@ -170,6 +201,11 @@ class valgt_rapport extends rapport {
 					. '<td align="left">'.$r['bt_9'].'</td>'
 					. '<td align="left">'.$r['bt_10'].'</td>'
 					. '<td align="left">'.$r['bt_1'].'</td>'
+					. '<td align="left">'.$subcats['musikk'].'</td>'
+					. '<td align="left">'.$subcats['dans'].'</td>'
+					. '<td align="left">'.$subcats['litteratur'].'</td>'
+					. '<td align="left">'.$subcats['teater'].'</td>'
+					. '<td align="left">'.$subcats['annet'].'</td>'
 				. '</tr>';
 			}
 			if($this->showformat('v_graf')&&$this->showformat('s_tidligere')){
