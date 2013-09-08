@@ -103,7 +103,7 @@ class valgt_rapport extends rapport {
 			
 		}
 		echo("<br /><br />");
-		var_dump($rows);
+		//var_dump($rows);
 		
 		
 		// LOOP VALGTE MØNSTRINGER (_plids?)
@@ -156,6 +156,8 @@ class valgt_rapport extends rapport {
 			}
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
+				var_dump($season);
+				var_dump($r);
 				// Lagre statistikk for visning senere
 				$this->_stat($nicename,$season, $r['p_deltakere'], $r['innslag']);
 				echo '<tr>';
