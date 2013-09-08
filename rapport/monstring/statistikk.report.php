@@ -102,6 +102,9 @@ class valgt_rapport extends rapport {
 			ksort($rows[$this->_correctMonstringName($monstring->get('pl_name'))]);
 			
 		}
+		var_dump($rows);
+		
+		
 		// LOOP VALGTE MØNSTRINGER (_plids?)
 		// FOREACH
 		//	$monstring->getUgly => $rows[[$pl->name][$season]] = $getUgly->return
