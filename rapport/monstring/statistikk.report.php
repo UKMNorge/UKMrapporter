@@ -164,7 +164,7 @@ class valgt_rapport extends rapport {
 								 'annet'=>0);
 								 
 				foreach($r as $cat => $count) {
-					if(strpos($cat, 'bt_') !== false) {
+					if(strpos($cat, 'bt_') === false) {
 						switch($cat) {
 							case 'musikk':
 							case 'music':
