@@ -156,7 +156,7 @@ class valgt_rapport extends rapport {
 			}
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
-				echo '<tr>';
+				echo '<tr>'
 					. '<td align="left">'.utf8_encode($nicename).'</td>'
 					. '<td align="left">'.$season.'</td>'
 					. '<td align="left">TOTAL</td>'
