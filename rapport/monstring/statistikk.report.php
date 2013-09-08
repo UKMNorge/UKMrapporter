@@ -93,7 +93,7 @@ class valgt_rapport extends rapport {
 			
 		$this->_plids();
 		
-		var_dump($this->pl_ids);
+		// var_dump($this->pl_ids);
 		foreach($this->pl_ids as $pl_id) {
 			$monstring = new monstring($pl_id);
 			$stats = $monstring->statistikk();
@@ -102,6 +102,7 @@ class valgt_rapport extends rapport {
 			ksort($rows[$this->_correctMonstringName($monstring->get('pl_name'))]);
 			
 		}
+		echo("<br /><br />");
 		var_dump($rows);
 		
 		
