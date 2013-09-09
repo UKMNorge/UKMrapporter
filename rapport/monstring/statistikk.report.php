@@ -87,9 +87,15 @@ class valgt_rapport extends rapport {
 			$monstring = new monstring($pl_id);
 			$stats = $monstring->statistikk();
 			$total = $stats->getTotal($monstring->get('season'));
-			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')] = $stats->getStatArrayPerson($monstring->get('season'));
-			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')]['total'] = $total['persons'];
-			ksort($rows[$this->_correctMonstringName($monstring->get('pl_name'))]);		
+			$nicename = $this->_correctMonstringName($monstring->get('pl_name'));
+			$season = $monstring->get('season');
+
+			$rows[$nicename][$season] = $stats->getStatArrayPerson($monstring->get('season'));
+			$rows[$nicename][$season]['total'] = $total['persons'];
+
+			$this->_stat($nicename, $season, $total['persons']);
+
+			ksort($rows[$nicename]);		
 		}
 		echo("<br /><br />");
 
@@ -289,7 +295,7 @@ class valgt_rapport extends rapport {
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
 				// Lagre statistikk for visning senere
-				$this->_stat($nicename,$season, $r['p_deltakere'], $r['innslag']);
+stats->getTotal($monstring->get('season')
 				$row++;
 				$col = 0;
 				// Loop alle kolonner i rad
@@ -406,10 +412,12 @@ class valgt_rapport extends rapport {
 	 * @access private
 	 * @return void
 	 */	
-	private function _stat($monstring, $season, $total, $total_i){
+	private function _stat($monstring, $season, $total){
+/*
 		$this->stat_nicename[$this->_statname($monstring)] = $monstring;
 		$this->stat[$this->_statname($monstring)]['personer'][$season] = $total;
 		$this->stat[$this->_statname($monstring)]['innslag'][$season] = $total_i;
+*/
 		
 		$this->statSum['personer'][$season] += $total;
 	}
