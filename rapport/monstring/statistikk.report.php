@@ -127,6 +127,37 @@ class valgt_rapport extends rapport {
 	 */	
 	private function _table($monstringer,$person=true) {
 		echo '<table cellpadding="2" cellspacing="2">';
+		if($this->showformat('s_tidligere')){
+			echo '<tr><th colspan="17" align="left"><h2>Total</h2></th></tr>';
+			$this->_tableheaders();
+
+			foreach($this->seasonTotals as $season => $data){
+				echo '<tr>'
+						. '<td align="left">SUM</td>'
+						. '<td align="left">'.$season.'</td>'
+						. '<td align="left">'.$data['total'].'</td>'
+						. '<td align="left">'.$data['bt_2'].'</td>'
+						. '<td align="left">'.$data['bt_3'].'</td>'
+						. '<td align="left">'.$data['bt_4'].'</td>'
+						. '<td align="left">'.$data['bt_5'].'</td>'
+						. '<td align="left">'.$data['bt_6'].'</td>'
+						. '<td align="left">'.$data['bt_7'].'</td>'
+						. '<td align="left">'.$data['bt_8'].'</td>'
+						. '<td align="left">'.$data['bt_9'].'</td>'
+						. '<td align="left">'.$data['bt_10'].'</td>'
+						. '<td align="left">'.$data['bt_1'].'</td>'
+						. '<td align="left">'.$data['sub_musikk'].'</td>'
+						. '<td align="left">'.$data['sub_dans'].'</td>'
+						. '<td align="left">'.$data['sub_litteratur'].'</td>'
+						. '<td align="left">'.$data['sub_teater'].'</td>'
+						. '<td align="left">'.$data['sub_annet'].'</td>'
+					. '</tr>'
+				;
+			}
+			echo '<tr><th colspan="17" align="left"><br /></th></tr>';
+		}	
+	
+	
 		// Hvis man sammenligner med andre mønstringer, vises tabellheader i toppen
 		if(!$this->showformat('s_tidligere'))
 			$this->_tableheaders();
@@ -216,38 +247,6 @@ class valgt_rapport extends rapport {
 				.'</tr>';
 		}
 		echo '</table>';	
-
-		if($this->showformat('s_tidligere')){
-			echo '<h2>Oppsummering</h2>';
-			echo '<table cellpadding="2" cellspacing="2">';
-			$this->_tableheaders();
-
-			foreach($this->seasonTotals as $season => $data){
-				echo '<tr>'
-						. '<td align="left">SUM</td>'
-						. '<td align="left">'.$season.'</td>'
-						. '<td align="left">'.$data['total'].'</td>'
-						. '<td align="left">'.$data['bt_2'].'</td>'
-						. '<td align="left">'.$data['bt_3'].'</td>'
-						. '<td align="left">'.$data['bt_4'].'</td>'
-						. '<td align="left">'.$data['bt_5'].'</td>'
-						. '<td align="left">'.$data['bt_6'].'</td>'
-						. '<td align="left">'.$data['bt_7'].'</td>'
-						. '<td align="left">'.$data['bt_8'].'</td>'
-						. '<td align="left">'.$data['bt_9'].'</td>'
-						. '<td align="left">'.$data['bt_10'].'</td>'
-						. '<td align="left">'.$data['bt_1'].'</td>'
-						. '<td align="left">'.$data['sub_musikk'].'</td>'
-						. '<td align="left">'.$data['sub_dans'].'</td>'
-						. '<td align="left">'.$data['sub_litteratur'].'</td>'
-						. '<td align="left">'.$data['sub_teater'].'</td>'
-						. '<td align="left">'.$data['sub_annet'].'</td>'
-					. '</tr>'
-				;
-			}
-			echo '</table>';
-		}
-		
 
 		if($this->showformat('v_graf')&&$this->showformat('s_tidligere'))
 			$this->_drawGraphs($person);
