@@ -252,7 +252,7 @@ class valgt_rapport extends rapport {
 				.'<td colspan="18" style="height: 750px; width: 100%;" id="graph_sum_pie">graf</td>'
 				.'</tr>'
 				.'<tr>'
-				.'<td colspan="18" style="height: 750px; width: 100%;" id="graph_sum_combo">graf</td>'
+				.'<td colspan="18" style="height: 750px; width: 900px;" id="graph_sum_combo">graf</td>'
 				.'</tr>';
 		}
 		echo '</table>';	
@@ -445,7 +445,7 @@ class valgt_rapport extends rapport {
 		if($this->showformat('s_tidligere')){
 			woText($section, 'Totalt', 'h1');
 			$tab = $section->addTable();
-			$this->_tableheaders();
+			$this->_tableheadersWord($tab);
 
 			foreach($this->seasonTotals as $season => $data){
 				$tab->addRow();
@@ -468,8 +468,8 @@ class valgt_rapport extends rapport {
 				woCell($tab, $this->_thww(), $data['sub_teater']);
 				woCell($tab, $this->_thww(), $data['sub_annet']);
 			}
-			woText($section, 'Per mønstring', 'h1');
 			$section->addPageBreak();
+			woText($section, 'Per mønstring', 'h1');
 		}	
 
 
