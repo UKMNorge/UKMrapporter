@@ -95,13 +95,13 @@ class valgt_rapport extends rapport {
 
 			$this->_stat($nicename, $season, $total['persons']);
 
-			$this->countOrder[$nicename] = $total['persons'];
+			$this->countOrder[$total['persons']] = $nicename;
 
 			ksort($rows[$nicename]);
 		}
 		
 	var_dump($this->countOrder);		
-		sort($this->countOrder);
+		ksort($this->countOrder);
 	var_dump($this->countOrder);		
 
 		echo("<br /><br />");
