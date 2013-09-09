@@ -155,37 +155,7 @@ class valgt_rapport extends rapport {
 			}
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
-			
-				$subcats = array('musikk'=>0,
-								 'teater'=>0,
-								 'litteratur'=>0,
-								 'dans'=>0,
-								 'annet'=>0);
-								 
-				foreach($r as $cat => $count) {
-					if(strpos($cat, 'bt_') === false && $cat != 'total') {
-						switch($cat) {
-							case 'musikk':
-							case 'music':
-								$subcats['musikk'] += $count;
-								break;
-							case 'teater':
-							case 'theater':
-								$subcats['teater'] += $count;
-								break;
-							case 'dans':
-								$subcats['dans'] += $count;
-								break;
-							case 'litteratur':
-							case 'litterature':
-								$subcats['litteratur'] += $count;
-								break;
-							default:
-								$subcats['annet'] += $count;
-								break;
-						}
-					}
-				}
+				$subcats = $this->_subcats($r);
 			
 				echo '<tr>'
 					. '<td align="left">'.$nicename.'</td>'
@@ -336,36 +306,7 @@ class valgt_rapport extends rapport {
 				$info = $val;
 			}
 			foreach($info as $season => $r){
-				$subcats = array('musikk'=>0,
-								 'teater'=>0,
-								 'litteratur'=>0,
-								 'dans'=>0,
-								 'annet'=>0);
-
-				foreach($r as $cat => $count) {
-					if(strpos($cat, 'bt_') === false && $cat != 'total') {
-						switch($cat) {
-							case 'musikk':
-							case 'music':
-								$subcats['musikk'] += $count;
-								break;
-							case 'teater':
-							case 'theater':
-								$subcats['teater'] += $count;
-								break;
-							case 'dans':
-								$subcats['dans'] += $count;
-								break;
-							case 'litteratur':
-							case 'litterature':
-								$subcats['litteratur'] += $count;
-								break;
-							default:
-								$subcats['annet'] += $count;
-								break;
-						}
-					}
-				}
+				$subcats = $this->_subcats($r);
 				exCell('A'.$row, $nicename);
 				exCell('B'.$row, $season);
 				exCell('C'.$row, $r['total']);
@@ -437,7 +378,8 @@ class valgt_rapport extends rapport {
 			}
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
-				// Lagre statistikk for visning senere
+				$subcats = $this->_subcats($r);
+
 				$tab->addRow();
 				// Loop alle kolonner i rad
 				woCell($tab, $this->_thww(), $nicename);
@@ -476,6 +418,39 @@ class valgt_rapport extends rapport {
 		}
 	}
 
+	private function _subcats($r) {
+		$subcats = array('musikk'=>0,
+				 'teater'=>0,
+				 'litteratur'=>0,
+				 'dans'=>0,
+				 'annet'=>0);
+
+		foreach($r as $cat => $count) {
+			if(strpos($cat, 'bt_') === false && $cat != 'total') {
+				switch($cat) {
+					case 'musikk':
+					case 'music':
+						$subcats['musikk'] += $count;
+						break;
+					case 'teater':
+					case 'theater':
+						$subcats['teater'] += $count;
+						break;
+					case 'dans':
+						$subcats['dans'] += $count;
+						break;
+					case 'litteratur':
+					case 'litterature':
+						$subcats['litteratur'] += $count;
+						break;
+					default:
+						$subcats['annet'] += $count;
+						break;
+				}
+			}
+		}
+		return $subcats;
+	}
 
 
 	/**
