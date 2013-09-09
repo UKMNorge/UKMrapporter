@@ -467,7 +467,7 @@ class valgt_rapport extends rapport {
 					['Mønstring', 'Påmeldte'],
 					<?php
 					foreach($this->stat as $monstring => $data){
-						foreach($data[($person?'personer':'innslag')] as $season => $count){
+						foreach($data as $season => $count){
 							echo '[\''.$this->stat_nicename[$monstring].'\','.$count.'],'."\r\n";
 						}
 					} ?>
