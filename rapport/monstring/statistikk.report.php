@@ -295,7 +295,6 @@ class valgt_rapport extends rapport {
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
 				// Lagre statistikk for visning senere
-stats->getTotal($monstring->get('season')
 				$row++;
 				$col = 0;
 				// Loop alle kolonner i rad
