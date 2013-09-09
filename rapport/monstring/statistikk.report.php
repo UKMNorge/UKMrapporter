@@ -100,6 +100,7 @@ class valgt_rapport extends rapport {
 			ksort($rows[$nicename]);
 		}
 		
+	var_dump($this->countOrder);		
 		sort($this->countOrder);
 	var_dump($this->countOrder);		
 
