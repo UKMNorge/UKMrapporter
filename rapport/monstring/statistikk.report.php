@@ -203,8 +203,8 @@ class valgt_rapport extends rapport {
 			if($this->showformat('v_graf'))
 			echo '</tr>'
 				.'<tr>'
-				.'<td colspan="8" style="height: 400px;" id="graph_'.($person?'person':'innslag').'_sum_pie">graf</td>'
-				.'<td colspan="10" style="height: 400px;" id="graph_'.($person?'person':'innslag').'_sum_combo">graf</td>'
+				.'<td colspan="8" style="height: 400px;" id="graph_sum_pie">graf</td>'
+				.'<td colspan="10" style="height: 400px;" id="graph_sum_combo">graf</td>'
 				.'</tr>';
 		}
 		echo '</table>';	
