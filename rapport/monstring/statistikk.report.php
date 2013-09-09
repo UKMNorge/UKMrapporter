@@ -426,8 +426,8 @@ class valgt_rapport extends rapport {
 	 * @return void
 	 */	
 	private function _drawGraphs($person){
-		foreach($this->statSum['personer'] as $season => $total)
-			$this->statSum['personer'][$season] = round($total/$this->antallMonstringer);
+		foreach($this->statSum as $season => $total)
+			$this->statSum[$season] = round($total/$this->antallMonstringer);
 		?>
 		<script type="text/javascript" language="javascript">
 			<?php
