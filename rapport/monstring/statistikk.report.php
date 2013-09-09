@@ -99,10 +99,7 @@ class valgt_rapport extends rapport {
 
 			ksort($rows[$nicename]);
 		}
-		
-	var_dump($this->countOrder);		
 		ksort($this->countOrder);
-	var_dump($this->countOrder);		
 
 		echo("<br /><br />");
 
@@ -129,9 +126,23 @@ class valgt_rapport extends rapport {
 		if(!$this->showformat('s_tidligere'))
 			$this->_tableheaders();
 
+		if($this->showformat('s_order')) {
+			$loopArray = $this->countOrder;
+		} else {
+			$loopArray = $monstringer;
+		}
+
 		// Loop alle mønstringer
 		if(is_array($monstringer) && sizeof($monstringer) > 0)
-		foreach($monstringer as $nicename => $info) {
+		foreach($loopArray as $key => $val) {
+			if($this->showFormat('s_order')) {
+				$nicename = $val;
+				$info = $monstringer[$val];
+			} else {
+				$nicename = $key;
+				$info = $val;
+			}
+		//foreach($monstringer as $nicename => $info) {
 			// Hvis man sammenligner med tidligere år, vises tabellheader for hver mønstring
 			if($this->showformat('s_tidligere')){
 				echo '<tr><th colspan="17" align="left"><br /></th></tr>';
