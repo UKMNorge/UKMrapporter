@@ -218,31 +218,33 @@ class valgt_rapport extends rapport {
 		echo '</table>';	
 
 		if($this->showformat('s_tidligere')){
+			echo '<h2>Oppsummering</h2>'
+			$this->_tableheaders();
+
 			foreach($this->seasonTotals as $season => $data){
-				echo '<h2>Oppsummering</h2>'
-					.'<table>'
-						. '<tr>'
-							. '<td align="left">SUM</td>'
-							. '<td align="left">'.$season.'</td>'
-							. '<td align="left">'.$data['total'].'</td>'
-							. '<td align="left">'.$data['bt_2'].'</td>'
-							. '<td align="left">'.$data['bt_3'].'</td>'
-							. '<td align="left">'.$data['bt_4'].'</td>'
-							. '<td align="left">'.$data['bt_5'].'</td>'
-							. '<td align="left">'.$data['bt_6'].'</td>'
-							. '<td align="left">'.$data['bt_7'].'</td>'
-							. '<td align="left">'.$data['bt_8'].'</td>'
-							. '<td align="left">'.$data['bt_9'].'</td>'
-							. '<td align="left">'.$data['bt_10'].'</td>'
-							. '<td align="left">'.$data['bt_1'].'</td>'
-							. '<td align="left">'.$data['sub_musikk'].'</td>'
-							. '<td align="left">'.$data['sub_dans'].'</td>'
-							. '<td align="left">'.$data['sub_litteratur'].'</td>'
-							. '<td align="left">'.$data['sub_teater'].'</td>'
-							. '<td align="left">'.$data['sub_annet'].'</td>'
-						. '</tr>'
-					.'</table>';
+				echo '<tr>'
+						. '<td align="left">SUM</td>'
+						. '<td align="left">'.$season.'</td>'
+						. '<td align="left">'.$data['total'].'</td>'
+						. '<td align="left">'.$data['bt_2'].'</td>'
+						. '<td align="left">'.$data['bt_3'].'</td>'
+						. '<td align="left">'.$data['bt_4'].'</td>'
+						. '<td align="left">'.$data['bt_5'].'</td>'
+						. '<td align="left">'.$data['bt_6'].'</td>'
+						. '<td align="left">'.$data['bt_7'].'</td>'
+						. '<td align="left">'.$data['bt_8'].'</td>'
+						. '<td align="left">'.$data['bt_9'].'</td>'
+						. '<td align="left">'.$data['bt_10'].'</td>'
+						. '<td align="left">'.$data['bt_1'].'</td>'
+						. '<td align="left">'.$data['sub_musikk'].'</td>'
+						. '<td align="left">'.$data['sub_dans'].'</td>'
+						. '<td align="left">'.$data['sub_litteratur'].'</td>'
+						. '<td align="left">'.$data['sub_teater'].'</td>'
+						. '<td align="left">'.$data['sub_annet'].'</td>'
+					. '</tr>'
+				;
 			}
+			echo '</table>';
 		}
 		
 
