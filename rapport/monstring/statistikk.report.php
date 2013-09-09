@@ -88,7 +88,7 @@ class valgt_rapport extends rapport {
 			$stats = $monstring->statistikk();
 			$total = $stats->getTotal($monstring->get('season'));
 			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')] = $stats->getStatArrayPerson($monstring->get('season'));
-			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')]['total'] = $total['personer'];
+			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')]['total'] = $total['persons'];
 			ksort($rows[$this->_correctMonstringName($monstring->get('pl_name'))]);		
 		}
 		echo("<br /><br />");
