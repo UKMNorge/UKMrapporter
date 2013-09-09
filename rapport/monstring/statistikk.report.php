@@ -868,7 +868,7 @@ class valgt_rapport extends rapport {
 							FROM `smartukm_place` 
 							WHERE `pl_fylke` != '0' 
 							AND `pl_fylke` != '123456789'
-							AND `pl_fylke` != 21
+							AND `pl_fylke` < 21
 							".($this->showformat('s_tidligere') ? '': "AND `season` = '#season'")."
 							", array('season'=>$this->m->g('season')));
 		} else {
