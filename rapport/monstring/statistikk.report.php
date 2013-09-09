@@ -391,7 +391,7 @@ class valgt_rapport extends rapport {
 
 		if(!$this->showformat('s_tidligere')){
 			exCell('A'.$row.':B'.$row, 'SUM','bold');
-			for($i=1; $i<16; $i++) {
+			for($i=1; $i<17; $i++) {
 				exCell(i2a($i+2).$row, '=SUM('.i2a($i+2).'2:'.i2a($i+2).($row-1).')');
 			}
 		}
@@ -413,8 +413,24 @@ class valgt_rapport extends rapport {
 		if(!$this->showformat('s_tidligere'))
 			$this->_tableheadersWord($tab);
 
+		if($this->showformat('s_order')) {
+			$loopArray = $this->countOrder;
+		} else {
+			$loopArray = $monstringer;
+		}
+
 		// Loop alle mønstringer
-		foreach($monstringer as $nicename => $info) {
+		if(is_array($monstringer) && sizeof($monstringer) > 0)
+		$row = 2;
+
+		foreach($loopArray as $key => $val) {
+			if($this->showFormat('s_order')) {
+				$nicename = $val;
+				$info = $monstringer[$val];
+			} else {
+				$nicename = $key;
+				$info = $val;
+			}
 			// Hvis man sammenligner med tidligere år, vises tabellheader for hver mønstring
 			if($this->showformat('s_tidligere')){
 				$this->_tableheadersWord($tab);
@@ -422,26 +438,32 @@ class valgt_rapport extends rapport {
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
 				// Lagre statistikk for visning senere
-				$this->_stat($nicename,$season, $r['p_deltakere'], $r['innslag']);
 				$tab->addRow();
 				// Loop alle kolonner i rad
-				foreach($r as $key => $val){
-					if(($person && $this->show('t_pers')) || (!$person && !$this->show('t_pers')))
-						$this->_summer($key, $val);
-					if($key == 'monstring'){
-						woCell($tab, $this->_thww(), $nicename);
-					}else {
-						if(($person && strpos($key, 'p_')!==0) || (!$person &&  strpos($key, 'p_')===0))
-							continue;
-						if(($person && $key != 'season') || (!$person)){
-							woCell($tab, $this->_thww(), $val);
-						}
-					}
-				}
+				woCell($tab, $this->_thww(), $nicename);
+				woCell($tab, $this->_thww(), $season);
+				woCell($tab, $this->_thww(), $r['total']);
+				woCell($tab, $this->_thww(), $r['bt_2']);
+				woCell($tab, $this->_thww(), $r['bt_3']);
+				woCell($tab, $this->_thww(), $r['bt_4']);
+				woCell($tab, $this->_thww(), $r['bt_5']);
+				woCell($tab, $this->_thww(), $r['bt_6']);
+				woCell($tab, $this->_thww(), $r['bt_7']);
+				woCell($tab, $this->_thww(), $r['bt_8']);
+				woCell($tab, $this->_thww(), $r['bt_9']);
+				woCell($tab, $this->_thww(), $r['bt_10']);
+				woCell($tab, $this->_thww(), $r['bt_11']);
+				woCell($tab, $this->_thww(), $subcats['musikk']);
+				woCell($tab, $this->_thww(), $subcats['dans']);
+				woCell($tab, $this->_thww(), $subcats['litteratur']);
+				woCell($tab, $this->_thww(), $subcats['teater']);
+				woCell($tab, $this->_thww(), $subcats['annet']);
+
 			}
 		}
 		
 		if(!$this->showformat('s_tidligere')){
+/*
 			$tab->addRow();
 			woCell($tab, $this->_thww(), 'SUM','bold');
 			woCell($tab, $this->_thww(), ' ','bold');
@@ -450,6 +472,7 @@ class valgt_rapport extends rapport {
 					continue;
 				woCell($tab, $this->_thww(), $val);
 			}
+*/
 		}
 	}
 
