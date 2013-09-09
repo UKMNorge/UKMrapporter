@@ -13,6 +13,7 @@ class valgt_rapport extends rapport {
 	 * @return class object
 	 */
 	public function __construct($rapport, $kategori){
+		die('WTH?');
 		parent::__construct($rapport, $kategori);
 		
 		$g = $this->optGrp('h','Velg statistikkgrunnlag', 'radio');
