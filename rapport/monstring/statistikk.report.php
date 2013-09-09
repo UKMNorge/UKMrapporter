@@ -137,7 +137,7 @@ class valgt_rapport extends rapport {
 	private function _table($monstringer,$person=true) {
 		echo '<table cellpadding="2" cellspacing="2">';
 		if($this->showformat('s_tidligere')){
-			echo '<tr><th colspan="17" align="left"><h2>Total</h2></th></tr>';
+			echo '<tr><th colspan="17" align="left"><h1>Total</h1></th></tr>';
 			$this->_tableheaders();
 
 			foreach($this->seasonTotals as $season => $data){
@@ -163,7 +163,7 @@ class valgt_rapport extends rapport {
 					. '</tr>'
 				;
 			}
-			echo '<tr><th colspan="17" align="left"><br /></th></tr>';
+			echo '<tr><th colspan="17" align="left"><h1>Per m&oslash;nstring</h1></th></tr>';
 		}	
 	
 	
