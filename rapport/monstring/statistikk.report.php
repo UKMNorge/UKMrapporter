@@ -387,6 +387,7 @@ class valgt_rapport extends rapport {
 			}
 		}
 		
+/*
 		if(!$this->showformat('s_tidligere')){
 			exCell('A'.$row.':B'.$row, 'SUM','bold');
 			$col++;
@@ -394,6 +395,7 @@ class valgt_rapport extends rapport {
 				exCell(i2a($i+2).$row, '=SUM('.i2a($i+2).'2:'.i2a($i+2).($row-1).')');
 			}
 		}
+*/
 	}
 
 	/**
