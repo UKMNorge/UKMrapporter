@@ -186,7 +186,7 @@ class valgt_rapport extends rapport {
 				. '</tr>';
 			}
 			if($this->showformat('v_graf')&&$this->showformat('s_tidligere')){
-				echo '<tr><th colspan="17" align="right"><div style="width: 600px; height: 200px;" id="graph_'.($person?'person':'innslag').'_'.$this->_statname($nicename).'">graf</div></th></tr>';
+				echo '<tr><th colspan="17" align="right"><div style="width: 600px; height: 200px;" id="graph_'.$this->_statname($nicename).'">graf</div></th></tr>';
 			}
 		}
 		
@@ -412,12 +412,8 @@ class valgt_rapport extends rapport {
 	 * @return void
 	 */	
 	private function _stat($monstring, $season, $total){
-/*
 		$this->stat_nicename[$this->_statname($monstring)] = $monstring;
-		$this->stat[$this->_statname($monstring)]['personer'][$season] = $total;
-		$this->stat[$this->_statname($monstring)]['innslag'][$season] = $total_i;
-*/
-		
+		$this->stat[$this->_statname($monstring)][$season] = $total;
 		$this->statSum['personer'][$season] += $total;
 	}
 
@@ -439,8 +435,8 @@ class valgt_rapport extends rapport {
 				 var data = google.visualization.arrayToDataTable([
 					['År', 'Påmeldte', 'TREND: <?= ($this->show('f_alle')?'Snitt':'Snitt i fylket')?>'],
 					<?php
-					 foreach($data[($person?'personer':'innslag')] as $season => $count){?>
-					['<?= $season?>',<?= $count ?>,<?= $this->statSum['personer'][$season]?>],
+					 foreach($data as $season => $count){?>
+					['<?= $season?>',<?= $count ?>,<?= $this->statSum[$season]?>],
 					<?php } ?>
 					]);
 					
@@ -450,8 +446,8 @@ class valgt_rapport extends rapport {
 					colors: ['#1e4a45','#f3776f']
 				};
 				
-				if(jQuery('#graph_<?= ($person?'person':'innslag') ?>_<?= $monstring ?>').html() == 'graf')
-					drawChart('graph_<?= ($person?'person':'innslag') ?>_<?= $monstring ?>', data, options);
+				if(jQuery('#graph_<?= $monstring ?>').html() == 'graf')
+					drawChart('graph_<?= $monstring ?>', data, options);
 			<?php 
 			} ?>
 		</script>
@@ -482,8 +478,8 @@ class valgt_rapport extends rapport {
 					legend: {position: 'none'},
 				};
 				
-				drawPie('graph_<?= ($person?'person':'innslag') ?>_sum_pie', data, {title: 'Mønstringer i tabellen'});
-				drawCombo('graph_<?= ($person?'person':'innslag') ?>_sum_combo', data, options);
+				drawPie('graph_sum_pie', data, {title: 'Mønstringer i tabellen'});
+				drawCombo('graph_sum_combo', data, options);
 		</script>
 		<?php
 	}
