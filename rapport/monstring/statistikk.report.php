@@ -44,7 +44,7 @@ class valgt_rapport extends rapport {
 		
 
 		$g = $this->formatGrp('s','Sammenligning og sortering', 'radio');
-		$this->format($g, 's_andre', 'Alle mønstringer, sortert alfabetisk');
+		$this->format($g, 's_alphabet', 'Alle mønstringer, sortert alfabetisk');
 		$this->format($g, 's_order', 'Alle mønstringer, sortert etter deltakertall');
 		$this->format($g, 's_tidligere', 'Sammenlign med tidligere år, sortert alfabetisk');
 
@@ -661,7 +661,13 @@ class valgt_rapport extends rapport {
 	 * @access private
 	 * @return void
 	 */	
-	private function _drawStat($person){ ?>
+	private function _drawStat($person){
+		if($this->showformat('s_alphabet'))
+			ksort($this->stat);
+		if($this->showformat('s_order'))
+			sort($this->stat);
+
+	 ?>
 		<script type="text/javascript" language="javascript">
 			 var data = google.visualization.arrayToDataTable([
 					['Mønstring', 'Påmeldte'],
