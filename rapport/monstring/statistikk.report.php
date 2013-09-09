@@ -156,7 +156,7 @@ class valgt_rapport extends rapport {
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
 				$subcats = $this->_subcats($r);
-				$this->_totals($r, $subcats);
+				$this->_totals($r, $subcats, $season);
 							
 				echo '<tr>'
 					. '<td align="left">'.$nicename.'</td>'
@@ -217,10 +217,40 @@ class valgt_rapport extends rapport {
 		}
 		echo '</table>';	
 
+		if($this->showformat('s_tidligere')){
+			foreach($this->seasonTotals as $season => $data)
+				echo '<h2>Oppsummering</h2>'
+					.'<table>'
+						. '<tr>'
+							. '<td align="left">SUM</td>'
+							. '<td align="left">'.$season.'</td>'
+							. '<td align="left">'.$data['total'].'</td>'
+							. '<td align="left">'.$data['bt_2'].'</td>'
+							. '<td align="left">'.$data['bt_3'].'</td>'
+							. '<td align="left">'.$data['bt_4'].'</td>'
+							. '<td align="left">'.$data['bt_5'].'</td>'
+							. '<td align="left">'.$data['bt_6'].'</td>'
+							. '<td align="left">'.$data['bt_7'].'</td>'
+							. '<td align="left">'.$data['bt_8'].'</td>'
+							. '<td align="left">'.$data['bt_9'].'</td>'
+							. '<td align="left">'.$data['bt_10'].'</td>'
+							. '<td align="left">'.$data['bt_1'].'</td>'
+							. '<td align="left">'.$data['sub_musikk'].'</td>'
+							. '<td align="left">'.$data['sub_dans'].'</td>'
+							. '<td align="left">'.$data['sub_litteratur'].'</td>'
+							. '<td align="left">'.$data['sub_teater'].'</td>'
+							. '<td align="left">'.$data['sub_annet'].'</td>'
+						. '</tr>'
+					.'</table>';
+			}
+		}
+		
+
 		if($this->showformat('v_graf')&&$this->showformat('s_tidligere'))
 			$this->_drawGraphs($person);
 		elseif($this->showformat('v_graf'))
 			$this->_drawStat($person);
+		
 	}
 	/**
 	 * generateExcel function
@@ -322,7 +352,7 @@ class valgt_rapport extends rapport {
 			}
 			foreach($info as $season => $r){
 				$subcats = $this->_subcats($r);
-				$this->_totals($r, $subcats);
+				$this->_totals($r, $subcats, $season);
 				
 				exCell('A'.$row, $nicename);
 				exCell('B'.$row, $season);
@@ -356,7 +386,7 @@ class valgt_rapport extends rapport {
 
 	}
 	
-	private function _totals($r, $subcats) {
+	private function _totals($r, $subcats, $season) {
 		$this->totals['total']			+= $r['total'];
 		$this->totals['bt_1'] 			+= $r['bt_1'];
 		$this->totals['bt_2'] 			+= $r['bt_2'];
@@ -373,6 +403,23 @@ class valgt_rapport extends rapport {
 		$this->totals['sub_litteratur']	+=	$subcats['litteratur'];
 		$this->totals['sub_teater']		+=	$subcats['teater'];
 		$this->totals['sub_annet']		+=	$subcats['annet'];
+		
+		$this->seasonTotals[$season]['total']			+= $r['total'];
+		$this->seasonTotals[$season]['bt_1'] 			+= $r['bt_1'];
+		$this->seasonTotals[$season]['bt_2'] 			+= $r['bt_2'];
+		$this->seasonTotals[$season]['bt_3']			+= $r['bt_3'];
+		$this->seasonTotals[$season]['bt_4'] 			+= $r['bt_4'];
+		$this->seasonTotals[$season]['bt_5']			+= $r['bt_5'];
+		$this->seasonTotals[$season]['bt_6']			+= $r['bt_6'];
+		$this->seasonTotals[$season]['bt_7']			+= $r['bt_7'];
+		$this->seasonTotals[$season]['bt_8'] 			+= $r['bt_8'];
+		$this->seasonTotals[$season]['bt_9']		 	+= $r['bt_9'];
+		$this->seasonTotals[$season]['bt_10']		 	+= $r['bt_10'];
+		$this->seasonTotals[$season]['sub_musikk']		+=	$subcats['musikk'];
+		$this->seasonTotals[$season]['sub_dans']		+=	$subcats['dans'];
+		$this->seasonTotals[$season]['sub_litteratur']	+=	$subcats['litteratur'];
+		$this->seasonTotals[$season]['sub_teater']		+=	$subcats['teater'];
+		$this->seasonTotals[$season]['sub_annet']		+=	$subcats['annet'];
 	}
 
 	/**
@@ -415,7 +462,7 @@ class valgt_rapport extends rapport {
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
 				$subcats = $this->_subcats($r);
-				$this->_totals($r, $subcats);
+				$this->_totals($r, $subcats, $season);
 				$tab->addRow();
 				// Loop alle kolonner i rad
 				woCell($tab, $this->_thww(), $nicename);
