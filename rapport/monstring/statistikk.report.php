@@ -698,11 +698,11 @@ class valgt_rapport extends rapport {
 					]);
 					
 				var options = {
-					title: 'Mønstringer i tabellen',
+					title: 'Mønstringerr i tabellen',
 					legend: {position: 'none'},
 				};
 				
-				drawPie('graph_sum_pie', data, {title: 'Mønstringer i tabellen'});
+				drawPie('graph_sum_pie', data, {title: 'Mønstringerr i tabellen'});
 				drawCombo('graph_sum_combo', data, options);
 		</script>
 		<?php
