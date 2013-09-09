@@ -86,8 +86,9 @@ class valgt_rapport extends rapport {
 		foreach($this->pl_ids as $pl_id) {
 			$monstring = new monstring($pl_id);
 			$stats = $monstring->statistikk();
+			$total = $stats->getTotal($monstring->get('season'));
 			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')] = $stats->getStatArrayPerson($monstring->get('season'));
-			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')]['total'] = $stats->getTotal($monstring->get('season'));
+			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')]['total'] = $total['personer'];
 			ksort($rows[$this->_correctMonstringName($monstring->get('pl_name'))]);		
 		}
 		echo("<br /><br />");
@@ -133,7 +134,7 @@ class valgt_rapport extends rapport {
 								 'annet'=>0);
 								 
 				foreach($r as $cat => $count) {
-					if(strpos($cat, 'bt_') === false) {
+					if(strpos($cat, 'bt_') === false && $cat != 'total') {
 						switch($cat) {
 							case 'musikk':
 							case 'music':
@@ -152,6 +153,7 @@ class valgt_rapport extends rapport {
 								break;
 							default:
 								$subcats['annet'] += $count;
+								break;
 						}
 					}
 				}
