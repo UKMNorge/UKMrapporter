@@ -137,7 +137,7 @@ class valgt_rapport extends rapport {
 	private function _table($monstringer,$person=true) {
 		echo '<table cellpadding="2" cellspacing="2">';
 		if($this->showformat('s_tidligere')){
-			echo '<tr><th colspan="17" align="left"><h1>Total</h1></th></tr>';
+			echo '<tr><th colspan="17" align="left"><h1>Totalt</h1></th></tr>';
 			$this->_tableheaders();
 
 			foreach($this->seasonTotals as $season => $data){
@@ -249,10 +249,10 @@ class valgt_rapport extends rapport {
 
 			if($this->showformat('v_graf'))
 			echo '<tr>'
-				.'<td colspan="18" style="height: 700px;" id="graph_sum_pie">graf</td>'
+				.'<td colspan="18" style="height: 750px; width: 100%;" id="graph_sum_pie">graf</td>'
 				.'</tr>'
 				.'<tr>'
-				.'<td colspan="18" style="height: 700px;" id="graph_sum_combo">graf</td>'
+				.'<td colspan="18" style="height: 750px; width: 100%;" id="graph_sum_combo">graf</td>'
 				.'</tr>';
 		}
 		echo '</table>';	
@@ -442,6 +442,37 @@ class valgt_rapport extends rapport {
 	 * @return void
 	 */	
 	private function _tableWord(&$section, $monstringer,$person=true) {
+		if($this->showformat('s_tidligere')){
+			woText($section, 'Totalt', 'h1');
+			$tab = $section->addTable();
+			$this->_tableheaders();
+
+			foreach($this->seasonTotals as $season => $data){
+				$tab->addRow();
+				woCell($tab, $this->_thww(), 'SUM','bold');
+				woCell($tab, $this->_thww(), ' ','bold');
+				woCell($tab, $this->_thww(), $data['total']);
+				woCell($tab, $this->_thww(), $data['bt_2']);
+				woCell($tab, $this->_thww(), $data['bt_3']);
+				woCell($tab, $this->_thww(), $data['bt_4']);
+				woCell($tab, $this->_thww(), $data['bt_5']);
+				woCell($tab, $this->_thww(), $data['bt_6']);
+				woCell($tab, $this->_thww(), $data['bt_7']);
+				woCell($tab, $this->_thww(), $data['bt_8']);
+				woCell($tab, $this->_thww(), $data['bt_9']);
+				woCell($tab, $this->_thww(), $data['bt_10']);
+				woCell($tab, $this->_thww(), $data['bt_1']);
+				woCell($tab, $this->_thww(), $data['sub_musikk']);
+				woCell($tab, $this->_thww(), $data['sub_dans']);
+				woCell($tab, $this->_thww(), $data['sub_litteratur']);
+				woCell($tab, $this->_thww(), $data['sub_teater']);
+				woCell($tab, $this->_thww(), $data['sub_annet']);
+			}
+			woText($section, 'Per mønstring', 'h1');
+			$section->addPageBreak();
+		}	
+
+
 		$tab = $section->addTable();
 
 		// Hvis man sammenligner med andre mønstringer, vises tabellheader i toppen
