@@ -218,7 +218,7 @@ class valgt_rapport extends rapport {
 		echo '</table>';	
 
 		if($this->showformat('s_tidligere')){
-			echo '<h2>Oppsummering</h2>'
+			echo '<h2>Oppsummering</h2>';
 			$this->_tableheaders();
 
 			foreach($this->seasonTotals as $season => $data){
