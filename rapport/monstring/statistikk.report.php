@@ -82,13 +82,12 @@ class valgt_rapport extends rapport {
 	}
 	
 	private function _preGenerate(){
-		UKM_loader('private');
 		$this->_plids();
 		foreach($this->pl_ids as $pl_id) {
 			$monstring = new monstring($pl_id);
 			$stats = $monstring->statistikk();
 			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')] = $stats->getStatArrayPerson($monstring->get('season'));
-			
+			$rows[$this->_correctMonstringName($monstring->get('pl_name'))][$monstring->get('season')]['total'] = $stats->getTotal($monstring->get('season'));
 			ksort($rows[$this->_correctMonstringName($monstring->get('pl_name'))]);		
 		}
 		echo("<br /><br />");
@@ -158,9 +157,9 @@ class valgt_rapport extends rapport {
 				}
 			
 				echo '<tr>'
-					. '<td align="left">'.utf8_encode($nicename).'</td>'
+					. '<td align="left">'.$nicename.'</td>'
 					. '<td align="left">'.$season.'</td>'
-					. '<td align="left">TOTAL</td>'
+					. '<td align="left">'.$r['total'].'</td>'
 					. '<td align="left">'.$r['bt_2'].'</td>'
 					. '<td align="left">'.$r['bt_3'].'</td>'
 					. '<td align="left">'.$r['bt_4'].'</td>'
@@ -297,7 +296,7 @@ class valgt_rapport extends rapport {
 						$this->_summer($key, $val);
 					if($key == 'monstring'){
 						$col++;
-						exCell(i2a($col).$row, utf8_encode($nicename));
+						exCell(i2a($col).$row, $nicename);
 					}else {
 						if(($person && strpos($key, 'p_')!==0) || (!$person &&  strpos($key, 'p_')===0))
 							continue;
@@ -355,7 +354,7 @@ class valgt_rapport extends rapport {
 					if(($person && $this->show('t_pers')) || (!$person && !$this->show('t_pers')))
 						$this->_summer($key, $val);
 					if($key == 'monstring'){
-						woCell($tab, $this->_thww(), utf8_encode($nicename));
+						woCell($tab, $this->_thww(), $nicename);
 					}else {
 						if(($person && strpos($key, 'p_')!==0) || (!$person &&  strpos($key, 'p_')===0))
 							continue;
@@ -406,7 +405,7 @@ class valgt_rapport extends rapport {
 	 * @return void
 	 */	
 	private function _stat($monstring, $season, $total, $total_i){
-		$this->stat_nicename[$this->_statname($monstring)] = utf8_encode($monstring);
+		$this->stat_nicename[$this->_statname($monstring)] = $monstring;
 		$this->stat[$this->_statname($monstring)]['personer'][$season] = $total;
 		$this->stat[$this->_statname($monstring)]['innslag'][$season] = $total_i;
 		
