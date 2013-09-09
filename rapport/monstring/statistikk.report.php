@@ -320,7 +320,7 @@ class valgt_rapport extends rapport {
 
 		// Loop alle mønstringer
 		if(is_array($monstringer) && sizeof($monstringer) > 0)
-		$row = 1;
+		$row = 2;
 
 		foreach($loopArray as $key => $val) {
 			if($this->showFormat('s_order')) {
@@ -383,15 +383,14 @@ class valgt_rapport extends rapport {
 			}
 		}
 		
-/*
+
 		if(!$this->showformat('s_tidligere')){
 			exCell('A'.$row.':B'.$row, 'SUM','bold');
-			$col++;
 			for($i=1; $i<16; $i++) {
 				exCell(i2a($i+2).$row, '=SUM('.i2a($i+2).'2:'.i2a($i+2).($row-1).')');
 			}
 		}
-*/
+
 	}
 
 	/**
