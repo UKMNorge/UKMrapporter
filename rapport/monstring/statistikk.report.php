@@ -673,18 +673,24 @@ class valgt_rapport extends rapport {
 					// BUG IF SAME COUNT TWICE!
 				}
 			}
-			ksort($order);
+			krsort($order);
 			foreach($order as $count => $monstring)  {
-				$statAray[$monstring] = $this->stat[$monstring];
+				$statArray[$monstring] = $this->stat[$monstring];
 			}
 		}
-
+		
+		echo '<h1>THIS STAT</h1>';
+		var_dump($this->stat);
+		
+		echo '<h1>STATARRAY</h1>';
+		var_dump($statArray);
+		
 	 ?>
 		<script type="text/javascript" language="javascript">
 			 var data = google.visualization.arrayToDataTable([
 					['Mønstring', 'Påmeldte'],
 					<?php
-					foreach($statAray as $monstring => $data){
+					foreach($statArray as $monstring => $data){
 						foreach($data as $season => $count){
 							echo '[\''.$this->stat_nicename[$monstring].'\','.$count.'],'."\r\n";
 						}
