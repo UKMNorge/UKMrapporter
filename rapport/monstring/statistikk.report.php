@@ -308,42 +308,82 @@ class valgt_rapport extends rapport {
 		// Hvis man sammenligner med andre mønstringer, vises tabellheader i toppen
 		$this->_tableheadersExcel($row);
 
+
+		if($this->showformat('s_order')) {
+			$loopArray = $this->countOrder;
+		} else {
+			$loopArray = $monstringer;
+		}
+
 		// Loop alle mønstringer
-		foreach($monstringer as $nicename => $info) {
-			// Loop alle kolonner for mønstringsraden
+		if(is_array($monstringer) && sizeof($monstringer) > 0)
+		foreach($loopArray as $key => $val) {
+			if($this->showFormat('s_order')) {
+				$nicename = $val;
+				$info = $monstringer[$val];
+			} else {
+				$nicename = $key;
+				$info = $val;
+			}
 			foreach($info as $season => $r){
-				// Lagre statistikk for visning senere
-				$row++;
-				$col = 0;
-				// Loop alle kolonner i rad
-				foreach($r as $key => $val){
-					if(($person && $this->show('t_pers')) || (!$person && !$this->show('t_pers')))
-						$this->_summer($key, $val);
-					if($key == 'monstring'){
-						$col++;
-						exCell(i2a($col).$row, $nicename);
-					}else {
-						if(($person && strpos($key, 'p_')!==0) || (!$person &&  strpos($key, 'p_')===0))
-							continue;
-						if(($person && $key != 'season') || (!$person)){
-							$col++;
-							exCell(i2a($col).$row, $val);
+				$row = 1;
+				$subcats = array('musikk'=>0,
+								 'teater'=>0,
+								 'litteratur'=>0,
+								 'dans'=>0,
+								 'annet'=>0);
+
+				foreach($r as $cat => $count) {
+					if(strpos($cat, 'bt_') === false && $cat != 'total') {
+						switch($cat) {
+							case 'musikk':
+							case 'music':
+								$subcats['musikk'] += $count;
+								break;
+							case 'teater':
+							case 'theater':
+								$subcats['teater'] += $count;
+								break;
+							case 'dans':
+								$subcats['dans'] += $count;
+								break;
+							case 'litteratur':
+							case 'litterature':
+								$subcats['litteratur'] += $count;
+								break;
+							default:
+								$subcats['annet'] += $count;
+								break;
 						}
 					}
 				}
+				exCell('A'.$row, $nicename);
+				exCell('B'.$row, $season);
+				exCell('C'.$row, $r['total']);
+				exCell('D'.$row, $r['bt_2']);
+				exCell('E'.$row, $r['bt_3']);
+				exCell('F'.$row, $r['bt_4']);
+				exCell('G'.$row, $r['bt_5']);
+				exCell('H'.$row, $r['bt_6']);
+				exCell('I'.$row, $r['bt_7']);
+				exCell('J'.$row, $r['bt_8']);
+				exCell('K'.$row, $r['bt_9']);
+				exCell('L'.$row, $r['bt_10']);
+				exCell('M'.$row, $r['bt_1']);
+				exCell('N'.$row, $subcats['musikk']);
+				exCell('O'.$row, $subcats['dans']);
+				exCell('P'.$row, $subcats['litteratur']);
+				exCell('Q'.$row, $subcats['teater']);
+				exCell('R'.$row, $subcats['annet']);
+				$row++;
 			}
 		}
 		
 		if(!$this->showformat('s_tidligere')){
-			$row++;
-			$col = 1;
-			exCell(i2a($col).$row.':'.i2a($col+1).$row, 'SUM','bold');
+			exCell('A'.$row.':B'.$row, 'SUM','bold');
 			$col++;
-			foreach($this->sum as $key => $val){
-				if(($person && strpos($key, 'p_')!==0) || (!$person && strpos($key, 'p_')===0))
-					continue;
-				$col++;
-				exCell(i2a($col).$row, '=SUM('.i2a($col).'2:'.i2a($col).($row-1).')');
+			for($i=1; $i<16; $i++) {
+				exCell(i2a($i+2).$row, '=SUM('.i2a($i+2).'2:'.i2a($i+2).($row-1).')');
 			}
 		}
 	}
