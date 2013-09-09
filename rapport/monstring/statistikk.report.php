@@ -44,8 +44,8 @@ class valgt_rapport extends rapport {
 		
 
 		$g = $this->formatGrp('s','Sammenligning og sortering', 'radio');
-		$this->format($g, 's_andre', 'Alle mønstringer sammenstilt, sortert alfabetisk');
-		$this->format($g, 's_order', 'Alle mønstringer sammenstilt, sortert etter deltakertall');
+		$this->format($g, 's_andre', 'Alle mønstringer, sortert alfabetisk');
+		$this->format($g, 's_order', 'Alle mønstringer, sortert etter deltakertall');
 		$this->format($g, 's_tidligere', 'Sammenlign med tidligere år, sortert alfabetisk');
 
 		$g = $this->formatGrp('v','Grafer');
@@ -209,8 +209,10 @@ class valgt_rapport extends rapport {
 
 			if($this->showformat('v_graf'))
 			echo '<tr>'
-				.'<td colspan="8" style="height: 400px;" id="graph_sum_pie">graf</td>'
-				.'<td colspan="10" style="height: 400px;" id="graph_sum_combo">graf</td>'
+				.'<td colspan="18" style="height: 700px;" id="graph_sum_pie">graf</td>'
+				.'</tr>'
+				.'<tr>'
+				.'<td colspan="18" style="height: 700px;" id="graph_sum_combo">graf</td>'
 				.'</tr>';
 		}
 		echo '</table>';	
