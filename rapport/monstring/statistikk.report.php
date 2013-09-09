@@ -99,7 +99,7 @@ class valgt_rapport extends rapport {
 
 			ksort($rows[$nicename]);
 		}
-		ksort($this->countOrder);
+		krsort($this->countOrder);
 
 		echo("<br /><br />");
 
@@ -766,7 +766,7 @@ class valgt_rapport extends rapport {
 						array('plid'=>$plid));
 		$res = $qry->run();
 		while($r = mysql_fetch_assoc($res)){
-			$this->goodNames[$this->_statname($plname)][] = $r['name'];
+			$this->goodNames[$this->_statname($plname)][] = utf8_encode($r['name']);
 		}
 	}
 	
