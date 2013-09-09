@@ -96,7 +96,8 @@ class valgt_rapport extends rapport {
 			$this->_stat($nicename, $season, $total['persons']);
 
 			$thisCountOrder = $total['persons'];
-			while(isset($this->countOrder($thisCountOrder))) {
+			
+			while(isset($this->countOrder[$thisCountOrder])) {
 				$thisCountOrder += 0.001;
 			}
 			$this->countOrder[$thisCountOrder] = $nicename;
