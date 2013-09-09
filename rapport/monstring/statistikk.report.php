@@ -414,7 +414,7 @@ class valgt_rapport extends rapport {
 	private function _stat($monstring, $season, $total){
 		$this->stat_nicename[$this->_statname($monstring)] = $monstring;
 		$this->stat[$this->_statname($monstring)][$season] = $total;
-		$this->statSum['personer'][$season] += $total;
+		$this->statSum[$season] += $total;
 	}
 
 	/**
