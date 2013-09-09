@@ -40,7 +40,7 @@ class valgt_rapport extends rapport {
 
 		$g = $this->optGrp('t','Personer og innslag');
 		$this->opt($g, 't_pers', 'Vis antall personer');
-		$this->opt($g, 't_innslag', 'Vis antall innslag');
+//		$this->opt($g, 't_innslag', 'Vis antall innslag');
 		
 
 		$g = $this->formatGrp('s','Sammenligning og sortering', 'radio');
