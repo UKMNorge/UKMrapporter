@@ -95,8 +95,14 @@ class valgt_rapport extends rapport {
 
 			$this->_stat($nicename, $season, $total['persons']);
 
-			ksort($rows[$nicename]['total']);		
+			$this->countOrder[$nicename] = $total['persons'];
+
+			ksort($rows[$nicename]);
 		}
+		
+		sort($this->countOrder);
+	var_dump($this->countOrder);		
+
 		echo("<br /><br />");
 
 		// Sorter lokalmønstringen etter "navn" (kommuneliste)
