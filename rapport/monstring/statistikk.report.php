@@ -679,11 +679,13 @@ class valgt_rapport extends rapport {
 			}
 		}
 		
+/*
 		echo '<h1>THIS STAT</h1>';
 		var_dump($this->stat);
 		
 		echo '<h1>STATARRAY</h1>';
 		var_dump($statArray);
+*/
 		
 	 ?>
 		<script type="text/javascript" language="javascript">
