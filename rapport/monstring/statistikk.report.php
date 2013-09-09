@@ -95,7 +95,7 @@ class valgt_rapport extends rapport {
 
 			$this->_stat($nicename, $season, $total['persons']);
 
-			ksort($rows[$nicename]);		
+			ksort($rows[$nicename]['total']);		
 		}
 		echo("<br /><br />");
 
