@@ -13,7 +13,6 @@ class valgt_rapport extends rapport {
 	 * @return class object
 	 */
 	public function __construct($rapport, $kategori){
-		die('WTH?');
 		parent::__construct($rapport, $kategori);
 		
 		$g = $this->optGrp('h','Velg statistikkgrunnlag', 'radio');
@@ -699,11 +698,11 @@ class valgt_rapport extends rapport {
 					]);
 					
 				var options = {
-					title: 'Mønstringerr i tabellen',
+					title: 'Mønstringer i tabellen',
 					legend: {position: 'none'},
 				};
 				
-				drawPie('graph_sum_pie', data, {title: 'Mønstringerr i tabellen'});
+				drawPie('graph_sum_pie', data, {title: 'Mønstringer i tabellen'});
 				drawCombo('graph_sum_combo', data, options);
 		</script>
 		<?php
