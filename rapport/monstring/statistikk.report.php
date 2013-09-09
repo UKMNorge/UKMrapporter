@@ -187,16 +187,28 @@ class valgt_rapport extends rapport {
 		if(!$this->showformat('s_tidligere')){
 			echo '<tr>'
 				.'<th align="left">SUM</th>'
-				.'<th></th>';
-			if(is_array($this->sum) && sizeof($this->sum) > 0)
-			foreach($this->sum as $key => $val){
-				if(($person && strpos($key, 'p_')!==0) || (!$person && strpos($key, 'p_')===0))
-					continue;
-				echo '<th align="right">'. $val .'</th>';
-			}
+				.'<th></th>'
+				. '<th align="left">'.$this->totals['total'].'</th>'
+				. '<th align="left">'.$this->totals['bt_2'].'</th>'
+				. '<th align="left">'.$this->totals['bt_3'].'</th>'
+				. '<th align="left">'.$this->totals['bt_4'].'</th>'
+				. '<th align="left">'.$this->totals['bt_5'].'</th>'
+				. '<th align="left">'.$this->totals['bt_6'].'</th>'
+				. '<th align="left">'.$this->totals['bt_7'].'</th>'
+				. '<th align="left">'.$this->totals['bt_8'].'</th>'
+				. '<th align="left">'.$this->totals['bt_9'].'</th>'
+				. '<th align="left">'.$this->totals['bt_10'].'</th>'
+				. '<th align="left">'.$this->totals['bt_1'].'</th>'
+				. '<th align="left">'.$this->totals['sub_musikk'].'</th>'
+				. '<th align="left">'.$this->totals['sub_dans'].'</th>'
+				. '<th align="left">'.$this->totals['sub_litteratur'].'</th>'
+				. '<th align="left">'.$this->totals['sub_teater'].'</th>'
+				. '<th align="left">'.$this->totals['sub_annet'].'</th>'
+				.'</tr>';
+
+
 			if($this->showformat('v_graf'))
-			echo '</tr>'
-				.'<tr>'
+			echo '<tr>'
 				.'<td colspan="8" style="height: 400px;" id="graph_sum_pie">graf</td>'
 				.'<td colspan="10" style="height: 400px;" id="graph_sum_combo">graf</td>'
 				.'</tr>';
@@ -430,8 +442,6 @@ class valgt_rapport extends rapport {
 			$tab->addRow();
 			woCell($tab, $this->_thww(), 'SUM','bold');
 			woCell($tab, $this->_thww(), ' ','bold');
-			woCell($tab, $this->_thww(), $nicename);
-			woCell($tab, $this->_thww(), $season);
 			woCell($tab, $this->_thww(), $this->totals['total']);
 			woCell($tab, $this->_thww(), $this->totals['bt_2']);
 			woCell($tab, $this->_thww(), $this->totals['bt_3']);
