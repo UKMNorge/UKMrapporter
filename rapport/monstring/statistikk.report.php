@@ -428,7 +428,7 @@ class valgt_rapport extends rapport {
 				woCell($tab, $this->_thww(), $r['bt_8']);
 				woCell($tab, $this->_thww(), $r['bt_9']);
 				woCell($tab, $this->_thww(), $r['bt_10']);
-				woCell($tab, $this->_thww(), $r['bt_11']);
+				woCell($tab, $this->_thww(), $r['bt_1']);
 				woCell($tab, $this->_thww(), $subcats['musikk']);
 				woCell($tab, $this->_thww(), $subcats['dans']);
 				woCell($tab, $this->_thww(), $subcats['litteratur']);
@@ -452,7 +452,7 @@ class valgt_rapport extends rapport {
 			woCell($tab, $this->_thww(), $this->totals['bt_8']);
 			woCell($tab, $this->_thww(), $this->totals['bt_9']);
 			woCell($tab, $this->_thww(), $this->totals['bt_10']);
-			woCell($tab, $this->_thww(), $this->totals['bt_11']);
+			woCell($tab, $this->_thww(), $this->totals['bt_1']);
 			woCell($tab, $this->_thww(), $this->totals['sub_musikk']);
 			woCell($tab, $this->_thww(), $this->totals['sub_dans']);
 			woCell($tab, $this->_thww(), $this->totals['sub_litteratur']);
