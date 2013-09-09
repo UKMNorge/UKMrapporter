@@ -114,6 +114,15 @@ class valgt_rapport extends rapport {
 		
 		$this->antallMonstringer = sizeof($rows);
 		
+		// CALC (+SEASON) TOTALS
+		foreach($rows as $monstring => $data) {
+			foreach($data as $season => $r) {
+				$subcats = $this->_subcats($r);
+				$this->_totals($r, $subcats, $season);
+			}
+		}
+
+		
 		return $rows;
 	}
 	
@@ -187,7 +196,7 @@ class valgt_rapport extends rapport {
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
 				$subcats = $this->_subcats($r);
-				$this->_totals($r, $subcats, $season);
+//				$this->_totals($r, $subcats, $season);
 							
 				echo '<tr>'
 					. '<td align="left">'.$nicename.'</td>'
@@ -354,7 +363,7 @@ class valgt_rapport extends rapport {
 			}
 			foreach($info as $season => $r){
 				$subcats = $this->_subcats($r);
-				$this->_totals($r, $subcats, $season);
+//				$this->_totals($r, $subcats, $season);
 				
 				exCell('A'.$row, $nicename);
 				exCell('B'.$row, $season);
@@ -464,7 +473,7 @@ class valgt_rapport extends rapport {
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
 				$subcats = $this->_subcats($r);
-				$this->_totals($r, $subcats, $season);
+//				$this->_totals($r, $subcats, $season);
 				$tab->addRow();
 				// Loop alle kolonner i rad
 				woCell($tab, $this->_thww(), $nicename);
