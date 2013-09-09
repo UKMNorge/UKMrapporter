@@ -246,30 +246,25 @@ class valgt_rapport extends rapport {
 		$objPHPExcel = new PHPExcel();
 		$this->excel_init('landscape');
 		
-		echo 'pregen';
 		$rows = $this->_preGenerate();
 
-		echo 'tableexcel';
 		if($this->show('t_pers')){
 			exSheetName('PERSONER','6dc6c1');
 			$this->_tableExcel($rows);
 		}
 		
-		echo 'addsheet';
 		// HVis begge vises, legg til ark
 		if($this->show('t_pers')&&$this->show('t_innslag')){
 			$objPHPExcel->createSheet(1);
 			$objPHPExcel->setActiveSheetIndex(1);
 		}
 		
-		echo 'addbands';
 		## INNSLAG-TABELLEN
 		if($this->show('t_innslag')){
 			exSheetName('INNSLAG','f3776f');
 			$this->_tableExcel($rows,false);
 		}		
 	
-		echo 'write';
 		return $this->exWrite();
 	}
 
@@ -325,6 +320,8 @@ class valgt_rapport extends rapport {
 
 		// Loop alle mønstringer
 		if(is_array($monstringer) && sizeof($monstringer) > 0)
+		$row = 1;
+
 		foreach($loopArray as $key => $val) {
 			if($this->showFormat('s_order')) {
 				$nicename = $val;
@@ -334,7 +331,6 @@ class valgt_rapport extends rapport {
 				$info = $val;
 			}
 			foreach($info as $season => $r){
-				$row = 1;
 				$subcats = array('musikk'=>0,
 								 'teater'=>0,
 								 'litteratur'=>0,
