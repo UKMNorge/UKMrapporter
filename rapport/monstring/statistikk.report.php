@@ -156,7 +156,8 @@ class valgt_rapport extends rapport {
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
 				$subcats = $this->_subcats($r);
-			
+				$this->_totals($r, $subcats);
+							
 				echo '<tr>'
 					. '<td align="left">'.$nicename.'</td>'
 					. '<td align="left">'.$season.'</td>'
@@ -307,6 +308,8 @@ class valgt_rapport extends rapport {
 			}
 			foreach($info as $season => $r){
 				$subcats = $this->_subcats($r);
+				$this->_totals($r, $subcats);
+				
 				exCell('A'.$row, $nicename);
 				exCell('B'.$row, $season);
 				exCell('C'.$row, $r['total']);
@@ -337,6 +340,25 @@ class valgt_rapport extends rapport {
 			}
 		}
 
+	}
+	
+	private function _totals($r, $subcats) {
+		$this->totals['total']			+= $r['total'];
+		$this->totals['bt_1'] 			+= $r['bt_1'];
+		$this->totals['bt_2'] 			+= $r['bt_2'];
+		$this->totals['bt_3']		 	+= $r['bt_3'];
+		$this->totals['bt_4'] 			+= $r['bt_4'];
+		$this->totals['bt_5']		 	+= $r['bt_5'];
+		$this->totals['bt_6']		 	+= $r['bt_6'];
+		$this->totals['bt_7']		 	+= $r['bt_7'];
+		$this->totals['bt_8'] 			+= $r['bt_8'];
+		$this->totals['bt_9']		 	+= $r['bt_9'];
+		$this->totals['bt_10']		 	+= $r['bt_10'];
+		$this->totals['sub_musikk']		+=	$subcats['musikk'];
+		$this->totals['sub_dans']		+=	$subcats['dans'];
+		$this->totals['sub_litteratur']	+=	$subcats['litteratur'];
+		$this->totals['sub_teater']		+=	$subcats['teater'];
+		$this->totals['sub_annet']		+=	$subcats['annet'];
 	}
 
 	/**
@@ -379,7 +401,7 @@ class valgt_rapport extends rapport {
 			// Loop alle kolonner for mønstringsraden
 			foreach($info as $season => $r){
 				$subcats = $this->_subcats($r);
-
+				$this->_totals($r, $subcats);
 				$tab->addRow();
 				// Loop alle kolonner i rad
 				woCell($tab, $this->_thww(), $nicename);
@@ -405,16 +427,27 @@ class valgt_rapport extends rapport {
 		}
 		
 		if(!$this->showformat('s_tidligere')){
-/*
 			$tab->addRow();
 			woCell($tab, $this->_thww(), 'SUM','bold');
 			woCell($tab, $this->_thww(), ' ','bold');
-			foreach($this->sum as $key => $val){
-				if(($person && strpos($key, 'p_')!==0) || (!$person && strpos($key, 'p_')===0))
-					continue;
-				woCell($tab, $this->_thww(), $val);
-			}
-*/
+			woCell($tab, $this->_thww(), $nicename);
+			woCell($tab, $this->_thww(), $season);
+			woCell($tab, $this->_thww(), $this->totals['total']);
+			woCell($tab, $this->_thww(), $this->totals['bt_2']);
+			woCell($tab, $this->_thww(), $this->totals['bt_3']);
+			woCell($tab, $this->_thww(), $this->totals['bt_4']);
+			woCell($tab, $this->_thww(), $this->totals['bt_5']);
+			woCell($tab, $this->_thww(), $this->totals['bt_6']);
+			woCell($tab, $this->_thww(), $this->totals['bt_7']);
+			woCell($tab, $this->_thww(), $this->totals['bt_8']);
+			woCell($tab, $this->_thww(), $this->totals['bt_9']);
+			woCell($tab, $this->_thww(), $this->totals['bt_10']);
+			woCell($tab, $this->_thww(), $this->totals['bt_11']);
+			woCell($tab, $this->_thww(), $this->totals['sub_musikk']);
+			woCell($tab, $this->_thww(), $this->totals['sub_dans']);
+			woCell($tab, $this->_thww(), $this->totals['sub_litteratur']);
+			woCell($tab, $this->_thww(), $this->totals['sub_teater']);
+			woCell($tab, $this->_thww(), $this->totals['sub_annet']);
 		}
 	}
 
@@ -614,11 +647,11 @@ class valgt_rapport extends rapport {
 				<th>Scenet.</th>
 				<th>Web-TV</th>
 				<th>Scene</th>
-				<td style="background-color: #ccc;">Annet</td>
+				<td style="background-color: #ccc;">Musikk</td>
 				<td style="background-color: #ccc;">Dans</td>
 				<td style="background-color: #ccc;">Litteratur</td>
-				<td style="background-color: #ccc;">Musikk</td>
 				<td style="background-color: #ccc;">Teater</td>
+				<td style="background-color: #ccc;">Annet</td>
 			</tr>
 		<?php
 	}
@@ -662,11 +695,11 @@ class valgt_rapport extends rapport {
 		woCell($tab, $this->_thww(), 'Scenet.', 'bold');
 		woCell($tab, $this->_thww(), 'Web-TV', 'bold');
 		woCell($tab, $this->_thww(), 'Scene', 'bold');
-		woCell($tab, $this->_thww(), 'Annet');
+		woCell($tab, $this->_thww(), 'Musikk');
 		woCell($tab, $this->_thww(), 'Dans');
 		woCell($tab, $this->_thww(), 'Litteratur');
-		woCell($tab, $this->_thww(), 'Musikk');
 		woCell($tab, $this->_thww(), 'Teater');
+		woCell($tab, $this->_thww(), 'Annet');
 	}
 	/**
 	 * _tableheaders function
@@ -690,11 +723,11 @@ class valgt_rapport extends rapport {
 		exCell('K'.$row, 'Scenet.', 'bold');
 		exCell('L'.$row, 'Web-TV', 'bold');
 		exCell('M'.$row, 'Scene: total', 'bold');
-		exCell('N'.$row, 'Scene: Annet');
+		exCell('Q'.$row, 'Scene: Musikk');
 		exCell('O'.$row, 'Scene: Dans');
 		exCell('P'.$row, 'Scene: Litteratur');
-		exCell('Q'.$row, 'Scene: Musikk');
 		exCell('R'.$row, 'Scene: Teater');
+		exCell('N'.$row, 'Scene: Annet');
 	}
 	
 	/**
@@ -816,60 +849,5 @@ class valgt_rapport extends rapport {
 		while($r = mysql_fetch_assoc($res)){
 			$this->goodNames[$this->_statname($plname)][] = utf8_encode($r['name']);
 		}
-	}
-	
-	
-	/**
-	 * _qry function
-	 * 
-	 * Genererer SQL-spørring for uthenting av statistikkdata
-	 *
-	 * @access private
-	 * @return string SQL-query
-	 */
-	 private function _qry(){
-		return "SELECT
-				`smartukm_place`.`pl_name` AS `monstring`,
-				`smartukm_place`.`season` AS `season`,
-				`smartukm_place`.`season` AS `p_season`,
-				SUM(`count_b`) AS `innslag`,
-				SUM(`count_p`) AS `p_deltakere`,
-				SUM(`bt_id_2`) AS `bt_2`,
-				SUM(`bt_id_3`) AS `bt_3`,
-				SUM(`bt_id_4`) AS `bt_4`,
-				SUM(`bt_id_5`) AS `bt_5`,
-				SUM(`bt_id_6`) AS `bt_6`,
-				SUM(`bt_id_7`) AS `bt_7`,
-				SUM(`bt_id_8`) AS `bt_8`,
-				SUM(`bt_id_9`) AS `bt_9`,
-				SUM(`bt_id_10`) AS `bt_10`,
-				SUM(`bt_id_1`) AS `bt_1`,
-				SUM(`annet`) AS `annet`,
-				SUM(`dans`) AS `dans`,
-				SUM(`litteratur`) AS `litteratur`,
-				SUM(`musikk`) AS `musikk`,
-				SUM(`teater`) AS `teater`,
-				SUM(`p_bt_id_2`) AS `p_bt_2`,
-				SUM(`p_bt_id_3`) AS `p_bt_3`,
-				SUM(`p_bt_id_4`) AS `p_bt_4`,
-				SUM(`p_bt_id_5`) AS `p_bt_5`,
-				SUM(`p_bt_id_6`) AS `p_bt_6`,
-				SUM(`p_bt_id_7`) AS `p_bt_7`,
-				SUM(`p_bt_id_8`) AS `p_bt_8`,
-				SUM(`p_bt_id_9`) AS `p_bt_9`,
-				SUM(`p_bt_id_10`) AS `p_bt_10`,
-				SUM(`p_bt_id_1`) AS `p_bt_1`,
-				SUM(`p_annet`) AS `p_annet`,
-				SUM(`p_dans`) AS `p_dans`,
-				SUM(`p_litteratur`) AS `p_litteratur`,
-				SUM(`p_musikk`) AS `p_musikk`,
-				SUM(`p_teater`) AS `p_teater`
-			  FROM `ukmno_statistics_subscription`
-			  JOIN `ukmno_statistics_subscription_details` ON (`ukmno_statistics_subscription_details`.`day_id`=`ukmno_statistics_subscription`.`day_id`)
-			  JOIN `smartukm_place` ON (`smartukm_place`.`pl_id` = `ukmno_statistics_subscription`.`pl_id`)
-			  WHERE `ukmno_statistics_subscription`.`pl_id` IN (".implode(',',$this->pl_ids).")
-  			  GROUP BY `ukmno_statistics_subscription`.`pl_id`
-  			  ".($this->showformat('s_order') ? "ORDER BY `p_deltakere` DESC" : "ORDER BY `smartukm_place`.`pl_name` ASC, `smartukm_place`.`season` ASC")."
-			  ";
 	}
 }
