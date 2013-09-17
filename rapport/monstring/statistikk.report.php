@@ -668,7 +668,7 @@ class valgt_rapport extends rapport {
 		}
 		if($this->showformat('s_order')) {
 			foreach($this->stat as $monstring => $data) {
-				foreach($data as $season => $count) {
+				foreach($data as $season => $count) {
 					$order[$count] = $monstring;
 					// BUG IF SAME COUNT TWICE!
 				}
