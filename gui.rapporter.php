@@ -1,7 +1,6 @@
 <?php 
 $raport_icon_size = 50; 
 $category_icon_size = 32;
-UKM_loader('private');
 
 ?>
 <h1>Rapporter</h1>

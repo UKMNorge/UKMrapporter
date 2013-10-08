@@ -1,6 +1,4 @@
 <?php
-UKM_loader('contact|private');
-
 if(class_exists('extended_rapport'))
 	$r = new extended_rapport($_GET['rapport'],$_GET['kat']);
 else
