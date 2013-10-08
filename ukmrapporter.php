@@ -7,13 +7,12 @@ Author: UKM Norge / M Mandal
 Version: 1.0 
 Author URI: http://www.ukm-norge.no
 */
-/* UKM LOADER */ if(!defined('UKM_HOME')) define('UKM_HOME', '/home/ukmno/public_html/UKM/'); require_once(UKM_HOME.'loader.php');
-
 if(is_admin()) {
 	global $blog_id;
 	if($blog_id != 1)
 		add_action('admin_menu', 'UKMrapport_menu');
 
+	require_once('UKM/inc/toolkit.inc.php');
 	require_once('rapporter.ajax.php');
 	
 	add_action('wp_ajax_UKMrapport_ajax', 'UKMrapport_ajax');
