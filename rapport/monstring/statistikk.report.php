@@ -275,7 +275,6 @@ if($this->showformat('s_tidligere')){
 	 */		
 	public function generateExcel(){
 		global $objPHPExcel;
-		$objPHPExcel = new PHPExcel();
 		$this->excel_init('landscape');
 		
 		$rows = $this->_preGenerate();
