@@ -58,8 +58,6 @@ function UKMrapport_scriptsandstyles() {
 
 ## SHOW STATS OF PLACES
 function UKMrapport_admin() {
-	UKM_loader('ico');
-	
 	if(isset($_GET['rapport'])&&$_GET['rapport']!=='undefined'&&isset($_GET['kat'])) {
 		require_once('class.rapport.php');
 		require_once('rapport/'.$_GET['kat'].'/'.$_GET['rapport'].'.report.php');

@@ -274,7 +274,6 @@ if($this->showformat('s_tidligere')){
 	 * @return String download-URL
 	 */		
 	public function generateExcel(){
-		UKM_loader('excel');
 		global $objPHPExcel;
 		$objPHPExcel = new PHPExcel();
 		$this->excel_init('landscape');
@@ -312,7 +311,6 @@ if($this->showformat('s_tidligere')){
 	public function generateWord(){
 		$rows = $this->_preGenerate();
 
-		UKM_loader('word');
 		global $PHPWord;
 		$section = $this->word_init('landscape', ucfirst($this->name).': '.$this->reportNiceName);
 		## PERSONER-TABELLEN

@@ -29,7 +29,6 @@ class valgt_rapport extends rapport {
 		if($this->show('i_brukere'))
 			$brukere = $this->_brukere();
 
-		UKM_loader('excel');
 		global $objPHPExcel;
 		$objPHPExcel = new PHPExcel();
 		$this->excel_init('landscape');
@@ -75,7 +74,6 @@ class valgt_rapport extends rapport {
 		if($this->show('i_brukere'))
 			$brukere = $this->_brukere();
 
-		UKM_loader('word');
 		global $PHPWord;		
 		$section = $this->word_init('landscape');
 

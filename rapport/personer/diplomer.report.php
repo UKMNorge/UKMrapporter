@@ -67,7 +67,6 @@ class extended_rapport extends valgt_rapport {
 	 * @return String download-URL
 	 */	
 	public function generateWord(){
-		UKM_loader('word');
 		global $PHPWord;	
 		$this->wordWithoutHeaders = true;
 		$section = $this->word_init();

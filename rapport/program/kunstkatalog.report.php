@@ -13,7 +13,7 @@ class valgt_rapport extends rapport {
 	public function __construct($rapport, $kategori){
 		parent::__construct($rapport, $kategori);
 		
-		UKM_loader('api/forestilling.class');
+		require_once('UKM/forestilling.class.php');
 		$this->navn = 'Kunstkatalog';
 
 		$m = new monstring($this->pl_id);
@@ -49,7 +49,6 @@ class valgt_rapport extends rapport {
 	 * @return String download-URL
 	 */		
 	public function generateExcel(){
-		UKM_loader('excel');
 		global $objPHPExcel;
 		$objPHPExcel = new PHPExcel();
 		$this->excel_init('landscape');
@@ -159,7 +158,6 @@ class valgt_rapport extends rapport {
 	 * @return String download-URL
 	 */	
 	public function generateWord(){
-		UKM_loader('word');
 		global $PHPWord;
 		$section = $this->word_init();
 
@@ -347,7 +345,7 @@ class valgt_rapport extends rapport {
 	 * @return void
 	 */	
 	 public function _program(){
-	 	UKM_loader('api/forestilling.class');
+	 	require_once('UKM/forestilling.class.php');
 		$m = new monstring($this->pl_id);
 		$ramme = $m->forestillinger('c_start',false);
 

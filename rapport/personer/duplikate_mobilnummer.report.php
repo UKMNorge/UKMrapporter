@@ -28,7 +28,6 @@ class valgt_rapport extends rapport {
 	 * @return String download-URL
 	 */		
 	public function generateExcel(){
-		UKM_loader('excel');
 		global $objPHPExcel;
 		$objPHPExcel = new PHPExcel();
 		$this->excel_init('landscape');
@@ -66,7 +65,6 @@ class valgt_rapport extends rapport {
 	 * @return String download-URL
 	 */	
 	public function generateWord(){
-		UKM_loader('word');
 		global $PHPWord;
 		$section = $this->word_init('landscape');
 

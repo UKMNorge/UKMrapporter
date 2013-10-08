@@ -66,7 +66,6 @@ class valgt_rapport extends rapport {
 	 * @return String download-URL
 	 */		
 	public function generateExcel(){
-		UKM_loader('excel');
 		$navn = 'Alle innslag';
 		global $objPHPExcel;
 		$objPHPExcel = new PHPExcel();
@@ -348,7 +347,6 @@ class valgt_rapport extends rapport {
 	 * @return String download-URL
 	 */	
 	public function generateWord(){
-		UKM_loader('word');
 		global $PHPWord;		
 		$section = $this->word_init();
 
