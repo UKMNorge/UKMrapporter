@@ -13,6 +13,7 @@ if(is_admin()) {
 		add_action('admin_menu', 'UKMrapport_menu');
 
 	require_once('UKM/inc/toolkit.inc.php');
+	require_once('UKM/inc/phaseout.ico.inc.php');
 	require_once('rapporter.ajax.php');
 	
 	add_action('wp_ajax_UKMrapport_ajax', 'UKMrapport_ajax');
