@@ -370,6 +370,7 @@ class rapport{
 	/********************************************************************************/
 
 	public function word_init($orientation='portrait',$name=false) {
+		require_once('UKM/inc/word.inc.php');
 		global $PHPWord;
 		$section = $PHPWord->createSection(array('orientation' => $orientation,
 			    'marginLeft' => 1100,
@@ -467,6 +468,7 @@ class rapport{
 	}
 	
 	public function excel_init($navn=false){
+		require_once('UKM/inc/excel.inc.php');
 		// Endret parameter 22.11.12, navn fungerer nå som direction mens navn hentes fra klassen
 		if($navn == 'portrait' || $navn == 'landscape') {
 			$orientation = $navn;
