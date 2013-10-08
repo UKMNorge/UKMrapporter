@@ -1,4 +1,5 @@
 <?php
+require_once('UKM/innslag.class.php');
 require_once('alle_innslag.report.php');
 class extended_rapport extends valgt_rapport {
 	/**
