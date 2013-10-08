@@ -1,6 +1,6 @@
 <?php
 require_once('UKM/innslag.class.php');
-require_once('UKM/inc/toolkit.inc.php');
+//require_once('UKM/inc/toolkit.inc.php');
 class valgt_rapport extends rapport {
 	/**
 	 * class constructor

@@ -1,7 +1,5 @@
 <?php
 function UKMrapport_ajax(){
-	UKM_loader('contact');
-
 	require_once('class.rapport.php');
 	require_once('rapport/'.$_POST['kat'].'/'.$_POST['get'].'.report.php');
 	
