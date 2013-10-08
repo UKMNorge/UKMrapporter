@@ -1,4 +1,5 @@
 <?php
+require_once('UKM/innslag.class.php');
 class valgt_rapport extends rapport {
 	/**
 	 * class constructor
