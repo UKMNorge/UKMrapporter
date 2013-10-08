@@ -136,7 +136,8 @@ class valgt_rapport extends rapport {
 	 */	
 	private function _table($monstringer,$person=true) {
 		echo '<table cellpadding="2" cellspacing="2">';
-		if($this->showformat('s_tidligere')){
+		/*
+if($this->showformat('s_tidligere')){
 			echo '<tr><th colspan="17" align="left"><h1>Totalt</h1></th></tr>';
 			$this->_tableheaders();
 
@@ -165,6 +166,7 @@ class valgt_rapport extends rapport {
 			}
 			echo '<tr><th colspan="17" align="left"><h1>Per m&oslash;nstring</h1></th></tr>';
 		}	
+*/
 	
 	
 		// Hvis man sammenligner med andre mønstringer, vises tabellheader i toppen
