@@ -463,11 +463,13 @@ class rapport{
 	 * @return string safename
 	 */	
 	public function woWrite(){
-		global $objPHPExcel;
+		global $objPHPWord;
 		return woWrite('UKMRapport_'.$this->_sanName().'_'.date('dmYhis'));
 	}
 	
 	public function excel_init($navn=false){
+		global  $objPHPExcel;
+
 		require_once('UKM/inc/excel.inc.php');
 		// Endret parameter 22.11.12, navn fungerer nå som direction mens navn hentes fra klassen
 		if($navn == 'portrait' || $navn == 'landscape') {
@@ -477,7 +479,6 @@ class rapport{
 			$orientation = 'portrait';
 		}
 
-		global  $objPHPExcel;
 
 		exorientation($orientation);
 
