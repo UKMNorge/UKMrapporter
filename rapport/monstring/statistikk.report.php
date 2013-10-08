@@ -311,7 +311,7 @@ if($this->showformat('s_tidligere')){
 	public function generateWord(){
 		$rows = $this->_preGenerate();
 
-		require('UKM/inc/word.inc.php');
+/* 		require('UKM/inc/word.inc.php'); */
 
 		global $PHPWord;
 		$section = $this->word_init('landscape', ucfirst($this->name).': '.$this->reportNiceName);
