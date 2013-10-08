@@ -70,7 +70,7 @@ class valgt_rapport extends rapport {
 		echo $this->html_init(ucfirst($this->name).': '.$this->reportNiceName);
 
 		## PERSONER-TABELLEN
-		if($this->show('t_pers')){
+		if($this->show('t_pers')||!$this->show('t_innslag')){
 			echo '<h1>Personer</h1>';
 			$this->_table($rows);
 		}
