@@ -43,6 +43,7 @@ jQuery(document).ready(function(){
 			jQuery('#report_container').html(response);
 			jQuery('ul.actions').slideDown();
 			jQuery('ul.contact_actions').slideDown();
+			registerUKMSMS('#report_container');
 		});
 	});
 
