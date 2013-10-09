@@ -29,7 +29,7 @@ class valgt_rapport extends rapport {
 	 */		
 	public function generateExcel(){
 		global $objPHPExcel;
-		$objPHPExcel = new PHPExcel();
+		
 		$this->excel_init('landscape');
 		exSheetName('DUPLIKATE','6dc6c1');
 		$mobilnummer = $this->_findDuplicates();
