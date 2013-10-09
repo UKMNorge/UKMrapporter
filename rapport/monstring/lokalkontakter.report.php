@@ -75,6 +75,7 @@ class valgt_rapport extends rapport {
 			$brukere = $this->_brukere();
 
 		global $PHPWord;		
+		return $this->woWrite();
 		$section = $this->word_init('landscape');
 
 		$tab = $section->addTable(array('align'=>'center'));
