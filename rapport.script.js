@@ -140,7 +140,7 @@ jQuery(document).ready(function(){
 		
 		jQuery.post(ajaxurl, data, function(response){});
 		var mailarray = new Array();
-		jQuery('.ukm_contact_mail').each(function(){
+		jQuery('.UKMMAIL').each(function(){
 			if(jQuery.inArray(jQuery(this).val(), mailarray)==-1 && jQuery(this).val()!=='')
 				mailarray.push(jQuery(this).val());
 		});
