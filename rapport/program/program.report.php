@@ -578,7 +578,7 @@ class valgt_rapport extends rapport {
 							.'<div class="label">Kontaktperson:</div>'
 							.''.$d->g('name').'</div>'
 							.'<div class="detaljer"> - mobil: <span class="UKMSMS">'. $d->g('p_phone') .'</span></div>'
-							.'<div class="detaljer"> - e-post: <a href="mailto:'.$d->g('p_email').'">'. $d->g('p_email').'</a></div>'
+							.'<div class="detaljer"> - e-post: <a href="mailto:'.$d->g('p_email').'" class="UKMMAIL">'. $d->g('p_email').'</a></div>'
 							.'</div>'
 							;
 					}

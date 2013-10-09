@@ -156,7 +156,7 @@ class valgt_rapport extends rapport {
 					<tr>
 						<td><?= $con['name']?></td>
 						<td><?= $con['place']?></td>
-						<td><a href="mailto:<?= $con['mail']?>"><?= $con['mail']?></a></td>
+						<td><a href="mailto:<?= $con['mail']?>" class="UKMMAIL"><?= $con['mail']?></a></td>
 						<td class="UKMSMS"><?= $con['phone'] ?></td>
 						<td><?= $con['title'] ?></td>
 					</tr>

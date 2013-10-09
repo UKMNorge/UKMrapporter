@@ -126,7 +126,7 @@ class valgt_rapport extends rapport {
 						<div class="name"><?= $pinfo['pers']->g('name')?> (<?= $pinfo['pers']->alder()?> år)</div>
 						<div class="type"><?= ($pinfo['type']=='kontaktperson' ? 'KONTAKTPERSON' : '') . $pinfo['pers']->g('instrument')?></div>
 						<div class="band"><?= $pinfo['inns']->g('b_name')?></div>
-						<div class="mail"><a href="mailto:<?= $pinfo['pers']->get('p_email')?>"><?= $pinfo['pers']->g('p_email') ?></a></div>
+						<div class="mail"><a href="mailto:<?= $pinfo['pers']->get('p_email')?>" class="UKMMAIL"><?= $pinfo['pers']->g('p_email') ?></a></div>
 					</li>
 				<?php
 				} ?>

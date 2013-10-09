@@ -374,7 +374,7 @@ class valgt_rapport extends rapport {
 						$p = $inn->kontaktperson();
 						$epost = $p->g('p_email');
 						if(!empty($epost))
-							$epost = '<a href="mailto:'.$epost.'">'.$epost.'</a>';
+							$epost = '<a href="mailto:'.$epost.'" class="UKMMAIL">'.$epost.'</a>';
 							
 						echo '<li class="kontaktpers" style="width:'.$width.'px;">'
 							.'	<div class="navn">'. $p->g('name').'</div>'
@@ -414,7 +414,7 @@ class valgt_rapport extends rapport {
 							$p = new person($pers['p_id'], $inn->g('b_id'));
 							$epost = $p->g('p_email');
 							if(!empty($epost))
-								$epost = '<a href="mailto:'.$epost.'">'.$epost.'</a>';
+								$epost = '<a href="mailto:'.$epost.'" class="UKMMAIL">'.$epost.'</a>';
 								
 							echo '<li class="pers" style="width:'.$width.'px;">'
 								.'	<div class="navn">'. $p->g('name').'&nbsp;</div>'
@@ -429,7 +429,7 @@ class valgt_rapport extends rapport {
 									: '')
 
 								.($this->show('p_epost')
-									? '<div class="epost">'.$mail.'&nbsp;</div>'
+									? '<div class="epost">'.$epost.'&nbsp;</div>'
 									: '')
 								
 								.'<div class="innslag">'.$inn->g('b_name').'</div>'
