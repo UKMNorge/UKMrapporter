@@ -755,7 +755,7 @@ class valgt_rapport extends rapport {
 								? '<div class="label">Kontaktperson: '
 								.	$kontakt->g('name')
 								.	' ('.$kontakt->alder().' år) '
-								.	'- mobil: '.contact_sms($kontakt->g('p_phone'),'rapporten') .' - e-post: '. contact_mail($kontakt->g('p_email'))
+								.	'- mobil: <span class="UKMSMS">'.$kontakt->g('p_phone') .'</span> - e-post: <a href="mailto:'. $kontakt->g('p_email').'">'.$kontakt->g('p_email').'</a>'
 								.	'</div>'
 								: '')
 						;
@@ -774,10 +774,10 @@ class valgt_rapport extends rapport {
 										? ' ('.$p->alder().' år) '
 										: '')
 									.($this->show('p_mobil')
-										? ' - mobil: '.contact_sms($p->g('p_phone'),'rapporten')
+										? ' - mobil: <span class="UKMSMS">'.$p->g('p_phone').'</span>'
 										: '')
 									.($this->show('p_epost')
-										? ' - mobil: '.contact_mail($p->g('p_email'))
+										? ' - e-post: <a href="mailto:'.$p->g('p_email').'">'.$p->g('p_email').'</a>'
 										: '')
 
 									.($this->showFormat('op_p_break')

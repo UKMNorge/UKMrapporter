@@ -112,7 +112,7 @@ class valgt_rapport extends rapport {
 			echo '<strong>Ingen mobilnummer på din mønstring brukes av mer enn én person</strong>';
 		} else {
 			foreach($mobilnummer as $mobil => $infos){ ?>
-				<h3 class="duplikate_mobilnummer"><?= contact_sms($mobil) ?></h3>
+				<h3 class="duplikate_mobilnummer UKMSMS"><?= $mobil ?></h3>
 				<ul class="duplikate_mobilnummer">
 					<li class="header">
 						<div class="name">Navn</div>
@@ -126,7 +126,7 @@ class valgt_rapport extends rapport {
 						<div class="name"><?= $pinfo['pers']->g('name')?> (<?= $pinfo['pers']->alder()?> år)</div>
 						<div class="type"><?= ($pinfo['type']=='kontaktperson' ? 'KONTAKTPERSON' : '') . $pinfo['pers']->g('instrument')?></div>
 						<div class="band"><?= $pinfo['inns']->g('b_name')?></div>
-						<div class="mail"><?= contact_mail($pinfo['pers']->g('p_email'))?></div>
+						<div class="mail"><a href="mailto:<?= $pinfo['pers']->get('p_email')?>"><?= $pinfo['pers']->g('p_email') ?></a></div>
 					</li>
 				<?php
 				} ?>

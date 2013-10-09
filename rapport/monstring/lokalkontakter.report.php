@@ -156,8 +156,8 @@ class valgt_rapport extends rapport {
 					<tr>
 						<td><?= $con['name']?></td>
 						<td><?= $con['place']?></td>
-						<td><?= contact_mail($con['mail'])?></td>
-						<td><?= contact_sms($con['phone'])?></td>
+						<td><a href="mailto:<?= $con['mail']?>"><?= $con['mail']?></a></td>
+						<td class="UKMSMS"><?= $con['phone'] ?></td>
 						<td><?= $con['title'] ?></td>
 					</tr>
 				<?php

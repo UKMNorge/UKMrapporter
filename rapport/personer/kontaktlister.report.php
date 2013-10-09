@@ -374,7 +374,7 @@ class valgt_rapport extends rapport {
 						$p = $inn->kontaktperson();
 						$epost = $p->g('p_email');
 						if(!empty($epost))
-							$epost = contact_mail($epost);
+							$epost = '<a href="mailto:'.$epost.'">'.$epost.'</a>';
 							
 						echo '<li class="kontaktpers" style="width:'.$width.'px;">'
 							.'	<div class="navn">'. $p->g('name').'</div>'
@@ -382,7 +382,7 @@ class valgt_rapport extends rapport {
 								? '<div class="alder">'.$p->alder().' år</div>'
 								: '')
 							.($this->show('p_mobil')
-								? '<div class="mobil">'.contact_sms($p->g('p_phone'),'rapporten').'&nbsp;</div>'
+								? '<div class="mobil UKMSMS">'. $p->g('p_phone') .'&nbsp;</div>'
 								: '')
 							.($this->show('p_rolle')
 								? '<div class="rolle">Kontaktperson</div>'
@@ -414,7 +414,7 @@ class valgt_rapport extends rapport {
 							$p = new person($pers['p_id'], $inn->g('b_id'));
 							$epost = $p->g('p_email');
 							if(!empty($epost))
-								$epost = contact_mail($epost);
+								$epost = '<a href="mailto:'.$epost.'">'.$epost.'</a>';
 								
 							echo '<li class="pers" style="width:'.$width.'px;">'
 								.'	<div class="navn">'. $p->g('name').'&nbsp;</div>'
@@ -422,7 +422,7 @@ class valgt_rapport extends rapport {
 									? '<div class="alder">'.$p->alder().' år</div>'
 									: '')
 								.($this->show('p_mobil')
-									? '<div class="mobil">'.contact_sms($p->g('p_phone'),'rapporten').'&nbsp;</div>'
+									? '<div class="mobil">'. $p->g('p_phone') .'&nbsp;</div>'
 									: '')
 								.($this->show('p_rolle')
 									? '<div class="rolle">'.$p->g('instrument').'&nbsp;</div>'

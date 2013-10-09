@@ -577,8 +577,8 @@ class valgt_rapport extends rapport {
 						echo '<div class="kontaktperson">'
 							.'<div class="label">Kontaktperson:</div>'
 							.''.$d->g('name').'</div>'
-							.'<div class="detaljer"> - mobil: '.contact_sms($d->g('p_phone'),'rapporten').'</div>'
-							.'<div class="detaljer"> - e-post: '.contact_mail($d->g('p_email')).'</div>'
+							.'<div class="detaljer"> - mobil: <span class="UKMSMS">'. $d->g('p_phone') .'</span></div>'
+							.'<div class="detaljer"> - e-post: <a href="mailto:'.$d->g('p_email').'">'. $d->g('p_email').'</a></div>'
 							.'</div>'
 							;
 					}
@@ -708,7 +708,7 @@ class valgt_rapport extends rapport {
 									: ''
 									)
 								.($this->show('d_mobil')
-									? '<div class="detaljer">- mobil: '.contact_sms($d->g('p_phone'),'rapporten').'</div>'
+									? '<div class="detaljer">- mobil: <span class="UKMSMS">'. $d->g('p_phone') .'</span></div>'
 									: '')
 								.($counter < sizeof($deltakere) ? '<div class="separator">,</div>' : '')
 
