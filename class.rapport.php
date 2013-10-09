@@ -372,12 +372,12 @@ class rapport{
 	public function word_init($orientation='portrait',$name=false) {
 		require_once('UKM/inc/word.inc.php');
 		global $PHPWord;
+		return;
 		$section = $PHPWord->createSection(array('orientation' => $orientation,
 			    'marginLeft' => 1100,
 			    'marginRight' => 1100,
 			    'marginTop' => 1100,
 			    'marginBottom' => 1100));
-		return $section;
 
 		if(!$name)
 			$name = $this->name;
