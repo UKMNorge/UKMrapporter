@@ -468,6 +468,7 @@ class rapport{
 	}
 	
 	public function excel_init($navn=false){
+		global $objPHPExcel;
 		require_once('UKM/inc/excel.inc.php');
 		$objPHPExcel = new PHPExcel();
 
