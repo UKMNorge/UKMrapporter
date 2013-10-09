@@ -377,6 +377,8 @@ class rapport{
 			    'marginRight' => 1100,
 			    'marginTop' => 1100,
 			    'marginBottom' => 1100));
+		return $section;
+
 		if(!$name)
 			$name = $this->name;
 		$properties = $PHPWord->getProperties();
