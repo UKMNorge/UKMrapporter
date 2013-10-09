@@ -379,6 +379,7 @@ class rapport{
 			    'marginBottom' => 1100));
 		if(!$name)
 			$name = $this->name;
+/*
 		$properties = $PHPWord->getProperties();
 		$properties->setCreator('UKM Norge'); 
 		$properties->setCompany('UKM Norges arrangørsystem');
@@ -388,6 +389,7 @@ class rapport{
 		$properties->setLastModifiedBy('UKM Norge arrangørsystem');
 		$properties->setCreated( time() );
 		$properties->setModified( time() );
+*/
 
 		// Definer noen styles
 
