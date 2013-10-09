@@ -379,7 +379,6 @@ class rapport{
 			    'marginBottom' => 1100));
 		if(!$name)
 			$name = $this->name;
-/*
 		$properties = $PHPWord->getProperties();
 		$properties->setCreator('UKM Norge'); 
 		$properties->setCompany('UKM Norges arrangørsystem');
@@ -389,7 +388,6 @@ class rapport{
 		$properties->setLastModifiedBy('UKM Norge arrangørsystem');
 		$properties->setCreated( time() );
 		$properties->setModified( time() );
-*/
 
 		// Definer noen styles
 
@@ -434,7 +432,7 @@ class rapport{
 			woText($section, '','rapportIkonSpacerLandscape');
 		else
 			woText($section, '','rapportIkonSpacer');
-		$section->addImage('/home/ukmno/public_html/UKM/ico/grafikk/UKM_logo.png', array('width'=>300, 'height'=>164, 'align'=>'center'));
+		$section->addImage('/home/ukmno/public_html/wp-content/plugins/UKMrapporter/UKM_logo.png', array('width'=>300, 'height'=>164, 'align'=>'center'));
 
 		woText($section, ucfirst(str_replace('_',' ',$name)), 'rapport');
 		woText($section, $this->m->g('pl_name').' ('.$this->m->g('season').')','place');
