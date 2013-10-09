@@ -30,7 +30,7 @@ class valgt_rapport extends rapport {
 			$brukere = $this->_brukere();
 
 		global $objPHPExcel;
-		$objPHPExcel = new PHPExcel();
+		//$objPHPExcel = new PHPExcel();
 		$this->excel_init('landscape');
 		
 		exSheetName('LOKALKONTAKTER');

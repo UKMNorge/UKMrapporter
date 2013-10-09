@@ -50,7 +50,7 @@ class valgt_rapport extends rapport {
 	 */		
 	public function generateExcel(){
 		global $objPHPExcel;
-		$objPHPExcel = new PHPExcel();
+		//$objPHPExcel = new PHPExcel();
 		$this->excel_init('landscape');
 
 		exSheetName('KUNSTKAT','6dc6c1');
