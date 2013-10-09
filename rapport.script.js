@@ -168,7 +168,7 @@ jQuery(document).ready(function(){
 		jQuery.post(ajaxurl, data, function(response){});
 		var smsarray = new Array();
 		antallTelefonnummer = 0;
-		jQuery('.ukm_contact_sms').each(function(){
+		jQuery('.UKMSMS').each(function(){
 			antallTelefonnummer++;
 			if(jQuery.inArray(jQuery(this).val(), smsarray)==-1 && jQuery(this).val()!=='')
 				smsarray.push(jQuery(this).val());
@@ -176,11 +176,10 @@ jQuery(document).ready(function(){
 		jQuery('#report_container_contact').html('<h1>Send SMS</h1>'
 												+'<strong>Rapporten inneholder '+ antallTelefonnummer +' telefonnummer, hvorav '
 													+ smsarray.length +' unike</strong> '
-												+'<a href="?page=UKMSMS_gui'
-													+'&UKMSMS_returnname=rapportmodulen'
-													+'&UKMSMS_returnto='+encodeURIComponent(window.location.search)
-													+'&UKMSMS_recipients='+smsarray.join(',')
-												+'">Send SMS til disse '+ smsarray.length +'</a>'
+												+'<form method="post" action="admin.php?page=UKMSMS_gui">'
+												+'<input type="hidden" name="UKMSMS_recipients" value="'+smsarray.join(',')+'" />'
+												+'<input type="submit" value="Jeg vil skrive en SMS til disse '+ smsarray.length +' "/>'
+												+'</form>'
 												+(smsarray.length < antallTelefonnummer ? 
 													'<br /><br />'
 													+'Hvis det er færre unike nummer enn totalt antall telefonnummer, skyldes dette ofte at kontaktperson oppgir'
