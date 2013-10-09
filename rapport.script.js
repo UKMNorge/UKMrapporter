@@ -170,8 +170,8 @@ jQuery(document).ready(function(){
 		antallTelefonnummer = 0;
 		jQuery('.UKMSMS').each(function(){
 			antallTelefonnummer++;
-			if(jQuery.inArray(jQuery(this).val(), smsarray)==-1 && jQuery(this).val()!=='')
-				smsarray.push(jQuery(this).val());
+			if(jQuery.inArray(jQuery(this).find('a').html(), smsarray)==-1 && jQuery(this).find('a').html()!=='')
+				smsarray.push(jQuery(this).find('a').html());
 		});
 		jQuery('#report_container_contact').html('<h1>Send SMS</h1>'
 												+'<strong>Rapporten inneholder '+ antallTelefonnummer +' telefonnummer, hvorav '
