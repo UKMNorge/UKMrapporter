@@ -141,8 +141,8 @@ jQuery(document).ready(function(){
 		jQuery.post(ajaxurl, data, function(response){});
 		var mailarray = new Array();
 		jQuery('.UKMMAIL').each(function(){
-			if(jQuery.inArray(jQuery(this).val(), mailarray)==-1 && jQuery(this).val()!=='')
-				mailarray.push(jQuery(this).val());
+			if(jQuery.inArray(jQuery(this).html(), mailarray)==-1 && jQuery(this).html()!=='')
+				mailarray.push(jQuery(this).html());
 		});
 		jQuery('#report_container_contact').html('<h1>Send e-post</h1>'
 												+'<strong>Det er '+mailarray.length+' e-postadresser i denne rapporten</strong>'
