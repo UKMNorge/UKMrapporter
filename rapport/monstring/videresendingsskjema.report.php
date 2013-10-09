@@ -199,8 +199,8 @@ class valgt_rapport extends rapport {
 			if($clean)
 				return $answer;
 			return $answer[0].'<br />'
-				 . contact_sms(str_replace(' ', '', $answer[1]), 'rapporten').'<br />'
-				 . contact_mail($answer[2]);
+				 . '<span class="UKMSMS">'. str_replace(' ', '', $answer[1]) .'</span><br />'
+				 . '<a href="mailto:'.$answer[2].'" class="UKMMAIL">'. $answer[2] .'</a>';
 		}
 	}
 }
