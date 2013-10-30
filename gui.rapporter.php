@@ -93,13 +93,6 @@ $category_icon_size = 32;
 		<span>Juryskjema for utskrift
 		</span>
 	</li>
-<?php	if(UKM_private()) {?>
-	<li class="clickable rapport" data-file="juryskjema">
-		<?= UKMN_icoAlt('gavel', "Oppsummering digitalt juryskjema", $raport_icon_size ) ?>
-		<div class="title">Digitalt juryskjema</div>
-		<span>Oppsummerer det resultatet fra det digitale juryskjemaet</span>
-	</li>
-<?php } ?>
 <div class="clear"></div>
 </ul>
 
