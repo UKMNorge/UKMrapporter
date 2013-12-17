@@ -10,7 +10,7 @@ Author URI: http://www.ukm-norge.no
 if(is_admin()) {
 	global $blog_id;
 	if($blog_id != 1)
-		add_action('admin_menu', 'UKMrapport_menu');
+		add_action('UKM_admin_menu', 'UKMrapport_menu');
 
 	require_once('UKM/inc/toolkit.inc.php');
 	require_once('UKM/inc/phaseout.ico.inc.php');
@@ -32,8 +32,8 @@ function UKMrapport_countPrint(){
 
 ## CREATE A MENU
 function UKMrapport_menu() {
-	$page = add_menu_page('Rapporter', 'Rapporter', 'editor', 'UKMrapport_admin', 'UKMrapport_admin', 'http://ico.ukm.no/graph-menu.png',211);    
-	add_action( 'admin_print_styles-' . $page, 'UKMrapport_scriptsandstyles' );
+	UKM_add_menu_page('monstring','Rapporter', 'Rapporter', 'editor', 'UKMrapport_admin', 'UKMrapport_admin', 'http://ico.ukm.no/graph-menu.png',15);    
+	UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_scriptsandstyles' );
 }
 
 function UKMrapport_scriptsandstyles() {
