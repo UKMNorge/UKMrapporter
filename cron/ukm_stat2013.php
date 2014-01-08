@@ -1,6 +1,6 @@
 <?php
 
-	$SEASON = 2013;
+	$SEASON = 2014;
 	require_once('UKM/monstringer.class.php');
 	require_once('UKM/monstring.class.php');
 	require_once('UKM/innslag.class.php');
