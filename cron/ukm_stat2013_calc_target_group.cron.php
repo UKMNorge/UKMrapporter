@@ -2,11 +2,14 @@
 date_default_timezone_set('Europe/Oslo');
 ini_set('display_errors', true);
 
-if( (int) date('m') > 10)
-	$SEASON = (int) date('Y') + 1;
-else
-	$SEASON = (int) date('Y');
-
+if(isset($_GET['season'])) {
+	$SEASON = $_GET['season'];
+} else {
+	if( (int) date('m') > 10)
+		$SEASON = (int) date('Y') + 1;
+	else
+		$SEASON = (int) date('Y');
+}
 $STORLIMIT = 3000;
 
 require_once('UKM/sql.class.php');
