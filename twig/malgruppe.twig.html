@@ -6,7 +6,7 @@
     var data = google.visualization.arrayToDataTable([
       ['Mønstring', {% for gruppe,antall in stat.malgruppe|first %} '{{gruppe}}'{{loop.last?'':','}} {% endfor %}],
       {% for ar, data in stat.malgruppe %}
-	      ['{{ar}}', {% for gruppe, antall in data %} {{antall}}{{loop.last?'':','}} {% endfor %}]{{loop.last?'':','}}
+	      ['{{ar}}', {% for gruppe, antall in data %} {{antall|replace(',','.')}}{{loop.last?'':','}} {% endfor %}]{{loop.last?'':','}}
       {% endfor %}
     ]);
 
