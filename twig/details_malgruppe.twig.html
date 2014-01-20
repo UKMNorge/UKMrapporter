@@ -1,0 +1,40 @@
+<style>
+.well {
+	background: #fff;
+}
+</style>
+<h2>Statistikk for {{monstring.name}} <small>Detaljer: deltakelse i forhold til målgruppe</small></h2>
+
+<div class="container col-xs-12">
+	<div class="well">
+		<table class="table table-striped" style="max-width: 700px">
+			<thead>
+				<tr>
+					<th></th>
+				{% for kategori, data in stat.malgruppe|first %}
+					<th style="text-align:right;" width="18%">{{kategori}}</th>
+				{% endfor %}
+				</tr>
+			</thead>
+			{% for ar, data in stat.malgruppe %}
+				<tr>
+				    <th>{{ar}}</th>
+			    	{% for gruppe, antall in data %} 
+			    	<td align="right">{{antall}} %</td>
+			    	{% endfor %}
+				</tr>
+			{% endfor %}
+		</table>
+
+		<div class="row pull-right">
+			<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat={{home}}">Tilbake til oversikt</a>
+		</div>
+
+	</div>
+</div>
+
+<div class="container col-xs-12">
+	<div class="well">
+		{% embed "malgruppe.twig.html" %}{% endembed %}	
+	</div>
+</div>

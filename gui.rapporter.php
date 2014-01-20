@@ -7,6 +7,15 @@ $category_icon_size = 32;
 
 <span><?= UKMN_ico('hus', $category_icon_size)?><h2 class="rapport_kategori">Mønstring</h2></span>
 <ul class="rapportcontainer" data-kat="monstring">
+	<?php
+	if($_SERVER['REMOTE_ADDR']=='81.0.146.162') { ?>
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+		<?= UKMN_icoAlt('graph', "Statistikk", $raport_icon_size ) ?>
+		<div class="title">Statistikksenter</div>
+		<span>Alt om din mønstring - i tall</span>
+	</li>
+	<?php } ?>
+	
 	<li class="clickable rapport" data-file="statistikk">
 		<?= UKMN_icoAlt('graph', "Statistikk", $raport_icon_size ) ?>
 		<div class="title">Statistikk</div>

@@ -1,0 +1,22 @@
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(statistikk_kjonnsfordeling);
+
+  function statistikk_kjonnsfordeling() {
+    var data = google.visualization.arrayToDataTable([
+      ['Kjønn', 'Antall personer'],
+      {% for kategori, personer in stat.kjonnsfordeling_iar %}
+      ['{{kategori}}',{{personer}}]{{loop.last?'':','}}
+      {% endfor %}
+    ]);
+
+    var options = {
+      title: 'Kjønnsfordeling',
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('statistikk_kjonnsfordeling'));
+    chart.draw(data, options);
+  }
+</script>
+
+<div id="statistikk_kjonnsfordeling" style="width: 100%; min-height: 300px;"></div>

@@ -1,0 +1,26 @@
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(statistikk_sjangerfordeling);
+
+  function statistikk_sjangerfordeling() {
+    var data = google.visualization.arrayToDataTable([
+      ['Kategori', 'Antall personer'],
+      {% for kategori, personer in stat.sjangerfordeling_iar %}
+      ['{{kategori}}',{{personer}}]{{loop.last?'':','}}
+      {% endfor %}
+    ]);
+    
+	data.sort([{column: 1, desc:true}, {column: 0}]);
+
+    var options = {
+      title: 'Sjangerfordeling i år',
+      vAxis: {'minValue': 0},
+      legend: {position: 'none'}
+    };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('statistikk_sjangerfordeling'));
+    chart.draw(data, options);
+  }
+</script>
+
+<div id="statistikk_sjangerfordeling" style="width: 100%; min-height: 300px;"></div>

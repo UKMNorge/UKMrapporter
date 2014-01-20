@@ -21,6 +21,11 @@ jQuery(document).ready(function(){
 							+  '&rapport='+ jQuery(this).attr('data-file')
 							+  '&kat=' + jQuery(this).parents('ul').attr('data-kat');
 	});
+	jQuery('.rapport_direct').click(function(){
+		window.location.href = 'http://'+window.location.hostname +window.location.pathname 
+							+ jQuery(this).attr('data-target')
+							;
+	});
 	
 	// RE-GENERER EN RAPPORT
 	jQuery('#filterReport, #oppdaterrapport').click(function(){

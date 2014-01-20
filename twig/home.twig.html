@@ -1,0 +1,65 @@
+<h2>Statistikk for {{monstring.name}}</h2>
+
+<div class="statistikksenter" style="margin-right: 30px;">
+	<div class="container col-xs-12">
+		<div class="well">
+			{% embed "deltakere.twig.html" %}{% endembed %}
+			<div class="row pull-right">
+				<a href="?page=UKMrapport_admin&stat=details_deltakere&home={{home}}"class="btn btn-sm btn-default">Vis tall i tabell</a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container col-xs-12 col-sm-8">
+		<div class="well">
+			{% embed "sjangerfordeling.twig.html" %}{% endembed %}
+			<div class="row pull-right">
+				<a href="?page=UKMrapport_admin&stat=details_sjangerfordeling&home={{home}}" class="btn btn-sm btn-default">Vis tall i tabell / historisk utvikling</a>
+			</div>
+		</div>
+	</div>
+	<div class="container col-xs-12 col-sm-4">
+		<div class="well">
+			{% embed "kjonnsfordeling.twig.html" %}{% endembed %}
+			<div class="row pull-right">
+				<a href="?page=UKMrapport_admin&stat=details_kjonnsfordeling&home={{home}}" class="btn btn-sm btn-default">Vis historisk utvikling</a>
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="container col-xs-12">
+		<div class="well">
+			{% embed "malgruppe.twig.html" %}{% endembed %}
+			<div class="row pull-right">
+				<a href="?page=UKMrapport_admin&stat=details_malgruppe&home={{home}}"class="btn btn-sm btn-default">Vis tall i tabell</a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container col-xs-12 col-sm-8">
+		<div class="well">
+			{% embed "aldersfordeling.twig.html" %}{% endembed %}
+			<div class="row pull-right">
+				<a href="?page=UKMrapport_admin&stat=details_aldersfordeling&home={{home}}"class="btn btn-sm btn-default">Vis tall i tabell</a>
+			</div>
+		</div>	
+	</div>
+	
+	<div class="container col-xs-12 col-sm-4">
+		<div class="well">
+			<h2>Sammenlign videre..</h2>
+			<p>I statistikken for {{monstring.fylke.name}} kan du se mer om hvordan din mønstring er i forhold til andre mønstringer i fylket</p>
+			<p><a href="?page=UKMrapport_admin&stat=fylke">Vis statistikk for {{monstring.fylke.name}}</a></p>
+
+		</div>
+	</div>
+
+</div>
+
+
+<style>
+.well {
+	background: #fff;
+}
+</style>

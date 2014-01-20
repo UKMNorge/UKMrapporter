@@ -1,0 +1,91 @@
+<style>
+.well {
+	background: #fff;
+}
+</style>
+<h2>Statistikk for {{monstring.name}} <small>Detaljer: sjangerfordeling</small></h2>
+
+<div class="container col-xs-12">
+	<div class="well">
+		<table class="table table-striped" style="max-width: 400px">
+			<thead>
+				<tr>
+					<th>Sesong</th>
+					<th>TOTAL</th>
+					<th colspan="6" style="text-align:center;">Scene</th>
+					<th>Film</th>
+					<th>Utstilling</th>
+					<th>Konfer.</th>
+					<th>Nettred.</th>
+					<th>Arrangør</th>
+					<th>Scenetek.</th>
+					<th>Matkultur</th>
+					<th>Annet</th>
+				</tr>
+				<tr>
+					<th></th>
+					<th></th>
+					<th>Musikk</th>
+					<th>Dans</th>
+					<th>Teater</th>
+					<th>Litteratur</th>
+					<th>Annet</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			{% for ar, data in stat.sjangerfordeling %}
+				<tr>
+					<td align="right">{{ar}}</td>
+					<th style="text-align:right;" align="right">{{data.total}}</th>
+					<td align="right">{{data.Musikk}}</td>
+					<td align="right">{{data.Dans}}</td>
+					<td align="right">{{data.Teater}}</td>
+					<td align="right">{{data.Litteratur}}</td>
+					<td align="right">{{data.Annet_scene}}</td>
+					<th style="text-align:right;" align="right">{{data.total_scene}}</th>
+					<td align="right">{{data.Film}}</td>
+					<td align="right">{{data.Utstilling}}</td>
+					<td align="right">{{data.Konferansier}}</td>
+					<td align="right">{{data.Nettredaksjon}}</td>
+					<td align="right">{{data.Arrangor}}</td>
+					<td align="right">{{data.Sceneteknikk}}</td>
+					<td align="right">{{data.Matkultur}}</td>
+					<td align="right">{{data.Annet}}</td>
+				</tr>			
+			{% endfor %}
+		</table>
+
+		<div class="row pull-right">
+			<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat={{home}}">Tilbake til oversikt</a>
+		</div>
+
+	</div>
+</div>
+
+<div class="container col-xs-12">
+	<div class="well">
+		<script type="text/javascript">
+		  google.load("visualization", "1", {packages:["corechart"]});
+		  google.setOnLoadCallback(statistikk_details_sjangerfordeling);
+		
+		  function statistikk_details_sjangerfordeling() {
+		    var data = google.visualization.arrayToDataTable([
+		      ['Sesong', 'Musikk', 'Dans', 'Teater', 'Litteratur', 'Annet på scenen', 'Film', 'Utstilling', 'Konferansier', 'Nettredaksjon', 'Arrangør', 'Sceneteknikk', 'Matkultur', 'Annet'],
+			{% for ar, data in stat.sjangerfordeling %}
+		      ['{{ar}}',0{{data.Musikk}},0{{data.Dans}},0{{data.Teater}},0{{data.Litteratur}},0{{data.Annet_scene}},0{{data.Film}},0{{data.Utstilling}},0{{data.Konferansier}},0{{data.Nettredaksjon}},0{{data.Arrangor}},0{{data.Sceneteknikk}},0{{data.Matkultur}},0{{data.Annet}}]{{loop.last?'':','}}
+		      {% endfor %}
+		    ]);
+		
+		    var options = {
+		      title: 'Utvikling sjangerfordeling',
+		      vAxis: {'minValue': 0},
+		      pointSize: 5,
+		    };
+		
+		    var chart = new google.visualization.LineChart(document.getElementById('statistikk_details_sjangerfordeling'));
+		    chart.draw(data, options);
+		  }
+		</script>
+		
+		<div id="statistikk_details_sjangerfordeling" style="width: 100%; min-height: 700px;"></div>	</div>
+</div>

@@ -1,0 +1,61 @@
+<style>
+.well {
+	background: #fff;
+}
+</style>
+<h2>Statistikk for {{monstring.name}} <small>Detaljer: kjønnsfordeling historisk sett</small></h2>
+
+<div class="container col-xs-12">
+	<div class="well">
+		<table class="table table-striped" style="max-width: 400px">
+			<thead>
+				<tr>
+					<th>År</th>
+					<th align="center">Gutter</th>
+					<th align="center">Jenter</th>
+				</tr>
+			</thead>
+			{% for ar, data in stat.kjonnsfordeling %}
+				<tr>
+					<th>{{ar}}</th>
+					<td align="right">{{data.Gutter}} (<small>{{ stat.kjonnsfordeling_percent[ar]['Gutter'] }} %</small>)</td>
+					<td align="right">{{data.Jenter}} (<small>{{ stat.kjonnsfordeling_percent[ar]['Jenter'] }} %</small>)</td>
+				</tr>
+		      {% endfor %}
+		</table>
+
+		<div class="row pull-right">
+			<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat={{home}}">Tilbake til oversikt</a>
+		</div>
+
+	</div>
+</div>
+
+<div class="container col-xs-12">
+	<div class="well">
+		<script type="text/javascript">
+		  google.load("visualization", "1", {packages:["corechart"]});
+		  google.setOnLoadCallback(statistikk_details_kjonnsfordeling);
+		
+		  function statistikk_details_kjonnsfordeling() {
+		    var data = google.visualization.arrayToDataTable([
+		      ['År', 'Gutter', 'Jenter'],
+		      {% for ar, data in stat.kjonnsfordeling %}
+		      ['{{ar}}',{{data.Gutter}},{{data.Jenter}}]{{loop.last?'':','}}
+		      {% endfor %}
+		    ]);
+		
+		    var options = {
+		      title: 'Utvikling i kjønnsfordeling',
+		      vAxis: {'minValue': 0},
+		      pointSize: 5,
+		    };
+		
+		    var chart = new google.visualization.ColumnChart(document.getElementById('statistikk_details_kjonnsfordeling'));
+		    chart.draw(data, options);
+		  }
+		</script>
+		
+		<div id="statistikk_details_kjonnsfordeling" style="width: 100%; min-height: 300px;"></div>
+	</div>
+</div>

@@ -34,6 +34,9 @@ function UKMrapport_countPrint(){
 function UKMrapport_menu() {
 	UKM_add_menu_page('monstring','Rapporter', 'Rapporter', 'editor', 'UKMrapport_admin', 'UKMrapport_admin', 'http://ico.ukm.no/graph-menu.png',15);    
 	UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_scriptsandstyles' );
+	if(isset($_GET['stat'])) {
+		UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_statistikk_scripts_and_styles' );
+	}
 }
 
 function UKMrapport_scriptsandstyles() {
@@ -59,15 +62,31 @@ function UKMrapport_scriptsandstyles() {
 
 ## SHOW STATS OF PLACES
 function UKMrapport_admin() {
-	if(isset($_GET['rapport'])&&$_GET['rapport']!=='undefined'&&isset($_GET['kat'])) {
+	if(isset($_GET['stat'])) {
+		$VIEW = $_GET['stat'];
+		$TWIG = array();
+		require_once('statistikk/controller.php');
+
+		echo TWIG( $VIEW.'.twig.html', $TWIG, dirname(__FILE__), true);
+		echo HANDLEBARS( dirname(__FILE__) );
+
+	} elseif(isset($_GET['rapport'])&&$_GET['rapport']!=='undefined'&&isset($_GET['kat'])) {
 		require_once('class.rapport.php');
 		require_once('rapport/'.$_GET['kat'].'/'.$_GET['rapport'].'.report.php');
-		
 		require_once('gui.rapport.php');
-
-
-	}
-	else
+	} else {
 		require_once('gui.rapporter.php');
+	}
+}
+
+function UKMrapport_statistikk_scripts_and_styles(){
+	wp_enqueue_script('handlebars_js');
+	wp_enqueue_script('WPbootstrap3_js');
+	wp_enqueue_style('WPbootstrap3_css');
+	wp_enqueue_style('UKMresources_tabs');
+
+	wp_enqueue_script('UKMrapport_statistikk_script', WP_PLUGIN_URL . '/UKMrapporter/statistikk.rapporter.js' );
+	wp_enqueue_style('UKMrapport_statistikk_style', WP_PLUGIN_URL . '/UKMrapporter/statistikk.rapporter.css' );
+
 }
 ?>

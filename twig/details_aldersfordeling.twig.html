@@ -1,0 +1,50 @@
+<style>
+.well {
+	background: #fff;
+}
+</style>
+<h2>Statistikk for {{monstring.name}} <small>Detaljer: aldersfordeling</small></h2>
+
+<div class="container col-xs-12">
+	<div class="well">
+		<table class="table table-striped" style="max-width: 700px">
+			<thead>
+				<tr>
+					<th>Sesong</th>
+					<th>TOTAL</th>
+					<th>Under 10</th>
+					<th>10-12</th>
+					<th>13-14</th>
+					<th>15-16</th>
+					<th>17-18</th>
+					<th>19-20</th>
+					<th>Over 20</th>
+				</tr>
+			</thead>
+			{% for ar, data in stat.aldersfordeling_total %}
+				<tr>
+					<td align="right">{{ar}}</td>
+					<td align="right">{{data.total}}</td>
+					<td align="right">{{data.underti}}</td>
+					<td align="right">{{data.tiellevetolv}}</td>
+					<td align="right">{{data.trettenfjorten}}</td>
+					<td align="right">{{data.femtenseksten}}</td>
+					<td align="right">{{data.syttenatten}}</td>
+					<td align="right">{{data.nittentjue}}</td>
+					<td align="right">{{data.overtjue}}</td>
+				</tr>			
+			{% endfor %}
+		</table>
+
+		<div class="row pull-right">
+			<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat={{home}}">Tilbake til oversikt</a>
+		</div>
+
+	</div>
+</div>
+
+<div class="container col-xs-12">
+	<div class="well">
+		{% embed "aldersfordeling.twig.html" %}{% endembed %}	
+	</div>
+</div>

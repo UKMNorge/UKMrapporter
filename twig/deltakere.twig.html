@@ -1,0 +1,24 @@
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(statistikk_deltakere);
+
+  function statistikk_deltakere() {
+    var data = google.visualization.arrayToDataTable([
+      ['År', 'Antall personer', 'Antall innslag'],
+      {% for ar, data in stat.deltakere %}
+      ['{{ar}}',{{data.personer}},{{data.innslag}}]{{loop.last?'':','}}
+      {% endfor %}
+    ]);
+
+    var options = {
+      title: 'Utvikling i deltakelse',
+      vAxis: {'minValue': 0},
+      pointSize: 5
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('statistikk_deltakere'));
+    chart.draw(data, options);
+  }
+</script>
+
+<div id="statistikk_deltakere" style="width: 100%; min-height: 300px;"></div>

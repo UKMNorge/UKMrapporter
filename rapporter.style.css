@@ -12,7 +12,8 @@ ul {}
 	clear:both;
 }
 
-.rapport {
+.rapport, 
+.rapport_direct {
 	display:block;
 	float:left;
 	text-align:center;
@@ -25,7 +26,8 @@ ul {}
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 }
-.rapport .title {
+.rapport .title,
+.rapport_direct .title {
  font-weight: bold;
   font-size:12px;
 	margin-bottom: 4px;

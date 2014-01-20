@@ -1,0 +1,26 @@
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(statistikk_aldersfordeling);
+
+  function statistikk_aldersfordeling() {
+   var data = google.visualization.arrayToDataTable([
+      ['Sesong','< 10', '10-12','13-14','15-16','17-18','19-20','> 20'],
+      {% for ar, data in stat.aldersfordeling %}
+	      ['{{ar}}', {% for gruppe, antall in data %} {{antall}}{{loop.last?'':','}} {% endfor %}]{{loop.last?'':','}}
+      {% endfor %}
+    ]);
+
+    var options = {
+      title: 'Antall deltakere per aldersgruppe, stablet oppå hverandre',
+      vAxis: {'minValue': 0},
+      isStacked: true,
+      pointSize: 5
+
+    };
+
+    var chart = new google.visualization.AreaChart(document.getElementById('statistikk_aldersfordeling'));
+    chart.draw(data, options);
+  }
+</script>
+
+<div id="statistikk_aldersfordeling" style="width: 100%; min-height: 300px;"></div>
