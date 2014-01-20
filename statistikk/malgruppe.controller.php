@@ -51,6 +51,7 @@ $nasjonalRES = $nasjonalQRY->run();
 while( $r = mysql_fetch_assoc( $nasjonalRES ) ) {
 	$malgruppe[ $r['season'] ][ 'Nasjonalt' ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
 }
-unset( $malgruppe[2009] );
 
+unset( $malgruppe[2009] );
+ksort( $malgruppe );
 $TWIG['stat']['malgruppe'] = $malgruppe;
