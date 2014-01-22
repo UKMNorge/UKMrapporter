@@ -1,0 +1,29 @@
+<script type="text/javascript">
+jQuery(document).ready(function () {
+    jQuery(window).resize(function(){
+		{% for stat in statistikk %}
+
+			if (typeof statistikk_deltakere_{{stat.kommune.id}} == 'function')
+			statistikk_deltakere_{{stat.kommune.id}}();
+
+			if (typeof statistikk_sjangerfordeling_{{stat.kommune.id}} == 'function')
+			statistikk_sjangerfordeling_{{stat.kommune.id}}();
+
+			if (typeof statistikk_kjonnsfordeling_{{stat.kommune.id}} == 'function')
+			statistikk_kjonnsfordeling_{{stat.kommune.id}}();
+
+			if (typeof statistikk_details_kjonnsfordeling_{{stat.kommune.id}} == 'function')
+			statistikk_details_kjonnsfordeling_{{stat.kommune.id}}();
+
+			if (typeof statistikk_malgruppe_{{stat.kommune.id}} == 'function')
+			statistikk_malgruppe_{{stat.kommune.id}}();
+
+			if (typeof statistikk_aldersfordeling_{{stat.kommune.id}} == 'function')
+			statistikk_aldersfordeling_{{stat.kommune.id}}();
+
+			if (typeof statistikk_details_sjangerfordeling_{{stat.kommune.id}} == 'function')
+				statistikk_details_sjangerfordeling_{{stat.kommune.id}}();
+		{% endfor %}
+    });
+});
+</script>

@@ -1,0 +1,9 @@
+{% if monstring.fellesmonstring %}
+	<div class="nav">
+		Hopp til:
+		{% for stat in statistikk %}
+			<a href="#kommune_{{stat.kommune.id}}">{{stat.kommune.name}}</a>
+			{% if loop.last == false %} | {% endif %}
+		{% endfor %}
+	</div>
+{% endif %}

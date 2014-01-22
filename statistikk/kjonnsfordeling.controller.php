@@ -1,14 +1,12 @@
 <?php
-$raw = array();
-
-$kommune = $TWIG['kommuner'][0]['id'];
-
+foreach($TWIG['kommuner'] as $kommune_name => $kommune_id){
+	$kjonnsfordeling = array();
 	// PERSONER
 	$persQry = new SQL("SELECT `season`,`sex`, COUNT(`stat_id`) AS `personer` 
 						FROM `ukm_statistics`
 						WHERE `k_id` = '#kommune'
 						GROUP BY `sex`, `season`",
-					   array('kommune' => $kommune)
+					   array('kommune' => $kommune_id)
 					  );
 	$persRes = $persQry->run();
 	while( $r = mysql_fetch_assoc( $persRes ) ) {
@@ -37,8 +35,9 @@ $kommune = $TWIG['kommuner'][0]['id'];
 		$kjonnsfordeling_percent[ $season ] = array( 'Gutter' => round( $data['male']*$oneperson, 1), 'Jenter' => round( $data['female']*$oneperson, 1));
 	}
 
-unset( $kjonnsfordeling[2009] );
-unset( $kjonnsfordeling_percent[2009]);
-$TWIG['stat']['kjonnsfordeling'] = $kjonnsfordeling;
-$TWIG['stat']['kjonnsfordeling_percent'] = $kjonnsfordeling_percent;
-$TWIG['stat']['kjonnsfordeling_iar'] = $kjonnsfordeling[ $TWIG['season'] ];
+	unset( $kjonnsfordeling[2009] );
+	unset( $kjonnsfordeling_percent[2009]);
+	$TWIG['statistikk'][$kommune_id]['kjonnsfordeling'] = $kjonnsfordeling;
+	$TWIG['statistikk'][$kommune_id]['kjonnsfordeling_percent'] = $kjonnsfordeling_percent;
+	$TWIG['statistikk'][$kommune_id]['kjonnsfordeling_iar'] = $kjonnsfordeling[ $TWIG['season'] ];
+}

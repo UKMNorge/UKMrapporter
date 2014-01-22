@@ -1,8 +1,8 @@
 <script type="text/javascript">
   google.load("visualization", "1", {packages:["corechart"]});
-  google.setOnLoadCallback(statistikk_aldersfordeling);
+  google.setOnLoadCallback(statistikk_aldersfordeling_{{stat.kommune.id}});
 
-  function statistikk_aldersfordeling() {
+  function statistikk_aldersfordeling_{{stat.kommune.id}}() {
    var data = google.visualization.arrayToDataTable([
       ['Sesong','< 10', '10-12','13-14','15-16','17-18','19-20','> 20'],
       {% for ar, data in stat.aldersfordeling %}
@@ -18,9 +18,9 @@
 
     };
 
-    var chart = new google.visualization.AreaChart(document.getElementById('statistikk_aldersfordeling'));
+    var chart = new google.visualization.AreaChart(document.getElementById('statistikk_aldersfordeling_{{stat.kommune.id}}'));
     chart.draw(data, options);
   }
 </script>
 
-<div id="statistikk_aldersfordeling" style="width: 100%; min-height: 300px;"></div>
+<div id="statistikk_aldersfordeling_{{stat.kommune.id}}" style="width: 100%; min-height: 300px;"></div>

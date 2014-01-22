@@ -1,8 +1,8 @@
 <script type="text/javascript">
   google.load("visualization", "1", {packages:["corechart"]});
-  google.setOnLoadCallback(statistikk_deltakere);
+  google.setOnLoadCallback(statistikk_deltakere_{{stat.kommune.id}});
 
-  function statistikk_deltakere() {
+  function statistikk_deltakere_{{stat.kommune.id}}() {
     var data = google.visualization.arrayToDataTable([
       ['År', 'Antall personer', 'Antall innslag'],
       {% for ar, data in stat.deltakere %}
@@ -16,9 +16,9 @@
       pointSize: 5
     };
 
-    var chart = new google.visualization.LineChart(document.getElementById('statistikk_deltakere'));
+    var chart = new google.visualization.LineChart(document.getElementById('statistikk_deltakere_{{stat.kommune.id}}'));
     chart.draw(data, options);
   }
 </script>
 
-<div id="statistikk_deltakere" style="width: 100%; min-height: 300px;"></div>
+<div id="statistikk_deltakere_{{stat.kommune.id}}" style="width: 100%; min-height: 300px;"></div>

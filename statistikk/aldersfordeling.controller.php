@@ -1,24 +1,23 @@
 <?php
-$raw = array();
-// INIT ARRAY
-foreach( $TWIG['seasons'] as $ssn ) {
-	$raw[ $ssn ] = array('underti' => 0,
-						 'tiellevetolv' => 0,
-						 'trettenfjorten' => 0,
-						 'femtenseksten' => 0,
-						 'syttenatten' => 0,
-						 'nittentjue' => 0,
-						 'overtjue' => 0,
-						 'total' => 0);
-}
-$kommune = $TWIG['kommuner'][0]['id'];
-
+foreach($TWIG['kommuner'] as $kommune_name => $kommune_id){
+	$raw = array();
+	// INIT ARRAY
+	foreach( $TWIG['seasons'] as $ssn ) {
+		$raw[ $ssn ] = array('underti' => 0,
+							 'tiellevetolv' => 0,
+							 'trettenfjorten' => 0,
+							 'femtenseksten' => 0,
+							 'syttenatten' => 0,
+							 'nittentjue' => 0,
+							 'overtjue' => 0,
+							 'total' => 0);
+	}
 	// PERSONER
 	$persQry = new SQL("SELECT `season`,`age`, COUNT(`stat_id`) AS `personer` 
 						FROM `ukm_statistics`
 						WHERE `k_id` = '#kommune'
 						GROUP BY `age`, `season`",
-					   array('kommune' => $kommune)
+					   array('kommune' => $kommune_id)
 					  );
 	$persRes = $persQry->run();
 	while( $r = mysql_fetch_assoc( $persRes ) ) {
@@ -61,17 +60,18 @@ $kommune = $TWIG['kommuner'][0]['id'];
 		$raw[ $r['season'] ]['total'] += $r['personer'];
 	}
 
-unset( $raw[2009] );
-
-ksort( $raw );
-
-$aldersfordeling = $raw;
-$aldersfordeling_total = $raw;
-
-foreach( $aldersfordeling as $ssn => $data ) {
-	unset( $data['total'] );		
-	$aldersfordeling[$ssn] = $data;
+	unset( $raw[2009] );
+	
+	ksort( $raw );
+	
+	$aldersfordeling = $raw;
+	$aldersfordeling_total = $raw;
+	
+	foreach( $aldersfordeling as $ssn => $data ) {
+		unset( $data['total'] );		
+		$aldersfordeling[$ssn] = $data;
+	}
+	
+	$TWIG['statistikk'][$kommune_id]['aldersfordeling'] = $aldersfordeling;
+	$TWIG['statistikk'][$kommune_id]['aldersfordeling_total'] = $aldersfordeling_total;
 }
-
-$TWIG['stat']['aldersfordeling'] = $aldersfordeling;
-$TWIG['stat']['aldersfordeling_total'] = $aldersfordeling_total;

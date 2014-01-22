@@ -1,6 +1,14 @@
 <?php
 
-	$SEASON = 2014;
+	if(isset($_GET['season'])) {
+		$SEASON = $_GET['season'];
+	} else {
+		if( (int) date('m') > 10)
+			$SEASON = (int) date('Y') + 1;
+		else
+			$SEASON = (int) date('Y');
+	}
+
 	require_once('UKM/monstringer.class.php');
 	require_once('UKM/monstring.class.php');
 	require_once('UKM/innslag.class.php');
@@ -34,12 +42,15 @@
 	$TEST_COUNT = 0;
 	while( ($r = mysql_fetch_assoc($monstringer)) && $TEST_COUNT < 10) {
 		$monstring = new monstring($r['pl_id']);
+		echo '<h2>'. $monstring->g('pl_name') .'</h2>';
 		// For hvert innslag i en monstring ...
 		foreach ($monstring->innslag() as $innslag_inn) {
 			$innslag = new innslag($innslag_inn["b_id"]);
+			$innslag->loadGeo();
+			echo '<h3>' . $innslag->g('b_name') .'</h3>';
 			foreach ($innslag->personer() as $p) { // behandle hver person
 				$person = new person($p["p_id"]);
-				
+				echo $person->g('p_firstname') .' '. $person->g('p_lastname') .'<br />';
 				$age = $person->getAge();
 				if($age == '25+') 
 					$age = 0;
@@ -55,6 +66,7 @@
 				} else {
 					$time = date("Y-m-d\TH:i:s\Z" , $innslag->get('time_status_8'));
 				}
+				$time = str_replace(array('T','Z'),array(' ',''), $time);
 				// var_dump($time);
 				
 				$kommuneID = $innslag->get("kommuneID");
@@ -67,6 +79,11 @@
 					$fylkeID = $monstring->get('fylke_id');
 				}
 				
+				$age = $person->getAge();
+				if($age == '25+')
+					$age = 25;
+				$age = (int) $age;
+				
 				$stats_info = array(
 					"b_id" => $innslag->get("b_id"), // innslag-id
 					"p_id" => $person->get("p_id"), // person-id
@@ -74,11 +91,11 @@
 					"f_id" => $fylkeID, // fylke-id
 					"bt_id" => $innslag->get("bt_id"), // innslagstype-id
 					"subcat" => $innslag->get("b_kategori"), // underkategori
-					"age" => $person->getAge(), // alder
+					"age" => $age, // alder
 					"sex" => find_sex($first_name), // kjonn
 					"time" =>  $time, // tid ved registrering
-					"fylke" => false, // dratt pa fylkesmonstring?
-					"land" => false, // dratt pa festivalen?
+					"fylke" => 'false', // dratt pa fylkesmonstring?
+					"land" => 'false', // dratt pa festivalen?
 					"season" => $SEASON // sesong
 				);
 				
@@ -89,7 +106,7 @@
 				$qry = "SELECT * FROM `ukm_statistics`" .
 						" WHERE `b_id` = '" . $stats_info["b_id"] . "'" .
 						" AND `p_id` = '" . $stats_info["p_id"] . "'" .
-						" AND `k_id` = '" . $stats_info["k_id"] . "'"  .
+						#" AND `k_id` = '" . $stats_info["k_id"] . "'"  .
 						" AND `season` = '" . $stats_info["season"] . "'";
 				$sql = new SQL($qry);
 				
@@ -110,7 +127,7 @@
 				foreach ($stats_info as $key => $value) {
 					$sql_ins->add($key, $value);
 				}
-				// echo($sql_ins->debug());
+				echo($sql_ins->debug());
 				$sql_ins->run();
 				
 				// $TEST_COUNT += 1;

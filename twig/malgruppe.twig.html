@@ -1,8 +1,8 @@
 <script type="text/javascript">
   google.load("visualization", "1", {packages:["corechart"]});
-  google.setOnLoadCallback(statistikk_malgruppe);
+  google.setOnLoadCallback(statistikk_malgruppe_{{stat.kommune.id}});
 
-  function statistikk_malgruppe() {
+  function statistikk_malgruppe_{{stat.kommune.id}}() {
     var data = google.visualization.arrayToDataTable([
       ['Mønstring', {% for gruppe,antall in stat.malgruppe|first %} '{{gruppe}}'{{loop.last?'':','}} {% endfor %}],
       {% for ar, data in stat.malgruppe %}
@@ -16,9 +16,9 @@
       pointSize: 5
     };
 
-    var chart = new google.visualization.LineChart(document.getElementById('statistikk_malgruppe'));
+    var chart = new google.visualization.LineChart(document.getElementById('statistikk_malgruppe_{{stat.kommune.id}}'));
     chart.draw(data, options);
   }
 </script>
 
-<div id="statistikk_malgruppe" style="width: 100%; min-height: 300px;"></div>
+<div id="statistikk_malgruppe_{{stat.kommune.id}}" style="width: 100%; min-height: 300px;"></div>

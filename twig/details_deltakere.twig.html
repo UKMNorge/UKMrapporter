@@ -1,40 +1,42 @@
-<style>
-.well {
-	background: #fff;
-}
-</style>
 <h2>Statistikk for {{monstring.name}} <small>Detaljer: utvikling i deltakelse</small></h2>
 
-<div class="container col-xs-12">
-	<div class="well">
-		<table class="table table-striped" style="max-width: 400px">
-			<thead>
-				<tr>
-					<th>År</th>
-					<th align="right">Antall personer</th>
-					<th align="right">Antall innslag</th>
-					<th align="right">Personer per innslag</th>
-				</tr>
-			</thead>
-			{% for ar, data in stat.deltakere %}
-				<tr>
-					<th>{{ar}}</th>
-					<td align="right">{{data.personer}}</td>
-					<td align="right">{{data.innslag}}</td>
-					<td align="right">{{data.ppi}}</td>
-				</tr>
-		      {% endfor %}
-		</table>
+{% embed "style.twig.html" %}{% endembed %}
+{% embed "script.twig.html" %}{% endembed %}
+{% embed "nav.twig.html" %}{% endembed %}
 
-		<div class="row pull-right">
-			<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat={{home}}">Tilbake til oversikt</a>
+{% for stat in statistikk %}
+	{% embed "separator.twig.html" %}{% endembed %}
+	<div class="container col-xs-12">
+		<div class="well">
+			<table class="table table-striped" style="max-width: 400px">
+				<thead>
+					<tr>
+						<th>År</th>
+						<th align="right">Antall personer</th>
+						<th align="right">Antall innslag</th>
+						<th align="right">Personer per innslag</th>
+					</tr>
+				</thead>
+				{% for ar, data in stat.deltakere %}
+					<tr>
+						<th>{{ar}}</th>
+						<td align="right">{{data.personer}}</td>
+						<td align="right">{{data.innslag}}</td>
+						<td align="right">{{data.ppi}}</td>
+					</tr>
+			      {% endfor %}
+			</table>
+	
+			<div class="row pull-right">
+				<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat={{home}}">Tilbake til oversikt</a>
+			</div>
+	
 		</div>
-
 	</div>
-</div>
-
-<div class="container col-xs-12">
-	<div class="well">
-		{% embed "deltakere.twig.html" %}{% endembed %}	
+	
+	<div class="container col-xs-12">
+		<div class="well">
+			{% embed "deltakere.twig.html" %}{% endembed %}	
+		</div>
 	</div>
-</div>
+{% endfor %}

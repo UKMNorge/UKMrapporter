@@ -1,14 +1,13 @@
 <?php
-$raw = array();
-
-$kommune = $TWIG['kommuner'][0]['id'];
+foreach($TWIG['kommuner'] as $kommune_name => $kommune_id){
+	$raw = array();
 	// PERSONER
 	$persQry = new SQL("SELECT `season`, `stat`.`bt_id`, `type`.`bt_name`, `subcat`, COUNT(`stat_id`) AS `personer`
 						FROM `ukm_statistics` AS `stat`
 						LEFT JOIN `smartukm_band_type` AS `type` ON (`type`.`bt_id` = `stat`.`bt_id`)
 						WHERE `k_id` = '#kommune'
 						GROUP BY `stat`.`bt_id`, `subcat`, `season`",
-					   array('kommune' => $kommune)
+					   array('kommune' => $kommune_id)
 					  );
 	$persRes = $persQry->run();
 	while( $r = mysql_fetch_assoc( $persRes ) ) {
@@ -33,16 +32,17 @@ $kommune = $TWIG['kommuner'][0]['id'];
 		$raw[ $r['season'] ]['total'] += $r['personer'];
 	}
 	
-$sjangerfordeling = $raw;
-$sjangerfordeling_iar = $raw[ $TWIG['season'] ];
-
-unset( $sjangerfordeling[2009] );
-
-$TWIG['stat']['sjangerfordeling'] = $sjangerfordeling;
-ksort( $TWIG['stat']['sjangerfordeling'] );
-
-$TWIG['stat']['sjangerfordeling_iar'] = $sjangerfordeling_iar;
-
-// SKIP TOTALS @ OVERVIEW
-unset( $TWIG['stat']['sjangerfordeling_iar']['total'] );
-unset( $TWIG['stat']['sjangerfordeling_iar']['total_scene'] );
+	$sjangerfordeling = $raw;
+	$sjangerfordeling_iar = $raw[ $TWIG['season'] ];
+	
+	unset( $sjangerfordeling[2009] );
+	
+	$TWIG['statistikk'][$kommune_id]['sjangerfordeling'] = $sjangerfordeling;
+	ksort( $TWIG['statistikk'][$kommune_id]['sjangerfordeling'] );
+	
+	$TWIG['statistikk'][$kommune_id]['sjangerfordeling_iar'] = $sjangerfordeling_iar;
+	
+	// SKIP TOTALS @ OVERVIEW
+	unset( $TWIG['statistikk'][$kommune_id]['sjangerfordeling_iar']['total'] );
+	unset( $TWIG['statistikk'][$kommune_id]['sjangerfordeling_iar']['total_scene'] );
+}
