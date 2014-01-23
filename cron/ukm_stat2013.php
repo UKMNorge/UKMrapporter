@@ -79,7 +79,7 @@
 					$fylkeID = $monstring->get('fylke_id');
 				}
 				
-				$age = $person->getAge();
+				$age = $person->getAge($monstring);
 				if($age == '25+')
 					$age = 25;
 				$age = (int) $age;

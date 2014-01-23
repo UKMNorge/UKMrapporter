@@ -34,6 +34,16 @@ foreach($TWIG['kommuner'] as $kommune_name => $kommune_id){
 		$kjonnsfordeling[ $season ] = array( 'Gutter' => $data[ 'male' ], 'Jenter' => $data[ 'female' ] );
 		$kjonnsfordeling_percent[ $season ] = array( 'Gutter' => round( $data['male']*$oneperson, 1), 'Jenter' => round( $data['female']*$oneperson, 1));
 	}
+	
+	foreach( $TWIG['missing'][ $kommune_id ] as $ssn => $missing ) {
+		if( $missing > 0 ) {
+			$gutter = ceil( $missing / 2 );
+			$jenter = floor( $missing / 2);
+			$kjonnsfordeling[ $ssn ]['Gutter'] += $gutter;
+			$kjonnsfordeling[ $ssn ]['Jenter'] += $jenter;
+		}
+	}
+
 
 	unset( $kjonnsfordeling[2009] );
 	unset( $kjonnsfordeling_percent[2009]);

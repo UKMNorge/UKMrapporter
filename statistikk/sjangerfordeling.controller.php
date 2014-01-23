@@ -18,6 +18,8 @@ foreach($TWIG['kommuner'] as $kommune_name => $kommune_id){
 				$kategori = ucfirst( $r['subcat'] );
 			}
 			$raw[ $r['season'] ]['total_scene'] += $r['personer'];
+		} elseif( $r['bt_id'] == 7 ) {
+			$kategori = 'Diverse';
 		} else {
 			$kategori = utf8_encode($r['bt_name']);
 		}
@@ -31,6 +33,14 @@ foreach($TWIG['kommuner'] as $kommune_name => $kommune_id){
 			
 		$raw[ $r['season'] ]['total'] += $r['personer'];
 	}
+	
+	// ADD MISSING AS "DIVERSE"
+	foreach( $TWIG['missing'][ $kommune_id ] as $ssn => $missing ) {
+		$raw[ $ssn ]['Diverse'] += $missing;
+		$raw[ $ssn ]['total'] += $missing;
+	}
+
+
 	
 	$sjangerfordeling = $raw;
 	$sjangerfordeling_iar = $raw[ $TWIG['season'] ];

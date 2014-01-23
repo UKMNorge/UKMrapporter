@@ -58,7 +58,7 @@
 						<td align="right">{{data.Arrangor}}</td>
 						<td align="right">{{data.Sceneteknikk}}</td>
 						<td align="right">{{data.Matkultur}}</td>
-						<td align="right">{{data.Annet}}</td>
+						<td align="right">{{data.Diverse}}</td>
 					</tr>			
 				{% endfor %}
 			</table>
@@ -78,9 +78,9 @@
 			
 			  function statistikk_details_sjangerfordeling_{{stat.kommune.id}}() {
 			    var data = google.visualization.arrayToDataTable([
-			      ['Sesong', 'Musikk', 'Dans', 'Teater', 'Litteratur', 'Annet på scenen', 'Film', 'Utstilling', 'Konferansier', 'Nettredaksjon', 'Arrangør', 'Sceneteknikk', 'Matkultur', 'Annet'],
+			      ['Sesong', 'Musikk', 'Dans', 'Teater', 'Litteratur', 'Annet på scenen', 'Film', 'Utstilling', 'Konferansier', 'Nettredaksjon', 'Arrangør', 'Sceneteknikk', 'Matkultur', 'Diverse'],
 				{% for ar, data in stat.sjangerfordeling %}
-			      ['{{ar}}',0{{data.Musikk}},0{{data.Dans}},0{{data.Teater}},0{{data.Litteratur}},0{{data.Annet_scene}},0{{data.Film}},0{{data.Utstilling}},0{{data.Konferansier}},0{{data.Nettredaksjon}},0{{data.Arrangor}},0{{data.Sceneteknikk}},0{{data.Matkultur}},0{{data.Annet}}]{{loop.last?'':','}}
+			      ['{{ar}}',{{data.Musikk*1}},{{data.Dans*1}},{{data.Teater*1}},{{data.Litteratur*1}},{{data.Annet_scene*1}},{{data.Film*1}},{{data.Utstilling*1}},{{data.Konferansier*1}},{{data.Nettredaksjon*1}},{{data.Arrangor*1}},{{data.Sceneteknikk*1}},{{data.Matkultur*1}},{{data.Diverse*1}}]{{loop.last?'':','}}
 			      {% endfor %}
 			    ]);
 			

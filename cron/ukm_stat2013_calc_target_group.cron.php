@@ -1,4 +1,6 @@
 <?php
+
+require_once('UKM/monstring.class.php');
 date_default_timezone_set('Europe/Oslo');
 ini_set('display_errors', true);
 
@@ -37,6 +39,16 @@ while( $kommune = mysql_fetch_assoc( $kommuneRES ) ) {
 							);
 	$malgruppe = $malgruppeSQL->run('field','malgruppe');
 	
+	// MISSING
+	$missing_monstring = new kommune_monstring( $kommune['id'], $SEASON );
+	$missing_pl = $missing_monstring->monstring_get();
+	
+	$num_kommuner = sizeof( $missing_pl->g('kommuner') );
+	$missing  = $missing_pl->get('pl_missing');
+	$my_missing = floor( $missing / $num_kommuner );
+
+	
+	
 	// KALKULER STØRRELSESGRUPPERING
 	$size = $malgruppe > $STORLIMIT ? 'stor' : 'liten';
 	
@@ -48,7 +60,7 @@ while( $kommune = mysql_fetch_assoc( $kommuneRES ) ) {
 					   array('kommune' => $kommune['id'],
 					   		 'season' => $SEASON)
 					  );
-	$personer = $persQry->run('field','personer');
+	$personer = (int) $persQry->run('field','personer') + (int) $my_missing;
 	
 	// FINN DEKNINGSPROSENT
 	if( (int)$personer && (int) $malgruppe > 0) {
@@ -61,6 +73,7 @@ while( $kommune = mysql_fetch_assoc( $kommuneRES ) ) {
 	
 	$clean = new SQLdel('ukm_statistics_malgruppe', array('k_id' => $kommune['id'], 'season' => $SEASON));
 	$clean->run();
+	echo $clean->debug();
 	
 	$insert = new SQLins('ukm_statistics_malgruppe');
 	$insert->add('k_id', $kommune['id']);
