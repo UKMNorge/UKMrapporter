@@ -146,7 +146,8 @@ if($TWIG['monstring']->fylke->id != 3) {
 					$malgruppe[ $ssn ]['I snitt beste kommune'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 	
 				$val = $kommune[ $dekningsgrad[$min] ][ $ssn ];
-				$malgruppe[ $ssn ]['I snitt dårligste kommune'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+				if( $val['malgruppe'] > 0)
+					$malgruppe[ $ssn ]['I snitt dårligste kommune'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 			}
 	
 			// FJERN 2009
