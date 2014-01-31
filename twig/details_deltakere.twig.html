@@ -45,7 +45,7 @@
 <h2>Alle kommuner i {{monstring.name}}</h2>
 	{% for kommune in statistikk_detaljert %}
 		{% embed "separator.twig.html" with {'monstring': {'fellesmonstring':true}} %}{% endembed %}
-		<div class="container col-xs-4">
+		<div class="container col-xs-12 col-sm-6 col-md-4">
 			<div class="well">
 				<table class="table table-striped" style="max-width: 400px">
 					<thead>
@@ -73,7 +73,7 @@
 			</div>
 		</div>
 		
-		<div class="container col-xs-8">
+		<div class="container col-xs-12 col-sm-6 col-md-8">
 			<div class="well">
 				{% embed "deltakere.twig.html" %}{% endembed %}	
 			</div>

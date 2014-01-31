@@ -54,7 +54,7 @@ if( get_option('site_type') == 'kommune' ) {
 	$TWIG['kommuner_i_fylket'] = $kommuner_i_fylket;
 	$TWIG['kommuner']['fylket'] = $monstring->fylke->id;
 
-	$TWIG = calc_missing( $TWIG, $TWIG['kommuner_i_fylket'] );
+	$TWIG = calc_missing( $TWIG, $TWIG['kommuner_i_fylket'], $monstring->fylke->id );
 }
 
 $TWIG['home']	= 'home';
@@ -70,7 +70,7 @@ require_once('aldersfordeling.controller.php');
 ////////////////////////////////////////////////////////////////////////////////////
 //									FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////////
-function calc_missing( $TWIG, $kommune_array ) {
+function calc_missing( $TWIG, $kommune_array, $fylke=false ) {
 	// LOOP SEASONS
 	foreach( $TWIG['seasons'] as $ssn ) {	
 		// LOOP CURRENT KOMMUNER (ALL WHICH IS PRESENT IN GUI)
@@ -87,6 +87,13 @@ function calc_missing( $TWIG, $kommune_array ) {
 			$my_missing = floor( $missing / $num_kommuner );
 			
 			$TWIG['missing'][ $kommune ][ $ssn ] = $my_missing;
+			$TWIG['missing_total_kommuner'][ $ssn ] += $my_missing;
+		}
+		if( $fylke ) {
+			$monstring = new fylke_monstring( $fylke, $ssn );
+			$monstring = $monstring->monstring_get();
+			$missing = $monstring->get('pl_missing');
+			$TWIG['missing']['fylket'][ $ssn ] = $missing;
 		}
 	}
 	return $TWIG;

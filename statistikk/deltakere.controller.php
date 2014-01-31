@@ -59,7 +59,6 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 	
 		calc_deltakere( $kommune_id, $TWIG['missing'], $persQry );
 		calc_innslag( $kommune_id, $innQry );
-		$stat_deltakere_fylke = calc_ppi($stat_deltakere_fylke);
 
 		$stat_deltakere = calc_ppi($stat_deltakere);
 		// PREPARE AND SEND TO TWIG
@@ -67,6 +66,15 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 		$TWIG['statistikk_detaljert'][$kommune_id]['deltakere'] = $stat_deltakere;
 		
 	}
+	
+	// ADD MISSING AT FYLKE LEVEL
+	if( isset( $TWIG['missing']['fylket'] ) ) {
+		foreach( $TWIG['missing']['fylket'] as $ssn => $missing ) {
+			$stat_deltakere_fylke[ $ssn ]['personer'] += $missing;
+		}
+	}
+	$stat_deltakere_fylke = calc_ppi($stat_deltakere_fylke);
+	
 	// PREPARE AND SEND TO TWIG
 	unset($stat_deltakere_fylke[2009]);
 	$TWIG['statistikk']['fylket']['deltakere'] = $stat_deltakere_fylke;
