@@ -1,0 +1,31 @@
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(statistikk_monstringer);
+
+  function statistikk_monstringer() {
+   var data = google.visualization.arrayToDataTable([
+   	[ {% for ar,data in monstringer_stacked|slice(0,1) %}
+   		'År', {% for key,pers in data %}'{{key}}'{% if loop.last==false %},{% endif %} {% endfor %}
+	{% endfor %} ],
+
+   	{% for ar,data in monstringer_stacked %}
+   		['{{ar}}', {% for pers in data %}{{pers}}{% if loop.last==false %},{% endif %} {% endfor %}
+]{% if loop.last==false %},
+{% endif %}
+	{% endfor %}  		
+    ]);
+
+    var options = {
+      title: 'Alle lokalmønstringer, stablet oppå hverandre',
+      vAxis: {'minValue': 0},
+      isStacked: true,
+      pointSize: 5
+
+    };
+
+    var chart = new google.visualization.AreaChart(document.getElementById('statistikk_monstringer'));
+    chart.draw(data, options);
+  }
+</script>
+
+<div id="statistikk_monstringer" style="width: 100%; min-height: 700px;"></div>

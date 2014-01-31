@@ -61,12 +61,29 @@
 			
 			<div class="container col-xs-12 col-sm-4">
 				<div class="well">
-					<h2>Sammenlign videre..</h2>
-					<p>I statistikken for {{monstring.fylke.name}} kan du se mer om hvordan din mønstring er i forhold til andre mønstringer i fylket</p>
-					<p><a href="?page=UKMrapport_admin&stat=fylke">Vis statistikk for {{monstring.fylke.name}}</a></p>
-		
+					{% if stat_type == 'fylke' %}
+						<h2>Sammenlign videre..</h2>
+						<p>I den nasjonale statistikk kan du se mer om hvordan {{monstring.fylke.name}} er i forhold til andre fylker</p>
+						<p><a href="?page=UKMrapport_admin&stat=fylke">Vis statistikk for {{monstring.fylke.name}}</a></p>
+					{% else %}
+						<h2>Sammenlign videre..</h2>
+						<p>I statistikken for {{monstring.fylke.name}} kan du se mer om hvordan din mønstring er i forhold til andre mønstringer i fylket</p>
+						<p><a href="?page=UKMrapport_admin&stat=fylke">Vis nasjonal statistikk</a></p>
+					{% endif %}
 				</div>
 			</div>
+			
+			{% if stat_type == 'fylke' %}
+			<div class="container col-xs-12">
+				<div class="well">
+					{% embed "monstringer_stacked.twig.html" %}{% endembed %}
+					<div class="row pull-right">
+						<a href="?page=UKMrapport_admin&stat=details_deltakere&home={{home}}"class="btn btn-sm btn-default">Vis detaljer</a>
+					</div>
+				</div>	
+			</div>
+			{% endif %}
+
 		</div>
 		<div class="clearfix pagebreak"></div>
 	{% endfor %}

@@ -64,7 +64,12 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 		// PREPARE AND SEND TO TWIG
 		unset($stat_deltakere[2009]);
 		$TWIG['statistikk_detaljert'][$kommune_id]['deltakere'] = $stat_deltakere;
-		
+
+		foreach( $TWIG['seasons'] as $ssn ) {
+			$TWIG['monstringer_stacked'][ $ssn ][ $kommune_name ] = $stat_deltakere[ $ssn ]['personer'];
+		}
+#		$TWIG['monstringer_stacked'][ 0 ][ $kommune_name ] = $kommune_name;
+	
 	}
 	
 	// ADD MISSING AT FYLKE LEVEL
@@ -78,6 +83,9 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 	// PREPARE AND SEND TO TWIG
 	unset($stat_deltakere_fylke[2009]);
 	$TWIG['statistikk']['fylket']['deltakere'] = $stat_deltakere_fylke;
+	
+	ksort( $TWIG['monstringer_stacked'] );
+	
 } else {
 	$TWIG['error'] = array('header' => 'Statistikk ikke tilgjengelig',
 						   'message'=> 'En systemfeil gjør at det ikke er mulig å beregne statistikk på denne siden. Kontakt UKM Norge'
