@@ -23,35 +23,7 @@ if($TWIG['stat_type']=='kommune') {
 		$persRes = $persQry->run();
 		while( $r = mysql_fetch_assoc( $persRes ) ) {
 			$age = (int) $r['age'];
-			switch( $age ) {
-				case 10:
-				case 11:
-				case 12:
-					$group = 'tiellevetolv';
-					break;
-				case 13:
-				case 14:
-					$group = 'trettenfjorten';
-					break;
-				case 15:
-				case 16:
-					$group = 'femtenseksten';
-					break;
-				case 17:
-				case 18:
-					$group = 'syttenatten';
-					break;
-				case 19:
-				case 20:
-					$group = 'nittentjue';
-					break;
-				default: 
-					if( $age < 10 && $age > 0 )
-						$group = 'underti';
-					else
-						$group = 'overtjue';
-					break;
-			}
+			$group = group( $age );
 			
 			if( isset( $raw[ $r['season'] ][ $group ] ) )
 				$raw[ $r['season'] ][ $group ] += $r['personer'];
@@ -76,4 +48,44 @@ if($TWIG['stat_type']=='kommune') {
 		$TWIG['statistikk'][$kommune_id]['aldersfordeling'] = $aldersfordeling;
 		$TWIG['statistikk'][$kommune_id]['aldersfordeling_total'] = $aldersfordeling_total;
 	}
+} elseif( $TWIG['stat_type'] == 'fylke' ) {
+
+} else {
+	$TWIG['error'] = array('header' => 'Statistikk ikke tilgjengelig',
+						   'message'=> 'En systemfeil gjør at det ikke er mulig å beregne statistikk på denne siden. Kontakt UKM Norge'
+						   );
+}
+
+
+function group( $age ) {
+	switch( $age ) {
+		case 10:
+		case 11:
+		case 12:
+			$group = 'tiellevetolv';
+			break;
+		case 13:
+		case 14:
+			$group = 'trettenfjorten';
+			break;
+		case 15:
+		case 16:
+			$group = 'femtenseksten';
+			break;
+		case 17:
+		case 18:
+			$group = 'syttenatten';
+			break;
+		case 19:
+		case 20:
+			$group = 'nittentjue';
+			break;
+		default: 
+			if( $age < 10 && $age > 0 )
+				$group = 'underti';
+			else
+				$group = 'overtjue';
+			break;
+	}
+	return $group;
 }

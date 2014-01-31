@@ -6,7 +6,7 @@
     var data = google.visualization.arrayToDataTable([
       ['Kategori', 'Antall personer'],
       {% for kategori, personer in kommune.sjangerfordeling_iar %}
-      ['{{kategori}}',{{personer}}]{{loop.last?'':','}}
+      ['{{kategori|replace('_',' ')}}',{{personer}}]{{loop.last?'':','}}
       {% endfor %}
     ]);
     
