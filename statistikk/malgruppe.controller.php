@@ -107,7 +107,12 @@ if($TWIG['monstring']->fylke->id != 3) {
 								);
 			$topbotRes = $topbotQry->run();
 			while( $r = mysql_fetch_assoc( $topbotRes ) ) {
-				$data = array( 'malgruppe' => $r['malgruppe'], 'deltakere' => $r['deltakere'], 'dekningsgrad' => round((100/$r['malgruppe'])*$r['deltakere'],2) );
+				$data = array( 'malgruppe' => $r['malgruppe'], 'deltakere' => $r['deltakere']);
+				if( $data['malgruppe'] > 0 ) {
+					$data['dekningsgrad'] = round((100/$r['malgruppe'])*$r['deltakere'],2);
+				} else {
+					$data['dekningsgrad'] = null;
+				}
 				$kommune[ $r['k_id'] ][ $r['season'] ] = $data;
 				if($r['season'] != 2009) {
 					$TWIG['dekningsgrad'][ utf8_encode($r['name'])][ $r['season'] ] = $data;
