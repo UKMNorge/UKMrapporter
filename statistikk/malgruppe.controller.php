@@ -124,7 +124,11 @@ if($TWIG['monstring']->fylke->id != 3) {
 			foreach( $kommune as $k_id => $data ) {
 				$tot_malgruppe = $data['total']['malgruppe'];
 				$tot_deltakere = $data['total']['deltakere'];
-				$dekning   = (100 / $tot_malgruppe ) * $tot_deltakere;
+				if( $tot_malgruppe > 0) {
+					$dekning   = (100 / $tot_malgruppe ) * $tot_deltakere;
+				} else {
+					$dekning = 0;
+				}
 				$dekningsgrad[ "$dekning" ] = $k_id;
 			}
 			
@@ -138,7 +142,8 @@ if($TWIG['monstring']->fylke->id != 3) {
 			
 			foreach( $TWIG['seasons'] as $ssn ) {
 				$val = $kommune[ $dekningsgrad[$top] ][ $ssn ];
-				$malgruppe[ $ssn ]['I snitt beste kommune'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+				if( $val['malgruppe'] > 0)
+					$malgruppe[ $ssn ]['I snitt beste kommune'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 	
 				$val = $kommune[ $dekningsgrad[$min] ][ $ssn ];
 				$malgruppe[ $ssn ]['I snitt dårligste kommune'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
