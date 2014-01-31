@@ -40,7 +40,7 @@
 				</div>
 			</div>
 			
-		
+			{% if monstring.fylke.id != 3 %}
 			<div class="container col-xs-12">
 				<div class="well">
 					{% embed "malgruppe.twig.html" %}{% endembed %}
@@ -49,7 +49,7 @@
 					</div>
 				</div>
 			</div>
-			
+			{% endif %}
 			<div class="container col-xs-12 col-sm-8">
 				<div class="well">
 					{% embed "aldersfordeling.twig.html" %}{% endembed %}
