@@ -62,9 +62,7 @@ if($TWIG['stat_type']=='kommune') {
 		$TWIG['statistikk']['fylket']['kjonnsfordeling_iar'] = $kjonnsfordeling[ $TWIG['season'] ];
 
 } else {
-	$TWIG['error'] = array('header' => 'Statistikk ikke tilgjengelig',
-						   'message'=> 'En systemfeil gjør at det ikke er mulig å beregne statistikk på denne siden. Kontakt UKM Norge'
-						   );
+
 }
 
 

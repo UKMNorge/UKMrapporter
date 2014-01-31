@@ -21,8 +21,9 @@ $monstring->fylke->name = $pl->g('fylke_name');
 $monstring->fylke->id = $pl->g('fylke_id');
 $TWIG['monstring'] = $monstring;
 
-
-if( get_option('site_type') == 'kommune' ) {
+if(false) {
+	$TWIG['stat_type'] = 'land';
+}elseif( get_option('site_type') == 'kommune' ) {
 	$TWIG['stat_type'] = 'kommune';
 
 	$kommuner = $pl->g('kommuner');

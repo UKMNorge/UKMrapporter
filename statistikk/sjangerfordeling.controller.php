@@ -58,9 +58,6 @@ if($TWIG['stat_type']=='kommune') {
 		unset( $TWIG['statistikk']['fylket']['sjangerfordeling_iar']['total_scene'] );
 		
 } else {
-	$TWIG['error'] = array('header' => 'Statistikk ikke tilgjengelig',
-						   'message'=> 'En systemfeil gjør at det ikke er mulig å beregne statistikk på denne siden. Kontakt UKM Norge'
-						   );
 }
 
 

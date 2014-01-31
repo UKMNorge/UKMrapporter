@@ -92,6 +92,58 @@ if($TWIG['stat_type']=='kommune') {
 		}
 
 		// BESTE OG DÅRLIGSTE FYLKE
+		$topbotQry = new SQL("SELECT `k_id`,
+									 `season`,
+									 SUM(`malgruppe`) AS `malgruppe`, 
+									 SUM(`deltakere`) AS `deltakere`
+							   FROM `ukm_statistics_malgruppe`
+							   WHERE `f_id` = '#fylke'
+							   GROUP BY `season`, `k_id`
+							   ORDER BY `k_id`, `season`",
+							 array('fylke' => $TWIG['monstring']->fylke->id)
+							);
+		$topbotRes = $topbotQry->run();
+		while( $r = mysql_fetch_assoc( $topbotRes ) ) {
+			$kommune[ $r['k_id'] ][ $r['season'] ] = array( 'malgruppe' => $r['malgruppe'], 'deltakere' => $r['deltakere'] );
+			$kommune[ $r['k_id'] ][ 'total' ]['malgruppe'] += $r['malgruppe'];
+			$kommune[ $r['k_id'] ][ 'total' ]['deltakere'] += $r['deltakere'];
+		}
+
+		foreach( $kommune as $k_id => $data ) {
+			$tot_malgruppe = $data['total']['malgruppe'];
+			$tot_deltakere = $data['total']['deltakere'];
+			$dekning   = (100 / $tot_malgruppe ) * $tot_deltakere;
+			$dekningsgrad[ "$dekning" ] = $k_id;
+		}
+		
+		$top = max( array_keys( $dekningsgrad) );
+		$min = min( array_keys( $dekningsgrad) );
+		
+		unset( $kommune[ $top ]['total'] );
+		unset( $kommune[ $min ]['total'] );
+		unset( $kommune[ $top ][2009] );
+		unset( $kommune[ $min ][2009] );
+		
+		foreach( $TWIG['seasons'] as $ssn ) {
+			$val = $kommune[ $dekningsgrad[$top] ][ $ssn ];
+			$malgruppe[ $ssn ]['Snitt beste kommune'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+
+			$val = $kommune[ $dekningsgrad[$min] ][ $ssn ];
+			$malgruppe[ $ssn ]['Snitt dårligste kommune'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+		}
+
+		// FJERN 2009
+		unset( $malgruppe[2009] );
+		// SORTER
+		ksort( $malgruppe );
+		// "LAGRE"
+		$TWIG['statistikk']['fylket']['malgruppe'] = $malgruppe;
+
+} else {
+
+
+
+		// BESTE OG DÅRLIGSTE FYLKE
 		$topbotQry = new SQL("SELECT `f_id`,
 									 `season`,
 									 SUM(`malgruppe`) AS `malgruppe`, 
@@ -114,7 +166,7 @@ if($TWIG['stat_type']=='kommune') {
 			$tot_malgruppe = $data['total']['malgruppe'];
 			$tot_deltakere = $data['total']['deltakere'];
 			$dekning   = (100 / $tot_malgruppe ) * $tot_deltakere;
-			$dekningsgrad[ $dekning ] = $f_id;
+			$dekningsgrad[ "$dekning" ] = $f_id;
 		}
 		
 		$top = max( array_keys( $dekningsgrad) );
@@ -125,22 +177,12 @@ if($TWIG['stat_type']=='kommune') {
 		unset( $fylke[ $top ][2009] );
 		unset( $fylke[ $min ][2009] );
 
-		foreach( $fylke[ $top ] as $ssn => $val ) {
-			$malgruppe[ $ssn ][ 'Snitt beste fylke' ] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
-		}		
-		foreach( $fylke[ $min ] as $ssn => $val ) {
-			$malgruppe[ $ssn ][ 'Snitt dårligste fylke' ] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
-		}		
+		foreach( $TWIG['seasons'] as $ssn ) {
+			$val = $fylke[ $dekningsgrad[$top] ][ $ssn ];
+			$malgruppe[ $ssn ]['Snitt beste kommune'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 
-		// FJERN 2009
-		unset( $malgruppe[2009] );
-		// SORTER
-		ksort( $malgruppe );
-		// "LAGRE"
-		$TWIG['statistikk']['fylket']['malgruppe'] = $malgruppe;
+			$val = $fylke[ $dekningsgrad[$min] ][ $ssn ];
+			$malgruppe[ $ssn ]['Snitt dårligste kommune'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+		}
 
-} else {
-	$TWIG['error'] = array('header' => 'Statistikk ikke tilgjengelig',
-						   'message'=> 'En systemfeil gjør at det ikke er mulig å beregne statistikk på denne siden. Kontakt UKM Norge'
-						   );
 }

@@ -87,9 +87,7 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 	ksort( $TWIG['monstringer_stacked'] );
 	
 } else {
-	$TWIG['error'] = array('header' => 'Statistikk ikke tilgjengelig',
-						   'message'=> 'En systemfeil gjør at det ikke er mulig å beregne statistikk på denne siden. Kontakt UKM Norge'
-						   );
+
 }
 
 
