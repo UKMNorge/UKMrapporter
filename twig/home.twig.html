@@ -64,11 +64,11 @@
 					{% if stat_type == 'fylke' %}
 						<h2>Sammenlign videre..</h2>
 						<p>I den nasjonale statistikk kan du se mer om hvordan {{monstring.fylke.name}} er i forhold til andre fylker</p>
-						<p><a href="?page=UKMrapport_admin&stat=fylke">Vis statistikk for {{monstring.fylke.name}}</a></p>
+						<p><a href="?page=UKMrapport_admin&stat=norge">Vis nasjonal statistikk</a></p>
 					{% else %}
 						<h2>Sammenlign videre..</h2>
 						<p>I statistikken for {{monstring.fylke.name}} kan du se mer om hvordan din mønstring er i forhold til andre mønstringer i fylket</p>
-						<p><a href="?page=UKMrapport_admin&stat=fylke">Vis nasjonal statistikk</a></p>
+						<p><a href="?page=UKMrapport_admin&stat=fylke">Vis statistikk for {{monstring.fylke.name}}</a></p>
 					{% endif %}
 				</div>
 			</div>
