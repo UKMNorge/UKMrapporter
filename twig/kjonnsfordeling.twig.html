@@ -1,11 +1,11 @@
 <script type="text/javascript">
   google.load("visualization", "1", {packages:["corechart"]});
-  google.setOnLoadCallback(statistikk_kjonnsfordeling_{{stat.kommune.id}});
+  google.setOnLoadCallback(statistikk_kjonnsfordeling_{{kommune.metadata.id}});
 
-  function statistikk_kjonnsfordeling_{{stat.kommune.id}}() {
+  function statistikk_kjonnsfordeling_{{kommune.metadata.id}}() {
     var data = google.visualization.arrayToDataTable([
       ['Kjønn', 'Antall personer'],
-      {% for kategori, personer in stat.kjonnsfordeling_iar %}
+      {% for kategori, personer in kommune.kjonnsfordeling_iar %}
       ['{{kategori}}',{{personer}}]{{loop.last?'':','}}
       {% endfor %}
     ]);
@@ -14,9 +14,9 @@
       title: 'Kjønnsfordeling',
     };
 
-    var chart = new google.visualization.PieChart(document.getElementById('statistikk_kjonnsfordeling_{{stat.kommune.id}}'));
+    var chart = new google.visualization.PieChart(document.getElementById('statistikk_kjonnsfordeling_{{kommune.metadata.id}}'));
     chart.draw(data, options);
   }
 </script>
 
-<div id="statistikk_kjonnsfordeling_{{stat.kommune.id}}" style="width: 100%; min-height: 300px;"></div>
+<div id="statistikk_kjonnsfordeling_{{kommune.metadata.id}}" style="width: 100%; min-height: 300px;"></div>

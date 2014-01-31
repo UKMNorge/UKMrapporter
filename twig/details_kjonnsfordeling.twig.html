@@ -3,7 +3,7 @@
 {% embed "style.twig.html" %}{% endembed %}
 {% embed "script.twig.html" %}{% endembed %}
 {% embed "nav.twig.html" %}{% endembed %}
-{% for stat in statistikk %}
+{% for kommune in statistikk %}
 	{% embed "separator.twig.html" %}{% endembed %}
 	
 	<div class="container col-xs-12">
@@ -16,11 +16,11 @@
 						<th align="center">Jenter</th>
 					</tr>
 				</thead>
-				{% for ar, data in stat.kjonnsfordeling %}
+				{% for ar, data in kommune.kjonnsfordeling %}
 					<tr>
 						<th>{{ar}}</th>
-						<td align="right">{{data.Gutter}} (<small>{{ stat.kjonnsfordeling_percent[ar]['Gutter'] }} %</small>)</td>
-						<td align="right">{{data.Jenter}} (<small>{{ stat.kjonnsfordeling_percent[ar]['Jenter'] }} %</small>)</td>
+						<td align="right">{{data.Gutter}} (<small>{{ kommune.kjonnsfordeling_percent[ar]['Gutter'] }} %</small>)</td>
+						<td align="right">{{data.Jenter}} (<small>{{ kommune.kjonnsfordeling_percent[ar]['Jenter'] }} %</small>)</td>
 					</tr>
 			      {% endfor %}
 			</table>
@@ -36,12 +36,12 @@
 		<div class="well">
 			<script type="text/javascript">
 			  google.load("visualization", "1", {packages:["corechart"]});
-			  google.setOnLoadCallback(statistikk_details_kjonnsfordeling_{{stat.kommune.id}});
+			  google.setOnLoadCallback(statistikk_details_kjonnsfordeling_{{kommune.metadata.id}});
 			
-			  function statistikk_details_kjonnsfordeling_{{stat.kommune.id}}() {
+			  function statistikk_details_kjonnsfordeling_{{kommune.metadata.id}}() {
 			    var data = google.visualization.arrayToDataTable([
 			      ['År', 'Gutter', 'Jenter'],
-			      {% for ar, data in stat.kjonnsfordeling %}
+			      {% for ar, data in kommune.kjonnsfordeling %}
 			      ['{{ar}}',{{data.Gutter}},{{data.Jenter}}]{{loop.last?'':','}}
 			      {% endfor %}
 			    ]);
@@ -52,12 +52,12 @@
 			      pointSize: 5,
 			    };
 			
-			    var chart = new google.visualization.ColumnChart(document.getElementById('statistikk_details_kjonnsfordeling_{{stat.kommune.id}}'));
+			    var chart = new google.visualization.ColumnChart(document.getElementById('statistikk_details_kjonnsfordeling_{{kommune.metadata.id}}'));
 			    chart.draw(data, options);
 			  }
 			</script>
 			
-			<div id="statistikk_details_kjonnsfordeling_{{stat.kommune.id}}" style="width: 100%; min-height: 300px;"></div>
+			<div id="statistikk_details_kjonnsfordeling_{{kommune.metadata.id}}" style="width: 100%; min-height: 300px;"></div>
 		</div>
 	</div>
 {% endfor %}

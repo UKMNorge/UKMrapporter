@@ -3,7 +3,7 @@
 {% embed "script.twig.html" %}{% endembed %}
 {% embed "nav.twig.html" %}{% endembed %}
 
-{% for stat in statistikk %}
+{% for kommune in statistikk %}
 	{% embed "separator.twig.html" %}{% endembed %}
 	<div class="container col-xs-12">
 		<div class="well">
@@ -21,7 +21,7 @@
 						<th>Over 20</th>
 					</tr>
 				</thead>
-				{% for ar, data in stat.aldersfordeling_total %}
+				{% for ar, data in kommune.aldersfordeling_total %}
 					<tr>
 						<td align="right">{{ar}}</td>
 						<td align="right">{{data.total}}</td>

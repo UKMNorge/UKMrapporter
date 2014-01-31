@@ -4,7 +4,7 @@
 {% embed "script.twig.html" %}{% endembed %}
 {% embed "nav.twig.html" %}{% endembed %}
 
-{% for stat in statistikk %}
+{% for kommune in statistikk %}
 	{% embed "separator.twig.html" %}{% endembed %}
 	<div class="container col-xs-12">
 		<div class="well">
@@ -17,12 +17,12 @@
 						<th align="right">Personer per innslag</th>
 					</tr>
 				</thead>
-				{% for ar, data in stat.deltakere %}
+				{% for ar, data in kommune.deltakere %}
 					<tr>
 						<th>{{ar}}</th>
 						<td align="right">{{data.personer}}</td>
-						<td align="right">{{data.innslag}}</td>
-						<td align="right">{{data.ppi}}</td>
+						<td align="right">{{data.innslag*1}}</td>
+						<td align="right">{{data.ppi*1}}</td>
 					</tr>
 			      {% endfor %}
 			</table>
@@ -40,3 +40,43 @@
 		</div>
 	</div>
 {% endfor %}
+
+{% if stat_type == 'fylke' %}
+<h2>Alle kommuner i {{monstring.name}}</h2>
+	{% for kommune in statistikk_detaljert %}
+		{% embed "separator.twig.html" with {'monstring': {'fellesmonstring':true}} %}{% endembed %}
+		<div class="container col-xs-4">
+			<div class="well">
+				<table class="table table-striped" style="max-width: 400px">
+					<thead>
+						<tr>
+							<th>År</th>
+							<th align="right">Antall personer</th>
+							<th align="right">Antall innslag</th>
+							<th align="right">Personer per innslag</th>
+						</tr>
+					</thead>
+					{% for ar, data in kommune.deltakere %}
+						<tr>
+							<th>{{ar}}</th>
+							<td align="right">{{data.personer}}</td>
+							<td align="right">{{data.innslag*1}}</td>
+							<td align="right">{{data.ppi*1}}</td>
+						</tr>
+				      {% endfor %}
+				</table>
+		
+				<div class="row pull-right">
+					<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat={{home}}">Tilbake til oversikt</a>
+				</div>
+		
+			</div>
+		</div>
+		
+		<div class="container col-xs-8">
+			<div class="well">
+				{% embed "deltakere.twig.html" %}{% endembed %}	
+			</div>
+		</div>
+	{% endfor %}
+{% endif %}

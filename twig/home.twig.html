@@ -1,66 +1,73 @@
-<h2>Statistikk for {{monstring.name}}</h2>
-{% embed "style.twig.html" %}{% endembed %}
-{% embed "script.twig.html" %}{% endembed %}
-{% embed "nav.twig.html" %}{% endembed %}
-
-{% for stat in statistikk %}
-	<div style="margin-right: 30px;">
-	{% embed "separator.twig.html" %}{% endembed %}
+{% if error is defined %} 
+	<div class="alert alert-danger">
+		<h4>{{error.header}}</h4>
+		<p>{{error.message}}</p>
 	</div>
-	<div class="statistikksenter" style="margin-right: 30px;">
-		<div class="container col-xs-12">
-			<div class="well">
-				{% embed "deltakere.twig.html" %}{% endembed %}
-				<div class="row pull-right">
-					<a href="?page=UKMrapport_admin&stat=details_deltakere&home={{home}}"class="btn btn-sm btn-default">Vis detaljer</a>
-				</div>
-			</div>
-		</div>
-		
-		<div class="container col-xs-12 col-sm-8">
-			<div class="well">
-				{% embed "sjangerfordeling.twig.html" %}{% endembed %}
-				<div class="row pull-right">
-					<a href="?page=UKMrapport_admin&stat=details_sjangerfordeling&home={{home}}" class="btn btn-sm btn-default">Vis detaljer / historisk utvikling</a>
-				</div>
-			</div>
-		</div>
-		<div class="container col-xs-12 col-sm-4">
-			<div class="well">
-				{% embed "kjonnsfordeling.twig.html" %}{% endembed %}
-				<div class="row pull-right">
-					<a href="?page=UKMrapport_admin&stat=details_kjonnsfordeling&home={{home}}" class="btn btn-sm btn-default">Vis historisk utvikling</a>
-				</div>
-			</div>
-		</div>
-		
+{% else %}
+	<h2>Statistikk for {{monstring.name}}</h2>
+	{% embed "style.twig.html" %}{% endembed %}
+	{% embed "script.twig.html" %}{% endembed %}
+	{% embed "nav.twig.html" %}{% endembed %}
 	
-		<div class="container col-xs-12">
-			<div class="well">
-				{% embed "malgruppe.twig.html" %}{% endembed %}
-				<div class="row pull-right">
-					<a href="?page=UKMrapport_admin&stat=details_malgruppe&home={{home}}"class="btn btn-sm btn-default">Vis detaljer</a>
+	{% for kommune in statistikk %}
+		<div style="margin-right: 30px;">
+		{% embed "separator.twig.html" %}{% endembed %}
+		</div>
+		<div class="statistikksenter" style="margin-right: 30px;">
+			<div class="container col-xs-12">
+				<div class="well">
+					{% embed "deltakere.twig.html" %}{% endembed %}
+					<div class="row pull-right">
+						<a href="?page=UKMrapport_admin&stat=details_deltakere&home={{home}}"class="btn btn-sm btn-default">Vis detaljer</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="container col-xs-12 col-sm-8">
+				<div class="well">
+					{% embed "sjangerfordeling.twig.html" %}{% endembed %}
+					<div class="row pull-right">
+						<a href="?page=UKMrapport_admin&stat=details_sjangerfordeling&home={{home}}" class="btn btn-sm btn-default">Vis detaljer / historisk utvikling</a>
+					</div>
+				</div>
+			</div>
+			<div class="container col-xs-12 col-sm-4">
+				<div class="well">
+					{% embed "kjonnsfordeling.twig.html" %}{% endembed %}
+					<div class="row pull-right">
+						<a href="?page=UKMrapport_admin&stat=details_kjonnsfordeling&home={{home}}" class="btn btn-sm btn-default">Vis historisk utvikling</a>
+					</div>
+				</div>
+			</div>
+			
+		
+			<div class="container col-xs-12">
+				<div class="well">
+					{% embed "malgruppe.twig.html" %}{% endembed %}
+					<div class="row pull-right">
+						<a href="?page=UKMrapport_admin&stat=details_malgruppe&home={{home}}"class="btn btn-sm btn-default">Vis detaljer</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="container col-xs-12 col-sm-8">
+				<div class="well">
+					{% embed "aldersfordeling.twig.html" %}{% endembed %}
+					<div class="row pull-right">
+						<a href="?page=UKMrapport_admin&stat=details_aldersfordeling&home={{home}}"class="btn btn-sm btn-default">Vis detaljer</a>
+					</div>
+				</div>	
+			</div>
+			
+			<div class="container col-xs-12 col-sm-4">
+				<div class="well">
+					<h2>Sammenlign videre..</h2>
+					<p>I statistikken for {{monstring.fylke.name}} kan du se mer om hvordan din mønstring er i forhold til andre mønstringer i fylket</p>
+					<p><a href="?page=UKMrapport_admin&stat=fylke">Vis statistikk for {{monstring.fylke.name}}</a></p>
+		
 				</div>
 			</div>
 		</div>
-		
-		<div class="container col-xs-12 col-sm-8">
-			<div class="well">
-				{% embed "aldersfordeling.twig.html" %}{% endembed %}
-				<div class="row pull-right">
-					<a href="?page=UKMrapport_admin&stat=details_aldersfordeling&home={{home}}"class="btn btn-sm btn-default">Vis detaljer</a>
-				</div>
-			</div>	
-		</div>
-		
-		<div class="container col-xs-12 col-sm-4">
-			<div class="well">
-				<h2>Sammenlign videre..</h2>
-				<p>I statistikken for {{monstring.fylke.name}} kan du se mer om hvordan din mønstring er i forhold til andre mønstringer i fylket</p>
-				<p><a href="?page=UKMrapport_admin&stat=fylke">Vis statistikk for {{monstring.fylke.name}}</a></p>
-	
-			</div>
-		</div>
-	</div>
-	<div class="clearfix pagebreak"></div>
-{% endfor %}
+		<div class="clearfix pagebreak"></div>
+	{% endfor %}
+{% endif %}

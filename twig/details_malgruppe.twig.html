@@ -3,7 +3,7 @@
 {% embed "style.twig.html" %}{% endembed %}
 {% embed "script.twig.html" %}{% endembed %}
 {% embed "nav.twig.html" %}{% endembed %}
-{% for stat in statistikk %}
+{% for kommune in statistikk %}
 	{% embed "separator.twig.html" %}{% endembed %}
 	
 	<div class="container col-xs-12">
@@ -12,12 +12,12 @@
 				<thead>
 					<tr>
 						<th></th>
-					{% for kategori, data in stat.malgruppe|first %}
+					{% for kategori, data in kommune.malgruppe|first %}
 						<th style="text-align:right;" width="18%">{{kategori}}</th>
 					{% endfor %}
 					</tr>
 				</thead>
-				{% for ar, data in stat.malgruppe %}
+				{% for ar, data in kommune.malgruppe %}
 					<tr>
 					    <th>{{ar}}</th>
 				    	{% for gruppe, antall in data %} 
