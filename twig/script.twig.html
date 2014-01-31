@@ -23,7 +23,18 @@ jQuery(document).ready(function () {
 
 			if (typeof statistikk_details_sjangerfordeling_{{kommune.metadata.id}} == 'function')
 				statistikk_details_sjangerfordeling_{{kommune.metadata.id}}();
+				
+			if (typeof statistikk_monstringer == 'function' )
+				statistikk_monstringer();
 		{% endfor %}
+		
+		{% if stat_type == 'fylke' %}
+			{% for kommune in statistikk_detaljert %}
+				if (typeof statistikk_deltakere_{{kommune.metadata.id}} == 'function')
+					statistikk_deltakere_{{kommune.metadata.id}}();
+			{% endfor %}
+		{% endif %}
+
     });
 });
 </script>
