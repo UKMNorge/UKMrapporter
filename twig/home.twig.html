@@ -65,11 +65,11 @@
 				<div class="container col-xs-12 col-sm-4">
 					<div class="well">
 						{% if stat_type == 'fylke' %}
-							<h2>Sammenlign videre..</h2>
+							<h2>Nasjonal statistikk</h2>
 							<p>I den nasjonale statistikk kan du se mer om hvordan {{monstring.fylke.name}} er i forhold til andre fylker</p>
 							<p><a href="?page=UKMrapport_admin&stat=home&fylke={{stat_fylke}}&norge=true">Vis nasjonal statistikk</a></p>
 						{% else %}
-							<h2>Sammenlign videre..</h2>
+							<h2>Statistikk for {{monstring.fylke.name}}</h2>
 							<p>I statistikken for {{monstring.fylke.name}} kan du se mer om hvordan din mønstring er i forhold til andre mønstringer i fylket</p>
 							<p><a href="?page=UKMrapport_admin&stat=home&fylke={{monstring.fylke.id}}">Vis statistikk for {{monstring.fylke.name}}</a></p>
 						{% endif %}

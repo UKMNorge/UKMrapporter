@@ -49,7 +49,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							  );
 			$fylkeRES = $fylkeQRY->run();
 			while( $r = mysql_fetch_assoc( $fylkeRES ) ) {
-				$malgruppe[ $r['season'] ][ 'Snitt '. $TWIG['monstring']->fylke->name ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
+				$malgruppe[ $r['season'] ][ 'Utvikling '. $TWIG['monstring']->fylke->name ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
 			}
 			
 			// SNITT NASJONALT
@@ -59,7 +59,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							  );
 			$nasjonalRES = $nasjonalQRY->run();
 			while( $r = mysql_fetch_assoc( $nasjonalRES ) ) {
-				$malgruppe[ $r['season'] ][ 'Snitt nasjonalt' ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
+				$malgruppe[ $r['season'] ][ 'Utvikling nasjonalt' ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
 			}
 			
 			// FJERN 2009
@@ -79,7 +79,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							  );
 			$fylkeRES = $fylkeQRY->run();
 			while( $r = mysql_fetch_assoc( $fylkeRES ) ) {
-				$malgruppe[ $r['season'] ][ 'Snitt '. $TWIG['monstring']->fylke->name ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
+				$malgruppe[ $r['season'] ][ 'Utvikling '. $TWIG['monstring']->fylke->name ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
 			}
 			
 			// SNITT NASJONALT
@@ -89,7 +89,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							  );
 			$nasjonalRES = $nasjonalQRY->run();
 			while( $r = mysql_fetch_assoc( $nasjonalRES ) ) {
-				$malgruppe[ $r['season'] ][ 'Snitt nasjonalt' ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
+				$malgruppe[ $r['season'] ][ 'Utvikling nasjonalt' ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
 			}
 	
 			// BESTE OG DÅRLIGSTE KOMMUNE
@@ -119,6 +119,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 				}
 				$kommune[ $r['k_id'] ][ 'total' ]['malgruppe'] += $r['malgruppe'];
 				$kommune[ $r['k_id'] ][ 'total' ]['deltakere'] += $r['deltakere'];
+				$kommunenavn[ $r['k_id'] ] = utf8_encode( $r['name'] );
 			}
 	
 			foreach( $kommune as $k_id => $data ) {
@@ -143,11 +144,11 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 			foreach( $TWIG['seasons'] as $ssn ) {
 				$val = $kommune[ $dekningsgrad[$top] ][ $ssn ];
 				if( $val['malgruppe'] > 0)
-					$malgruppe[ $ssn ]['I snitt beste kommune'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+					$malgruppe[ $ssn ]['Kommune med best dekning i perioden('. $kommunenavn[ $dekningsgrad[$top] ].')'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 	
 				$val = $kommune[ $dekningsgrad[$min] ][ $ssn ];
 				if( $val['malgruppe'] > 0)
-					$malgruppe[ $ssn ]['I snitt dårligste kommune'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+					$malgruppe[ $ssn ]['Kommune med dårligst dekning i perioden ('. $kommunenavn[ $dekningsgrad[$min] ].')'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 			}
 	
 			// FJERN 2009
@@ -165,7 +166,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							  );
 			$nasjonalRES = $nasjonalQRY->run();
 			while( $r = mysql_fetch_assoc( $nasjonalRES ) ) {
-				$malgruppe[ $r['season'] ][ 'Snitt nasjonalt' ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
+				$malgruppe[ $r['season'] ][ 'Utvikling nasjonalt' ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
 			}
 
 			// BESTE OG DÅRLIGSTE FYLKE
@@ -187,6 +188,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 				$fylke[ $r['f_id'] ][ $r['season'] ] = array( 'malgruppe' => $r['malgruppe'], 'deltakere' => $r['deltakere'] );
 				$fylke[ $r['f_id'] ][ 'total' ]['malgruppe'] += $r['malgruppe'];
 				$fylke[ $r['f_id'] ][ 'total' ]['deltakere'] += $r['deltakere'];
+				$fylkenavn[ $r['f_id'] ] = utf8_encode($r['name']);
 							
 				if( $r['malgruppe'] > 0 ) {
 					$fylke_dekning = round((100/$r['malgruppe'])*$r['deltakere'],2);
@@ -216,10 +218,10 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 	
 			foreach( $TWIG['seasons'] as $ssn ) {
 				$val = $fylke[ $dekningsgrad[$top] ][ $ssn ];
-				$malgruppe[ $ssn ]['I snitt beste fylke'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+				$malgruppe[ $ssn ]['Fylke med best dekning i perioden ('.$fylkenavn[ $dekningsgrad[$top] ].')'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 	
 				$val = $fylke[ $dekningsgrad[$min] ][ $ssn ];
-				$malgruppe[ $ssn ]['I snitt dårligste fylke'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+				$malgruppe[ $ssn ]['Fylke med dårligst dekning i perioden ('.$fylkenavn[ $dekningsgrad[$min] ].')'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 			}
 			// FJERN 2009
 			unset( $malgruppe[2009] );
