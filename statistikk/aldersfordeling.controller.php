@@ -37,9 +37,27 @@ if($TWIG['stat_type']=='kommune') {
 		$TWIG['statistikk']['fylket']['aldersfordeling'] = $aldersfordeling;
 		$TWIG['statistikk']['fylket']['aldersfordeling_total'] = $aldersfordeling_total;
 	}
+} elseif( $TWIG['stat_type'] == 'land' ) {
+	$persQry = new SQL("SELECT `season`,`age`, COUNT(`stat_id`) AS `personer` 
+						FROM `ukm_statistics`
+						GROUP BY `age`, `season`",
+					   array('kommune' => $kommune_id)
+					  );
+	$aldersfordeling = calc_aldersfordeling( $TWIG['seasons'], $persQry );
+	$aldersfordeling_total = $aldersfordeling;
+	
+	foreach( $aldersfordeling as $ssn => $data ) {
+		unset( $data['total'] );		
+		$aldersfordeling[$ssn] = $data;
+	}
+	$TWIG['statistikk']['nasjonalt']['aldersfordeling'] = $aldersfordeling;
+	$TWIG['statistikk']['nasjonalt']['aldersfordeling_total'] = $aldersfordeling_total;
 
 } else {
+	$TWIG['error'] = array('header' => 'Beklager, en feil har oppstått',
+						   'message' => 'Systemet vet ikke hvem du etterspør statistikk for. Vennligst prøv på nytt. Opplever du samme feil igjen, ta kontakt med UKM Norge');
 }
+
 
 
 

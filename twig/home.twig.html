@@ -5,6 +5,9 @@
 	</div>
 {% else %}
 	<h2>Statistikk for {{monstring.name}}</h2>
+	{% if stat_type != home %}
+		<a href="?page=UKMrapport_admin&stat=home&fylke=false">Tilbake til egen statistikk</a>
+	{% endif %}
 	{% embed "style.twig.html" %}{% endembed %}
 	{% embed "script.twig.html" %}{% endembed %}
 	{% embed "nav.twig.html" %}{% endembed %}
@@ -18,7 +21,7 @@
 				<div class="well">
 					{% embed "deltakere.twig.html" %}{% endembed %}
 					<div class="row pull-right">
-						<a href="?page=UKMrapport_admin&stat=details_deltakere&home={{home}}"class="btn btn-sm btn-default">Vis detaljer</a>
+						<a href="?page=UKMrapport_admin&stat=details_deltakere&fylke={{stat_fylke}}&norge={{stat_norge}}"class="btn btn-sm btn-default">Vis detaljer</a>
 					</div>
 				</div>
 			</div>
@@ -27,7 +30,7 @@
 				<div class="well">
 					{% embed "sjangerfordeling.twig.html" %}{% endembed %}
 					<div class="row pull-right">
-						<a href="?page=UKMrapport_admin&stat=details_sjangerfordeling&home={{home}}" class="btn btn-sm btn-default">Vis detaljer / historisk utvikling</a>
+						<a href="?page=UKMrapport_admin&stat=details_sjangerfordeling&fylke={{stat_fylke}}&norge={{stat_norge}}" class="btn btn-sm btn-default">Vis detaljer / historisk utvikling</a>
 					</div>
 				</div>
 			</div>
@@ -35,7 +38,7 @@
 				<div class="well">
 					{% embed "kjonnsfordeling.twig.html" %}{% endembed %}
 					<div class="row pull-right">
-						<a href="?page=UKMrapport_admin&stat=details_kjonnsfordeling&home={{home}}" class="btn btn-sm btn-default">Vis historisk utvikling</a>
+						<a href="?page=UKMrapport_admin&stat=details_kjonnsfordeling&fylke={{stat_fylke}}&norge={{stat_norge}}" class="btn btn-sm btn-default">Vis historisk utvikling</a>
 					</div>
 				</div>
 			</div>
@@ -45,40 +48,41 @@
 				<div class="well">
 					{% embed "malgruppe.twig.html" %}{% endembed %}
 					<div class="row pull-right">
-						<a href="?page=UKMrapport_admin&stat=details_malgruppe&home={{home}}"class="btn btn-sm btn-default">Vis detaljer</a>
+						<a href="?page=UKMrapport_admin&stat=details_malgruppe&fylke={{stat_fylke}}&norge={{stat_norge}}"class="btn btn-sm btn-default">Vis detaljer</a>
 					</div>
 				</div>
 			</div>
 			{% endif %}
-			<div class="container col-xs-12 col-sm-8">
+			<div class="container col-xs-12 {% if stat_type != 'land' %}col-sm-8{% endif %}">
 				<div class="well">
 					{% embed "aldersfordeling.twig.html" %}{% endembed %}
 					<div class="row pull-right">
-						<a href="?page=UKMrapport_admin&stat=details_aldersfordeling&home={{home}}"class="btn btn-sm btn-default">Vis detaljer</a>
+						<a href="?page=UKMrapport_admin&stat=details_aldersfordeling&fylke={{stat_fylke}}&norge={{stat_norge}}"class="btn btn-sm btn-default">Vis detaljer</a>
 					</div>
 				</div>	
 			</div>
-			
-			<div class="container col-xs-12 col-sm-4">
-				<div class="well">
-					{% if stat_type == 'fylke' %}
-						<h2>Sammenlign videre..</h2>
-						<p>I den nasjonale statistikk kan du se mer om hvordan {{monstring.fylke.name}} er i forhold til andre fylker</p>
-						<p><a href="?page=UKMrapport_admin&stat=norge">Vis nasjonal statistikk</a></p>
-					{% else %}
-						<h2>Sammenlign videre..</h2>
-						<p>I statistikken for {{monstring.fylke.name}} kan du se mer om hvordan din mønstring er i forhold til andre mønstringer i fylket</p>
-						<p><a href="?page=UKMrapport_admin&stat=fylke">Vis statistikk for {{monstring.fylke.name}}</a></p>
-					{% endif %}
+			{% if stat_type != 'land' %}
+				<div class="container col-xs-12 col-sm-4">
+					<div class="well">
+						{% if stat_type == 'fylke' %}
+							<h2>Sammenlign videre..</h2>
+							<p>I den nasjonale statistikk kan du se mer om hvordan {{monstring.fylke.name}} er i forhold til andre fylker</p>
+							<p><a href="?page=UKMrapport_admin&stat=home&fylke={{stat_fylke}}&norge=true">Vis nasjonal statistikk</a></p>
+						{% else %}
+							<h2>Sammenlign videre..</h2>
+							<p>I statistikken for {{monstring.fylke.name}} kan du se mer om hvordan din mønstring er i forhold til andre mønstringer i fylket</p>
+							<p><a href="?page=UKMrapport_admin&stat=home&fylke={{monstring.fylke.id}}">Vis statistikk for {{monstring.fylke.name}}</a></p>
+						{% endif %}
+					</div>
 				</div>
-			</div>
+			{% endif %}
 			
-			{% if stat_type == 'fylke' %}
+			{% if stat_type == 'fylke' or stat_type == 'land' %}
 			<div class="container col-xs-12">
 				<div class="well">
 					{% embed "monstringer_stacked.twig.html" %}{% endembed %}
 					<div class="row pull-right">
-						<a href="?page=UKMrapport_admin&stat=details_deltakere&home={{home}}"class="btn btn-sm btn-default">Vis detaljer</a>
+						<a href="?page=UKMrapport_admin&stat=details_deltakere&home=home&fylke={{stat_fylke}}&norge={{stat_norge}}"class="btn btn-sm btn-default">Vis detaljer</a>
 					</div>
 				</div>	
 			</div>

@@ -28,7 +28,7 @@
 			</table>
 	
 			<div class="row pull-right">
-				<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat={{home}}">Tilbake til oversikt</a>
+				<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat=home&fylke={{stat_fylke}}&norge={{stat_norge}}">Tilbake til oversikt</a>
 			</div>
 	
 		</div>
@@ -60,6 +60,35 @@
 								<th>{{kommune}}</th>
 								{% for season, details in data %}
 								<td>{{details.dekningsgrad}}%</td>
+								{% endfor %}
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	{% endif %}
+
+	{% if stat_type == 'land' %}
+		<h2>Alle fylker</h2>
+		
+		<div class="container col-xs-12">
+			<div class="well">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th></th>
+							{% for ssn in seasons %}
+							<th>{{ssn}}</th>
+							{% endfor %}
+						</tr>
+					</thead>
+					<tbody>
+						{% for fylke, data in dekningsgrad %}
+							<tr>
+								<th>{{fylke}}</th>
+								{% for dekningsgrad in data %}
+								<td>{{dekningsgrad}}%</td>
 								{% endfor %}
 							</tr>
 						{% endfor %}

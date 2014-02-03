@@ -28,7 +28,7 @@
 			</table>
 	
 			<div class="row pull-right">
-				<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat={{home}}">Tilbake til oversikt</a>
+				<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat=home&fylke={{stat_fylke}}&norge={{stat_norge}}">Tilbake til oversikt</a>
 			</div>
 	
 		</div>
@@ -67,7 +67,7 @@
 				</table>
 		
 				<div class="row pull-right">
-					<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat={{home}}">Tilbake til oversikt</a>
+					<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat=home&fylke={{stat_fylke}}&norge={{stat_norge}}">Tilbake til oversikt</a>
 				</div>
 		
 			</div>
@@ -76,6 +76,46 @@
 		<div class="container col-xs-12 col-sm-6 col-md-8">
 			<div class="well">
 				{% embed "deltakere.twig.html" %}{% endembed %}	
+			</div>
+		</div>
+	{% endfor %}
+{% endif %}
+
+{% if stat_type == 'land' %}
+<h2>Alle fylker</h2>
+	{% for fylke, details in statistikk_detaljert %}
+		{% embed "separator.twig.html" with {'monstring': {'fellesmonstring':true}, 'kommune': {'metadata': {'name': fylke}}} %}{% endembed %}
+		<div class="container col-xs-12 col-sm-6 col-md-4">
+			<div class="well">
+				<table class="table table-striped" style="max-width: 400px">
+					<thead>
+						<tr>
+							<th>År</th>
+							<th align="right">Antall personer</th>
+							<th align="right">Antall innslag</th>
+							<th align="right">Personer per innslag</th>
+						</tr>
+					</thead>
+					{% for ar, data in details %}
+						<tr>
+							<th>{{ar}}</th>
+							<td align="right">{{data.personer}}</td>
+							<td align="right">{{data.innslag*1}}</td>
+							<td align="right">{{data.ppi*1}}</td>
+						</tr>
+				      {% endfor %}
+				</table>
+		
+				<div class="row pull-right">
+					<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat=home&fylke={{stat_fylke}}&norge={{stat_norge}}">Tilbake til oversikt</a>
+				</div>
+		
+			</div>
+		</div>
+		
+		<div class="container col-xs-12 col-sm-6 col-md-8">
+			<div class="well">
+				{% embed "deltakere.twig.html" with { 'kommune': {'metadata': {'id': loop.index}, 'deltakere': details} } %}{% endembed %}	
 			</div>
 		</div>
 	{% endfor %}

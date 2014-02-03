@@ -56,8 +56,34 @@ if($TWIG['stat_type']=='kommune') {
 		// SKIP TOTALS @ OVERVIEW
 		unset( $TWIG['statistikk']['fylket']['sjangerfordeling_iar']['total'] );
 		unset( $TWIG['statistikk']['fylket']['sjangerfordeling_iar']['total_scene'] );
+} elseif( $TWIG['stat_type'] == 'land') {
+		$raw = array();
+		// PERSONER
+		$persQry = new SQL("SELECT `season`, `stat`.`bt_id`, `type`.`bt_name`, `subcat`, COUNT(`stat_id`) AS `personer`
+							FROM `ukm_statistics` AS `stat`
+							LEFT JOIN `smartukm_band_type` AS `type` ON (`type`.`bt_id` = `stat`.`bt_id`)
+							GROUP BY `stat`.`bt_id`, `subcat`, `season`",
+						   array('fylke' => $TWIG['monstring']->fylke->id)
+						  );
+		$raw = calc_sjangerfordeling( 'nasjonalt', $TWIG['missing'], $persQry );
+		
+		$sjangerfordeling = $raw;
+		$sjangerfordeling_iar = $raw[ $TWIG['season'] ];
+		
+		unset( $sjangerfordeling[2009] );
+		
+		$TWIG['statistikk']['nasjonalt']['sjangerfordeling'] = $sjangerfordeling;
+		ksort( $TWIG['statistikk']['nasjonalt']['sjangerfordeling'] );
+		
+		$TWIG['statistikk']['nasjonalt']['sjangerfordeling_iar'] = $sjangerfordeling_iar;
+		
+		// SKIP TOTALS @ OVERVIEW
+		unset( $TWIG['statistikk']['nasjonalt']['sjangerfordeling_iar']['total'] );
+		unset( $TWIG['statistikk']['nasjonalt']['sjangerfordeling_iar']['total_scene'] );
 		
 } else {
+	$TWIG['error'] = array('header' => 'Beklager, en feil har oppstått',
+						   'message' => 'Systemet vet ikke hvem du etterspør statistikk for. Vennligst prøv på nytt. Opplever du samme feil igjen, ta kontakt med UKM Norge');
 }
 
 

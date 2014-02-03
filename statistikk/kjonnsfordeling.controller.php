@@ -60,11 +60,32 @@ if($TWIG['stat_type']=='kommune') {
 		$TWIG['statistikk']['fylket']['kjonnsfordeling'] = $kjonnsfordeling;
 		$TWIG['statistikk']['fylket']['kjonnsfordeling_percent'] = $kjonnsfordeling_percent;
 		$TWIG['statistikk']['fylket']['kjonnsfordeling_iar'] = $kjonnsfordeling[ $TWIG['season'] ];
+} elseif( $TWIG['stat_type'] == 'land') {
+	// PERSONER
+	$persQry = new SQL("SELECT `season`,`sex`, COUNT(`stat_id`) AS `personer` 
+						FROM `ukm_statistics`
+						GROUP BY `sex`, `season`"
+					  );
+	$kjonnsfordeling = calc_kjonnsfordeling( 'nasjonalt', $TWIG['missing'], $persQry );
+	
+	foreach( $kjonnsfordeling as $ssn => $num ) {
+		$total = $num['Gutter'] + $num['Jenter'];
+		$oneperson = $total > 0 ? (100 / $total) : 1;
+		$kjonnsfordeling_percent[ $ssn ] = array( 'Gutter' => round( $num['Gutter']*$oneperson, 1), 'Jenter' => round( $num['Jenter']*$oneperson, 1));
+	}
 
+	unset( $kjonnsfordeling[2009] );
+	unset( $kjonnsfordeling_percent[2009]);
+	ksort( $kjonnsfordeling );
+	ksort( $kjonnsfordeling_percent );
+
+	$TWIG['statistikk']['nasjonalt']['kjonnsfordeling'] = $kjonnsfordeling;
+	$TWIG['statistikk']['nasjonalt']['kjonnsfordeling_percent'] = $kjonnsfordeling_percent;
+	$TWIG['statistikk']['nasjonalt']['kjonnsfordeling_iar'] = $kjonnsfordeling[ $TWIG['season'] ];
 } else {
-
+	$TWIG['error'] = array('header' => 'Beklager, en feil har oppstått',
+						   'message' => 'Systemet vet ikke hvem du etterspør statistikk for. Vennligst prøv på nytt. Opplever du samme feil igjen, ta kontakt med UKM Norge');
 }
-
 
 function calc_kjonnsfordeling( $kommune_id, $missing, $persQry ) {
 	$kjonnsfordeling = array();

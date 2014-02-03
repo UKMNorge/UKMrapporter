@@ -1,5 +1,5 @@
 <?php
-if($TWIG['monstring']->fylke->id != 3) {
+if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 	if($TWIG['stat_type']=='kommune') {
 		foreach($TWIG['kommuner'] as $kommune_name => $kommune_id){
 			$malgruppe = array();
@@ -157,16 +157,25 @@ if($TWIG['monstring']->fylke->id != 3) {
 			// "LAGRE"
 			$TWIG['statistikk']['fylket']['malgruppe'] = $malgruppe;
 	
-	} else {
-	
-	
-	
+		} elseif( $TWIG['stat_type'] == 'land') {
+			// SNITT NASJONALT
+			$nasjonalQRY = new SQL("SELECT `season`,SUM(`malgruppe`) AS `malgruppe`, SUM(`deltakere`) AS `deltakere`
+							   FROM `ukm_statistics_malgruppe`
+							   GROUP BY `season`"
+							  );
+			$nasjonalRES = $nasjonalQRY->run();
+			while( $r = mysql_fetch_assoc( $nasjonalRES ) ) {
+				$malgruppe[ $r['season'] ][ 'Snitt nasjonalt' ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
+			}
+
 			// BESTE OG DÅRLIGSTE FYLKE
 			$topbotQry = new SQL("SELECT `f_id`,
+										 `name`,
 										 `season`,
 										 SUM(`malgruppe`) AS `malgruppe`, 
 										 SUM(`deltakere`) AS `deltakere`
 								   FROM `ukm_statistics_malgruppe`
+								   LEFT JOIN `smartukm_fylke` AS `f` ON (`f`.`id` = `f_id`)
 								   WHERE `f_id` != 3
 								   AND	`f_id` < 21
 								   GROUP BY `season`, `f_id`
@@ -178,6 +187,16 @@ if($TWIG['monstring']->fylke->id != 3) {
 				$fylke[ $r['f_id'] ][ $r['season'] ] = array( 'malgruppe' => $r['malgruppe'], 'deltakere' => $r['deltakere'] );
 				$fylke[ $r['f_id'] ][ 'total' ]['malgruppe'] += $r['malgruppe'];
 				$fylke[ $r['f_id'] ][ 'total' ]['deltakere'] += $r['deltakere'];
+							
+				if( $r['malgruppe'] > 0 ) {
+					$fylke_dekning = round((100/$r['malgruppe'])*$r['deltakere'],2);
+				} else {
+					$fylke_dekning = null;
+				}
+				
+				if($r['season'] != 2009) {
+					$TWIG['dekningsgrad'][ utf8_encode($r['name'])][ $r['season'] ] = $fylke_dekning;
+				}
 			}
 			
 			foreach( $fylke as $f_id => $data ) {
@@ -202,6 +221,16 @@ if($TWIG['monstring']->fylke->id != 3) {
 				$val = $fylke[ $dekningsgrad[$min] ][ $ssn ];
 				$malgruppe[ $ssn ]['I snitt dårligste fylke'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 			}
-	
+			// FJERN 2009
+			unset( $malgruppe[2009] );
+			// SORTER
+			ksort( $malgruppe );
+			ksort( $TWIG['dekningsgrad'] );
+			
+			// "LAGRE"
+			$TWIG['statistikk']['nasjonalt']['malgruppe'] = $malgruppe;
+	} else {
+		$TWIG['error'] = array('header' => 'Beklager, en feil har oppstått',
+							   'message' => 'Systemet vet ikke hvem du etterspør statistikk for. Vennligst prøv på nytt. Opplever du samme feil igjen, ta kontakt med UKM Norge');
 	}
 }

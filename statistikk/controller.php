@@ -8,24 +8,71 @@ for($i=2010; $i<=$TWIG['season']; $i++) {
 	$TWIG['seasons'][] = $i;
 }
 
+$TWIG['home'] = get_option('site_type');
 
-$pl = new monstring( get_option( 'pl_id' ) );
-$monstring = new stdClass();
-$monstring->name = $pl->g('pl_name');
-$monstring->season = $pl->g('season');
-$monstring->storrelse = 'liten';
-$monstring->fellesmonstring = $pl->fellesmonstring();
+if( (get_option('site_type') == 'fylke' && !isset( $_GET['fylke'] ) ) || 
+	(get_option('site_type') == 'fylke' && isset( $_GET['fylke'] ) && $_GET['fylke'] == 'false' ) ){
+	$pl = new monstring( get_option('pl_id') );
+	$_GET['fylke'] = $pl->g('fylke_id');
+}
 
-$monstring->fylke = new StdClass();
-$monstring->fylke->name = $pl->g('fylke_name');
-$monstring->fylke->id = $pl->g('fylke_id');
-$TWIG['monstring'] = $monstring;
+$_GET['fylke'] = isset($_GET['fylke']) ? $_GET['fylke'] : false;
+$_GET['norge'] = isset($_GET['norge']) ? ($_GET['norge']=='true' ? 'true' : 'false') : 'false';
 
-if(false) {
+$TWIG['stat_fylke'] = $_GET['fylke'];
+$TWIG['stat_norge'] = $_GET['norge'];
+
+if($_GET['norge'] == 'true'){
 	$TWIG['stat_type'] = 'land';
-}elseif( get_option('site_type') == 'kommune' ) {
+	$TWIG['pl_id'] = false;
+}elseif( is_numeric($_GET['fylke']) ) {
+	$TWIG['stat_type'] = 'fylke';
+	$pl = new fylke_monstring( $_GET['fylke'], $TWIG['season'] );
+	$pl = $pl->monstring_get();
+	$TWIG['pl_id'] = $pl->g('pl_id');
+} else {
 	$TWIG['stat_type'] = 'kommune';
+	$TWIG['pl_id'] = get_option( 'pl_id' );
+}
 
+$monstring = new stdClass();
+
+if( $TWIG['pl_id'] ) {
+	$pl = new monstring( $TWIG['pl_id'] );
+	$monstring->name = $pl->g('pl_name');
+	$monstring->season = $pl->g('season');
+	$monstring->storrelse = 'liten';
+	$monstring->fellesmonstring = $pl->fellesmonstring();
+	
+	$monstring->fylke = new StdClass();
+	$monstring->fylke->name = $pl->g('fylke_name');
+	$monstring->fylke->id = $pl->g('fylke_id');
+}
+
+
+if($TWIG['stat_type'] == 'land') {
+	$monstring->name = 'Norge';
+	$monstring->season = get_option('season');
+	$TWIG['stat_type'] = 'land';
+
+	// MISSING
+	
+	$missingQry = new SQL("SELECT `season`,
+								  SUM(`pl_missing`) AS `missing`
+						   FROM `smartukm_place`
+						   WHERE `season` > 0
+						   GROUP BY `season`");
+	$missingRes = $missingQry->run();
+	while( $r = mysql_fetch_assoc( $missingRes ) ) {
+		$TWIG['missing'][ 'nasjonalt' ][ $r['season'] ] = $r['missing'];
+	}
+	
+
+/*
+	$TWIG['stat_type'] = 'land';
+	$TWIG['error'] = array('header' => 'Nasjonal statistikk', 'message' => '... kommer snart!');
+*/
+}elseif( $TWIG['stat_type'] == 'kommune' ) {
 	$kommuner = $pl->g('kommuner');
 	
 	foreach( $kommuner as $kommune ) {
@@ -36,9 +83,7 @@ if(false) {
 	ksort($TWIG['kommuner']);
 	$TWIG = calc_missing( $TWIG, $TWIG['kommuner'] );
 
-} elseif( get_option('site_type') == 'fylke' ) {
-	$TWIG['stat_type'] = 'fylke';
-
+} elseif( $TWIG['stat_type'] == 'fylke' ) {
 	$TWIG['kommuner']['fylket'] = 'fylket';
 	
 	$kommuneQry = new SQL("SELECT * FROM `smartukm_kommune`
@@ -58,7 +103,8 @@ if(false) {
 	$TWIG = calc_missing( $TWIG, $TWIG['kommuner_i_fylket'], $monstring->fylke->id );
 }
 
-$TWIG['home']	= 'home';
+$TWIG['monstring'] = $monstring;
+
 
 require_once('deltakere.controller.php');
 require_once('sjangerfordeling.controller.php');

@@ -7,6 +7,8 @@ Author: UKM Norge / M Mandal
 Version: 1.0 
 Author URI: http://www.ukm-norge.no
 */
+ini_set('display_errors', true);
+
 if(is_admin()) {
 	global $blog_id;
 	if($blog_id != 1)

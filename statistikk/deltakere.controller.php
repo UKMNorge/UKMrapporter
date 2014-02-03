@@ -86,8 +86,91 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 	
 	ksort( $TWIG['monstringer_stacked'] );
 	
-} else {
+} elseif( $TWIG['stat_type'] == 'land') {
+	$persQry = new SQL("SELECT `season`, 
+						COUNT(`stat_id`) AS `personer` 
+						FROM `ukm_statistics`
+						GROUP BY `season`"
+					  );
+	// INNSLAG
+	$innQry = new SQL("SELECT `season`, 
+					   COUNT(DISTINCT `b_id`) AS `innslag` 
+					   FROM `ukm_statistics`
+					   GROUP BY `season`"
+					  );					  
+	calc_deltakere( 'nasjonalt', $TWIG['missing'], $persQry );
+	calc_innslag( 'nasjonalt', $innQry );
+	$stat_deltakere = calc_ppi($stat_deltakere);
 
+	// PREPARE AND SEND TO TWIG
+	unset($stat_deltakere[2009]);
+	$TWIG['statistikk']['nasjonalt']['deltakere'] = $stat_deltakere;
+
+	// DETALJER FOR FYLKENE
+	// PL MISSING
+	$missingQry = new SQL("SELECT SUM(`missing`) AS `missing`,
+						  		  `season`,
+						  		  `f_id`,
+						  		  `name`
+						  		  FROM `ukm_statistics_missing`
+						   LEFT JOIN `smartukm_fylke` AS `f` ON (`f`.`id` = `f_id`)
+						   WHERE `f_id` < 21
+						   GROUP BY `f_id`, `season`
+						   ORDER BY `f_id`, `season`");
+	$missingRes = $missingQry->run();
+	while( $r = mysql_fetch_assoc( $missingRes ) ) {
+		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] = $r['missing'];
+		if( $r['season'] != 2009 ) {
+			$TWIG['statistikk_detaljert'][ utf8_encode($r['name']) ][ $r['season'] ]['personer'] = $r['missing'];
+		}
+	}
+	
+	// FAKTISKE DELTAKERE
+	$registeredQry = new SQL("SELECT `season`, 
+							  		 COUNT(`stat_id`) AS `personer`,
+							  		 `f_id`,
+							  		 `name`
+							  FROM `ukm_statistics`
+							  LEFT JOIN `smartukm_fylke` AS `f` ON (`f`.`id` = `f_id`)
+							  WHERE `f_id` < 21
+							  GROUP BY `season`, `f_id`
+							  ORDER BY `f_id`, `season`");
+	$registeredRes = $registeredQry->run();
+	while( $r = mysql_fetch_assoc( $registeredRes ) ) {	
+		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] += $r['personer'];
+		if( $r['season'] != 2009 ) {
+			$TWIG['statistikk_detaljert'][ utf8_encode($r['name']) ][ $r['season'] ]['personer'] += $r['personer'];
+		}
+	}
+	
+	// INNSLAG
+	$innQry = new SQL("SELECT `season`, 
+					   		  COUNT(DISTINCT `b_id`) AS `innslag`,
+					   		  `f_id`,
+					   		  `name`
+					   FROM `ukm_statistics`
+					   LEFT JOIN `smartukm_fylke` AS `f` ON (`f`.`id` = `f_id`)
+					   WHERE `f_id` < 21
+					   GROUP BY `season`, `f_id`"
+					  );
+	$innRes = $innQry->run();
+	while( $r = mysql_fetch_assoc( $innRes ) ) {
+		if( $r['season'] != 2009 ) {
+			$TWIG['statistikk_detaljert'][ utf8_encode($r['name']) ][ $r['season'] ]['innslag'] = $r['innslag'];
+		}
+	}
+	
+	foreach( $TWIG['statistikk_detaljert'] as $sd_fylke => $sd_data ) {
+		foreach( $sd_data as $sd_ssn => $sd_tall ) {
+			$sd_tall['ppi'] = round( (int) $sd_tall['personer'] / (int) $sd_tall['innslag'], 2);
+			$TWIG['statistikk_detaljert'][ $sd_fylke ][ $sd_ssn ] = $sd_tall;
+		}
+	}
+	ksort( $TWIG['statistikk_detaljert'] );
+
+} else {
+	$TWIG['error'] = array('header' => 'Beklager, en feil har oppstått',
+						   'message' => 'Systemet vet ikke hvem du etterspør statistikk for. Vennligst prøv på nytt. Opplever du samme feil igjen, ta kontakt med UKM Norge');
 }
 
 
