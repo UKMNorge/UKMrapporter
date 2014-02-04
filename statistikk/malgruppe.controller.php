@@ -144,11 +144,11 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 			foreach( $TWIG['seasons'] as $ssn ) {
 				$val = $kommune[ $dekningsgrad[$top] ][ $ssn ];
 				if( $val['malgruppe'] > 0)
-					$malgruppe[ $ssn ]['Kommune med best dekning i perioden('. $kommunenavn[ $dekningsgrad[$top] ].')'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+					$malgruppe[ $ssn ][ $kommunenavn[ $dekningsgrad[$top] ].' (best dekning i perioden)'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 	
 				$val = $kommune[ $dekningsgrad[$min] ][ $ssn ];
 				if( $val['malgruppe'] > 0)
-					$malgruppe[ $ssn ]['Kommune med dårligst dekning i perioden ('. $kommunenavn[ $dekningsgrad[$min] ].')'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+					$malgruppe[ $ssn ][ $kommunenavn[ $dekningsgrad[$min] ].' (dårligst dekning i perioden)'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 			}
 	
 			// FJERN 2009
@@ -218,10 +218,10 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 	
 			foreach( $TWIG['seasons'] as $ssn ) {
 				$val = $fylke[ $dekningsgrad[$top] ][ $ssn ];
-				$malgruppe[ $ssn ]['Fylke med best dekning i perioden ('.$fylkenavn[ $dekningsgrad[$top] ].')'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+				$malgruppe[ $ssn ][ $fylkenavn[ $dekningsgrad[$top] ].' (best dekning i perioden)'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 	
 				$val = $fylke[ $dekningsgrad[$min] ][ $ssn ];
-				$malgruppe[ $ssn ]['Fylke med dårligst dekning i perioden ('.$fylkenavn[ $dekningsgrad[$min] ].')'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+				$malgruppe[ $ssn ][ $fylkenavn[ $dekningsgrad[$min] ].' (dårligst dekning i perioden))'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 			}
 			// FJERN 2009
 			unset( $malgruppe[2009] );
