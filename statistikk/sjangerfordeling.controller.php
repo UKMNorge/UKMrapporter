@@ -93,6 +93,7 @@ if($TWIG['stat_type']=='kommune') {
 		$persQry = new SQL("SELECT `season`, `stat`.`bt_id`, `type`.`bt_name`, `subcat`, COUNT(`stat_id`) AS `personer`
 							FROM `ukm_statistics` AS `stat`
 							LEFT JOIN `smartukm_band_type` AS `type` ON (`type`.`bt_id` = `stat`.`bt_id`)
+							WHERE `f_id` < 21
 							GROUP BY `stat`.`bt_id`, `subcat`, `season`"
 						  );
 		$raw = calc_sjangerfordeling( 'nasjonalt', $TWIG['missing'], $persQry );
@@ -117,6 +118,7 @@ if($TWIG['stat_type']=='kommune') {
 		$persQry = new SQL("SELECT `season`, `stat`.`bt_id`, `type`.`bt_name`, `subcat`, COUNT(DISTINCT `b_id`) AS `personer`
 							FROM `ukm_statistics` AS `stat`
 							LEFT JOIN `smartukm_band_type` AS `type` ON (`type`.`bt_id` = `stat`.`bt_id`)
+							WHERE `f_id` < 21
 							GROUP BY `stat`.`bt_id`, `subcat`, `season`"
 						  );
 		$sjangerfordeling = calc_sjangerfordeling( 'nasjonalt', $TWIG['missing'], $persQry, true );
