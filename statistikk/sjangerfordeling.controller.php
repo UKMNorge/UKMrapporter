@@ -1,8 +1,9 @@
 <?php
 if($TWIG['stat_type']=='kommune') {
 	foreach($TWIG['kommuner'] as $kommune_name => $kommune_id){
+	
+		//// PERSONER
 		$raw = array();
-		// PERSONER
 		$persQry = new SQL("SELECT `season`, `stat`.`bt_id`, `type`.`bt_name`, `subcat`, COUNT(`stat_id`) AS `personer`
 							FROM `ukm_statistics` AS `stat`
 							LEFT JOIN `smartukm_band_type` AS `type` ON (`type`.`bt_id` = `stat`.`bt_id`)
@@ -25,6 +26,20 @@ if($TWIG['stat_type']=='kommune') {
 		// SKIP TOTALS @ OVERVIEW
 		unset( $TWIG['statistikk'][$kommune_id]['sjangerfordeling_iar']['total'] );
 		unset( $TWIG['statistikk'][$kommune_id]['sjangerfordeling_iar']['total_scene'] );
+		
+		// INNSLAG
+		$raw = array();
+		$persQry = new SQL("SELECT `season`, `stat`.`bt_id`, `type`.`bt_name`, `subcat`, COUNT(DISTINCT `b_id`) AS `personer`
+							FROM `ukm_statistics` AS `stat`
+							LEFT JOIN `smartukm_band_type` AS `type` ON (`type`.`bt_id` = `stat`.`bt_id`)
+							WHERE `k_id` = '#kommune'
+							GROUP BY `stat`.`bt_id`, `subcat`, `season`",
+						   array('kommune' => $kommune_id)
+						  );
+		$sjangerfordeling = calc_sjangerfordeling( $kommune_id, $TWIG['missing'], $persQry, true );
+		unset( $sjangerfordeling[2009] );
+		$TWIG['statistikk'][$kommune_id]['sjangerfordeling_innslag'] = $sjangerfordeling;
+		ksort( $TWIG['statistikk'][$kommune_id]['sjangerfordeling_innslag'] );
 	}
 } elseif( $TWIG['stat_type'] == 'fylke' ) {
 		$raw = array();
@@ -56,14 +71,29 @@ if($TWIG['stat_type']=='kommune') {
 		// SKIP TOTALS @ OVERVIEW
 		unset( $TWIG['statistikk']['fylket']['sjangerfordeling_iar']['total'] );
 		unset( $TWIG['statistikk']['fylket']['sjangerfordeling_iar']['total_scene'] );
+		
+			
+		// INNSLAG
+		$raw = array();
+		$persQry = new SQL("SELECT `season`, `stat`.`bt_id`, `type`.`bt_name`, `subcat`, COUNT(DISTINCT `b_id`) AS `personer`
+							FROM `ukm_statistics` AS `stat`
+							LEFT JOIN `smartukm_band_type` AS `type` ON (`type`.`bt_id` = `stat`.`bt_id`)
+							WHERE `f_id` = '#fylke'
+							GROUP BY `stat`.`bt_id`, `subcat`, `season`",
+						   array('fylke' => $TWIG['monstring']->fylke->id)
+						  );
+		$sjangerfordeling = calc_sjangerfordeling( 'fylket', $TWIG['missing'], $persQry, true );
+		unset( $sjangerfordeling[2009] );
+		$TWIG['statistikk']['fylket']['sjangerfordeling_innslag'] = $sjangerfordeling;
+		ksort( $TWIG['statistikk']['fylket']['sjangerfordeling_innslag'] );
+
 } elseif( $TWIG['stat_type'] == 'land') {
 		$raw = array();
 		// PERSONER
 		$persQry = new SQL("SELECT `season`, `stat`.`bt_id`, `type`.`bt_name`, `subcat`, COUNT(`stat_id`) AS `personer`
 							FROM `ukm_statistics` AS `stat`
 							LEFT JOIN `smartukm_band_type` AS `type` ON (`type`.`bt_id` = `stat`.`bt_id`)
-							GROUP BY `stat`.`bt_id`, `subcat`, `season`",
-						   array('fylke' => $TWIG['monstring']->fylke->id)
+							GROUP BY `stat`.`bt_id`, `subcat`, `season`"
 						  );
 		$raw = calc_sjangerfordeling( 'nasjonalt', $TWIG['missing'], $persQry );
 		
@@ -80,6 +110,19 @@ if($TWIG['stat_type']=='kommune') {
 		// SKIP TOTALS @ OVERVIEW
 		unset( $TWIG['statistikk']['nasjonalt']['sjangerfordeling_iar']['total'] );
 		unset( $TWIG['statistikk']['nasjonalt']['sjangerfordeling_iar']['total_scene'] );
+
+
+		// INNSLAG
+		$raw = array();
+		$persQry = new SQL("SELECT `season`, `stat`.`bt_id`, `type`.`bt_name`, `subcat`, COUNT(DISTINCT `b_id`) AS `personer`
+							FROM `ukm_statistics` AS `stat`
+							LEFT JOIN `smartukm_band_type` AS `type` ON (`type`.`bt_id` = `stat`.`bt_id`)
+							GROUP BY `stat`.`bt_id`, `subcat`, `season`"
+						  );
+		$sjangerfordeling = calc_sjangerfordeling( 'nasjonalt', $TWIG['missing'], $persQry, true );
+		unset( $sjangerfordeling[2009] );
+		$TWIG['statistikk']['nasjonalt']['sjangerfordeling_innslag'] = $sjangerfordeling;
+		ksort( $TWIG['statistikk']['nasjonalt']['sjangerfordeling_innslag'] );
 		
 } else {
 	$TWIG['error'] = array('header' => 'Beklager, en feil har oppstått',
@@ -89,7 +132,7 @@ if($TWIG['stat_type']=='kommune') {
 
 
 
-function calc_sjangerfordeling( $kommune_id, $missing, $persQry ) {
+function calc_sjangerfordeling( $kommune_id, $missing, $persQry, $innslag=false ) {
 	$persRes = $persQry->run();
 		while( $r = mysql_fetch_assoc( $persRes ) ) {
 			if( $r['bt_id'] == 1 && !empty( $r['subcat'] ) ) {
@@ -115,10 +158,12 @@ function calc_sjangerfordeling( $kommune_id, $missing, $persQry ) {
 			$raw[ $r['season'] ]['total'] += $r['personer'];
 		}
 		
-		// ADD MISSING AS "DIVERSE"
-		foreach( $missing[ $kommune_id ] as $ssn => $num_missing ) {
-			$raw[ $ssn ]['Diverse'] += $num_missing;
-			$raw[ $ssn ]['total'] += $num_missing;
+		if(!$innslag) {
+			// ADD MISSING AS "DIVERSE"
+			foreach( $missing[ $kommune_id ] as $ssn => $num_missing ) {
+				$raw[ $ssn ]['Diverse'] += $num_missing;
+				$raw[ $ssn ]['total'] += $num_missing;
+			}
 		}
 	return $raw;
 }

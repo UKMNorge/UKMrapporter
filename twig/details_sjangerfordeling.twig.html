@@ -8,6 +8,7 @@
 	{% embed "separator.twig.html" %}{% endembed %}
 	
 	<div class="container col-xs-12">
+		<h3>Personer</h3>
 		<div class="well">
 			<table class="table table-striped" style="max-width: 400px">
 				<thead>
@@ -62,6 +63,62 @@
 					</tr>			
 				{% endfor %}
 			</table>
+
+
+			<h3>Innslag</h3>
+			<table class="table table-striped" style="max-width: 400px">
+				<thead>
+					<tr>
+						<th></th>
+						<th>TOTAL</th>
+						{# <th colspan="5" style="text-align:center;">Scene</th> #}
+						<th>Musikk</th>
+						<th>Dans</th>
+						<th>Teater</th>
+						<th>Litteratur</th>
+						<th>Annet scene</th>
+						
+						<th>Film</th>
+						<th>Utstilling</th>
+						<th>Konfer.</th>
+						<th>Nettred.</th>
+						<th>Arrangør</th>
+						<th>Scenetek.</th>
+						<th>Matkultur</th>
+						<th>Diverse</th>
+					</tr>
+					{#<tr>
+						<th></th>
+						<th></th>
+						<th>Musikk</th>
+						<th>Dans</th>
+						<th>Teater</th>
+						<th>Litteratur</th>
+						<th>Annet</th>
+						<th>Total</th>
+					</tr> #}
+				</thead>
+				{% for ar, data in kommune.sjangerfordeling_innslag %}
+					<tr>
+						<td align="right">{{ar}}</td>
+						<th style="text-align:right;" align="right">{{data.total}}</th>
+						<td align="right">{{data.Musikk}}</td>
+						<td align="right">{{data.Dans}}</td>
+						<td align="right">{{data.Teater}}</td>
+						<td align="right">{{data.Litteratur}}</td>
+						<td align="right">{{data.Annet_scene}}</td>
+						{# <th style="text-align:right;" align="right">{{data.total_scene}}</th> #}
+						<td align="right">{{data.Film}}</td>
+						<td align="right">{{data.Utstilling}}</td>
+						<td align="right">{{data.Konferansier}}</td>
+						<td align="right">{{data.Nettredaksjon}}</td>
+						<td align="right">{{data.Arrangor}}</td>
+						<td align="right">{{data.Sceneteknikk}}</td>
+						<td align="right">{{data.Matkultur}}</td>
+						<td align="right">{{data.Diverse}}</td>
+					</tr>			
+				{% endfor %}
+			</table>
 	
 			<div class="row pull-right">
 				<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat=home&fylke={{stat_fylke}}&norge={{stat_norge}}">Tilbake til oversikt</a>
@@ -85,7 +142,7 @@
 			    ]);
 			
 			    var options = {
-			      title: 'Utvikling sjangerfordeling',
+			      title: 'Utvikling sjangerfordeling (personer)',
 			      vAxis: {'minValue': 0},
 			      pointSize: 5,
 			    };
@@ -95,6 +152,33 @@
 			  }
 			</script>
 			
-			<div id="statistikk_details_sjangerfordeling_{{kommune.metadata.id}}" style="width: 100%; min-height: 700px;"></div>	</div>
+			<div id="statistikk_details_sjangerfordeling_{{kommune.metadata.id}}" style="width: 100%; min-height: 700px;"></div>
+		
+		
+			<script type="text/javascript">
+			  google.load("visualization", "1", {packages:["corechart"]});
+			  google.setOnLoadCallback(statistikk_details_sjangerfordeling_innslag_{{kommune.metadata.id}});
+			
+			  function statistikk_details_sjangerfordeling_innslag_{{kommune.metadata.id}}() {
+			    var data = google.visualization.arrayToDataTable([
+			      ['Sesong', 'Musikk', 'Dans', 'Teater', 'Litteratur', 'Annet på scenen', 'Film', 'Utstilling', 'Konferansier', 'Nettredaksjon', 'Arrangør', 'Sceneteknikk', 'Matkultur', 'Diverse'],
+				{% for ar, data in kommune.sjangerfordeling_innslag %}
+			      ['{{ar}}',{{data.Musikk*1}},{{data.Dans*1}},{{data.Teater*1}},{{data.Litteratur*1}},{{data.Annet_scene*1}},{{data.Film*1}},{{data.Utstilling*1}},{{data.Konferansier*1}},{{data.Nettredaksjon*1}},{{data.Arrangor*1}},{{data.Sceneteknikk*1}},{{data.Matkultur*1}},{{data.Diverse*1}}]{{loop.last?'':','}}
+			      {% endfor %}
+			    ]);
+			
+			    var options = {
+			      title: 'Utvikling sjangerfordeling (innslag)',
+			      vAxis: {'minValue': 0},
+			      pointSize: 5,
+			    };
+			
+			    var chart = new google.visualization.LineChart(document.getElementById('statistikk_details_sjangerfordeling_innslag_{{kommune.metadata.id}}'));
+			    chart.draw(data, options);
+			  }
+			</script>
+			
+			<div id="statistikk_details_sjangerfordeling_innslag_{{kommune.metadata.id}}" style="width: 100%; min-height: 700px;"></div>
+		</div>
 	</div>
 {% endfor %}

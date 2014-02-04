@@ -23,6 +23,9 @@ jQuery(document).ready(function () {
 
 			if (typeof statistikk_details_sjangerfordeling_{{kommune.metadata.id}} == 'function')
 				statistikk_details_sjangerfordeling_{{kommune.metadata.id}}();
+
+			if (typeof statistikk_details_sjangerfordeling_innslag_{{kommune.metadata.id}} == 'function')
+				statistikk_details_sjangerfordeling_innslag_{{kommune.metadata.id}}();
 				
 			if (typeof statistikk_monstringer == 'function' )
 				statistikk_monstringer();
