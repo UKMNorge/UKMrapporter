@@ -117,7 +117,7 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 						  		  `f_id`,
 						  		  `name`
 						  		  FROM `ukm_statistics_missing`
-						   LEFT JOIN `smartukm_fylke` AS `f` ON (`f`.`id` = `f_id`)
+						   JOIN `smartukm_fylke` AS `f` ON (`f`.`id` = `f_id`)
 						   WHERE `f_id` < 21
 						   GROUP BY `f_id`, `season`
 						   ORDER BY `f_id`, `season`");
@@ -135,7 +135,7 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 							  		 `f_id`,
 							  		 `name`
 							  FROM `ukm_statistics`
-							  LEFT JOIN `smartukm_fylke` AS `f` ON (`f`.`id` = `f_id`)
+							  JOIN `smartukm_fylke` AS `f` ON (`f`.`id` = `f_id`)
 							  WHERE `f_id` < 21
 							  GROUP BY `season`, `f_id`
 							  ORDER BY `f_id`, `season`");
@@ -153,7 +153,7 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 					   		  `f_id`,
 					   		  `name`
 					   FROM `ukm_statistics`
-					   LEFT JOIN `smartukm_fylke` AS `f` ON (`f`.`id` = `f_id`)
+					   JOIN `smartukm_fylke` AS `f` ON (`f`.`id` = `f_id`)
 					   WHERE `f_id` < 21
 					   GROUP BY `season`, `f_id`"
 					  );
