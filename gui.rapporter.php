@@ -7,20 +7,18 @@ $category_icon_size = 32;
 
 <span><?= UKMN_ico('hus', $category_icon_size)?><h2 class="rapport_kategori">Mønstring</h2></span>
 <ul class="rapportcontainer" data-kat="monstring">
-	<?php
-	if($_SERVER['REMOTE_ADDR']=='81.0.146.162'||$_SERVER['REMOTE_ADDR']=='127.0.0.1'||$_SERVER['REMOTE_ADDR']=='188.113.121.10') { ?>
 	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
 		<?= UKMN_icoAlt('graph', "Statistikk", $raport_icon_size ) ?>
 		<div class="title">Statistikksenter</div>
-		<span>Alt om din mønstring - i tall</span>
+		<span>Alt om din mønstring - i tall og grafer</span>
 	</li>
-	<?php } ?>
-	
-	<li class="clickable rapport" data-file="statistikk">
+
+<?php /*	<li class="clickable rapport" data-file="statistikk">
 		<?= UKMN_icoAlt('graph', "Statistikk", $raport_icon_size ) ?>
 		<div class="title">Statistikk</div>
 		<span>Statistikk nasjonalt, regionalt og lokalt. Alt du trenger!</span>
 	</li>
+*/ ?>
 <?php	if(get_option('site_type') == 'fylke') {?>
 	<li class="clickable rapport" data-file="videresendingsskjema">
 		<?= UKMN_icoAlt('buss', "Oppsummering digitalt infoskjema", $raport_icon_size ) ?>
