@@ -64,6 +64,7 @@ if($TWIG['stat_type']=='kommune') {
 	// PERSONER
 	$persQry = new SQL("SELECT `season`,`sex`, COUNT(`stat_id`) AS `personer` 
 						FROM `ukm_statistics`
+						WHERE `f_id` < 21
 						GROUP BY `sex`, `season`"
 					  );
 	$kjonnsfordeling = calc_kjonnsfordeling( 'nasjonalt', $TWIG['missing'], $persQry );

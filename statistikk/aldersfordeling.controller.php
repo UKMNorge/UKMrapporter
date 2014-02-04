@@ -40,6 +40,7 @@ if($TWIG['stat_type']=='kommune') {
 } elseif( $TWIG['stat_type'] == 'land' ) {
 	$persQry = new SQL("SELECT `season`,`age`, COUNT(`stat_id`) AS `personer` 
 						FROM `ukm_statistics`
+						WHERE `f_id` < 21
 						GROUP BY `age`, `season`",
 					   array('kommune' => $kommune_id)
 					  );
