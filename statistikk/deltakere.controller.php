@@ -64,11 +64,8 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 
 		$stat_deltakere = calc_ppi($stat_deltakere);
 		// PREPARE AND SEND TO TWIG
-		unset($stat_deltakere[2009]);
+		unset($stat_deltakere[2009]);		
 		ksort( $stat_deltakere );
-		
-		var_dump( $stat_deltakere );
-		
 		$TWIG['statistikk_detaljert'][$kommune_id]['deltakere'] = $stat_deltakere;
 
 		foreach( $TWIG['seasons'] as $ssn ) {
@@ -88,6 +85,8 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 	
 	// PREPARE AND SEND TO TWIG
 	unset($stat_deltakere_fylke[2009]);
+	ksort( $stat_deltakere_fylke );
+
 	$TWIG['statistikk']['fylket']['deltakere'] = $stat_deltakere_fylke;
 	
 	ksort( $TWIG['monstringer_stacked'] );
