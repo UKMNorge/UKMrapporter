@@ -92,12 +92,14 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 	$persQry = new SQL("SELECT `season`, 
 						COUNT(`stat_id`) AS `personer` 
 						FROM `ukm_statistics`
+						WHERE `f_id` < 21
 						GROUP BY `season`"
 					  );
 	// INNSLAG
 	$innQry = new SQL("SELECT `season`, 
 					   COUNT(DISTINCT `b_id`) AS `innslag` 
 					   FROM `ukm_statistics`
+					   WHERE `f_id` < 21
 					   GROUP BY `season`"
 					  );					  
 	calc_deltakere( 'nasjonalt', $TWIG['missing'], $persQry );
@@ -168,6 +170,7 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 			$TWIG['statistikk_detaljert'][ $sd_fylke ][ $sd_ssn ] = $sd_tall;
 		}
 	}
+	unset( $TWIG['monstringer_stacked'][2009] );
 	ksort( $TWIG['statistikk_detaljert'] );
 
 } else {
