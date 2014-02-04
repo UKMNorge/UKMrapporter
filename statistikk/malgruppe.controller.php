@@ -221,7 +221,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 				$malgruppe[ $ssn ][ $fylkenavn[ $dekningsgrad[$top] ].' (best dekning i perioden)'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 	
 				$val = $fylke[ $dekningsgrad[$min] ][ $ssn ];
-				$malgruppe[ $ssn ][ $fylkenavn[ $dekningsgrad[$min] ].' (dårligst dekning i perioden))'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
+				$malgruppe[ $ssn ][ $fylkenavn[ $dekningsgrad[$min] ].' (dårligst dekning i perioden)'] = round( (100/$val['malgruppe'])*$val['deltakere'], 2 );
 			}
 			// FJERN 2009
 			unset( $malgruppe[2009] );
