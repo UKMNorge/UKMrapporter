@@ -92,12 +92,14 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 	$persQry = new SQL("SELECT `season`, 
 						COUNT(`stat_id`) AS `personer` 
 						FROM `ukm_statistics`
+						WHERE `f_id` < 21
 						GROUP BY `season`"
 					  );
 	// INNSLAG
 	$innQry = new SQL("SELECT `season`, 
 					   COUNT(DISTINCT `b_id`) AS `innslag` 
 					   FROM `ukm_statistics`
+					   WHERE `f_id` < 21
 					   GROUP BY `season`"
 					  );					  
 	calc_deltakere( 'nasjonalt', $TWIG['missing'], $persQry );
@@ -116,11 +118,12 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 						  		  `name`
 						  		  FROM `ukm_statistics_missing`
 						   JOIN `smartukm_fylke` AS `f` ON (`f`.`id` = `f_id`)
+						   WHERE `f_id` < 21
 						   GROUP BY `f_id`, `season`
 						   ORDER BY `f_id`, `season`");
 	$missingRes = $missingQry->run();
 	while( $r = mysql_fetch_assoc( $missingRes ) ) {
-		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] += $r['missing'];
+		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] = $r['missing'];
 		if( $r['season'] != 2009 ) {
 			$TWIG['statistikk_detaljert'][ utf8_encode($r['name']) ][ $r['season'] ]['personer'] = $r['missing'];
 		}
@@ -133,6 +136,7 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 							  		 `name`
 							  FROM `ukm_statistics`
 							  JOIN `smartukm_fylke` AS `f` ON (`f`.`id` = `f_id`)
+							  WHERE `f_id` < 21
 							  GROUP BY `season`, `f_id`
 							  ORDER BY `f_id`, `season`");
 	$registeredRes = $registeredQry->run();
