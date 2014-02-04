@@ -33,6 +33,8 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 	
 		// PREPARE AND SEND TO TWIG
 		unset($stat_deltakere[2009]);
+		ksort( $stat_deltakere );
+		
 		$TWIG['statistikk'][$kommune_id]['deltakere'] = $stat_deltakere;
 	}
 } elseif( $TWIG['stat_type'] == 'fylke' ) {

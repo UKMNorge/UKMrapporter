@@ -9,8 +9,6 @@
       ['{{ar}}',{{data.personer*1}},{{data.innslag*1}}]{{loop.last?'':','}}
       {% endfor %}
     ]);
-    
-	data.sort([{column: 1, desc:true}, {column: 0}]);
 
     var options = {
       title: 'Utvikling i deltakelse',
