@@ -65,6 +65,8 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 		$stat_deltakere = calc_ppi($stat_deltakere);
 		// PREPARE AND SEND TO TWIG
 		unset($stat_deltakere[2009]);
+		ksort( $stat_deltakere );
+
 		$TWIG['statistikk_detaljert'][$kommune_id]['deltakere'] = $stat_deltakere;
 
 		foreach( $TWIG['seasons'] as $ssn ) {
