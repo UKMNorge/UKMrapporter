@@ -170,6 +170,9 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 			$TWIG['statistikk_detaljert'][ $sd_fylke ][ $sd_ssn ] = $sd_tall;
 		}
 	}
+	
+	var_dump( $TWIG['monstringer_stacked']);
+	
 	unset( $TWIG['monstringer_stacked'][2009] );
 	ksort( $TWIG['statistikk_detaljert'] );
 
