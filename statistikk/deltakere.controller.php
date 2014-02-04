@@ -129,6 +129,17 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 		}
 	}
 	
+	// MISSING @ FYLKE
+	$fylkeMissing = new SQL("SELECT `f`.`id`, `f`.`name`, `pl`.`season`, `pl_missing`
+							 FROM `smartukm_fylke` AS `f`
+							 LEFT JOIN `smartukm_place` AS `pl` ON (`pl`.`pl_fylke` = `f`.`id`)
+							 WHERE `f`.`id` < 21"
+							);
+	$fylkeMissing = $fylkeMissing->run();
+	while( $r = mysql_fetch_assoc( $fylkeMissing ) ) {
+		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] += $r['pl_missing'];
+	}
+	
 	// FAKTISKE DELTAKERE
 	$registeredQry = new SQL("SELECT `season`, 
 							  		 COUNT(`stat_id`) AS `personer`,
