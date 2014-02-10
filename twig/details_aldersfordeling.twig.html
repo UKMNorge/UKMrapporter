@@ -35,6 +35,37 @@
 					</tr>			
 				{% endfor %}
 			</table>
+			
+			<h4>Prosentvis fordeling</h4>
+			<table class="table table-striped" style="max-width: 700px">
+				<thead>
+					<tr>
+						<th>Sesong</th>
+						<th>TOTAL</th>
+						<th>Under 10</th>
+						<th>10-12</th>
+						<th>13-14</th>
+						<th>15-16</th>
+						<th>17-18</th>
+						<th>19-20</th>
+						<th>Over 20</th>
+					</tr>
+				</thead>
+				{% for ar, data in kommune.aldersfordeling_total %}
+					{% set onepercent = 100/data.total %}
+					<tr>
+						<td align="right">{{ ar }}</td>
+						<td align="right">100%</td>
+						<td align="right">{{ ( onepercent * data.underti)|round(1) }}%</td>
+						<td align="right">{{ ( onepercent * data.tiellevetolv)|round(1) }}%</td>
+						<td align="right">{{ ( onepercent * data.trettenfjorten)|round(1) }}%</td>
+						<td align="right">{{ ( onepercent * data.femtenseksten)|round(1) }}%</td>
+						<td align="right">{{ ( onepercent * data.syttenatten)|round(1) }}%</td>
+						<td align="right">{{ ( onepercent * data.nittentjue)|round(1) }}%</td>
+						<td align="right">{{ ( onepercent * data.overtjue)|round(1) }}%</td>
+					</tr>			
+				{% endfor %}
+			</table>
 	
 			<div class="row pull-right">
 				<a class="btn btn-sm btn-default" href="?page=UKMrapport_admin&stat=home&fylke={{stat_fylke}}&norge={{stat_norge}}">Tilbake til oversikt</a>
