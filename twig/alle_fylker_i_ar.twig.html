@@ -1,0 +1,24 @@
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(statistikk_alle_fylker_iar);
+
+  function statistikk_alle_fylker_iar() {  
+   var data = google.visualization.arrayToDataTable([
+   	['Fylke','Personer'],
+   	{% for fylke,personer in statistikk_fylker_sammenlignet %}['{{fylke}}',{{personer}}]{% if loop.last==false %},{% endif %}{% endfor %}
+    ]);
+    
+	data.sort([{column: 1, desc:true}, {column: 0}]);
+
+    var options = {
+      title: 'Antall personer per fylke i {{season}}, i forhold til hverandre',
+      vAxis: {'minValue': 0},
+      legend: {position: 'none'}
+    };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('statistikk_alle_fylker_iar'));
+    chart.draw(data, options);
+  }
+</script>
+
+<div id="statistikk_alle_fylker_iar" style="width: 100%; min-height: 700px;"></div>

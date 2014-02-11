@@ -127,6 +127,9 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 	$missingRes = $missingQry->run();
 	while( $r = mysql_fetch_assoc( $missingRes ) ) {
 		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] = $r['missing'];
+		if( $r['season'] == $TWIG['season'] ) {
+			$TWIG['statistikk_fylker_sammenlignet'][ utf8_encode( $r['name'] ) ] += $r['missing'];
+		}
 		if( $r['season'] != 2009 ) {
 			$TWIG['statistikk_detaljert'][ utf8_encode($r['name']) ][ $r['season'] ]['personer'] = $r['missing'];
 		}
@@ -141,6 +144,9 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 	$fylkeMissing = $fylkeMissing->run();
 	while( $r = mysql_fetch_assoc( $fylkeMissing ) ) {
 		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] += $r['pl_missing'];
+		if( $r['season'] == $TWIG['season'] ) {
+			$TWIG['statistikk_fylker_sammenlignet'][ utf8_encode( $r['name'] ) ] += $r['pl_missing'];
+		}
 	}
 	
 	// FAKTISKE DELTAKERE
@@ -158,6 +164,9 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] += $r['personer'];
 		if( $r['season'] != 2009 ) {
 			$TWIG['statistikk_detaljert'][ utf8_encode($r['name']) ][ $r['season'] ]['personer'] += $r['personer'];
+		}
+		if( $r['season'] == $TWIG['season'] ) {
+			$TWIG['statistikk_fylker_sammenlignet'][ utf8_encode( $r['name'] ) ] += $r['personer'];
 		}
 	}
 	
@@ -186,6 +195,7 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 	}
 	unset( $TWIG['monstringer_stacked'][2009] );
 	ksort( $TWIG['statistikk_detaljert'] );
+#	sort( $TWIG['statistikk_fylker_sammenlignet']);
 
 } else {
 	$TWIG['error'] = array('header' => 'Beklager, en feil har oppstått',

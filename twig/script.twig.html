@@ -37,6 +37,11 @@ jQuery(document).ready(function () {
 					statistikk_deltakere_{{kommune.metadata.id}}();
 			{% endfor %}
 		{% endif %}
+		
+		{% if stat_type == 'land' %}
+			if (typeof statistikk_alle_fylker_iar == 'function')
+				statistikk_alle_fylker_iar();
+		{% endif %}
 
     });
 });

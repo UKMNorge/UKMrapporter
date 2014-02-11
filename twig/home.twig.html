@@ -86,6 +86,17 @@
 					</div>
 				</div>	
 			</div>
+
+			{% endif %}
+			{% if stat_type == 'land' %}
+			<div class="container col-xs-12">
+				<div class="well">
+					{% embed "alle_fylker_i_ar.twig.html" %}{% endembed %}
+					<div class="row pull-right">
+						<a href="?page=UKMrapport_admin&stat=details_deltakere&home=home&fylke={{stat_fylke}}&norge={{stat_norge}}"class="btn btn-sm btn-default">Vis detaljer</a>
+					</div>
+				</div>	
+			</div>
 			{% endif %}
 
 		</div>
