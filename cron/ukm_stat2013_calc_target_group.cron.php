@@ -27,6 +27,7 @@ while( $kommune = mysql_fetch_assoc( $kommuneRES ) ) {
 	// Hent malgruppe
 	$AR_start 	= $SEASON-21;
 	$AR_stop	= $SEASON-12;
+	$AR_stop	= $SEASON-9; // BEREGNER MÅLGRUPPE FRA 10-20
 	
 	$malgruppeSQL = new SQL("SELECT SUM(`count`) AS `malgruppe`
 							FROM `ukm_befolkning`
