@@ -36,12 +36,15 @@ class valgt_rapport extends rapport {
 		$this->opt($g, 't_detaljer', 'Vis detaljert tittel-info');
 
 		$g = $this->formatGrp('g', 'Gruppering', 'radio');
-		$this->format($g, 'g_ingen', 'Kun alfabetisk sortert');
-		$this->format($g, 'g_type', 'Sortert alfabetisk, etter type innslag');
-		if(get_option('site_type')!='land')
-			$this->format($g,  'g_kommune', 'Sortert alfabetisk, etter kommune');
-		else
-			$this->format($g, 'g_fylke', 'Sortert alfabetisk, etter fylke');
+		$this->format($g, 'g_ingen', 'Alfabetisk sortert');
+		$this->format($g, 'g_type', 'Type og navn');
+		if(get_option('site_type')!='land') {
+			$this->format($g,  'g_kommune', 'Kommune og navn');
+			$this->format($g,  'g_kommune_type', 'Kommune, type og navn');
+		} else {
+			$this->format($g, 'g_fylke', 'Fylke og navn');
+			$this->format($g, 'g_fylke_type', 'Fylke, type og navn');
+		}
 
 		$g = $this->formatGrp('op', 'Oppsett');
 		$this->format($g, 'op_p_break', 'Bruk linjeskift mellom hver deltaker');
@@ -962,6 +965,12 @@ class valgt_rapport extends rapport {
 			return $this->_innslag_gruppert_geo('kommune');
 		if($this->showFormat('g_fylke'))
 			return $this->_innslag_gruppert_geo('fylke');
+		if($this->showFormat('g_kommune_type'))
+			return $this->_innslag_gruppert_geo_type('kommune');
+		if($this->showFormat('g_fylke_type'))
+			return $this->_innslag_gruppert_geo_type('fylke');
+
+
 		return $this->_innslag_sortert_navn();
 	}
 	
@@ -1044,6 +1053,33 @@ class valgt_rapport extends rapport {
 			$inn->loadGEO();
 			$this->innslag[$inn->g('b_id')] = $inn;
 			$storekey = $this->storekey($inn_array['b_name'], $innslagene[$inn->g($field)]);
+
+			$innslagene[$inn->g($field)][$storekey] = $inn;
+		}
+		$this->_deep_ksort($innslagene);
+		return $innslagene;
+	}
+	
+	/**
+	 * _innslag_gruppert_geo_type function
+	 * 
+	 * Lager en liste over alle innslag på mønstringen, gruppert etter geografi (kommune/fylke), sortert etter type, deretter alfabetisk
+	 *
+	 * @access private
+	 * @param field kommune/fylke
+	 * @return array
+	 */	
+	public function _innslag_gruppert_geo_type($field='kommune'){
+		$m = new monstring($this->pl_id);
+		
+		$innslag = $m->innslag();
+		foreach($innslag as $inn_array) {
+			$inn = new innslag($inn_array['b_id']);
+			if(get_option('site_type')!='kommune')
+				$inn->videresendte(get_option('pl_id'));
+			$inn->loadGEO();
+			$this->innslag[$inn->g('b_id')] = $inn;
+			$storekey = $this->storekey($inn->g('bt_id').' '.$inn_array['b_name'], $innslagene[$inn->g($field)]);
 
 			$innslagene[$inn->g($field)][$storekey] = $inn;
 		}
