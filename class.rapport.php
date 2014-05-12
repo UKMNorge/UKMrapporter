@@ -232,7 +232,7 @@ class rapport{
 	 */
 	 public function format($optGrp, $shortname, $name) {
 		$this->format[$optGrp][$shortname] = $name;
-		$this->formatKeys[$name] = $shortname;
+		$this->formatKeys[preg_replace('/[^A-Za-z0-9_]/', '',$name)] = $shortname;
 	}
 	
 	/**
