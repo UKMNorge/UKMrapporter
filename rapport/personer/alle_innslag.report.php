@@ -755,7 +755,10 @@ class valgt_rapport extends rapport {
 									: '')
 						### KATEGORI OG SJANGER
 						.		($this->show('i_katogsjan')
-									? '<div class="meta">'.$inn->g('kategori_og_sjanger').'</div>'
+									? '<div class="meta">'
+										.($inn->g('bt_id')==2	?	'Film - '	:	'')
+										.($inn->g('bt_id')==3	?	'Utstilling - '	:	'')
+										. $inn->g('kategori_og_sjanger').'</div>'
 									: '')
 						
 		
