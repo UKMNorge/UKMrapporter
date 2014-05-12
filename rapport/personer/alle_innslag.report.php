@@ -37,13 +37,23 @@ class valgt_rapport extends rapport {
 
 		$g = $this->formatGrp('g', 'Gruppering', 'radio');
 		$this->format($g, 'g_ingen', 'Alfabetisk sortert');
-		$this->format($g, 'g_type', 'Type og navn');
+		$this->format($g, 'g_type', 'Type og navn<br />'
+								.   ' &nbsp; &nbsp; &nbsp; <b>Grupppert:</b> type innslag<br />'
+								.	' &nbsp; &nbsp; &nbsp; <b>Sortert:</b> alfabetisk etter navn');
 		if(get_option('site_type')!='land') {
-			$this->format($g,  'g_kommune', 'Kommune og navn');
-			$this->format($g,  'g_kommune_type', 'Kommune, type og navn');
+			$this->format($g,  'g_kommune', 'Kommune og navn<br />'
+										.	' &nbsp; &nbsp; &nbsp; <b>Grupppert:</b> kommune<br />'
+										.	' &nbsp; &nbsp; &nbsp; <b>Sortert:</b> alfabetisk etter navn');
+			$this->format($g,  'g_kommune_type', 'Kommune, type og navn<br />'
+										.	' &nbsp; &nbsp; &nbsp; <b>Grupppert:</b> kommune<br />'
+										.	' &nbsp; &nbsp; &nbsp; <b>Sortert:</b> alfabetisk etter type og navn');
 		} else {
-			$this->format($g, 'g_fylke', 'Fylke og navn');
-			$this->format($g, 'g_fylke_type', 'Fylke, type og navn');
+			$this->format($g, 'g_fylke', 'Fylke og navn<br />'
+									.	' &nbsp; &nbsp; &nbsp; <b>Grupppert:</b> fylke<br />'
+									.	' &nbsp; &nbsp; &nbsp; <b>Sortert:</b> alfabetisk etter navn');
+			$this->format($g, 'g_fylke_type', 'Fylke, type og navn<br />'
+									.	' &nbsp; &nbsp; &nbsp; <b>Grupppert:</b>fylke<br />'
+									.	' &nbsp; &nbsp; &nbsp; <b>Sortert:</b> alfabetisk etter type og navn');
 		}
 
 		$g = $this->formatGrp('op', 'Oppsett');
