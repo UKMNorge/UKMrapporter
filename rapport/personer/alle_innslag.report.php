@@ -41,6 +41,9 @@ class valgt_rapport extends rapport {
 								.   ' &nbsp; &nbsp; &nbsp; <b>Grupppert:</b> type innslag<br />'
 								.	' &nbsp; &nbsp; &nbsp; <b>Sortert:</b> alfabetisk etter navn');
 		if(get_option('site_type')!='land') {
+			$this->format($g,  'g_type_kommune', 'Type, kommune og navn<br />'
+										.	' &nbsp; &nbsp; &nbsp; <b>Grupppert:</b> type<br />'
+										.	' &nbsp; &nbsp; &nbsp; <b>Sortert:</b> alfabetisk etter kommune og navn');
 			$this->format($g,  'g_kommune', 'Kommune og navn<br />'
 										.	' &nbsp; &nbsp; &nbsp; <b>Grupppert:</b> kommune<br />'
 										.	' &nbsp; &nbsp; &nbsp; <b>Sortert:</b> alfabetisk etter navn');
@@ -48,6 +51,9 @@ class valgt_rapport extends rapport {
 										.	' &nbsp; &nbsp; &nbsp; <b>Grupppert:</b> kommune<br />'
 										.	' &nbsp; &nbsp; &nbsp; <b>Sortert:</b> alfabetisk etter type og navn');
 		} else {
+			$this->format($g,  'g_type_fylke', 'Type, fylke og navn<br />'
+										.	' &nbsp; &nbsp; &nbsp; <b>Grupppert:</b> type<br />'
+										.	' &nbsp; &nbsp; &nbsp; <b>Sortert:</b> alfabetisk etter fylke og navn');
 			$this->format($g, 'g_fylke', 'Fylke og navn<br />'
 									.	' &nbsp; &nbsp; &nbsp; <b>Grupppert:</b> fylke<br />'
 									.	' &nbsp; &nbsp; &nbsp; <b>Sortert:</b> alfabetisk etter navn');
@@ -55,7 +61,6 @@ class valgt_rapport extends rapport {
 									.	' &nbsp; &nbsp; &nbsp; <b>Grupppert:</b>fylke<br />'
 									.	' &nbsp; &nbsp; &nbsp; <b>Sortert:</b> alfabetisk etter type og navn');
 		}
-
 		$g = $this->formatGrp('op', 'Oppsett');
 		$this->format($g, 'op_p_break', 'Bruk linjeskift mellom hver deltaker');
 		$this->format($g, 'op_t_break', 'Bruk linjeskift mellom hver tittel');
@@ -984,6 +989,10 @@ class valgt_rapport extends rapport {
 			return $this->_innslag_gruppert_geo_type('kommune');
 		if($this->showFormat('g_fylke_type'))
 			return $this->_innslag_gruppert_geo_type('fylke');
+		if($this->showFormat('g_type_kommune'))
+			return $this->_innslag_gruppert_type_geo('kommune');
+		if($this->showFormat('g_type_fylke'))
+			return $this->_innslag_gruppert_type_geo('fylke');
 
 
 		return $this->_innslag_sortert_navn();
@@ -1101,5 +1110,31 @@ class valgt_rapport extends rapport {
 		$this->_deep_ksort($innslagene);
 		return $innslagene;
 	}
+	
+	/**
+	 * _innslag_gruppert_type _geofunction
+	 * 
+	 * Lager en liste over alle innslag på mønstringen, gruppert etter bt_name, sortert alfabetisk etter geografi og navn
+	 *
+	 * @access private
+	 * @return array
+	 */	
+	public function _innslag_gruppert_type_geo($field='kommune'){
+		$m = new monstring($this->pl_id);
+		
+		$innslag = $m->innslag();
+		foreach($innslag as $inn_array) {
+			$inn = new innslag($inn_array['b_id']);
+			if(get_option('site_type')!='kommune')
+				$inn->videresendte(get_option('pl_id'));
+			$inn->loadGEO();
+			$this->innslag[$inn->g('b_id')] = $inn;
+			$storekey = $this->storekey($inn->g($field).' '.$inn_array['b_name'], $innslagene[$inn->g('bt_name')]);
+			$innslagene[$inn->g('bt_name')][$storekey] = $inn;
+		}
+		$this->_deep_ksort($innslagene);
+		return $innslagene;
+	}
+
 }
 ?>
