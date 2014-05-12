@@ -491,7 +491,9 @@ class valgt_rapport extends rapport {
 				// Kategori og sjanger
 				$c = $tab->addCell(2000, $headerCellStyle);
 				if($this->show('i_katogsjan'))
-					woText($c, $inn->g('kategori_og_sjanger'));
+					woText($c, ($inn->g('bt_id')==2	?	'Film - '	:	'')
+							  .($inn->g('bt_id')==3	?	'Utstilling - '	:	'')
+							  .$inn->g('kategori_og_sjanger'));
 
 				// Geografi
 				$c = $tab->addCell(2000, $headerCellStyle);				
