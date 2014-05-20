@@ -4,6 +4,7 @@ require_once('UKM/monstring.class.php');
 require_once('UKM/forestilling.class.php');
 require_once('UKM/innslag.class.php');
 require_once('UKM/person.class.php');
+require_once('UKM/inc/word.inc.php');
 
 
 $m = new monstring( get_option('pl_id') );
@@ -94,6 +95,48 @@ foreach( $alle_inn as $inn ) {
 
 foreach( $fylker as $fylke ) {
 	ksort( $fylke->hendelser );
+	
+	$current_day = '';
+	word_init('Fylkestimeplan '. $fylke->navn);
+	foreach( $fylke->hendelser as $hendelse ) {
+		if( $current_day != $hendelse->info->dag ) {
+			$current_day = $hendelse->info->dag;
+			woText($section, $current_day, 'center');
+		}
+		woText($section, date('l d.m', $hendelse->info->timestamp), 'h1');
+		woText($section, $hendelse->info->sted .', '. $hendelse->info->starter, 'p');
+
+		//INNSLAGS-TABELL			
+		$tab = $section->addTable(array('align'=>'center'));
+		
+		foreach( $hendelse->innslag as $rekkefolge => $innslag ) {
+			$tab->addRow();
+			
+			// Navn og rekkefølge
+			$c = $tab->addCell(8640);
+			woText($c, $innslag->navn .'(nr. '.$rekkefolge.')','bold');
+			// Oppmøtetid
+			$c = $tab->addCell(2700);
+			woText($c, date('l H:i',$innslag->oppmote));
+			foreach( $innslag->personer as $person ) {
+				// NY RAD
+				$tab->addRow();
+				
+				$c = $tab->addCell(500);
+				woText($c, ' ');
+				
+				$c = $tab->addCell(4500);
+				woText($c, $person->navn);
+				
+				$c = $tab->addCell(3640);
+				woText($c, $person->mobil);
+				
+				$c = $tab->addCell(2700);
+				woText($c, '');
+			}
+		}
+	}
+	$fylke->word = woWrite('UKMF_Fylkestimeplan_'.preg_replace("/[^A-Za-z0-9-]/", '',$fylke->navn).'_'.date('Y'));
 }
 
 $TWIG['fylker'] = $fylker;

@@ -1,6 +1,7 @@
 {% for fylke in fylker %}
 	<div style="page-break-before:always;"></div>
 	<h1 style="margin-top:100px">Fylkestimeplan for {{fylke.navn}}</h1>
+	<p><a herf="{{fylke.word}}">Last ned i word-format</a></p>
 	<div class="UKMwidth">
 	
 	{% set current_day = '' %}
