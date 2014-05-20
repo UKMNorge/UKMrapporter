@@ -135,6 +135,7 @@ foreach( $fylker as $fylke ) {
 				woText($c, '');
 			}
 		}
+		woText($section, ' ', 'p');
 	}
 	$fylke->word = woWrite('UKMF_Fylkestimeplan_'.preg_replace("/[^A-Za-z0-9-]/", '',$fylke->navn).'_'.date('Y'));
 }
