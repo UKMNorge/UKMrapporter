@@ -10,7 +10,7 @@
 		<h3>{{hendelse.info.navn}} <small>{{hendelse.info.sted}} {{hendelse.info.starter}}</small></h3>
 			<table class="table table-striped">
 			{% for rekkefolge,innslag in hendelse.innslag %}
-				<tr class="success">
+				<tr>
 					<th colspan="2">{{innslag.navn}} <small>(nr. {{rekkefolge}})</small></th>
 					<th></th>
 					<th>Oppmøte: {{innslag.oppmote|dato('l H:i')}}</th>
