@@ -6,6 +6,7 @@ require_once('UKM/innslag.class.php');
 require_once('UKM/person.class.php');
 require_once('UKM/inc/word.inc.php');
 
+setlocale(LC_ALL, 'nb_NO');
 
 $m = new monstring( get_option('pl_id') );
 $alle_inn = $m->innslag();
@@ -103,7 +104,7 @@ foreach( $fylker as $fylke ) {
 			woText($section, $current_day, 'center');
 		}
 		woText($section, date('l d.m', $hendelse->info->timestamp), 'h1');
-		woText($section, $hendelse->info->sted .', '. $hendelse->info->starter, 'p');
+		woText($section, $hendelse->info->sted .', '. $hendelse->info->starter, 'bold');
 
 		//INNSLAGS-TABELL			
 		$tab = $section->addTable(array('align'=>'center'));
@@ -121,10 +122,7 @@ foreach( $fylker as $fylke ) {
 				// NY RAD
 				$tab->addRow();
 				
-				$c = $tab->addCell(500);
-				woText($c, ' ');
-				
-				$c = $tab->addCell(4500);
+				$c = $tab->addCell(5000);
 				woText($c, $person->navn);
 				
 				$c = $tab->addCell(3640);
