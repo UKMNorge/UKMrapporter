@@ -1,13 +1,16 @@
-<h1>Fylkestimeplan</h1>
-
-
 {% for fylke in fylker %}
 	<div style="page-break-before:always;"></div>
-	<h2 style="margin-top:100px">{{fylke.navn}}</h2>
+	<h1 style="margin-top:100px">Fylkestimeplan for {{fylke.navn}}</h1>
 	<div class="UKMwidth">
 	
-	{% for hendelse in fylke.hendelser %}
+	{% set current_day = '' %}
+	{% for sortkey,hendelse in fylke.hendelser %}
+		{% if current_day != hendelse.info.dag %}
+			<h2 align="center">{{hendelse.info.timestamp|dato('l d.m')}}</h2>
+			{% set current_day = hendelse.info.dag %}
+		{% endif %}
 		<h3>{{hendelse.info.navn}} <small>{{hendelse.info.sted}} {{hendelse.info.starter}}</small></h3>
+		<p>{{sortkey}}</p>
 			<table class="table table-striped">
 			{% for rekkefolge,innslag in hendelse.innslag %}
 				<tr>

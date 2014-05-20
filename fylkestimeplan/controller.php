@@ -13,11 +13,14 @@ $all_hen = $m->forestillinger('c_start',false);
 foreach( $all_hen as $hen ) {
 	$h = new forestilling( $hen['c_id'] );
 	$hendelse = new stdClass();
-	$hendelse->sortKey = preg_replace("/[^A-Za-z0-9-]/", '', $h->g('c_start').'-'.$h->g('c_name').'-'. $h->g('c_id'));
+	$hendelse->sortKey = preg_replace("/[^A-Za-z0-9-]/", '', date('Y-m-d-H-i-s',$h->g('c_start')).'-'.$h->g('c_name').'-'. $h->g('c_id'));
 	$hendelse->ID = $h->g('c_id');
 	$hendelse->navn = $h->g('c_name');
 	$hendelse->sted = $h->g('c_place');
+	$hendelse->timestamp = $h->g('c_start');
 	$hendelse->starter = $h->starter();
+	$hendelse->dag = date('l d.m', $hendelse->timestamp);
+
 	
 
 	$oppmote = new stdClass();
@@ -89,5 +92,8 @@ foreach( $alle_inn as $inn ) {
 	}
 }
 
+foreach( $fylker as $fylke ) {
+	ksort( $fylke->hendelser );
+}
+
 $TWIG['fylker'] = $fylker;
-#var_dump( $fylker );
