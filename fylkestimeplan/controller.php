@@ -86,9 +86,9 @@ foreach( $alle_inn as $inn ) {
 			$fylkeObject->innslag = array();
 			$fylkeObject->innslag[ $rekkefolge ] = $innslaget;
 
-			$fylker[ $i->g('fylke_utf8') ]->hendelser[ $sortKey ] = $fylkeObject;
+			$fylker[ $i->g('fylke') ]->hendelser[ $sortKey ] = $fylkeObject;
 		} else {
-			$fylker[ $i->g('fylke_utf8') ]->hendelser[ $sortKey ]->innslag[ $rekkefolge ] = $innslaget;
+			$fylker[ $i->g('fylke') ]->hendelser[ $sortKey ]->innslag[ $rekkefolge ] = $innslaget;
 		}
 	}
 }
