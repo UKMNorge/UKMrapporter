@@ -103,10 +103,11 @@ foreach( $fylker as $fylke ) {
 	foreach( $fylke->hendelser as $hendelse ) {
 		if( (string)$current_day != (string)$hendelse->info->dag ) {
 			$current_day = (string)$hendelse->info->dag;
-			woText($section, strftime('%A %e.%m',$hendelse->info->timestamp), 'center');
+			woText($section, strftime('%A %e.%m', $hendelse->info->timestamp), 'h1');
 		}
-		woText($section, strftime('%A %e.%m', $hendelse->info->timestamp), 'h1');
-		woText($section, $hendelse->info->sted .', '. $hendelse->info->starter, 'bold');
+
+		woText($section, $hendelse->info->navn, 'h2');
+		woText($section, $hendelse->info->sted .', '. $hendelse->info->starter, 'h4');
 
 		//INNSLAGS-TABELL			
 		$tab = $section->addTable(array('align'=>'center'));
@@ -119,7 +120,7 @@ foreach( $fylker as $fylke ) {
 			woText($c, $innslag->navn .'(nr. '.$rekkefolge.')','bold');
 			// Oppmøtetid
 			$c = $tab->addCell(2700);
-			woText($c, strftime('%A %H:%M',$innslag->oppmote));
+			woText($c, strftime('%A %H:%M','Oppmøte:'.$innslag->oppmote), 'right');
 			foreach( $innslag->personer as $person ) {
 				// NY RAD
 				$tab->addRow();
