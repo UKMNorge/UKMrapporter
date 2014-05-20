@@ -37,7 +37,6 @@ $alle_innslag = array();
 
 $fylkeSQL = new SQL("SELECT *
 				   FROM `smartukm_fylke`
-				   WHERE `id` < 21
 				   ORDER BY `name` ASC");
 $fylkeRES = $fylkeSQL->run();
 while( $f = mysql_fetch_assoc( $fylkeRES ) ) {
