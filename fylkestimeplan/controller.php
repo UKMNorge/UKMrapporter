@@ -105,7 +105,7 @@ foreach( $fylker as $fylke ) {
 			$current_day = $hendelse->info->dag;
 			woText($section, strftime('%A %e.%m',$hendelse->info->timestamp), 'center');
 		}
-		woText($section, strftime('%a %e.%m',, $hendelse->info->timestamp), 'h1');
+		woText($section, strftime('%a %e.%m', $hendelse->info->timestamp), 'h1');
 		woText($section, $hendelse->info->sted .', '. $hendelse->info->starter, 'bold');
 
 		//INNSLAGS-TABELL			
