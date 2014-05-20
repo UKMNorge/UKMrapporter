@@ -74,7 +74,7 @@ foreach( $alle_inn as $inn ) {
 		$sortKey = $hendelsen->sortKey;
 		
 		$innslaget = clone $innslag;
-		$innslaget->oppmote = $hendelsen->oppmote->start + ($rekkefolge * $hendelsen->oppmote->delay);
+		$innslaget->oppmote = $hendelsen->oppmote->start + (($rekkefolge-1) * $hendelsen->oppmote->delay);
 		
 		if( !isset( $fylker[ $i->g('fylke_utf8') ]->hendelser[ $sortKey ] ) ) {
 			$fylkeObject = new stdClass();
