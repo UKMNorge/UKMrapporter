@@ -97,6 +97,8 @@ foreach( $fylker as $fylke ) {
 	ksort( $fylke->hendelser );
 	
 	$current_day = '';
+	global $PHPWord;
+	$PHPWord = new PHPWord();
 	$section = word_init('Fylkestimeplan '. $fylke->navn);
 	foreach( $fylke->hendelser as $hendelse ) {
 		if( $current_day != $hendelse->info->dag ) {
