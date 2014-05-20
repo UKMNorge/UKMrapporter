@@ -101,9 +101,9 @@ foreach( $fylker as $fylke ) {
 	foreach( $fylke->hendelser as $hendelse ) {
 		if( $current_day != $hendelse->info->dag ) {
 			$current_day = $hendelse->info->dag;
-			woText($section, $current_day, 'center');
+			woText($section, strftime('%A %e.%m',$hendelse->info->timestamp), 'center');
 		}
-		woText($section, date('l d.m', $hendelse->info->timestamp), 'h1');
+		woText($section, strftime('%a %e.%m',, $hendelse->info->timestamp), 'h1');
 		woText($section, $hendelse->info->sted .', '. $hendelse->info->starter, 'bold');
 
 		//INNSLAGS-TABELL			
@@ -117,13 +117,13 @@ foreach( $fylker as $fylke ) {
 			woText($c, $innslag->navn .'(nr. '.$rekkefolge.')','bold');
 			// Oppmøtetid
 			$c = $tab->addCell(2700);
-			woText($c, date('l H:i',$innslag->oppmote));
+			woText($c, strftime('%a %H:%i',$innslag->oppmote));
 			foreach( $innslag->personer as $person ) {
 				// NY RAD
 				$tab->addRow();
 				
 				$c = $tab->addCell(5000);
-				woText($c, $person->navn);
+				woText($c, '   '.$person->navn);
 				
 				$c = $tab->addCell(3640);
 				woText($c, $person->mobil);
