@@ -101,11 +101,11 @@ foreach( $fylker as $fylke ) {
 	$PHPWord = new PHPWord();
 	$section = word_init('Fylkestimeplan '. $fylke->navn);
 	foreach( $fylke->hendelser as $hendelse ) {
-		if( $current_day != $hendelse->info->dag ) {
-			$current_day = $hendelse->info->dag;
+		if( (string)$current_day != (string)$hendelse->info->dag ) {
+			$current_day = (string)$hendelse->info->dag;
 			woText($section, strftime('%A %e.%m',$hendelse->info->timestamp), 'center');
 		}
-		woText($section, strftime('%a %e.%m', $hendelse->info->timestamp), 'h1');
+		woText($section, strftime('%A %e.%m', $hendelse->info->timestamp), 'h1');
 		woText($section, $hendelse->info->sted .', '. $hendelse->info->starter, 'bold');
 
 		//INNSLAGS-TABELL			
@@ -119,7 +119,7 @@ foreach( $fylker as $fylke ) {
 			woText($c, $innslag->navn .'(nr. '.$rekkefolge.')','bold');
 			// Oppmøtetid
 			$c = $tab->addCell(2700);
-			woText($c, strftime('%a %H:%i',$innslag->oppmote));
+			woText($c, strftime('%A %H:%M',$innslag->oppmote));
 			foreach( $innslag->personer as $person ) {
 				// NY RAD
 				$tab->addRow();
