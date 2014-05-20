@@ -120,7 +120,7 @@ foreach( $fylker as $fylke ) {
 			woText($c, $innslag->navn .'(nr. '.$rekkefolge.')','bold');
 			// Oppmøtetid
 			$c = $tab->addCell(2700);
-			woText($c, strftime('%A %H:%M','Oppmøte:'.$innslag->oppmote), 'right');
+			woText($c, 'Oppmøte:'.strftime('%A %H:%M',$innslag->oppmote), 'right');
 			foreach( $innslag->personer as $person ) {
 				// NY RAD
 				$tab->addRow();
