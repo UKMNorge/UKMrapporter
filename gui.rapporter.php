@@ -84,6 +84,14 @@ $category_icon_size = 32;
 		<div class="title">Program</div>
 		<span>Sammen med papermill-omslaget er dette alt du trenger!</span>
 	</li>
+	<?php
+	if( get_option('site_type') == 'land' ) { ?>
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&fylkestimeplan=generate">
+		<?= UKMN_icoAlt('schedule', "Fylkestimeplan", $raport_icon_size ) ?>
+		<div class="title">Fylkestimeplaner</div>
+		<span>Genererer en fylkesvis timeplan for alle hendelser</span>
+	</li>
+	<?php } ?>
 	<li class="clickable rapport" data-file="kunstkatalog">
 		<?= UKMN_icoAlt('art-supplies', "Kunstkatalog", $raport_icon_size ) ?>
 		<div class="title">Kunstkatalog</div>

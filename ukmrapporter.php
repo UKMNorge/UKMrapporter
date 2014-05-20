@@ -36,7 +36,7 @@ function UKMrapport_countPrint(){
 function UKMrapport_menu() {
 	UKM_add_menu_page('monstring','Rapporter', 'Rapporter', 'editor', 'UKMrapport_admin', 'UKMrapport_admin', 'http://ico.ukm.no/graph-menu.png',15);    
 	UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_scriptsandstyles' );
-	if(isset($_GET['stat'])) {
+	if(isset($_GET['stat'])||isset($_GET['fylkestimeplan'])) {
 		UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_statistikk_scripts_and_styles' );
 	}
 }
@@ -71,7 +71,11 @@ function UKMrapport_admin() {
 
 		echo TWIG( $VIEW.'.twig.html', $TWIG, dirname(__FILE__), true);
 		echo HANDLEBARS( dirname(__FILE__) );
-
+	} elseif( isset( $_GET['fylkestimeplan'] )) {
+		$VIEW = 'fylkestimeplan';
+		$TWIG = array();
+		require_once('fylkestimeplan/controller.php');
+		echo TWIG( 'fylkestimeplan/generate.twig.html', $TWIG, dirname(__FILE__), true);
 	} elseif(isset($_GET['rapport'])&&$_GET['rapport']!=='undefined'&&isset($_GET['kat'])) {
 		require_once('class.rapport.php');
 		require_once('rapport/'.$_GET['kat'].'/'.$_GET['rapport'].'.report.php');

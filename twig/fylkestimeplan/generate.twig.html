@@ -1,0 +1,30 @@
+<h1>Fylkestimeplan</h1>
+
+
+{% for fylke in fylker %}
+	<div style="page-break-before:always;"></div>
+	<h2 style="margin-top:100px">{{fylke.navn}}</h2>
+	<div class="UKMwidth">
+	
+	{% for hendelse in fylke.hendelser %}
+		<h3>{{hendelse.info.navn}} <small>{{hendelse.info.sted}} {{hendelse.info.starter}}</small></h3>
+			<table class="table table-striped">
+			{% for rekkefolge,innslag in hendelse.innslag %}
+				<tr class="success">
+					<th colspan="2">{{innslag.navn}} <small>(nr. {{rekkefolge}})</small></th>
+					<th></th>
+					<th>Oppmøte: {{innslag.oppmote|dato('l H:i')}}</th>
+				</tr>
+				{% for person in innslag.personer %}
+				<tr>
+					<td width="50"></td>
+					<td>{{person.navn}}</td>
+					<td width="100">{{person.mobil}}</td>
+					<td width="300"></td>
+				</tr>
+				{% endfor %}
+			{% endfor %}
+		</table>
+	{% endfor %}
+	</div>
+{% endfor %}
