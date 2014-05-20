@@ -4,13 +4,12 @@
 	<div class="UKMwidth">
 	
 	{% set current_day = '' %}
-	{% for sortkey,hendelse in fylke.hendelser %}
+	{% for hendelse in fylke.hendelser %}
 		{% if current_day != hendelse.info.dag %}
 			<h2 align="center">{{hendelse.info.timestamp|dato('l d.m')}}</h2>
 			{% set current_day = hendelse.info.dag %}
 		{% endif %}
 		<h3>{{hendelse.info.navn}} <small>{{hendelse.info.sted}} {{hendelse.info.starter}}</small></h3>
-		<p>{{sortkey}}</p>
 			<table class="table table-striped">
 			{% for rekkefolge,innslag in hendelse.innslag %}
 				<tr>
