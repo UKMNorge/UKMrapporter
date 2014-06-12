@@ -46,6 +46,7 @@ class valgt_rapport extends rapport {
 			$this->opt($i, 'i_tekniske', 'Tekniske behov');
 			$this->opt($i, 'i_konferansier', 'Konferansiertekster (beskrivelse)');
 			$this->opt($i, 'i_varighet', 'Varighet');
+			$this->opt($i, 'i_playback', 'Playback-filer');
 		}
 		if($this->report_extended == 'tekniske_prover') {
 			$k = $this->formatGrp('l', 'Kommentarbokser', 'radio');
@@ -116,6 +117,10 @@ class valgt_rapport extends rapport {
 			if($this->show('i_varighet')) {
 				$col++;
 				exCell(i2a($col).'1', 'Varighet (sek)', 'bold');
+			}
+			if($this->show('i_playback')) {
+				$col++;
+				exCell(i2a($col).'1', 'Playback', 'bold');
 			}
 			if($this->show('d_kontakt')){
 				$col++;
@@ -192,6 +197,11 @@ class valgt_rapport extends rapport {
 						$col++;
 						exCell(i2a($col).$row, $i->varighet(get_option('pl_id')));
 					}
+					if($this->show('i_playback')) {
+						$col++;
+						exCell(i2a($col).$row, $i->playbackToString());
+					}
+
 					if($this->show('d_kontakt')){
 						$col++;
 						$d = new person($i->g('b_contact'));
@@ -332,6 +342,10 @@ class valgt_rapport extends rapport {
 					if($this->show('i_varighet')) {
 						woText($section, 'Varighet: ', 'bold');
 						woText($section, $i->tid(get_option('pl_id')));
+					}
+					if($this->show('i_playback')) {
+						woText($section, 'Playback: ', 'bold');
+						woText($section, $i->playbackToString());
 					}
 					if($this->show('d_kontakt')){
 						$d = new person($i->g('b_contact'));
@@ -581,6 +595,12 @@ class valgt_rapport extends rapport {
 							.'<div class="detaljer"> - e-post: <a href="mailto:'.$d->g('p_email').'" class="UKMMAIL">'. $d->g('p_email').'</a></div>'
 							.'</div>'
 							;
+					}
+					if( $this->show('i_playback')) {
+						echo #'<div class="clear clearfix clear-fix"></div>'
+							'<div class="kontaktperson">'
+							.'<strong>Playback: </strong>' . $i->playbackToString()
+							.'</div>';
 					}
 					if($this->report_extended == 'juryskjema') {
 						$alle_vurderinger = jury_vurderinger_forestilling($c->g('c_id'));
