@@ -81,6 +81,7 @@ function UKMrapport_admin() {
 		require_once('rapport/'.$_GET['kat'].'/'.$_GET['rapport'].'.report.php');
 		require_once('gui.rapport.php');
 	} else {
+		require_once('clean_order_concerts.inc.php');
 		require_once('gui.rapporter.php');
 	}
 }
