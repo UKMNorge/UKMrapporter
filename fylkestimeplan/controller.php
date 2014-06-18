@@ -80,15 +80,15 @@ foreach( $alle_inn as $inn ) {
 		$innslaget = clone $innslag;
 		$innslaget->oppmote = $hendelsen->oppmote->start + (($rekkefolge-1) * $hendelsen->oppmote->delay);
 		
-		if( !isset( $fylker[ $i->g('fylke_utf8') ]->hendelser[ $sortKey ] ) ) {
+		if( !isset( $fylker[ $i->g('fylke') ]->hendelser[ $sortKey ] ) ) {
 			$fylkeObject = new stdClass();
 			$fylkeObject->info = $hendelsen;
 			$fylkeObject->innslag = array();
 			$fylkeObject->innslag[ $rekkefolge ] = $innslaget;
 
-			$fylker[ $i->g('fylke_utf8') ]->hendelser[ $sortKey ] = $fylkeObject;
+			$fylker[ $i->g('fylke') ]->hendelser[ $sortKey ] = $fylkeObject;
 		} else {
-			$fylker[ $i->g('fylke_utf8') ]->hendelser[ $sortKey ]->innslag[ $rekkefolge ] = $innslaget;
+			$fylker[ $i->g('fylke') ]->hendelser[ $sortKey ]->innslag[ $rekkefolge ] = $innslaget;
 		}
 	}
 }
