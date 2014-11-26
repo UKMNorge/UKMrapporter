@@ -189,7 +189,11 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 	
 	foreach( $TWIG['statistikk_detaljert'] as $sd_fylke => $sd_data ) {
 		foreach( $sd_data as $sd_ssn => $sd_tall ) {
-			$sd_tall['ppi'] = round( (int) $sd_tall['personer'] / (int) $sd_tall['innslag'], 2);
+			if( $sd_tall['innslag'] == 0 ) {
+				$sd_tall['ppi'] = (int) $sd_tall['personer'];
+			} else {
+				$sd_tall['ppi'] = round( (int) $sd_tall['personer'] / (int) $sd_tall['innslag'], 2);
+			}
 			$TWIG['statistikk_detaljert'][ $sd_fylke ][ $sd_ssn ] = $sd_tall;
 		}
 	}
