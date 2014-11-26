@@ -49,7 +49,11 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							  );
 			$fylkeRES = $fylkeQRY->run();
 			while( $r = mysql_fetch_assoc( $fylkeRES ) ) {
-				$malgruppe[ $r['season'] ][ 'Utvikling '. $TWIG['monstring']->fylke->name ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
+				if( $r['malgruppe'] == 0 ) {
+					$malgruppe[ $r['season'] ][ 'Utvikling '. $TWIG['monstring']->fylke->name ] = 0;
+				} else {
+					$malgruppe[ $r['season'] ][ 'Utvikling '. $TWIG['monstring']->fylke->name ] = round( ( 100/$r['malgruppe'] ) * $r['deltakere'] ,2);
+				}
 			}
 			
 			// SNITT NASJONALT
