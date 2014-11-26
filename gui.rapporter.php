@@ -82,7 +82,7 @@ $category_icon_size = 32;
 	<li class="clickable rapport" data-file="program">
 		<?= UKMN_icoAlt('list', "Sannsynligvis OK!", $raport_icon_size ) ?>
 		<div class="title">Program</div>
-		<span>Sammen med papermill-omslaget er dette alt du trenger!</span>
+		<span>Sammen med omslaget fra designgeneratoren (<a href="admin.php?page=UKMmateriell">materiell</a> i menyen) er dette alt du trenger!</span>
 	</li>
 	<?php
 	if( get_option('site_type') == 'land' ) { ?>
