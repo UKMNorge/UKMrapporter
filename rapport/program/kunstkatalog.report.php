@@ -222,6 +222,9 @@ class valgt_rapport extends rapport {
 
 						if($this->show('i_type'))
 							woText($section, 'Type: '. ucfirst($t->g('type')));
+						if( $this->show('i_beskrivelse') ) {
+ 							woText($section, $i->g('b_description') .' '. $t->g('beskrivelse') );  
+						}
 					}
 				}
 			}
