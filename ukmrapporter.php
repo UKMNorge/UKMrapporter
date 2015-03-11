@@ -34,7 +34,7 @@ function UKMrapport_countPrint(){
 
 ## CREATE A MENU
 function UKMrapport_menu() {
-	UKM_add_menu_page('monstring','Rapporter', 'Rapporter', 'editor', 'UKMrapport_admin', 'UKMrapport_admin', 'http://ico.ukm.no/graph-menu.png',15);    
+	UKM_add_menu_page('monstring','Rapporter', 'Rapporter', 'ukm_rapporter', 'UKMrapport_admin', 'UKMrapport_admin', 'http://ico.ukm.no/graph-menu.png',15);    
 	UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_scriptsandstyles' );
 	if(isset($_GET['stat'])||isset($_GET['fylkestimeplan'])) {
 		UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_statistikk_scripts_and_styles' );
