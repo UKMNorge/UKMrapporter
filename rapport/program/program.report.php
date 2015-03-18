@@ -772,7 +772,8 @@ class valgt_rapport extends rapport {
 								.'<div class="clear-fix"></div>'
 	
 							.'</div>'
-							.'<div style="page-break-after: always;"></div>';
+							.'<div style="clear:both;"></div>'
+							.'<div style="page-break-after:always;"></div>';
 						
 					}
 
