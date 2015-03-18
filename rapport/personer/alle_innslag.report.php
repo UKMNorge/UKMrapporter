@@ -25,6 +25,7 @@ class valgt_rapport extends rapport {
 		$g = $this->optGrp('p','Info om enkeltpersoner');
 		$this->opt($g, 'p_kontaktp', 'Vis kontaktperson');
 		$this->opt($g, 'p_vis', 'Vis alle deltakere');
+		$this->opt($g, 'p_instrument', 'Vis instrument');
 		$this->opt($g, 'p_alder', 'Vis alder');
 		$this->opt($g, 'p_mobil', 'Vis mobilnummer');
 		$this->opt($g, 'p_epost', 'Vis e-post (hvis oppgitt)');
@@ -193,9 +194,8 @@ class valgt_rapport extends rapport {
 				// DELTAKERE I INNSLAGET
 				if($this->show('p_vis')){
 					$objPHPExcel->setActiveSheetIndex(1);
-					$personer = $inn->personer();
-					foreach($personer as $pers) {
-						$p = new person($pers['p_id']);
+					$personer = $inn->personObjekter();
+					foreach($personer as $p) {
 						$p2col = 0;
 						$p2rad++;
 						if($grp !== 0) {
@@ -245,6 +245,11 @@ class valgt_rapport extends rapport {
 #						$p_start = $p2col;
 						excell(i2a($p2col).$headerRad, 'Fullt navn','bold');
 						excell(i2a($p2col).$p2rad, $p->g('name'));
+						if($this->show('p_instrument')){
+							$p2col++;
+							excell(i2a($p2col).$headerRad, 'Instrument','bold');
+							excell(i2a($p2col).$p2rad, $p->g('instrument'));
+						}
 						if($this->show('p_alder')){
 							$p2col++;
 							excell(i2a($p2col).$headerRad, 'Alder','bold');
@@ -524,13 +529,13 @@ class valgt_rapport extends rapport {
 				// DELTAKERE I INNSLAGET
 				if($this->show('p_vis')){
 					woText($section, 'Deltakere:', 'bold');
-					$personer = $inn->personer();
+					$personer = $inn->personObjekter();
 					$personText = array();
-					foreach($personer as $pers) {
-						$group_sum_all_p[] = $pers['p_id'];
-						$group_sum_uni_p[$pers['p_id']] = 1;
-						$p = new person($pers['p_id']);
+					foreach($personer as $p) {
+						$group_sum_all_p[] = $p->g('p_id');
+						$group_sum_uni_p[ $p->g('p_id') ] = 1;
 						$person = $p->g('name')
+							.($this->show('p_instrument') 	? ' '.$p->g('instrument').' '			: '')
 							.($this->show('p_alder') 	? ' ('.$p->alder().' år) '			: '')
 							.($this->show('p_mobil')	? ' - mobil: '.$p->g('p_phone')		: '')
 							.($this->show('p_epost')	? ' - e-post: '.$p->g('p_email')		: '')
@@ -785,16 +790,18 @@ class valgt_rapport extends rapport {
 						if($this->show('p_vis')){
 							echo '<div class="label">Deltakere: </div>'
 								.'<div class="desc">';
-							$personer = $inn->personer();
+							$personer = $inn->personObjekter();
 							$i=0;
-							foreach($personer as $pers) {
-								$group_sum_all_p[] = $pers['p_id'];
-								$group_sum_uni_p[$pers['p_id']] = 1;
+							foreach($personer as $p) {
+								$group_sum_all_p[] = $p->g('p_id');
+								$group_sum_uni_p[ $p->g('p_id') ] = 1;
 								$i++;
-								$p = new person($pers['p_id']);
 								echo $p->g('name')
 									.($this->show('p_alder')
 										? ' ('.$p->alder().' år) '
+										: '')
+									.($this->show('p_instrument')
+										? ' <em>'.$p->g('instrument').'</em> '
 										: '')
 									.($this->show('p_mobil')
 										? ' - mobil: <span class="UKMSMS">'.$p->g('p_phone').'</span>'
