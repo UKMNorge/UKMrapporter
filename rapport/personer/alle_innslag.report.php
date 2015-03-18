@@ -245,15 +245,15 @@ class valgt_rapport extends rapport {
 #						$p_start = $p2col;
 						excell(i2a($p2col).$headerRad, 'Fullt navn','bold');
 						excell(i2a($p2col).$p2rad, $p->g('name'));
-						if($this->show('p_instrument')){
-							$p2col++;
-							excell(i2a($p2col).$headerRad, 'Instrument','bold');
-							excell(i2a($p2col).$p2rad, $p->g('instrument'));
-						}
 						if($this->show('p_alder')){
 							$p2col++;
 							excell(i2a($p2col).$headerRad, 'Alder','bold');
 							excell(i2a($p2col).$p2rad, $p->alder());
+						}
+						if($this->show('p_instrument')){
+							$p2col++;
+							excell(i2a($p2col).$headerRad, 'Instrument','bold');
+							excell(i2a($p2col).$p2rad, $p->g('instrument'));
 						}
 						if($this->show('p_mobil')){
 							$p2col++;
@@ -535,8 +535,8 @@ class valgt_rapport extends rapport {
 						$group_sum_all_p[] = $p->g('p_id');
 						$group_sum_uni_p[ $p->g('p_id') ] = 1;
 						$person = $p->g('name')
-							.($this->show('p_instrument') 	? ' '.$p->g('instrument').' '			: '')
 							.($this->show('p_alder') 	? ' ('.$p->alder().' år) '			: '')
+							.($this->show('p_instrument') 	? ' '.$p->g('instrument').' '			: '')
 							.($this->show('p_mobil')	? ' - mobil: '.$p->g('p_phone')		: '')
 							.($this->show('p_epost')	? ' - e-post: '.$p->g('p_email')		: '')
 							;
