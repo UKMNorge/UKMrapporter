@@ -80,6 +80,10 @@ class valgt_rapport extends rapport {
 				$col++;
 				exCell(i2a($col).'1', 'Type', 'bold');
 			}
+			if($this->show('i_beskrivelse')){
+				$col++;
+				exCell(i2a($col).'1', 'Beskrivelse', 'bold');
+			}
 			
 			foreach($concerts as $c){
 				$program = $c->innslag();
@@ -140,6 +144,10 @@ class valgt_rapport extends rapport {
 						if($this->show('i_type')){
 							$col++;
 							exCell(i2a($col).$row, ucfirst($t->g('type')));
+						}
+						if($this->show('i_beskrivelse')){
+							$col++;
+							exCell(i2a($col).$row, $i->g('b_description') .' '. $t->g('beskrivelse'));
 						}
 					}
 				}
