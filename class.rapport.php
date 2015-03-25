@@ -320,7 +320,7 @@ class rapport{
 	 * @return array seasons
 	 */
 	 public function get_season() {	 		
-	 	for($i=2011; $i<get_option('season')+1; $i++)
+	 	for($i=2010; $i<get_option('season')+1; $i++)
 	 		$seasons[] = $i;
 	 	
 	 	return $seasons;
