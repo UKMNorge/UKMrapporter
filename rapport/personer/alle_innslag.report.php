@@ -733,7 +733,7 @@ class valgt_rapport extends rapport {
 			</div>
 			<script>
 				jQuery(document).on('click', '.UKMTV img', function(){
-					var container = jQuery(this).parents('li.UKMTV');
+					var container = jQuery(this).parents('div.UKMTV');
 					var embedcontainer = container.find('div.embedcontainer');
 					embedcontainer.html('<iframe src="' +
 										container.find('div.embedcontainer').attr('data-framesource') +
