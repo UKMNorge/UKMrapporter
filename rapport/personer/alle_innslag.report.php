@@ -36,6 +36,9 @@ class valgt_rapport extends rapport {
 		$this->opt($g, 't_varig', 'Vis varighet');
 		$this->opt($g, 't_detaljer', 'Vis detaljert tittel-info');
 
+		$m = $this->optGrp('m','Visning på skjerm');
+		$this->opt($m, 'm_ukmtv', 'Vis UKM-TV');
+
 		$g = $this->formatGrp('g', 'Gruppering', 'radio');
 		$this->format($g, 'g_ingen', 'Alfabetisk sortert');
 		$this->format($g, 'g_type', 'Type og navn<br />'
@@ -744,6 +747,20 @@ class valgt_rapport extends rapport {
 					## LAST INN GEOGRAFI KUN HVIS NØDVENDIG
 					if($this->show('i_fylke')||$this->show('i_kommune'))
 						$inn->loadGeo();
+						
+					$UKMTVhtml = '';
+					if( $this->show('m_ukmtv') ) {
+						$media = $inn->related_items();
+						if( isset( $media['tv'] ) && sizeof( $media['tv'] ) > 0) {
+							foreach( $media['tv'] as $tv_id => $tv ) {
+								$tv->iframe('1100px');
+								$UKMTVhtml .= '<div class="UKMTV">'. $tv->embedcode .'</div>';
+							}
+						}
+						if( empty( $UKMTVhtml ) ) {
+							$UKMTVhtml = 'Ingen filmer lastet opp';
+						}
+					}
 			
 					echo '<li class="innslag">'
 						### NAVN, KAT&SJAN, FYLKE OG KOMMUNE FOR INNSLAG 
@@ -858,6 +875,13 @@ class valgt_rapport extends rapport {
 							? '<div class="label">Tekst til konferansierer: </div>'
 							. '<div class="desc">'. $inn->g('td_konferansier') .'</div>'
 							: '')
+
+						### VIS UKM-TV
+						. ($this->show('m_ukmtv')
+							? '<div class="label">Opplastede filmer i UKM-TV</div>'
+							. '<div class="desc">'. $UKMTVhtml .'</div>'
+							: '')
+
 						
 						. '</li>';
 				}
