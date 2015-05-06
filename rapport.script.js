@@ -199,3 +199,17 @@ jQuery(document).ready(function(){
 		jQuery('#report_container_contact').slideDown();
 	});
 });
+
+
+/* VIS UKM-TV I RAPPORTER */
+/* Må bruke JS, da direktelasting gjør siden super-treg */
+jQuery(document).on('click', '.UKMTV img', function(){
+	var container = jQuery(this).parents('div.UKMTV');
+	var embedcontainer = container.find('div.embedcontainer');
+	embedcontainer.html('<iframe src="' +
+						container.find('div.embedcontainer').attr('data-framesource') +
+						'" frameborder width="'+ jQuery(this).width() +
+						'" height="'+ jQuery(this).height() +
+						'" style="max-width: 100%; border:none;"></iframe>').slideDown();
+	jQuery(this).slideUp();
+});
