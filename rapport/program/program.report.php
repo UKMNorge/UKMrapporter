@@ -63,6 +63,10 @@ class valgt_rapport extends rapport {
 		$p = $this->optGrp('p', 'Info om forestillingen');
 		$this->opt($p, 'p_varig', 'Vis beregnet varighet');
 
+
+		$m = $this->optGrp('m','Visning på skjerm');
+		$this->opt($m, 'm_ukmtv', 'Vis UKM-TV');
+
 		$this->_postConstruct();	
 	}
 
@@ -602,6 +606,7 @@ class valgt_rapport extends rapport {
 							.'<strong>Playback: </strong>' . $i->playbackToString()
 							.'</div>';
 					}
+					
 					if($this->report_extended == 'juryskjema') {
 						$alle_vurderinger = jury_vurderinger_forestilling($c->g('c_id'));
 						if(!is_array($alle_vurderinger[$i->g('b_id')])) {?>
@@ -818,6 +823,27 @@ class valgt_rapport extends rapport {
 						echo '</div>';
 					}
 
+					### VIS UKM-TV
+					if( $this->show('m_ukmtv') ) {
+						$media = $i->related_items();
+						echo '<div class="titler">'
+							.'<div class="titler-label">UKM-TV:</div>';
+						$ukmtv_count = 0;
+						if( isset( $media['tv'] ) && sizeof( $media['tv'] ) > 0) {
+							foreach( $media['tv'] as $tv_id => $tv ) {
+								$ukmtv_count++;
+								echo '<div class="UKMTV clickable">'
+								   . '	<div class="image"><img src="'. $tv->image_url .'" style="max-width:100%;" /></div>'
+								   . '	<div class="embedcontainer" style="display:none;" data-framesource="'. $tv->embed_url .'">'
+								   . '</div>';
+							}
+						}
+						if( $ukmtv_count == 0 ) {
+							echo 'Ingen filmer lastet opp';
+						}
+						echo '</div>';
+					}
+					
 					echo '<div class="clear"></div>';
 
 					echo '</li>';
