@@ -731,6 +731,18 @@ class valgt_rapport extends rapport {
 				</ul>
 				<div class="clear"></div>
 			</div>
+			<script>
+				jQuery(document).on('click', '.UKMTV img', function(){
+					var container = jQuery(this).parents('li.UKMTV');
+					var embedcontainer = container.find('div.embedcontainer');
+					embedcontainer.html('<iframe src="' +
+										container.find('div.embedcontainer').attr('data-framesource') +
+										'" frameborder width="'+ jQuery(this).width() +
+										'" height="'+ jQuery(this).height() +
+										'" style="max-width: 100%; border:none;"></iframe>').slideDown();
+					jQuery(this).slideUp();
+				});
+			</script>
 			<?php
 			}
 			foreach($grupperte_innslag as $grp => $innslag){
@@ -754,7 +766,11 @@ class valgt_rapport extends rapport {
 						if( isset( $media['tv'] ) && sizeof( $media['tv'] ) > 0) {
 							foreach( $media['tv'] as $tv_id => $tv ) {
 #								$tv->iframe('1100px');
-								$UKMTVhtml .= '<div class="UKMTV">'. $tv->embedcode('1100px') .'</div>';
+#								$UKMTVhtml .= '<div class="UKMTV">'. $tv->embedcode('1100px') .'</div>';
+								$UKMTVhtml .= '<div class="UKMTV clickable">'
+											. '	<div class="image"><img src="'. $tv->image_url .'" style="max-width:100%;" /></div>'
+											. '	<div class="embedcontainer" style="display:none;" data-framesource="'. $tv->embed_url .'">'
+											.'</div>';
 							}
 						}
 						if( empty( $UKMTVhtml ) ) {
