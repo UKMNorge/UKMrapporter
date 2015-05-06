@@ -753,8 +753,8 @@ class valgt_rapport extends rapport {
 						$media = $inn->related_items();
 						if( isset( $media['tv'] ) && sizeof( $media['tv'] ) > 0) {
 							foreach( $media['tv'] as $tv_id => $tv ) {
-								$tv->iframe('1100px');
-								$UKMTVhtml .= '<div class="UKMTV">'. $tv->embedcode .'</div>';
+#								$tv->iframe('1100px');
+								$UKMTVhtml .= '<div class="UKMTV">'. $tv->embedcode('1100px') .'</div>';
 							}
 						}
 						if( empty( $UKMTVhtml ) ) {
