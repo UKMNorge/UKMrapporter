@@ -29,6 +29,7 @@ class valgt_rapport extends rapport {
 
 		$i = $this->optGrp('i','Utfyllende informasjon');
 		$this->opt($i, 'i_type', 'Vis type');
+		$this->opt($i, 'i_teknikk', 'Vis teknikk');
 		$this->opt($i, 'i_fylke', 'Vis fylke');
 		$this->opt($i, 'i_kommune', 'Vis kommune');
 		$this->opt($i, 'i_beskrivelse', 'Vis beskrivelser');
@@ -79,6 +80,10 @@ class valgt_rapport extends rapport {
 			if($this->show('i_type')){
 				$col++;
 				exCell(i2a($col).'1', 'Type', 'bold');
+			}
+			if($this->show('i_teknikk')){
+				$col++;
+				exCell(i2a($col).'1', 'Teknikk', 'bold');
 			}
 			if($this->show('i_beskrivelse')){
 				$col++;
@@ -144,6 +149,10 @@ class valgt_rapport extends rapport {
 						if($this->show('i_type')){
 							$col++;
 							exCell(i2a($col).$row, ucfirst($t->g('type')));
+						}
+						if($this->show('i_teknikk')){
+							$col++;
+							exCell(i2a($col).$row, ucfirst($t->g('teknikk')));
 						}
 						if($this->show('i_beskrivelse')){
 							$col++;
@@ -230,6 +239,8 @@ class valgt_rapport extends rapport {
 
 						if($this->show('i_type'))
 							woText($section, 'Type: '. ucfirst($t->g('type')));
+						if($this->show('i_type'))
+							woText($section, 'Teknikk: '. ucfirst($t->g('teknikk')));
 						if( $this->show('i_beskrivelse') ) {
  							woText($section, $i->g('b_description') .' '. $t->g('beskrivelse') );  
 						}
@@ -332,6 +343,12 @@ class valgt_rapport extends rapport {
 								<?= ucfirst($t->g('type')) ?>
 							</div>
 							<?php
+							}
+							if($this->show('i_teknikk')) { ?>
+							<div class="type"><strong>Teknikk: </strong>
+								<?= ucfirst($t->g('teknikk')) ?>
+							</div>
+							<?php 
 							}
 							if($this->show('i_beskrivelse')) { ?>
 								<div class="av"><strong>Beskrivelse: </strong><?= $i->g('b_description') ?> <br /> <?= $t->g('beskrivelse') ?></div>
