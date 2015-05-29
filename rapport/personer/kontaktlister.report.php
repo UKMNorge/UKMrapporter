@@ -33,12 +33,32 @@ class valgt_rapport extends rapport {
 		$this->opt($g, 'i_kommune', 'Vis kommune');
 
 		$g = $this->formatGrp('g', 'Gruppering', 'radio');
-		$this->format($g, 'g_ingen', 'Kun alfabetisk sortert etter innslag');
-		$this->format($g, 'g_type', 'Sortert alfabetisk, etter type innslag');
-		if(get_option('site_type')!='land')
-			$this->format($g,  'g_kommune', 'Sortert alfabetisk, etter kommune');
-		else
-			$this->format($g, 'g_fylke', 'Sortert alfabetisk, etter fylke');
+		$this->format($g, 'g_ingen', '<b>Alfabetisk etter innslag</b>'
+								.	 '<br /> &nbsp; &nbsp; &nbsp; <b>Gruppert:</b> Ingen gruppering'
+								.	 '<br /> &nbsp; &nbsp; &nbsp; <b>Sortert:</b> Alfabetisk etter navn på innslag, deretter personer'
+						);
+
+		$this->format($g, 'g_type', '<b>Type, sortert etter innslag</b>'
+								.	 '<br /> &nbsp; &nbsp; &nbsp; <b>Gruppert:</b> Type'
+								.	 '<br /> &nbsp; &nbsp; &nbsp; <b>Sortert:</b> Alfabetisk etter navn på innslag, deretter personer'
+						);
+
+		if(get_option('site_type')!='land') {
+			$this->format($g, 'g_kommune', '<b>Kommune, sortert etter innslag</b>'
+									.	 '<br /> &nbsp; &nbsp; &nbsp; <b>Gruppert:</b> Kommune'
+									.	 '<br /> &nbsp; &nbsp; &nbsp; <b>Sortert:</b> Alfabetisk etter navn på innslag, deretter personer'
+							);
+		} else {
+			$this->format($g, 'g_fylke', '<b>Fylke, sortert etter innslag</b>'
+									.	 '<br /> &nbsp; &nbsp; &nbsp; <b>Gruppert:</b> Fylke'
+									.	 '<br /> &nbsp; &nbsp; &nbsp; <b>Sortert:</b> Alfabetisk etter navn på innslag, deretter personer'
+							);
+
+			$this->format($g, 'g_fylke_type', '<b>Fylke og type, sortert etter innslag</b>'
+									.	 '<br /> &nbsp; &nbsp; &nbsp; <b>Gruppert:</b> Fylke og type innslag'
+									.	 '<br /> &nbsp; &nbsp; &nbsp; <b>Sortert:</b> Alfabetisk etter navn på innslag, deretter personer'
+							);
+		}
 		
 		$this->_postConstruct();	
 	}
@@ -533,6 +553,8 @@ class valgt_rapport extends rapport {
 			return $this->_innslag_gruppert_geo('kommune');
 		if($this->showFormat('g_fylke'))
 			return $this->_innslag_gruppert_geo('fylke');
+		if($this->showFormat('g_fylke_type'))
+			return $this->_innslag_gruppert_geo('fylke_type');
 		return $this->_innslag_sortert_navn();
 	}
 	
@@ -602,7 +624,12 @@ class valgt_rapport extends rapport {
 				$inn->videresendte(get_option('pl_id'));
 			$inn->loadGEO();
 			$this->innslag[$inn->g('b_id')] = $inn;
-			$innslagene[$inn->g($field)][$inn->g('b_name')] = $inn;
+
+			if( $field == 'fylke_type') {
+				$innslagene[ $inn->g('fylke').': '. $inn->g('kategori') ][ $inn->g('b_name') ] = $inn;
+			} else {
+				$innslagene[$inn->g($field)][$inn->g('b_name')] = $inn;
+			}
 		}
 		$this->_deep_ksort($innslagene);
 		return $innslagene;
