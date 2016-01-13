@@ -4,6 +4,7 @@ $time_limit = 1200; // 1200s = 20min
 ignore_user_abort(true);
 ini_set('max_execution_time', $time_limit);
 set_time_limit( $time_limit );
+ob_start();
 
 	$DEBUG = isset( $_GET['debug'] );
 	
@@ -22,6 +23,63 @@ set_time_limit( $time_limit );
 	require_once('UKM/person.class.php');
 	require_once('UKM/sql.class.php');
 	
+	function echo_flush( $string, $indent=0, $type='p' ) {
+		$nbsp = '';
+		for($i=0; $i<$indent; $i++) {
+			$nbsp .= ' &nbsp; ';
+		}
+		$string = $nbsp . $string;
+		
+		if( defined('STDIN') ) {
+			switch( $type ) {
+				case 'p':
+					echo $string . PHP_EOL;
+					break;
+				case 'h4':
+					echo '#';
+				case 'h3':
+					echo '#';
+				case 'h2':
+					echo '#';
+				case 'h1':
+					echo '#' . mb_strtoupper( $string ) . PHP_EOL;
+					break;
+			}
+		} elseif( isset( $_GET['print'] ) ) {
+			switch( $type ) {
+				case 'p':
+					echo $string . '<br />';
+					break;
+				case 'h2':
+				case 'h1':
+					echo '<'. $type .'>' . $string . '</'. $type .'>';
+					break;
+			}			
+		}
+		
+		ob_flush();
+		flush();
+	}
+	
+	function echoFlush( $string, $type='p', $indent=0 ) {
+		if( isset( $_GET['print'] ) ) {
+			switch( $type ) {
+				case 'h1':
+				case 'h2':
+					echo '<'.$type.'>'. $string .'</'.$type.'>';
+					break;
+				default:
+					echo $string . '<br />';
+					break;
+			}
+			
+		}
+		if( !defined('STDIN') ) {
+			echo $string . PHP_EOL;
+		}
+		ob_flush();
+		flush();
+	}
 	
 	function find_sex($first_name) {
 		$first_name = strtoupper($first_name);
@@ -45,19 +103,19 @@ set_time_limit( $time_limit );
 	// Henter alle monstringer fra kommunenivaa
 	$monstringer = $monstringer->etter_kommune();
 	
-	
+	echo_flush( 'Loop alle mønstringer', 0, 'h1');
 	$TEST_COUNT = 0;
 	while( ($r = mysql_fetch_assoc($monstringer)) && $TEST_COUNT < 10) {
 		$monstring = new monstring($r['pl_id']);
-		echo '<h2>'. $monstring->g('pl_name') .'</h2>';
+		echo_flush( $monstring->g('pl_name'), 0, 'h2' );
 		// For hvert innslag i en monstring ...
 		foreach ($monstring->innslag() as $innslag_inn) {
 			$innslag = new innslag($innslag_inn["b_id"]);
 			$innslag->loadGeo();
-			echo '<h3>' . $innslag->g('b_name') .'</h3>';
+			echo_flush( $innslag->g('b_name'), 1, '<h3>');
 			foreach ($innslag->personer() as $p) { // behandle hver person
 				$person = new person($p["p_id"]);
-				echo $person->g('p_firstname') .' '. $person->g('p_lastname') .'<br />';
+				echo_flush( $person->g('p_firstname') .' '. $person->g('p_lastname'), 2, 'h4' );
 				$age = $person->getAge();
 				if($age == '25+') 
 					$age = 0;
@@ -134,7 +192,7 @@ set_time_limit( $time_limit );
 				foreach ($stats_info as $key => $value) {
 					$sql_ins->add($key, $value);
 				}
-				echo($sql_ins->debug());
+				echo_flush( $sql_ins->debug(), 3);
 				$sql_ins->run();
 				
 				if( $DEBUG ) {
@@ -144,7 +202,7 @@ set_time_limit( $time_limit );
 		}
 	}
 	// END WHILE
-	echo("Script finished \n");
+	echo_flush( "Script finished", 0, 'h1');
 
 	// lol
 ?>
