@@ -98,7 +98,7 @@ ob_start();
 		foreach ($monstring->innslag() as $innslag_inn) {
 			$innslag = new innslag($innslag_inn["b_id"]);
 			$innslag->loadGeo();
-			echo_flush( 'INNSLAG: '. $innslag->g('b_name'), 1, '<h3>');
+			echo_flush( 'INNSLAG: '. $innslag->g('b_name'), 1, 'h3');
 			foreach ($innslag->personer() as $p) { // behandle hver person
 				$person = new person($p["p_id"]);
 				echo_flush( 'PERSON: '. $person->g('p_firstname') .' '. $person->g('p_lastname'), 2, 'h4' );
