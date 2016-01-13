@@ -24,13 +24,13 @@ ob_start();
 	require_once('UKM/sql.class.php');
 	
 	function echo_flush( $string, $indent=0, $type='p' ) {
-		$nbsp = '';
-		for($i=0; $i<$indent; $i++) {
-			$nbsp .= ' &nbsp; ';
-		}
-		$string = $nbsp . $string;
-		
 		if( defined('STDIN') ) {
+			$nbsp = '';
+			for($i=0; $i<$indent; $i++) {
+				$nbsp .= ' ';
+			}
+			$string = $nbsp . $string;
+			
 			switch( $type ) {
 				case 'p':
 					echo $string . PHP_EOL;
@@ -46,6 +46,12 @@ ob_start();
 					break;
 			}
 		} elseif( isset( $_GET['print'] ) ) {
+			$nbsp = '';
+			for($i=0; $i<$indent; $i++) {
+				$nbsp .= ' &nbsp; ';
+			}
+			$string = $nbsp . $string;
+
 			switch( $type ) {
 				case 'p':
 					echo $string . '<br />';
@@ -57,26 +63,6 @@ ob_start();
 			}			
 		}
 		
-		ob_flush();
-		flush();
-	}
-	
-	function echoFlush( $string, $type='p', $indent=0 ) {
-		if( isset( $_GET['print'] ) ) {
-			switch( $type ) {
-				case 'h1':
-				case 'h2':
-					echo '<'.$type.'>'. $string .'</'.$type.'>';
-					break;
-				default:
-					echo $string . '<br />';
-					break;
-			}
-			
-		}
-		if( !defined('STDIN') ) {
-			echo $string . PHP_EOL;
-		}
 		ob_flush();
 		flush();
 	}
@@ -112,10 +98,10 @@ ob_start();
 		foreach ($monstring->innslag() as $innslag_inn) {
 			$innslag = new innslag($innslag_inn["b_id"]);
 			$innslag->loadGeo();
-			echo_flush( $innslag->g('b_name'), 1, '<h3>');
+			echo_flush( 'INNSLAG: '. $innslag->g('b_name'), 1, '<h3>');
 			foreach ($innslag->personer() as $p) { // behandle hver person
 				$person = new person($p["p_id"]);
-				echo_flush( $person->g('p_firstname') .' '. $person->g('p_lastname'), 2, 'h4' );
+				echo_flush( 'PERSON: '. $person->g('p_firstname') .' '. $person->g('p_lastname'), 2, 'h4' );
 				$age = $person->getAge();
 				if($age == '25+') 
 					$age = 0;
