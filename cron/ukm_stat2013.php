@@ -6,7 +6,7 @@ ini_set('max_execution_time', $time_limit);
 set_time_limit( $time_limit );
 
 	$DEBUG = isset( $_GET['debug'] );
-	
+
 	if(isset($_GET['season'])) {
 		$SEASON = $_GET['season'];
 	} else {
@@ -22,6 +22,14 @@ set_time_limit( $time_limit );
 	require_once('UKM/person.class.php');
 	require_once('UKM/sql.class.php');
 	
+	function echoFlush( $string ) {
+		if( !isset( $_GET['print'] ) ) {
+			return;
+		}
+		echo $string;
+		ob_flush();
+		flush();
+	}
 	
 	function find_sex($first_name) {
 		$first_name = strtoupper($first_name);
@@ -49,15 +57,15 @@ set_time_limit( $time_limit );
 	$TEST_COUNT = 0;
 	while( ($r = mysql_fetch_assoc($monstringer)) && $TEST_COUNT < 10) {
 		$monstring = new monstring($r['pl_id']);
-		echo '<h2>'. $monstring->g('pl_name') .'</h2>';
+		echoFlush('<h2>'. $monstring->g('pl_name') .'</h2>');
 		// For hvert innslag i en monstring ...
 		foreach ($monstring->innslag() as $innslag_inn) {
 			$innslag = new innslag($innslag_inn["b_id"]);
 			$innslag->loadGeo();
-			echo '<h3>' . $innslag->g('b_name') .'</h3>';
+			echoFlush('<h3>' . $innslag->g('b_name') .'</h3>');
 			foreach ($innslag->personer() as $p) { // behandle hver person
 				$person = new person($p["p_id"]);
-				echo $person->g('p_firstname') .' '. $person->g('p_lastname') .'<br />';
+				echoFlush($person->g('p_firstname') .' '. $person->g('p_lastname') .'<br />');
 				$age = $person->getAge();
 				if($age == '25+') 
 					$age = 0;
@@ -134,7 +142,7 @@ set_time_limit( $time_limit );
 				foreach ($stats_info as $key => $value) {
 					$sql_ins->add($key, $value);
 				}
-				echo($sql_ins->debug());
+				echoFlush($sql_ins->debug());
 				$sql_ins->run();
 				
 				if( $DEBUG ) {
@@ -144,7 +152,8 @@ set_time_limit( $time_limit );
 		}
 	}
 	// END WHILE
-	echo("Script finished \n");
-
+	// No need to flush - end of script flushes
+	echo '<h1>End of script</h1>';
+	
 	// lol
 ?>
