@@ -1,4 +1,10 @@
 <?php
+
+$time_limit = 1200; // 1200s = 20min
+ignore_user_abort(true);
+ini_set('max_execution_time', $time_limit);
+set_time_limit( $time_limit );
+
 	$DEBUG = isset( $_GET['debug'] );
 	
 	if(isset($_GET['season'])) {
