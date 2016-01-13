@@ -1,5 +1,6 @@
 <?php
-
+	$DEBUG = isset( $_GET['debug'] );
+	
 	if(isset($_GET['season'])) {
 		$SEASON = $_GET['season'];
 	} else {
@@ -130,7 +131,9 @@
 				echo($sql_ins->debug());
 				$sql_ins->run();
 				
-				// $TEST_COUNT += 1;
+				if( $DEBUG ) {
+					$TEST_COUNT += 1;
+				}
 			}
 		}
 	}
