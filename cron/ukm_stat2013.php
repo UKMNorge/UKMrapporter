@@ -23,7 +23,7 @@ set_time_limit( $time_limit );
 	require_once('UKM/sql.class.php');
 	
 	function echoFlush( $string ) {
-		if( !isset( $_GET['print'] ) ) {
+		if( !isset( $_GET['print'] ) && !defined('STDIN')) {
 			return;
 		}
 		echo $string;
