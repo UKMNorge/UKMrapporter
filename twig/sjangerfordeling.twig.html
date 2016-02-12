@@ -20,6 +20,11 @@
 
     var chart = new google.visualization.ColumnChart(document.getElementById('statistikk_sjangerfordeling_{{kommune.metadata.id}}'));
     chart.draw(data, options);
+
+    var id = "#sjangerfordeling_dlbtn_{{ kommune.metadata.id }}";
+    //console.log('ID: '+id);
+    jQuery(id).attr('href', chart.getImageURI());
+    jQuery(id).attr('download', options.title+'.png');
   }
 </script>
 

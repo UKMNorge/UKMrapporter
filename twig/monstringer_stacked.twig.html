@@ -25,6 +25,12 @@
 
     var chart = new google.visualization.AreaChart(document.getElementById('statistikk_monstringer'));
     chart.draw(data, options);
+    
+    var id = "#alle_monstringer_dlbtn";
+    //console.log('ID: '+id);
+    jQuery(id).attr('href', chart.getImageURI());
+    jQuery(id).attr('download', options.title+'.png');
+    
   }
 </script>
 

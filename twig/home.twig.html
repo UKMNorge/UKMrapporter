@@ -21,6 +21,7 @@
 				<div class="well">
 					{% embed "deltakere.twig.html" %}{% endembed %}
 					<div class="row pull-right">
+						<a href="" id="deltakere_dlbtn_{{kommune.metadata.id}}" download="Deltakere.png" style="" class="btn btn-sm btn-default">Last ned graf</a>
 						<a href="?page=UKMrapport_admin&stat=details_deltakere&fylke={{stat_fylke}}&norge={{stat_norge}}"class="btn btn-sm btn-default">Vis detaljer</a>
 					</div>
 				</div>
@@ -30,6 +31,7 @@
 				<div class="well">
 					{% embed "sjangerfordeling.twig.html" %}{% endembed %}
 					<div class="row pull-right">
+						<a href="" id="sjangerfordeling_dlbtn_{{kommune.metadata.id}}" download="Sjangerfordeling.png" style="" class="btn btn-sm btn-default">Last ned graf</a>
 						<a href="?page=UKMrapport_admin&stat=details_sjangerfordeling&fylke={{stat_fylke}}&norge={{stat_norge}}" class="btn btn-sm btn-default">Vis detaljer / historisk utvikling</a>
 					</div>
 				</div>
@@ -38,6 +40,7 @@
 				<div class="well">
 					{% embed "kjonnsfordeling.twig.html" %}{% endembed %}
 					<div class="row pull-right">
+						<a href="" id="kjonnsfordeling_dlbtn_{{kommune.metadata.id}}" download="Kjønnsfordeling.png" style="" class="btn btn-sm btn-default">Last ned graf</a>
 						<a href="?page=UKMrapport_admin&stat=details_kjonnsfordeling&fylke={{stat_fylke}}&norge={{stat_norge}}" class="btn btn-sm btn-default">Vis historisk utvikling</a>
 					</div>
 				</div>
@@ -48,6 +51,7 @@
 				<div class="well">
 					{% embed "malgruppe.twig.html" %}{% endembed %}
 					<div class="row pull-right">
+						<a href="" id="malgruppe_dlbtn_{{kommune.metadata.id}}" download="Målgruppe.png" style="" class="btn btn-sm btn-default">Last ned graf</a>
 						<a href="?page=UKMrapport_admin&stat=details_malgruppe&fylke={{stat_fylke}}&norge={{stat_norge}}"class="btn btn-sm btn-default">Vis detaljer</a>
 					</div>
 				</div>
@@ -57,6 +61,7 @@
 				<div class="well">
 					{% embed "aldersfordeling.twig.html" %}{% endembed %}
 					<div class="row pull-right">
+						<a href="" id="alder_dlbtn_{{kommune.metadata.id}}" download="Aldersfordeling.png" style="" class="btn btn-sm btn-default">Last ned graf</a>
 						<a href="?page=UKMrapport_admin&stat=details_aldersfordeling&fylke={{stat_fylke}}&norge={{stat_norge}}"class="btn btn-sm btn-default">Vis detaljer</a>
 					</div>
 				</div>	
@@ -82,6 +87,7 @@
 				<div class="well">
 					{% embed "monstringer_stacked.twig.html" %}{% endembed %}
 					<div class="row pull-right">
+						<a href="" id="alle_monstringer_dlbtn" download="Alle Mønstringer.png" style="" class="btn btn-sm btn-default">Last ned graf</a>
 						<a href="?page=UKMrapport_admin&stat=details_deltakere&home=home&fylke={{stat_fylke}}&norge={{stat_norge}}"class="btn btn-sm btn-default">Vis detaljer</a>
 					</div>
 				</div>	
@@ -93,6 +99,7 @@
 				<div class="well">
 					{% embed "alle_fylker_i_ar.twig.html" %}{% endembed %}
 					<div class="row pull-right">
+						<a href="" id="graph_dlbtn_alle_fylker" download="Aldersfordeling.png" style="" class="btn btn-sm btn-default">Last ned graf</a>
 						<a href="?page=UKMrapport_admin&stat=details_deltakere&home=home&fylke={{stat_fylke}}&norge={{stat_norge}}"class="btn btn-sm btn-default">Vis detaljer</a>
 					</div>
 				</div>	

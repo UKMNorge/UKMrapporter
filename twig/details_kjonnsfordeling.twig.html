@@ -54,10 +54,19 @@
 			
 			    var chart = new google.visualization.ColumnChart(document.getElementById('statistikk_details_kjonnsfordeling_{{kommune.metadata.id}}'));
 			    chart.draw(data, options);
+
+			    var id = "#kjonnsfordeling_dlbtn_{{ kommune.metadata.id }}";
+			    //console.log('ID: '+id);
+			    jQuery(id).attr('href', chart.getImageURI());
+				jQuery(id).attr('download', options.title+'.png');
 			  }
 			</script>
 			
 			<div id="statistikk_details_kjonnsfordeling_{{kommune.metadata.id}}" style="width: 100%; min-height: 300px;"></div>
+
+			<div class="row pull-right">
+				<a id="kjonnsfordeling_dlbtn_{{ kommune.metadata.id }}" class="btn btn-sm btn-default" href="">Last ned graf</a>
+			</div>
 		</div>
 	</div>
 {% endfor %}

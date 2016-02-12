@@ -20,6 +20,14 @@
 
     var chart = new google.visualization.AreaChart(document.getElementById('statistikk_aldersfordeling_{{kommune.metadata.id}}'));
     chart.draw(data, options);
+
+    //jQuery("#aldersfordeling_dlbtn").attr('href', chart.getImageURI());
+    //jQuery("#aldersfordeling_dlbtn").attr('download', options.title+'.png');
+
+    var id = "#alder_dlbtn_{{ kommune.metadata.id }}";
+    //console.log('ID: '+id);
+    jQuery(id).attr('href', chart.getImageURI());
+    jQuery(id).attr('download', options.title+'.png');
   }
 </script>
 

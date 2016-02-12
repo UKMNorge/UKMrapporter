@@ -76,6 +76,11 @@
 			
 			    var chart = new google.visualization.LineChart(document.getElementById('statistikk_details_sjangerfordeling_{{kommune.metadata.id}}'));
 			    chart.draw(data, options);
+
+			    var id = "#sjangerfordeling_dlbtn_{{ kommune.metadata.id }}1";
+			    //console.log('ID: '+id);
+			    jQuery(id).attr('href', chart.getImageURI());
+				jQuery(id).attr('download', options.title+'.png');
 			  }
 			</script>
 			
@@ -102,10 +107,19 @@
 			
 			    var chart = new google.visualization.LineChart(document.getElementById('statistikk_details_sjangerfordeling_innslag_{{kommune.metadata.id}}'));
 			    chart.draw(data, options);
+
+			    var id = "#sjangerfordeling_dlbtn_{{ kommune.metadata.id }}2";
+			    //console.log('ID: '+id);
+			    jQuery(id).attr('href', chart.getImageURI());
+				jQuery(id).attr('download', options.title+'.png');
 			  }
 			</script>
 			
 			<div id="statistikk_details_sjangerfordeling_innslag_{{kommune.metadata.id}}" style="width: 100%; min-height: 700px;"></div>
+			<div class="row pull-right">
+				<a id="sjangerfordeling_dlbtn_{{ kommune.metadata.id }}1" class="btn btn-sm btn-default" href="">Last ned graf 1</a>
+				<a id="sjangerfordeling_dlbtn_{{ kommune.metadata.id }}2" class="btn btn-sm btn-default" href="">Last ned graf 2</a>
+			</div>
 		</div>
 	</div>
 {% endfor %}

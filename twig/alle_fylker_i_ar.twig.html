@@ -18,6 +18,11 @@
 
     var chart = new google.visualization.ColumnChart(document.getElementById('statistikk_alle_fylker_iar'));
     chart.draw(data, options);
+
+    var id = "#graph_dlbtn_alle_fylker";
+    //console.log('ID: '+id);
+    jQuery(id).attr('href', chart.getImageURI());
+    jQuery(id).attr('download', options.title+'.png');
   }
 </script>
 

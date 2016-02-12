@@ -18,6 +18,11 @@
 
     var chart = new google.visualization.LineChart(document.getElementById('statistikk_malgruppe_{{kommune.metadata.id}}'));
     chart.draw(data, options);
+
+    var id = "#malgruppe_dlbtn_{{ kommune.metadata.id }}";
+    //console.log('ID: '+id);
+    jQuery(id).attr('href', chart.getImageURI());
+    jQuery(id).attr('download', options.title+'.png');
   }
 </script>
 

@@ -37,6 +37,9 @@
 	<div class="container col-xs-12">
 		<div class="well">
 			{% embed "deltakere.twig.html" %}{% endembed %}	
+			<div class="row pull-right">
+				<a id="deltakere_dlbtn_{{ kommune.metadata.id }}" class="btn btn-sm btn-default" href="">Last ned graf</a>
+			</div>
 		</div>
 	</div>
 {% endfor %}
@@ -76,6 +79,9 @@
 		<div class="container col-xs-12 col-sm-6 col-md-8">
 			<div class="well">
 				{% embed "deltakere.twig.html" %}{% endembed %}	
+				<div class="row pull-right">
+					<a id="deltakere_dlbtn_{{ kommune.metadata.id }}" class="btn btn-sm btn-default" href="">Last ned graf</a>
+				</div>
 			</div>
 		</div>
 	{% endfor %}
