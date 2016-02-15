@@ -11,9 +11,10 @@ ini_set('display_errors', true);
 
 if(is_admin()) {
 	global $blog_id;
-	if($blog_id != 1)
+	if($blog_id != 1) {
 		add_action('UKM_admin_menu', 'UKMrapport_menu');
-
+		add_action('UKMWPDASH_shortcuts', 'UKMMrapport_dash_shortcut', 50);
+	}
 	require_once('UKM/inc/toolkit.inc.php');
 	require_once('UKM/inc/phaseout.ico.inc.php');
 	require_once('rapporter.ajax.php');
@@ -40,6 +41,16 @@ function UKMrapport_menu() {
 		UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_statistikk_scripts_and_styles' );
 	}
 }
+function UKMMrapport_dash_shortcut( $shortcuts ) {	
+	$shortcut = new stdClass();
+	$shortcut->url = 'admin.php?UKMrapport_admin';
+	$shortcut->title = 'Rapporter';
+	$shortcut->icon = 'http://ico.ukm.no/graph-menu.png';
+	$shortcuts[] = $shortcut;
+	
+	return $shortcuts;
+}
+
 
 function UKMrapport_scriptsandstyles() {
 	wp_enqueue_style( 'jquery-ui-style', WP_PLUGIN_URL .'/UKMNorge/js/css/jquery-ui-1.7.3.custom.css');
