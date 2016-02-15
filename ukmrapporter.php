@@ -11,7 +11,7 @@ ini_set('display_errors', true);
 
 if(is_admin()) {
 	global $blog_id;
-	if($blog_id != 1) {
+	if( in_array( get_option('site_type'), array('kommune','fylke','land')) ) {
 		add_action('UKM_admin_menu', 'UKMrapport_menu');
 		add_action('UKMWPDASH_shortcuts', 'UKMMrapport_dash_shortcut', 50);
 	}
