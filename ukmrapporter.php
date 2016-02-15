@@ -43,7 +43,7 @@ function UKMrapport_menu() {
 }
 function UKMMrapport_dash_shortcut( $shortcuts ) {	
 	$shortcut = new stdClass();
-	$shortcut->url = 'admin.php?UKMrapport_admin';
+	$shortcut->url = 'admin.php?page=UKMrapport_admin';
 	$shortcut->title = 'Rapporter';
 	$shortcut->icon = 'http://ico.ukm.no/graph-menu.png';
 	$shortcuts[] = $shortcut;
