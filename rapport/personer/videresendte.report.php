@@ -112,7 +112,7 @@ class valgt_rapport extends rapport {
 			else {
 				#echo '<td></td>';
 			}
-			echo ($this->show('h_kontaktp')) ? '<td class="epost">'.$kontaktperson->get('p_email').'</td>' : '';
+			echo ($this->show('h_kontaktp')) ? '<td class="UKMMAIL epost">'.$kontaktperson->get('p_email').'</td>' : '';
 			echo ($this->show('i_kommune')) ? '<td class="kommune">'.$innslag->get('kommune').'</td>' : '';
 			echo '</tr>';
 	
