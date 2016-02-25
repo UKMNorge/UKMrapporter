@@ -16,7 +16,7 @@ class valgt_rapport extends rapport {
 	 */
 	public function __construct($rapport, $kategori){
 		if (UKM_HOSTNAME == 'ukm.dev') {
-			define('EXCEL_WRITE_PATH', '/tmp/excel/');
+			define('EXCEL_WRITE_PATH', '/tmp/');
 			define('WORD_WRITE_PATH', '/tmp/');
 		}
 		parent::__construct($rapport, $kategori);
