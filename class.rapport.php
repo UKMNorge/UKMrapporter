@@ -436,6 +436,13 @@ class rapport{
 
 		woText($section, ucfirst(str_replace('_',' ',$name)), 'rapport');
 		woText($section, $this->m->g('pl_name').' ('.$this->m->g('season').')','place');
+		$t = $this->frontInfo();
+		if ($t) {
+			woText($section, ''); // Adds an empty line before contacts
+			woText($section, array_shift($t), 'diplom_mellom'); 
+			foreach ($t as $v)
+				woText($section, $v, 'diplom_monstring');
+		}
 		$section->addPageBreak();
 		
 		if(!isset($this->wordWithoutHeaders)) {
@@ -454,6 +461,19 @@ class rapport{
 		}	
 		return $section;
 	}
+
+	/**
+	 * frontInfo function
+	 *
+	 * Funksjon som kan overskrives hvis man vil ha mer info på forsiden,
+	 * som f.eks kontaktinfo til lokalkontakten på tekniske prøver
+	 * Skal returnere null/false (ingen tekst) eller et array med strings.
+	 * Det første elementet i arrayet blir overskriften.
+	 */
+	public function frontInfo() {
+		return false;
+	}
+
 	/**
 	 * woWrite function
 	 * 
@@ -514,10 +534,20 @@ class rapport{
 	public function html_init($navn=false) {
 		if(!$navn)
 			$navn = ucfirst(str_replace('_',' ',$this->name));
+
+		$t = $this->frontInfo();
+		if ($t) {
+			$heading = array_shift($t);
+			$text = '';
+			foreach ($t as $v)
+				$text .= '<div class="kp">'.$v.'</div>';
+		}
+
 		return '<div class="rapportinfo">
 				<img src="http://ico.ukm.no/grafikk/UKM_logo.png" width="100" />
 				<div class="navn">'.$navn.'</div>
 				<div class="sted">'.$this->m->g('pl_name').' ('.$this->m->g('season').')</div>
+				' .($t ? '<h3 class="heading">'.$heading.'</h3>'.$text : '').'
 				</div>';
 	}
 }
