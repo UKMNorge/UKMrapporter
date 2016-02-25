@@ -118,11 +118,6 @@ class valgt_rapport extends rapport {
 			}
 		}
 
-
-		// i2a turns numbers into alpha-characters (1 = A etc)
-		// exCell adds a cell to the excel sheet,
-		// with first param the colomn+row (Alphanumeric + number), second the content and third style (optional)
-		#var_dump($objPHPExcel);
 		return $this->exWrite();
 	}
 
@@ -171,11 +166,6 @@ class valgt_rapport extends rapport {
 			}
 		}
 
-
-		// i2a turns numbers into alpha-characters (1 = A etc)
-		// exCell adds a cell to the excel sheet,
-		// with first param the colomn+row (Alphanumeric + number), second the content and third style (optional)
-		#var_dump($objPHPExcel);
 		return $this->woWrite();
 	}
 
