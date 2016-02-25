@@ -15,6 +15,10 @@ class valgt_rapport extends rapport {
 	 * @return class object
 	 */
 	public function __construct($rapport, $kategori){
+		if (UKM_HOSTNAME == 'ukm.dev') {
+			define('EXCEL_WRITE_PATH', '/tmp/excel/');
+			define('WORD_WRITE_PATH', '/tmp/');
+		}
 		parent::__construct($rapport, $kategori);
 
 		$this->navn = 'Videresendte fra min mønstring';
@@ -30,7 +34,6 @@ class valgt_rapport extends rapport {
 		$g = $this->optGrp('i','Info om innslaget');
 		$this->opt($g, 'i_kommune', 'Vis kommune');
 
-
 		$this->_postConstruct();	
 
 	}
@@ -44,30 +47,83 @@ class valgt_rapport extends rapport {
 	 * @return String download-URL
 	 */		
 	public function generateExcel(){
+
 		$navn = 'Videresendte fra '.$this->m->get('pl_name');
 		global $objPHPExcel;
 		$this->excel_init('landscape');
 		
-		exSheetName('INNSLAG');
+		exSheetName('INNSLAG', '6dc6c1');
 		
-		#$objPHPExcel->createSheet(1);
-		#$objPHPExcel->setActiveSheetIndex(1);
-		#exSheetName('DELTAKERE','f69a9b');
-		
-		/*$objPHPExcel->createSheet(2);
-		$objPHPExcel->setActiveSheetIndex(2);
-		exSheetName('TITLER','6dc6c1');
-*/
 		$rad = $p2rad = $p3rad = 1;
 		$headerRad = 1;
-
+		$col = 1;
 		$videresendte = $this->m->videresendte();
 
-		// Lag kolonner med innhold inkl. overskrift først, slå de sammen senere.
-		foreach ($videresendte as $v) {
+		// Innslagsnavn, personer, mobilnummer, e-post, kommune
+		exCell(i2a($col).$rad, 'Innslagsnavn', 'bold'); $col++;
+		if ($this->show('h_vis') || $this->show('h_kontaktp')) 
+			exCell(i2a($col).$rad, 'Personer', 'bold'); $col++;
+		if ($this->show('p_mobil') || $this->show('h_kontaktp'))
+			exCell(i2a($col).$rad, 'Mobilnummer', 'bold'); $col++;
+		if ($this->show('h_kontaktp'))
+			exCell(i2a($col).$rad, 'E-post', 'bold'); $col++;
+		if ($this->show('i_kommune'))
+			exCell(i2a($col).$rad, 'Kommune', 'bold'); $col++;
 
-			
+		foreach ($videresendte as $v) {
+			// Prep
+			$innslag = new innslag($v['b_id']);
+			$col = 1;
+			$rad++;
+			$innslag->loadGEO();
+			$personer = $innslag->personer();
+			$kontaktperson = $innslag->kontaktperson();
+
+			// Fill cells
+			exCell(i2a($col).$rad, $v['b_name']); 
+			$col++;
+			if ($this->show('h_kontaktp')) {
+				exCell(i2a($col).$rad, $kontaktperson->get('p_firstname'). ' '. $kontaktperson->get('p_lastname')); // Kontaktperson-navn
+				$col++;
+			}
+			elseif (!$this->show('h_kontaktp') && $this->show('h_vis')) {
+				$col++;
+			}
+
+			if ($this->show('h_kontaktp')) {
+				exCell(i2a($col).$rad, $kontaktperson->get('p_phone'));
+				$col++;
+			}
+			elseif ( !$this->show('h_kontaktp') && $this->show('p_mobil')) {
+				$col++;
+			}
+
+			if ($this->show('h_kontaktp')) {
+				exCell(i2a($col).$rad, $kontaktperson->get('p_email'));
+				$col++;
+			} elseif ( !$this->show('h_kontaktp') && $this->show('p_mobil')) { 
+				$col++;
+			}
+
+			if ($this->show('i_kommune'))
+				exCell(i2a($col).$rad, $innslag->get('kommune'));
+
+			foreach ($personer as $person) {
+				$rad++;
+				$col = 2;
+				
+				exCell(i2a($col).$rad, $person['p_firstname'].' '.$person['p_lastname']);
+				$col++;
+				exCell(i2a($col).$rad, $person['p_phone']);
+			}
 		}
+
+
+		// i2a turns numbers into alpha-characters (1 = A etc)
+		// exCell adds a cell to the excel sheet,
+		// with first param the colomn+row (Alphanumeric + number), second the content and third style (optional)
+		#var_dump($objPHPExcel);
+		return $this->exWrite();
 	}
 
 	/**
@@ -79,6 +135,48 @@ class valgt_rapport extends rapport {
 	 * @return String download-URL
 	 */	
 	public function generateWord(){
+		global $objPHPExcel;
+		$navn = 'Videresendte';
+		$section = $this->word_init('portrait', $navn);
+		$videresendte = $this->m->videresendte();
+
+		foreach ($videresendte as $v) {
+			// Prep
+			$innslag = new innslag($v['b_id']);
+			$col = 1;
+			$rad++;
+			$innslag->loadGEO();
+			$personer = $innslag->personer();
+			$kontaktperson = $innslag->kontaktperson();
+
+			// Lag header
+			$text = $innslag->get('b_name');
+			if ($this->show('i_kommune'))
+				$text .= ' ('.$innslag->get('kommune').')';
+
+			woText($section, $text, 'h2');
+			// Lag paragraf
+			if ($this->show('h_kontaktp')) {
+				$text = 'Kontaktperson: '.$kontaktperson->get('p_firstname'). ' '. $kontaktperson->get('p_lastname'). ', '. $kontaktperson->get('p_phone').', '.$kontaktperson->get('p_email').'.';
+				woText($section, $text);
+			}
+			// List opp deltakere
+			if ($this->show('h_vis')) {
+				foreach ($personer as $person) {
+					#var_dump($person);
+					$pText = $person['p_firstname'].' '.$person['p_lastname'].', '.$person['p_phone'];
+					$pText = htmlspecialchars("\t").$pText;
+					woText($section, $pText);
+				}
+			}
+		}
+
+
+		// i2a turns numbers into alpha-characters (1 = A etc)
+		// exCell adds a cell to the excel sheet,
+		// with first param the colomn+row (Alphanumeric + number), second the content and third style (optional)
+		#var_dump($objPHPExcel);
+		return $this->woWrite();
 	}
 
 	/**
