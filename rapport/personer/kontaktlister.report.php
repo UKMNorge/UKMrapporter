@@ -81,6 +81,9 @@ class valgt_rapport extends rapport {
 		if(!is_array($grupperte_innslag)){
 			exCell('A1:D1', 'Ingen informasjon');
 		} else {
+			if (key($grupperte_innslag) !== 0) {
+				$col++; // Skip en kolonne
+			}
 			exCell(i2a($col).'1', 'Navn', 'bold');
 			$col++;
 			exCell(i2a($col).'1', 'Fornavn', 'bold');
