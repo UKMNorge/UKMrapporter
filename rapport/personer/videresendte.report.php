@@ -1,6 +1,7 @@
 <?php
 require_once('UKM/innslag.class.php');
 require_once('UKM/monstring.class.php');
+require_once('UKM/inc/toolkit.inc.php');
 
 class valgt_rapport extends rapport {
 	/**
@@ -42,9 +43,32 @@ class valgt_rapport extends rapport {
 	 * @access public
 	 * @return String download-URL
 	 */		
-	#public function generateExcel(){
+	public function generateExcel(){
+		$navn = 'Videresendte fra '.$this->m->get('pl_name');
+		global $objPHPExcel;
+		$this->excel_init('landscape');
+		
+		exSheetName('INNSLAG');
+		
+		#$objPHPExcel->createSheet(1);
+		#$objPHPExcel->setActiveSheetIndex(1);
+		#exSheetName('DELTAKERE','f69a9b');
+		
+		/*$objPHPExcel->createSheet(2);
+		$objPHPExcel->setActiveSheetIndex(2);
+		exSheetName('TITLER','6dc6c1');
+*/
+		$rad = $p2rad = $p3rad = 1;
+		$headerRad = 1;
 
-	#}
+		$videresendte = $this->m->videresendte();
+
+		// Lag kolonner med innhold inkl. overskrift først, slå de sammen senere.
+		foreach ($videresendte as $v) {
+
+			
+		}
+	}
 
 	/**
 	 * generateWord function
