@@ -67,6 +67,11 @@ $category_icon_size = 32;
 		<span>Viser innslag som deltar på flere av dine lokalmønstringer</span>
 	</li>
 <?php } ?>
+	<li class="clickable rapport" data-file="videresendte">
+		<?= UKMN_icoAlt('user', 'Videresendte fra min mønstring', $raport_icon_size) ?>
+		<div class="title">Videresendte fra din mønstring</div>
+		<span>Liste (inkl. kontaktinfo) over deltakere som er videresendt fra din mønstring</span>
+	</li>
 	<li class="clickable rapport" data-file="diplomer">
 		<?= UKMN_icoAlt('diplom', "Diplomer", $raport_icon_size ) ?>
 		<div class="title">Diplomer</div>
