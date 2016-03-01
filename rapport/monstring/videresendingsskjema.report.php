@@ -104,7 +104,11 @@ class valgt_rapport extends rapport {
 
 	
 	private function _data() {
-		$this->fylke = get_option('fylke');
+		# Removed 01.03 because we don't use get_option('fylke') no more.
+		#$this->fylke = get_option('fylke');
+		$m = new monstring( get_option('pl_id') );
+		$this->fylke = $m->get('fylke_id');
+		
 		$sql = new SQL("SELECT * FROM `smartukm_videresending_fylke_sporsmal`
 						WHERE `f_id` = '#fylke'
 						ORDER BY `order` ASC", 
