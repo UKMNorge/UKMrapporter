@@ -580,7 +580,8 @@ class valgt_rapport extends rapport {
 									. (($t->g('detaljer') && ($t->selvlaget || $t->instrumental) ? ', ' : ''))
 									. ($t->selvlaget ? 'selvlaget' : '')
 									. (($t->selvlaget && $t->instrumental) ? ', ' : '')
-									. ($t->instrumental ? 'instrumental' : '')			
+									. ($t->instrumental ? 'instrumental' : '')	
+									. ')'		
 								: '')
 							;
 						if($this->showFormat('op_t_break'))
