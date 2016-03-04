@@ -379,7 +379,7 @@ class valgt_rapport extends rapport {
 									? 	' ('
 									  . $t->g('detaljer')
 									  . ($i->g('bt_id') == 3 ? ' - '.$t->g('beskrivelse') : '')
-									  . (($t->g('detaljer') && ($t->selvlaget || $t->instrumental) ? ', ' : '')
+									  . (($t->g('detaljer') && ($t->selvlaget || $t->instrumental) ? ', ' : ''))
 									  . ($t->selvlaget ? 'selvlaget' : '')
 									  . (($t->selvlaget && $t->instrumental) ? ', ' : '')
 									  . ($t->instrumental ? 'instrumental' : '')
@@ -715,7 +715,7 @@ class valgt_rapport extends rapport {
 								.($this->show('t_detaljer')
 									? '<div class="detaljer">('. $t->g('detaljer')									  
 										. ($i->g('bt_id') == 3 ? ' - '.$t->g('beskrivelse') : '')
-										. (($t->g('detaljer') && ($t->selvlaget || $t->instrumental) ? ', ' : '')
+										. (($t->g('detaljer') && ($t->selvlaget || $t->instrumental) ? ', ' : ''))
 										. ($t->selvlaget ? 'selvlaget' : '')
 										. (($t->selvlaget && $t->instrumental) ? ', ' : '')
 										. ($t->instrumental ? 'instrumental' : '')
