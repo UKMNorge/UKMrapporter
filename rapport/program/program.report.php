@@ -228,7 +228,7 @@ class valgt_rapport extends rapport {
 								.($this->show('t_detaljer')
 									? ' ('
 										. $t->g('detaljer')
-										. (($t->g('detaljer') && ($t->selvlaget || $t->instrumental) ? ', ' : '')
+										. (($t->g('detaljer') && ($t->selvlaget || $t->instrumental) ? ', ' : ''))
 										. ($t->selvlaget ? 'selvlaget' : '')
 										. (($t->selvlaget && $t->instrumental) ? ', ' : '')
 										. ($t->instrumental ? 'instrumental' : '')
