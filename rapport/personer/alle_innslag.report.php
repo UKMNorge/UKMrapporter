@@ -350,6 +350,14 @@ class valgt_rapport extends rapport {
 							$p3col++;
 							excell(i2a($p3col).$headerRad, 'Detaljer','bold');
 							$parentes = $t->g('parentes');
+							if ($t->selvlaget || $t->instrumental) {
+								$parentes = rtrim($parentes, ')');
+								$parentes .= ', ';
+							}
+							$parentes .= ($t->selvlaget ? 'selvlaget' : '');
+							$parentes .= ($t->selvlaget && $t->instrumental) ? ', ' : '';
+							$parentes .= ($t->instrumental ? 'instrumental' : '');
+							$parentes .= ') ';
 							$parentesfri = substr($parentes, 1, strlen($parentes)-2);
 							excell(i2a($p3col).$p3rad, $parentesfri);
 						}
@@ -561,9 +569,19 @@ class valgt_rapport extends rapport {
 					foreach($titler as $t) {
 						$group_sum_time += $t->g('varighet');
 						$group_sum_titles++;
+						$parentes = $t->g('parentes');
+						$parentes = rtrim($parentes, ' ');
+						$parentes = rtrim($parentes, ')');
 						$tittel = $t->g('tittel')
 							.($this->show('t_varig')		? ' - varighet: '.$t->g('tid').''	: '')
-							.($this->show('t_detaljer')		? ' '.$t->g('parentes').' '			: '')
+							.($this->show('t_detaljer')		
+								? 
+								' '	.$parentes.' '
+									. (($t->g('detaljer') && ($t->selvlaget || $t->instrumental) ? ', ' : ''))
+									. ($t->selvlaget ? 'selvlaget' : '')
+									. (($t->selvlaget && $t->instrumental) ? ', ' : '')
+									. ($t->instrumental ? 'instrumental' : '')			
+								: '')
 							;
 						if($this->showFormat('op_t_break'))
 							woText($section, $tittel);
@@ -847,12 +865,20 @@ class valgt_rapport extends rapport {
 								$group_sum_time += $t->g('varighet');
 								$group_sum_titles++;
 								$i++;
+								$parentes = $t->g('parentes');
+								$parentes = rtrim($parentes, ' ');
+								$parentes = rtrim($parentes, ')');
 								echo $t->g('tittel')
 									.($this->show('t_varig')
 										? ' - varighet: '.$t->g('tid').''
 										: '')
 									.($this->show('t_detaljer')
-										? ' '.$t->g('parentes').' '
+										? 	' '.$parentes.' '
+											. (($t->g('detaljer') && ($t->selvlaget || $t->instrumental) ? ', ' : ''))
+											. ($t->selvlaget ? 'selvlaget' : '')
+											. (($t->selvlaget && $t->instrumental) ? ', ' : '')
+											. ($t->instrumental ? 'instrumental' : '')
+											. ')'
 										: '')
 		
 									.($this->showFormat('op_t_break')
