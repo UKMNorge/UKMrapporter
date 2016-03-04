@@ -226,7 +226,13 @@ class valgt_rapport extends rapport {
 							$counter++;
 							$titteltext .= $t->g('tittel')
 								.($this->show('t_detaljer')
-									? ' ('. $t->g('detaljer').')'
+									? ' ('
+										. $t->g('detaljer')
+										. ($t->g('detaljer') ? ', ' : '')
+										. ($t->selvlaget ? 'selvlaget' : '')
+										. (($t->selvlaget && $t->instrumental) ? ', ' : '')
+										. ($t->instrumental ? 'instrumental' : '')
+										.')'
 									: ''
 									)
 								.($counter < sizeof($titler) ? ', ' : '')
@@ -373,7 +379,11 @@ class valgt_rapport extends rapport {
 									? 	' ('
 									  . $t->g('detaljer')
 									  . ($i->g('bt_id') == 3 ? ' - '.$t->g('beskrivelse') : '')
-									  . ')'
+									  . ($t->g('detaljer') ? ', ' : '')
+									  . ($t->selvlaget ? 'selvlaget' : '')
+									  . (($t->selvlaget && $t->instrumental) ? ', ' : '')
+									  . ($t->instrumental ? 'instrumental' : '')
+									  . ')'								
 									: ''
 									)
 								.($counter < sizeof($titler) ? ', ' : '')
@@ -703,12 +713,16 @@ class valgt_rapport extends rapport {
 							$counter++;
 							echo '<div class="name">'.$t->g('tittel').'</div>'
 								.($this->show('t_detaljer')
-									? '<div class="detaljer">('. $t->g('detaljer')									  . ($i->g('bt_id') == 3 ? ' - '.$t->g('beskrivelse') : '')
-.')</div>'
+									? '<div class="detaljer">('. $t->g('detaljer')									  
+										. ($i->g('bt_id') == 3 ? ' - '.$t->g('beskrivelse') : '')
+										. ($t->g('detaljer') ? ', ' : '')
+										. ($t->selvlaget ? 'selvlaget' : '')
+										. (($t->selvlaget && $t->instrumental) ? ', ' : '')
+										. ($t->instrumental ? 'instrumental' : '')
+										.')</div>' 
 									: ''
-									)
-								.($counter < sizeof($titler) ? '<div class="separator">,</div>' : '')
-								;
+								)
+								.($counter < sizeof($titler) ? '<div class="separator">,</div>' : '');
 						}
 						echo '</div>';
 					}
