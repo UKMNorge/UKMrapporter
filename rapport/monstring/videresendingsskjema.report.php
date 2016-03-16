@@ -155,35 +155,38 @@ class valgt_rapport extends rapport {
 		foreach( $this->_data() as $key => $val)
 			$$key = $val;
 	
-	#	echo '<pre>'; var_dump($sporsmal); echo '</pre>';
-	
-			?>
-		<?php
-		foreach($sporsmal as $group => $data) { ?>
-			<h2><?= $group ?></h2>
-			<table class="videresendingsskjema"><?php /*  style="width: <?= 120*sizeof($monstringsnavn) ?>px;"> */ ?>
-				<tr class="vss_header">
-					<th class="vss_sporsmal">Spørsmål</th>
-					<?php
-					foreach($monstringsnavn as $pl_name) { ?>
-						<th class="vss_monstring"><?= $pl_name ?></th>
-					<?php
-					} ?>
-				</tr>
-			<?php
-			foreach( $data as $question ) { ?>
-				<tr class="vss_sporsmal_rad">
-					<th class="vss_sporsmal"><?= $question['title'] ?></th>
-					<?php
-					foreach($monstringsnavn as $lokalid => $pl_name) { ?>
-						<td class="vss_monstring"><?= $this->_styleAnswer($svar[$lokalid][$question['id']]) ?></td>
-					<?php } ?>
-				</tr>
-			<?php
-			} ?>
-			</table>
-			<?php
-		} ?>
+		#echo '<pre>'; var_dump($sporsmal); echo '</pre>';
+		if(!$sporsmal) {
+			echo '<h3>Det er ikke laget noe videresendingsskjema for dette fylket.</h3>';
+			echo '<p>Velg "Lag skjema for videresending" i venstremenyen.</p>';
+		}
+		else {
+			foreach($sporsmal as $group => $data) { ?>
+				<h2><?= $group ?></h2>
+				<table class="videresendingsskjema"><?php /*  style="width: <?= 120*sizeof($monstringsnavn) ?>px;"> */ ?>
+					<tr class="vss_header">
+						<th class="vss_sporsmal">Spørsmål</th>
+						<?php
+						foreach($monstringsnavn as $pl_name) { ?>
+							<th class="vss_monstring"><?= $pl_name ?></th>
+						<?php
+						} ?>
+					</tr>
+				<?php
+				foreach( $data as $question ) { ?>
+					<tr class="vss_sporsmal_rad">
+						<th class="vss_sporsmal"><?= $question['title'] ?></th>
+						<?php
+						foreach($monstringsnavn as $lokalid => $pl_name) { ?>
+							<td class="vss_monstring"><?= $this->_styleAnswer($svar[$lokalid][$question['id']]) ?></td>
+						<?php } ?>
+					</tr>
+				<?php
+				} ?>
+				</table>
+				<?php
+			} 
+		}?>
 		<script language="javascript">
 			jQuery(document).ready(function(){
 				jQuery('.videresendingsskjema tr:odd').addClass('odd');
