@@ -208,9 +208,10 @@ class valgt_rapport extends rapport {
 						<div class="navn"><?= $tittelen->g('tittel')?></div>
 						<div class="inn_navn"><?= $inn->g('b_name')?></div>
 						<?php if (empty($tittelen->g('detaljer')) )
-							?> <div class="detaljer"><?= $tittelen->g('detaljer') ?></div>
-						<?php else 
-							?> <div class="detaljer" style="width: 130px">&nbsp;</div>
+								echo '<div class="detaljer">'.$tittelen->g('detaljer').'</div>';
+							else 
+							echo '<div class="detaljer" style="width: 130px">&nbsp;</div>';
+						?>
 						<div class="detaljer"><?php $inn->loadGEO(); echo $inn->info['kommune_utf8']; ?></div>
 						<div class="sign"></div>
 					</li>
