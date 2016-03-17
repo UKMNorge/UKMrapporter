@@ -65,7 +65,7 @@ class valgt_rapport extends rapport {
 						exCell('B'.$row, '');
 						exCell('C'.$row, $tittelen->g('tittel'));
 						exCell('D'.$row, $inn->g('b_name'));
-						exCell('E'.$row, $inn->info['kommune']);
+						exCell('E'.$row, $inn->info['kommune_utf8']);
 						exCell('F'.$row, $tittelen->g('detaljer'));
 						exCell('G'.$row, '');
 					}
@@ -154,7 +154,7 @@ class valgt_rapport extends rapport {
 
 						$inn->loadGEO(); 
 						$c = $tab->addCell($col_detaljer);
-						woText($c, $inn->info['kommune']);
+						woText($c, $inn->info['kommune_utf8']);
 
 						$c = $tab->addCell($col_sign, array('borderBottomSize'=>9, 'borderBottomColor'=>'000000'));
 						woText($c, '');
