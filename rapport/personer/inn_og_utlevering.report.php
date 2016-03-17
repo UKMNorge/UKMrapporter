@@ -51,8 +51,8 @@ class valgt_rapport extends rapport {
 				exCell('B'.$row, 'Ut', 'bold');
 				exCell('C'.$row, 'Navn på '.($type == 'film' ? 'film' : 'kunstverk'), 'bold');
 				exCell('D'.$row, 'Navn på innslag/gruppe', 'bold');
-				exCell('E'.$row, 'Detaljer', 'bold');
-				exCell('F'.$row, 'Kommune', 'bold');
+				exCell('E'.$row, 'Kommune', 'bold');
+				exCell('F'.$row, 'Detaljer', 'bold');
 				exCell('G'.$row, 'Signatur', 'bold');
 
 				foreach($titler as $tittel => $objektarray) {
