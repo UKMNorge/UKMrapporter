@@ -20,7 +20,6 @@ class valgt_rapport extends rapport {
 		$i = $this->optGrp('i','Typer innslag');
 		$this->opt($i, 'i_utstilling', 'Utstilling');
 		$this->opt($i, 'i_film', 'Film');
-
 		
 		$this->_postConstruct();	
 	}
@@ -53,19 +52,22 @@ class valgt_rapport extends rapport {
 				exCell('C'.$row, 'Navn på '.($type == 'film' ? 'film' : 'kunstverk'), 'bold');
 				exCell('D'.$row, 'Navn på innslag/gruppe', 'bold');
 				exCell('E'.$row, 'Detaljer', 'bold');
-				exCell('F'.$row, 'Signatur', 'bold');
+				exCell('F'.$row, 'Kommune', 'bold');
+				exCell('G'.$row, 'Signatur', 'bold');
 
 				foreach($titler as $tittel => $objektarray) {
 					foreach($objektarray as $tittelen) { 
 						$inn = new innslag($tittelen->g('b_id'));
+						$inn->loadGEO();
 						$row++;
 						
 						exCell('A'.$row, '');
 						exCell('B'.$row, '');
 						exCell('C'.$row, $tittelen->g('tittel'));
 						exCell('D'.$row, $inn->g('b_name'));
-						exCell('E'.$row, $tittelen->g('detaljer'));
-						exCell('F'.$row, '');
+						exCell('E'.$row, $inn->info['kommune']);
+						exCell('F'.$row, $tittelen->g('detaljer'));
+						exCell('G'.$row, '');
 					}
 				}
 				if($loop < sizeof($objekter)){
@@ -127,6 +129,8 @@ class valgt_rapport extends rapport {
 				woText($c, 'Navn på innslag/gruppe','bold');
 				$c = $tab->addCell($col_detaljer);
 				woText($c, 'Detaljer','bold');
+				$c = $tab->addCell($col_detaljer);
+				woText($c, 'Kommune','bold');
 				$c = $tab->addCell($col_sign);
 				woText($c, 'Signatur','bold');
 
@@ -147,6 +151,11 @@ class valgt_rapport extends rapport {
 						woText($c, $inn->g('b_name'));
 						$c = $tab->addCell($col_detaljer);
 						woText($c, $tittelen->g('detaljer'));
+
+						$inn->loadGEO(); 
+						$c = $tab->addCell($col_detaljer);
+						woText($c, $inn->info['kommune']);
+
 						$c = $tab->addCell($col_sign, array('borderBottomSize'=>9, 'borderBottomColor'=>'000000'));
 						woText($c, '');
 					}
@@ -185,6 +194,7 @@ class valgt_rapport extends rapport {
 						<div class="navn">Navn på <?= $type == 'film' ? 'film' : 'kunstverk' ?></div>
 						<div class="inn_navn">Navn på innslag / gruppe</div>
 						<div class="detaljer">Detaljer</div>
+						<div class="detaljer">Kommune</div>
 						<div class="sign">Signatur</div>
 					</li>
 				<?php
@@ -198,6 +208,7 @@ class valgt_rapport extends rapport {
 						<div class="navn"><?= $tittelen->g('tittel')?></div>
 						<div class="inn_navn"><?= $inn->g('b_name')?></div>
 						<div class="detaljer"><?= $tittelen->g('detaljer')?></div>
+						<div class="detaljer"><?php $inn->loadGEO(); echo $inn->info['kommune']; ?></div>
 						<div class="sign"></div>
 					</li>
 				<?php
