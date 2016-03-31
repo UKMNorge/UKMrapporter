@@ -415,8 +415,9 @@ class rapport{
 		$PHPWord->addParagraphStyle('p_place', array('align'=>'center'));
 		$PHPWord->addFontStyle('f_rapport', array('size'=>35, 'bold'=>true, 'color'=>'1e4a45'));
 		$PHPWord->addFontStyle('f_place', array('size'=>25, 'bold'=>true, 'color'=>'1e4a45'));
-
-		$PHPWord->addParagraphStyle('p_diplom_navn', array('spaceAfter'=>0, 'spaceBefore'=>18, 'align'=>'center'));
+		
+		# Offset ganges med 0.05, 360 = 18 i Word-avsnitt-stil.
+		$PHPWord->addParagraphStyle('p_diplom_navn', array('spaceAfter'=>0, 'spaceBefore'=>360, 'align'=>'center'));
 		$PHPWord->addParagraphStyle('p_diplom_mellom', array('spaceAfter'=>0, 'spaceBefore'=>0, 'align'=>'center'));
 		$PHPWord->addParagraphStyle('p_diplom_monstring', array('spaceAfter'=>0, 'spaceBefore'=>0, 'align'=>'center'));
 		$PHPWord->addFontStyle('f_diplom_navn', array('size'=>25, 'bold'=>true, 'color'=>'1e4a45'));
