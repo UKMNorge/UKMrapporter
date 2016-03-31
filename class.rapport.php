@@ -416,7 +416,7 @@ class rapport{
 		$PHPWord->addFontStyle('f_rapport', array('size'=>35, 'bold'=>true, 'color'=>'1e4a45'));
 		$PHPWord->addFontStyle('f_place', array('size'=>25, 'bold'=>true, 'color'=>'1e4a45'));
 
-		$PHPWord->addParagraphStyle('p_diplom_navn', array('spaceAfter'=>0, 'spaceBefore'=>0, 'align'=>'center'));
+		$PHPWord->addParagraphStyle('p_diplom_navn', array('spaceAfter'=>0, 'spaceBefore'=>18, 'align'=>'center'));
 		$PHPWord->addParagraphStyle('p_diplom_mellom', array('spaceAfter'=>0, 'spaceBefore'=>0, 'align'=>'center'));
 		$PHPWord->addParagraphStyle('p_diplom_monstring', array('spaceAfter'=>0, 'spaceBefore'=>0, 'align'=>'center'));
 		$PHPWord->addFontStyle('f_diplom_navn', array('size'=>25, 'bold'=>true, 'color'=>'1e4a45'));
