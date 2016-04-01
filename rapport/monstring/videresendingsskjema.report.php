@@ -209,6 +209,7 @@ class valgt_rapport extends rapport {
 				 . '<span class="UKMSMS">'. str_replace(' ', '', $answer[1]) .'</span><br />'
 				 . '<a href="mailto:'.$answer[2].'" class="UKMMAIL">'. $answer[2] .'</a>';
 		}
+		return $answer;
 	}
 }
 
