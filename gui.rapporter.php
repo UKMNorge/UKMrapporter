@@ -13,16 +13,10 @@ $category_icon_size = 32;
 		<span>Ankomst- og avreiseinformasjon fra fylkenes videresending</span>
 	</li>
 	
-	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&festival=tilrettelegging">
 		<?= UKMN_icoAlt('medical-case', "Mat", $raport_icon_size ) ?>
-		<div class="title">Mat</div>
-		<span>Spesielle behov bespisning</span>
-	</li>	
-	
-	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
-		<?= UKMN_icoAlt('handicap', "Mat", $raport_icon_size ) ?>
-		<div class="title">Tilrettelegging</div>
-		<span>Spesielle behov for tilrettelegging</span>
+		<div class="title">Mat og tilrettelegging</div>
+		<span>Allergier og andre behov for tilrettelegging</span>
 	</li>
 	
 	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
