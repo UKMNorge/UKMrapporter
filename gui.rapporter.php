@@ -25,7 +25,7 @@ $category_icon_size = 32;
 		<span>Kontaktinfo til fylkenes registrerte ledere</span>
 	</li>
 		
-	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&festival=ledermiddag">
 		<?= UKMN_icoAlt('chef', "Ledermiddag", $raport_icon_size ) ?>
 		<div class="title">Ledermiddag</div>
 		<span>Hvilke ledere skal være med på ledermiddagen</span>
