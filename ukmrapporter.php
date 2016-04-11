@@ -37,7 +37,7 @@ function UKMrapport_countPrint(){
 function UKMrapport_menu() {
 	UKM_add_menu_page('monstring','Rapporter', 'Rapporter', 'ukm_rapporter', 'UKMrapport_admin', 'UKMrapport_admin', 'http://ico.ukm.no/graph-menu.png',15);    
 	UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_scriptsandstyles' );
-	if(isset($_GET['stat'])||isset($_GET['fylkestimeplan'])) {
+	if(isset($_GET['stat'])||isset($_GET['fylkestimeplan'])||isset($_GET['festival'])) {
 		UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_statistikk_scripts_and_styles' );
 	}
 }
@@ -82,6 +82,10 @@ function UKMrapport_admin() {
 
 		echo TWIG( $VIEW.'.twig.html', $TWIG, dirname(__FILE__), true);
 		echo HANDLEBARS( dirname(__FILE__) );
+	} elseif( isset( $_GET['festival'] )) {
+		$VIEW = $_GET['festival'];
+		require_once('controller/festival/'. $VIEW .'.controller.php');
+		echo TWIG('festival/'. $VIEW .'.html.twig', $TWIG, dirname(__FILE__), true);		
 	} elseif( isset( $_GET['fylkestimeplan'] )) {
 		$VIEW = 'fylkestimeplan';
 		$TWIG = array();

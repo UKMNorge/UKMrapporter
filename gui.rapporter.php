@@ -5,6 +5,67 @@ $category_icon_size = 32;
 ?>
 <h1>Rapporter</h1>
 
+<span><?= UKMN_ico('palm-tree', $category_icon_size)?><h2 class="rapport_kategori">Festivalen</h2></span>
+<ul class="rapportcontainer" data-kat="monstring">
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&festival=reise">
+		<?= UKMN_icoAlt('buss', "Reise", $raport_icon_size ) ?>
+		<div class="title">Reise</div>
+		<span>Ankomst- og avreiseinformasjon fra fylkenes videresending</span>
+	</li>
+	
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+		<?= UKMN_icoAlt('medical-case', "Mat", $raport_icon_size ) ?>
+		<div class="title">Mat</div>
+		<span>Spesielle behov bespisning</span>
+	</li>	
+	
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+		<?= UKMN_icoAlt('handicap', "Mat", $raport_icon_size ) ?>
+		<div class="title">Tilrettelegging</div>
+		<span>Spesielle behov for tilrettelegging</span>
+	</li>
+	
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+		<?= UKMN_icoAlt('user-black', "Ledere", $raport_icon_size ) ?>
+		<div class="title">Ledere</div>
+		<span>Kontaktinfo til fylkenes registrerte ledere</span>
+	</li>
+		
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+		<?= UKMN_icoAlt('chef', "Ledermiddag", $raport_icon_size ) ?>
+		<div class="title">Ledermiddag</div>
+		<span>Hvilke ledere skal være med på ledermiddagen</span>
+	</li>
+		
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+		<?= UKMN_icoAlt('hotel', "Hotell-overnatting", $raport_icon_size ) ?>
+		<div class="title">Hotell-overnatting</div>
+		<span>Bestillingsskjema for ledernes hotellovernattinger</span>
+	</li>
+					
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+		<?= UKMN_icoAlt('tent', "Deltaker-overnatting", $raport_icon_size ) ?>
+		<div class="title">Deltakerovernatting</div>
+		<span>Lister med ledere per natt som sover i deltakerovernattingen</span>
+	</li>
+			
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+		<?= UKMN_icoAlt('media', "Sveve-eksport", $raport_icon_size ) ?>
+		<div class="title">Mediefiler</div>
+		<span>Last ned mediefiler som skal brukes til program og lignende</span>
+	</li>
+
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+		<?= UKMN_icoAlt('excel', "Sveve-eksport", $raport_icon_size ) ?>
+		<div class="title">Sveve-eksport</div>
+		<span>Excel-ark for bruk til import i Sveve og planlagte SMS</span>
+	</li>
+
+
+</ul>
+<div class="clear"></div>
+
+
 <span><?= UKMN_ico('hus', $category_icon_size)?><h2 class="rapport_kategori">Mønstring</h2></span>
 <ul class="rapportcontainer" data-kat="monstring">
 	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
