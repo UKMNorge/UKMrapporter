@@ -1,0 +1,19 @@
+<h1>Kontaktinfo til ledere</h1>
+<p class="lead">Alle ledere som er lagt til ved videresending</p>
+
+<p>
+	<a href="{{excel}}" class="btn btn-success">Last ned info som excelark</a>
+</p>
+
+<h3>Kommaseparert (for å sende e-post fra mac)</h3>
+<p>
+	{% for leder in ledere if leder.l_epost is not empty %}
+		{{leder.l_epost}},
+	{% endfor %}
+</p>
+<h3>Semikolon-separert (for å sende e-post fra outlook)</h3>
+<p>
+	{% for leder in ledere if leder.l_epost is not empty %}
+		{{leder.l_epost}}; 
+	{% endfor %}
+</p>

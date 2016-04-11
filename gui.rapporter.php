@@ -19,7 +19,7 @@ $category_icon_size = 32;
 		<span>Allergier og andre behov for tilrettelegging</span>
 	</li>
 	
-	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&festival=ledere">
 		<?= UKMN_icoAlt('user-black', "Ledere", $raport_icon_size ) ?>
 		<div class="title">Ledere</div>
 		<span>Kontaktinfo til fylkenes registrerte ledere</span>
