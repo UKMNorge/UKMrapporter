@@ -49,7 +49,7 @@ $category_icon_size = 32;
 		<span>Last ned mediefiler som skal brukes til program og lignende</span>
 	</li>
 
-	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&festival=sveveeksport">
 		<?= UKMN_icoAlt('excel', "Sveve-eksport", $raport_icon_size ) ?>
 		<div class="title">Sveve-eksport</div>
 		<span>Excel-ark for bruk til import i Sveve og planlagte SMS</span>
