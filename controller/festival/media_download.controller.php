@@ -92,6 +92,8 @@ foreach( $alle_innslag as $order => $inn ) {
 }
 
 if(isset($_GET['zip'])) {
+	define('ZIP_WRITE_PATH', '/home/ukmno/public_subdomains/download/zip/');
+
 	require_once('UKM/zip.class.php');
 	$forestilling = new forestilling( $_GET['c_id'] );
 	$zip = new zip( $zipnavn , true );
