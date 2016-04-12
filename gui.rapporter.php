@@ -31,13 +31,13 @@ $category_icon_size = 32;
 		<span>Hvilke ledere skal være med på ledermiddagen</span>
 	</li>
 		
-	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&festival=overnatting_ledere">
 		<?= UKMN_icoAlt('hotel', "Hotell-overnatting", $raport_icon_size ) ?>
 		<div class="title">Hotell-overnatting</div>
 		<span>Bestillingsskjema for ledernes hotellovernattinger</span>
 	</li>
 					
-	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&festival=overnatting_deltakere">
 		<?= UKMN_icoAlt('tent', "Deltaker-overnatting", $raport_icon_size ) ?>
 		<div class="title">Deltakerovernatting</div>
 		<span>Lister med ledere per natt som sover i deltakerovernattingen</span>
