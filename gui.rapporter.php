@@ -43,7 +43,7 @@ $category_icon_size = 32;
 		<span>Lister med ledere per natt som sover i deltakerovernattingen</span>
 	</li>
 			
-	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&stat=home">
+	<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&festival=media">
 		<?= UKMN_icoAlt('media', "Sveve-eksport", $raport_icon_size ) ?>
 		<div class="title">Mediefiler</div>
 		<span>Last ned mediefiler som skal brukes til program og lignende</span>
