@@ -77,7 +77,7 @@ class extended_rapport extends valgt_rapport {
 			if($grp !== 0) {
 				// TABELLEN OG TOM ØVERSTE CELLE (placeholder / spacetaker? :p)
 				$tab = $section->addTable();
-				$tab->addRow(12600);
+				$tab->addRow(12300);
 				$c = $tab->addCell(11000);
 				woText($c, ' ');
 				// DIPLOM-CELLE
