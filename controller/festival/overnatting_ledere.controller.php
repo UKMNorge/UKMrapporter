@@ -102,15 +102,22 @@ foreach( $ressurspersoner as $gruppe => $personer ) {
 		$start = $p['ankomst'];
 		$stop = $p['avreise'];
 		$selector = ' - ';
+		$text = '-';
 		foreach( $alle_netter as $num => $data ) {
+			// Looper fra første til siste dag
+			// Starter med -, og gjør dette til vi når startdato
+			// Fra og med startdato, kryss av for overnatting
 			if( $start == date('d.m',$data->timestamp) )
 				$text = 'x';
+			// Fra og med sluttdato, fjern kryss for overnatting
 			if( $stop == date('d.m',$data->timestamp) ) 
 				$text = '-';
-
-			$count[ $p['romtype'] ][$gruppe][ $data->dag.'.'.$data->mnd ][ $p['rom'] ] = true;
-			$count[ $p['romtype'] ]['total'][ $data->dag.'.'.$data->mnd ][ $p['rom'] ] = true;
-				
+			
+			// Hvis ledern skal ha overnatting denne natta, tell det.
+			if( 'x' == $text ) {
+				$count[ $p['romtype'] ][$gruppe][ $data->dag.'.'.$data->mnd ][ $p['rom'] ] = true;
+				$count[ $p['romtype'] ]['total'][ $data->dag.'.'.$data->mnd ][ $p['rom'] ] = true;
+			}				
 			excell(i2a($col+$num).$rad, $text);
 		}
 	}
