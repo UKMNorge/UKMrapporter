@@ -116,8 +116,6 @@ foreach( $ressurspersoner as $gruppe => $personer ) {
 	}
 }
 
-var_dump( $count );
-
 $TWIG['excel_hotell_norge'] = exWrite($objPHPExcel,'UKMF_Hotell_UKM_Norge');
 
 $TWIG['alle_netter'] = $alle_netter;
