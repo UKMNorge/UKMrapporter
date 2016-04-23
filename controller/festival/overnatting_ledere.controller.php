@@ -3,6 +3,9 @@
 require_once('overnatting.controller.php');
 
 
+$TWIG['romtyper'] = $romtyper = UKMF_overnatting_getRomtyper();
+
+
 /// HOTELL UKM NORGE	
 global $objPHPExcel;
 $objPHPExcel = null;
@@ -34,8 +37,8 @@ while( $r = mysql_fetch_assoc( $res ) ) {
 		$pa_hotell = $leder->natt[ $data->dag.'_'.$data->mnd ]->sted == 'hotell';
 		excell(i2a($col+$num).$rad, $pa_hotell ? 'x' : '-');
 		if( $pa_hotell ) {
-			$count_enkel['ledere'][ $data->dag.'.'.$data->mnd ] ++;
-			$count_enkel['total'][ $data->dag.'.'.$data->mnd ] ++;
+			$count[ 'enkelt' ][ 'ledere' ][ $data->dag.'.'.$data->mnd ][ $r['l_id'] ] = true;
+			$count[ 'enkelt' ][ 'total'  ][ $data->dag.'.'.$data->mnd ][ $r['l_id'] ] = true;
 		}
 	}
 }
@@ -65,8 +68,10 @@ if( is_array( $ressurspersoner ))
 foreach( $ressurspersoner as $gruppe => $personer ) {
 
 	foreach( $alle_netter as $num => $data ) {
-		$count_enkel[$gruppe][ $data->dag.'.'.$data->mnd ] = 0;
-		$count_dobbel[$gruppe][$data->dag.'.'.$data->mnd ] = array();
+		foreach( $romtyper as $romtype => $kapasitet ) {
+			$count[$romtype][$gruppe][ $data->dag.'.'.$data->mnd ] = 0;
+			$count[$romtype][$gruppe][ $data->dag.'.'.$data->mnd ] = array();
+		}
 	}
 
 	$excelArk++;
@@ -102,22 +107,18 @@ foreach( $ressurspersoner as $gruppe => $personer ) {
 				$text = 'x';
 			if( $stop == date('d.m',$data->timestamp) ) 
 				$text = '-';
-			if( $text == 'x' && $p['romtype'] == 'enkelt') {
-				$count_enkel[$gruppe][ $data->dag.'.'.$data->mnd ]++;
-				$count_enkel['total'][ $data->dag.'.'.$data->mnd ]++;
-			}
-			if( $text == 'x' && $p['romtype'] == 'dobbelt') {
-				$count_dobbel[$gruppe][ $data->dag.'.'.$data->mnd ][$p['rom']]=true;
-				$count_dobbel['total'][ $data->dag.'.'.$data->mnd ][$p['rom']]=true;
-			}
+
+			$count[ $p['romtype'] ][$gruppe][ $data->dag.'.'.$data->mnd ][ $p['rom'] ] = true;
+			$count[ $p['romtype'] ]['total'][ $data->dag.'.'.$data->mnd ][ $p['rom'] ] = true;
 				
 			excell(i2a($col+$num).$rad, $text);
 		}
 	}
 }
 
+var_dump( $count );
+
 $TWIG['excel_hotell_norge'] = exWrite($objPHPExcel,'UKMF_Hotell_UKM_Norge');
 
 $TWIG['alle_netter'] = $alle_netter;
-$TWIG['count']['enkel'] = $count_enkel;
-$TWIG['count']['dobbel'] = $count_dobbel;
+$TWIG['count'] = $count;
