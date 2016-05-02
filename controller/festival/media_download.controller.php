@@ -22,6 +22,7 @@ foreach( $alle_innslag as $order => $inn ) {
 	$innslag = new stdClass();
 	$innslag->ID 		= $i->g('b_id');
 	$innslag->navn 		= $i->g('b_name');
+	$innslag->fylke		= $i->g('fylke');
 	$innslag->media		= new stdClass();
 	$innslag->rekkefolge = $order+1;
 
@@ -47,6 +48,7 @@ foreach( $alle_innslag as $order => $inn ) {
 		switch( $i->g('bt_form') ) {
 			case 'smartukm_titles_video':
 				$sort = 'film';
+				$innslag->media->image = 'skal_ikke_ha';
 				break;
 			case 'smartukm_titles_exhibition':
 				$sort = 'kunst';			
@@ -59,8 +61,8 @@ foreach( $alle_innslag as $order => $inn ) {
 							$tittel->media->image = 'none_uploaded';
 						} else {
 							$tittel->media->image = image_selected( $innslag, $tittel->t_id, 'bilde', 'original' );
-							if(!is_string( $innslag->media->image )) {
-								$innslag->media->image->localpath = localpath_by_rel_id( $innslag->media->image->ID );
+							if(!is_string( $tittel->media->image )) {
+								$tittel->media->image->localpath = localpath_by_rel_id( $tittel->media->image->ID );
 							}
 						}
 						$innslag->titler[] = $tittel;
@@ -86,7 +88,8 @@ foreach( $alle_innslag as $order => $inn ) {
 				}
 	
 				break;
-		}	
+		}
+		$innslag->type = $sort;
 	}
 	$TWIG['innslag'][] = $innslag;
 }
@@ -98,17 +101,31 @@ if(isset($_GET['zip'])) {
 	$forestilling = new forestilling( $_GET['c_id'] );
 	$zip = new zip( $zipnavn , true );
 	foreach( $TWIG['innslag'] as $innslag ) {
-		if( !is_string( $innslag->media->image ) ) {
-			$extPos = strrpos($innslag->media->image->localpath, '.');
-			$ext = substr($innslag->media->image->localpath, $extPos);
-			
-			$path = $innslag->media->image->localpath;
-			$name = $zipnavn . $innslag->rekkefolge .' '. $innslag->navn . $ext;
-			
-			$zip->add( $path, $name );
+		if( $innslag->type == 'kunst' ) {
+			foreach( $innslag->titler as $tittel ) {
+				$image = $tittel->media->image;
+				$innslag_navn = $innslag->navn .' - '. $tittel->get('tittel');
+				add_file($zip, $image, $innslag_navn );		
+			}
+		} else {
+			$image = $innslag->media->image;
+			$innslag_navn = $innslag->navn;
+			add_file($zip, $image, $innslag_navn );
 		}
 	}
 	$TWIG['zipfile'] = $zip->compress();
+}
+
+function add_file( $zip, $image, $innslag_navn ) {
+	if( !is_string( $image ) ) {
+		$extPos = strrpos($image->localpath, '.');
+		$ext = substr($image->localpath, $extPos);
+		
+		$path = $image->localpath;
+		$name = $zipnavn . $innslag->rekkefolge .' '. $innslag_navn . $ext;
+		
+		$zip->add( $path, $name );
+	}
 }
 
 

@@ -1,3 +1,12 @@
+<style>
+.well.card {
+	padding: 9px;
+    border-radius: 2px;
+    background-color: #fff;
+    box-shadow: #dddddd 2px 1px;
+    border: 1px solid #eeeeee;
+}
+</style>
 <h1>Last ned mediafiler</h1>
 
 <p class="lead">Last ned zip-fil eller enkeltbilder</p>
@@ -10,12 +19,48 @@
 	{% endif %}
 </p>
 
-<ol class="list-unstyled">
-{% for i in innslag %}
-	{% if i.media.image != 'none_uploaded' and i.media.image != 'none_selected' %}
-	<li><a href="{{i.media.image.src}}">{{i.rekkefolge is not empty ? i.rekkefolge~'. ' : ''}}{{i.navn}}</a></li>
-	{% else %}
-		<li>{{i.rekkefolge is not empty ? i.rekkefolge~'. ' : ''}}{{i.navn}} - MEDIA MANGLER</li>
-	{% endif %}
-{% endfor %}
-</ol>
+<div class="row">
+	<div class="col-xs-12">
+		<ol class="list-unstyled">
+		{% for i in innslag %}
+			{% if i.type == 'kunst' %}
+				{% for tittel in i.titler %}
+					<li class="well card {{ tittel.media.image == 'none_uploaded' or tittel.media.image == 'none_selected' ? 'alert alert-danger' : '' }}">
+						<div class="pull-left">
+							{{ i.rekkefolge is not empty ? i.rekkefolge~'.' : '' }} {{ i.navn }} - {{ tittel.get('tittel') }}
+						</div>
+						<div class="pull-right">
+							<small>
+								{% if tittel.media.image == 'none_uploaded' or tittel.media.image == 'none_selected' %}
+									MEDIA MANGLER
+								{% else %}
+									<a href="{{ tittel.media.image.src }}">Last ned</a>
+								{% endif %}
+							</small>
+						</div>
+						<div class="clearfix"></div>
+					</li>
+				{% endfor %}
+			{% else %}
+				<li class="well card {{ i.media.image == 'none_uploaded' or i.media.image == 'none_selected' ? 'alert alert-danger' : '' }}">
+					<div class="pull-left">
+						{{ i.rekkefolge is not empty ? i.rekkefolge~'.' : '' }} {{ i.navn }}
+					</div>
+					<div class="pull-right">
+						<small>
+							{% if i.media.image == 'skal_ikke_ha' %}
+								Skal ikke ha opplastede mediefiler
+							{% elseif i.media.image == 'none_uploaded' or i.media.image == 'none_selected' %}
+								MEDIA MANGLER
+							{% else %}
+								<a href="{{i.media.image.src}}">Last ned</a>
+							{% endif %}
+						</small>
+					</div>
+					<div class="clearfix"></div>
+				</li>
+			{% endif %}
+		{% endfor %}
+		</ol>
+	</div>
+</div>
