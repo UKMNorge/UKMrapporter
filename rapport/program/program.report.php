@@ -848,7 +848,7 @@ class valgt_rapport extends rapport {
 								$ukmtv_count++;
 								echo '<div class="UKMTV clickable">'
 								   . '	<div class="image"><img src="'. $tv->image_url .'" style="max-width:100%;" /></div>'
-								   . '	<div class="embedcontainer" style="display:none;" data-framesource="'. $tv->embed_url .'">'
+								   . '	<div class="embedcontainer" style="display:none;" data-framesource="'. $tv->embed_url .'"></div>'
 								   . '</div>';
 							}
 						}
