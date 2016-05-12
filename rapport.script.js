@@ -207,7 +207,7 @@ jQuery(document).on('click', '.UKMTV img', function(){
 	var container = jQuery(this).parents('div.UKMTV');
 	var embedcontainer = container.find('div.embedcontainer');
 	embedcontainer.html('<iframe src="' +
-						container.find('div.embedcontainer').attr('data-framesource') +
+						jQuery(this).attr('data-framesource') +
 						'" frameborder width="'+ jQuery(this).width() +
 						'" height="'+ jQuery(this).height() +
 						'" style="max-width: 100%; border:none;"></iframe>').slideDown();
