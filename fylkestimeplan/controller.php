@@ -55,7 +55,7 @@ while( $f = mysql_fetch_assoc( $fylkeRES ) ) {
 foreach( $alle_inn as $inn ) {
 	$i = new innslag( $inn['b_id'] );
 	$i->loadGeo();
-	$i->videresendte( $m->get('pl_id') );
+#	$i->videresendte( $m->get('pl_id') );
 	$personer = $i->personer();
 	
 	$innslag = new stdClass();
