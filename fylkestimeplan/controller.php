@@ -55,7 +55,7 @@ while( $f = mysql_fetch_assoc( $fylkeRES ) ) {
 foreach( $alle_inn as $inn ) {
 	$i = new innslag( $inn['b_id'] );
 	$i->loadGeo();
-#	$i->videresendte( $m->get('pl_id') );
+	$i->videresendte( $m->get('pl_id') );
 	$personer = $i->personer();
 	
 	$innslag = new stdClass();
@@ -122,18 +122,22 @@ foreach( $fylker as $fylke ) {
 			// Oppmøtetid
 			$c = $tab->addCell(2700);
 			woText($c, 'Oppmøte: '.utf8_encode(strftime('%A %H:%M',$innslag->oppmote)), 'right');
-			foreach( $innslag->personer as $person ) {
-				// NY RAD
-				$tab->addRow();
-				
-				$c = $tab->addCell(5000);
-				woText($c, '   '.$person->navn);
-				
-				$c = $tab->addCell(3640);
-				woText($c, $person->mobil);
-				
-				$c = $tab->addCell(2700);
-				woText($c, '');
+			if( is_array( $innslag->personer ) ) {
+				foreach( $innslag->personer as $person ) {
+					// NY RAD
+					$tab->addRow();
+					
+					$c = $tab->addCell(5000);
+					woText($c, '   '.$person->navn);
+					
+					$c = $tab->addCell(3640);
+					woText($c, $person->mobil);
+					
+					$c = $tab->addCell(2700);
+					woText($c, '');
+				}
+			} else {
+				echo 'FEIL: Ingen videresendte personer i innslaget ('. $innslag->navn .')<br />';
 			}
 		}
 		woText($section, ' ', 'p');
