@@ -137,7 +137,7 @@ foreach( $fylker as $fylke ) {
 					woText($c, '');
 				}
 			} else {
-				echo 'FEIL: Ingen videresendte personer i innslaget ('. $innslag->navn .')<br />';
+				echo 'FEIL: Ingen videresendte personer i innslaget ('. $fylke->navn .': '. $innslag->navn .')<br />';
 			}
 		}
 		woText($section, ' ', 'p');
