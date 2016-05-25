@@ -565,21 +565,21 @@ ul.levering > li.item > div.ut {
   height: 20px;
 }
 ul.levering > li > div.navn {
- 	width: 180px; 
+ 	width: 160px; 
 }
 ul.levering > li > div.inn_navn {
- 	width: 140px;
+ 	width: 120px;
   overflow: hidden;
 }
 ul.levering > li > div.detaljer {
-	width: 130px;
+	width: 110px;
 }
 ul.levering > li.item > div.detaljer {
  	font-size: 11px; 
 }
 ul.levering > li.item > div.sign {
   height: 15px;
- 	width: 120px;
+ 	width: 60px;
   border-bottom: 1px solid #000;
 }
 

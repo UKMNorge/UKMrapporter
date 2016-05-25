@@ -16,7 +16,6 @@ class valgt_rapport extends rapport {
 		
 		$this->navn = 'Inn- og utlevering';
 
-
 		$i = $this->optGrp('i','Typer innslag');
 		$this->opt($i, 'i_utstilling', 'Utstilling');
 		$this->opt($i, 'i_film', 'Film');
@@ -26,7 +25,10 @@ class valgt_rapport extends rapport {
 			$this->opt($b, 'b_vis', 'Vis bilde');
 		}
 
-		
+		$g = $this->formatGrp('op', 'Oppsett', 'radio');
+		$this->format($g, 'sort_alp', 'Sorter alfabetisk');
+		$this->format($g, 'sort_geo', 'Sorter geografisk');
+
 		$this->_postConstruct();	
 	}
 
@@ -100,11 +102,12 @@ class valgt_rapport extends rapport {
 
 		$objekter = $this->_objektene();
 
+		$col_image	 = 800;
 		$col_inn	 = 500;
-		$col_navn	 = 4000;
-		$col_innslag = 3000;
-		$col_detaljer= 3000;
-		$col_sign 	 = 2000;
+		$col_navn	 = 3400;
+		$col_innslag = 2900;
+		$col_detaljer= 2600;
+		$col_sign 	 = 1500;
 
 /* 		$cellmargin = 180; */
 
@@ -122,13 +125,17 @@ class valgt_rapport extends rapport {
 				woText($section, 'Inn- og utlevering av '. $type, 'grp');
 				$tab = $section->addTable();
 				$tab->addRow();
+
+				// HVIS BILDE SKAL VÆRE MED
+				if( $this->show('b_vis') ) {
+					$c = $tab->addCell($col_image);
+					woText($c, 'Bilde','bold');
+				}
 	
 				$c = $tab->addCell($col_inn);
-				woText($c, 'Inn','bold');
+				woText($c, '','bold');
 				$c = $tab->addCell($col_inn/2);
-				$c = $tab->addCell($col_inn);
-				woText($c, 'Ut','bold');
-				$c = $tab->addCell($col_inn/2);
+
 				$c = $tab->addCell($col_navn);
 				woText($c, 'Navn på '.($type == 'film' ? 'film' : 'kunstverk'),'bold');
 				$c = $tab->addCell($col_innslag);
@@ -136,7 +143,7 @@ class valgt_rapport extends rapport {
 				$c = $tab->addCell($col_detaljer);
 				woText($c, 'Detaljer','bold');
 				$c = $tab->addCell($col_detaljer);
-				woText($c, 'Kommune','bold');
+				woText($c, (get_option('site_type') == 'land' ? 'Fylke' : 'Kommune'),'bold');
 				$c = $tab->addCell($col_sign);
 				woText($c, 'Signatur','bold');
 
@@ -144,12 +151,24 @@ class valgt_rapport extends rapport {
 					foreach($objektarray as $tittelen) { 
 						$inn = new innslag($tittelen->g('b_id'));
 						$tab->addRow(500);
-			
-						$c = $tab->addCell($col_inn, $box);
-						woText($c, '');
-						$c = $tab->addCell($col_inn/2);
-						$c = $tab->addCell($col_inn, $box);
-						woText($c, '');
+
+						// HVIS BILDE SKAL VÆRE MED, SETT INN BILDE
+						if( $this->show('b_vis') ) {
+							$image = is_object($tittelen->bilde) ? str_replace('http://'. $_SERVER['HTTP_HOST'].'/',
+																				'/home/ukmno/public_html/',
+																				$tittelen->bilde->src)
+																 : false;
+							$c = $tab->addCell($col_image);
+							if( $image ) {
+								$c->addImage($image, array('width'=>40, 'height'=>40, 'align'=>'center'));
+							} else {
+								woText($c, 'Bilde mangler');
+							}
+						}
+						
+						$c = $tab->addCell($col_inn);
+						$c->addImage('/home/ukmno/public_html/wp-content/plugins/UKMrapporter/avkrysningsboks_inn_ut.jpg', array('width'=>60, 'height'=>38, 'align'=>'center'));
+
 						$c = $tab->addCell($col_inn/2);
 						$c = $tab->addCell($col_navn);
 						woText($c, $tittelen->g('tittel'));
@@ -160,7 +179,11 @@ class valgt_rapport extends rapport {
 
 						$inn->loadGEO(); 
 						$c = $tab->addCell($col_detaljer);
-						woText($c, $inn->info['kommune_utf8']);
+						if( get_option('site_type') == 'land' ) {
+							woText($c, $inn->info['fylke_utf8']);
+						} else {
+							woText($c, $inn->info['kommune_utf8']);
+						}
 
 						$c = $tab->addCell($col_sign, array('borderBottomSize'=>9, 'borderBottomColor'=>'000000'));
 						woText($c, '');
@@ -192,7 +215,8 @@ class valgt_rapport extends rapport {
 			echo '<strong>Fant ingen slike innslag på din mønstring</strong>';
 		} else {
 			foreach($objekter as $type => $titler){ ?>
-				<h3 class="levering-header">Inn- og utlevering av <?= $type ?></h3>
+				<div style="clear:both;"></div>
+				<h3 class="levering-header">Inn- og utlevering av <?= ucfirst( $type ) ?></h3>
 				<ul class="levering">
 					<li class="header">
 						<?php if( $this->show('b_vis') ) { ?>
@@ -203,7 +227,7 @@ class valgt_rapport extends rapport {
 						<div class="navn">Navn på <?= $type == 'film' ? 'film' : 'kunstverk' ?></div>
 						<div class="inn_navn">Navn på innslag / gruppe</div>
 						<div class="detaljer">Detaljer</div>
-						<div class="detaljer">Kommune</div>
+						<div class="detaljer"><?= get_option('site_type') == 'land' ? 'Fylke' : 'Kommune' ?></div>
 						<div class="sign">Signatur</div>
 					</li>
 				<?php
@@ -224,7 +248,7 @@ class valgt_rapport extends rapport {
 							else 
 								echo '<div class="detaljer" style="width: 130px">&nbsp;</div>';
 						?>
-						<div class="detaljer"><?php $inn->loadGEO(); echo $inn->info['kommune_utf8']; ?></div>
+						<div class="detaljer"><?php $inn->loadGEO(); echo get_option('site_type') == 'land' ? $inn->info['fylke_utf8'] : $inn->info['kommune_utf8']; ?></div>
 						<div class="sign"></div>
 					</li>
 				<?php
@@ -262,6 +286,7 @@ class valgt_rapport extends rapport {
 				continue;
 			
 			$inn = new innslag($innslag['b_id']);
+			$inn->loadGEO();
 			if(get_option('site_type')!='kommune')
 				$inn->videresendte(get_option('pl_id'));
 			$titler = $inn->titler($this->pl_id);
@@ -272,7 +297,14 @@ class valgt_rapport extends rapport {
 					$inn->ID = $inn->g('b_id');
 					$tittel->bilde = image_selected( $inn, $tittel->g('t_id') );
 				}
-				$rapport[strtolower($inn->g('bt_name'))][$tittel->g('tittel')][] = $tittel;
+				if( $this->showFormat('sort_geo') ) {
+					$geoKey = get_option('site_type') == 'land' ? $inn->info['fylke_utf8'] : $inn->info['kommune_utf8'];
+					$sortKey = $geoKey .' '. strtolower( $inn->g('bt_name') );
+				} else {
+					#else vil da være sort_alp
+					$sortKey = strtolower( $inn->g('bt_name') ); 
+				}
+				$rapport[ $sortKey ][$tittel->g('tittel')][] = $tittel;
 			}
 		}
 		$this->_deep_ksort($rapport);
