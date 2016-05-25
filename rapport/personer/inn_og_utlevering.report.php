@@ -21,6 +21,12 @@ class valgt_rapport extends rapport {
 		$this->opt($i, 'i_utstilling', 'Utstilling');
 		$this->opt($i, 'i_film', 'Film');
 		
+		if( 'land' == get_option('site_type') ) {
+			$b = $this->optGrp('b', 'Media');
+			$this->opt($b, 'b_vis', 'Vis bilde');
+		}
+
+		
 		$this->_postConstruct();	
 	}
 
@@ -189,6 +195,9 @@ class valgt_rapport extends rapport {
 				<h3 class="levering-header">Inn- og utlevering av <?= $type ?></h3>
 				<ul class="levering">
 					<li class="header">
+						<?php if( $this->show('b_vis') ) { ?>
+							<div class="navn">Bilde</div>
+						<?php } ?>
 						<div class="inn">Inn</div>
 						<div class="ut">Ut</div>
 						<div class="navn">Navn på <?= $type == 'film' ? 'film' : 'kunstverk' ?></div>
@@ -203,6 +212,9 @@ class valgt_rapport extends rapport {
 						$inn = new innslag($tittelen->g('b_id'));
 					?>
 					<li class="item">
+						<?php if( $this->show('b_vis') ) { ?>
+						<div class="navn"><?= is_object($tittelen->bilde) ? '<img src="'.$tittelen->bilde->src.'" />' : 'Bilde mangler' ?></div>
+						<?php }	?>
 						<div class="inn"></div>
 						<div class="ut"></div>
 						<div class="navn"><?= $tittelen->g('tittel')?></div>
@@ -235,6 +247,9 @@ class valgt_rapport extends rapport {
 	 * @return void
 	 */	
 	private function _objektene() {
+		if( $this->show('b_vis') ) {
+			require_once( PLUGIN_DIR_PATH_UKMFESTIVALEN.'../UKMvideresending_festival/functions.php' );
+		}
 		$innslagene = $this->m->innslag();
 		foreach($innslagene as $innslag) {
 			if($innslag['bt_id'] !=2 && $innslag['bt_id'] != 3)
@@ -250,7 +265,13 @@ class valgt_rapport extends rapport {
 			if(get_option('site_type')!='kommune')
 				$inn->videresendte(get_option('pl_id'));
 			$titler = $inn->titler($this->pl_id);
+			
 			foreach($titler as $tittel){
+				// VIS BILDER
+				if( $this->show('b_vis') ) {
+					$inn->ID = $inn->g('b_id');
+					$tittel->bilde = image_selected( $inn, $tittel->g('t_id') );
+				}
 				$rapport[strtolower($inn->g('bt_name'))][$tittel->g('tittel')][] = $tittel;
 			}
 		}
