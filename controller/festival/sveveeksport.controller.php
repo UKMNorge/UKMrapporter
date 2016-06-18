@@ -69,7 +69,7 @@ foreach($innslag as $band_type => $bands) {
 			$card->first_name 	= $person->getFornavn();
 			$card->last_name 	= $person->getEtternavn();
 
-			$card->title 		= ($kontaktperson_deltar ? 'KONTAKTPERSON og ' : '') . $person->getInstrument() .' @ '. $inn_v2->getNavn();
+			$card->title 		= ($kontaktperson_deltar ? 'KONTAKTPERSON og ' : '') . $person->getInstrument();
 
 			$card->home_tel		= $person->getMobil();
 			$card->fax_tel 		= $person->getMobil() .'600';
@@ -78,8 +78,8 @@ foreach($innslag as $band_type => $bands) {
 			$card->email1		= $person->getEpost();
 
 
-			$card->company		= 'UKM '. $inn_v2->getKommune()->getNavn();
-			$card->department	= '('. $inn_v2->getKommune()->getFylke()->getNavn() .')';
+			$card->company		= $inn_v2->getNavn();;
+			$card->department	= 'UKM '. $inn_v2->getKommune()->getNavn() .' ('. $inn_v2->getKommune()->getFylke()->getNavn() .')';
 
 			$vcard = new vcard( (array) $card );
 			$vcard->build();
@@ -95,7 +95,7 @@ foreach($innslag as $band_type => $bands) {
 			$card->first_name 	= $person->getFornavn();
 			$card->last_name 	= $person->getEtternavn();
 
-			$card->title 		= 'KONTAKTPERSON @ '. $inn_v2->getNavn();
+			$card->title 		= 'KONTAKTPERSON';
 
 			$card->home_tel		= $person->getMobil();
 			$card->fax_tel 		= $person->getMobil() .'600';
@@ -104,8 +104,8 @@ foreach($innslag as $band_type => $bands) {
 			$card->email1		= $person->getEpost();
 
 
-			$card->company		= 'UKM '. $inn_v2->getKommune()->getNavn();
-			$card->department	= '('. $inn_v2->getKommune()->getFylke()->getNavn() .')';
+			$card->company		= $inn_v2->getNavn();;
+			$card->department	= 'UKM '. $inn_v2->getKommune()->getNavn() .' ('. $inn_v2->getKommune()->getFylke()->getNavn() .')';
 
 			$vcard = new vcard( (array) $card );
 			$vcard->build();
