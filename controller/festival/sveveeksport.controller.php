@@ -16,7 +16,11 @@ $innslag = $m->innslag_btid();
 /** Vcard som zip */
 $zipname = 'UKMfestivalen_deltakere';
 $STORAGE = sys_get_temp_dir() .'/'. $zipname .'/';
-define('ZIP_WRITE_PATH', $STORAGE );
+if( 'ukm.no' == UKM_HOSTNAME ) {
+	define('ZIP_WRITE_PATH', '/home/ukmno/public_subdomains/download/zip/');
+} else {
+	define('ZIP_WRITE_PATH', $STORAGE );
+}
 $zip = new zip($zipname, true);
 $zip->debugMode();
 
