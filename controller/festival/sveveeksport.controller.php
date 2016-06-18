@@ -78,8 +78,8 @@ foreach($innslag as $band_type => $bands) {
 			$card->email1		= $person->getEpost();
 
 
-			$card->company		= $inn_v2->getNavn();;
-			$card->department	= 'UKM '. $inn_v2->getKommune()->getNavn() .' ('. $inn_v2->getKommune()->getFylke()->getNavn() .')';
+			$card->department	= $inn_v2->getNavn();;
+			$card->company		= 'UKM '. $inn_v2->getKommune()->getNavn() .' ('. $inn_v2->getKommune()->getFylke()->getNavn() .')';
 
 			$vcard = new vcard( (array) $card );
 			$vcard->build();
@@ -104,8 +104,8 @@ foreach($innslag as $band_type => $bands) {
 			$card->email1		= $person->getEpost();
 
 
-			$card->company		= $inn_v2->getNavn();;
-			$card->department	= 'UKM '. $inn_v2->getKommune()->getNavn() .' ('. $inn_v2->getKommune()->getFylke()->getNavn() .')';
+			$card->department	= $inn_v2->getNavn();;
+			$card->company		= 'UKM '. $inn_v2->getKommune()->getNavn() .' ('. $inn_v2->getKommune()->getFylke()->getNavn() .')';
 
 			$vcard = new vcard( (array) $card );
 			$vcard->build();
