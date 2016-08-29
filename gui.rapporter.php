@@ -83,13 +83,12 @@ if( get_option('site_type') == 'land' ) { ?>
 		<div class="title">Videresendingsskjema</div>
 		<span>Viser hva kommunene har skrevet i videresendingsskjemaet</span>
 	</li>
-<?php } ?>
-<?php	if(get_option('site_type') == 'fylke') {?>
 	<li class="clickable rapport" data-file="lokalkontakter">
 		<?= UKMN_icoAlt('contact', "Lokalkontakter", $raport_icon_size ) ?>
 		<div class="title">Lokalkontakter</div>
 		<span>Lister ut alle lokalkontakter i fylket</span>
 	</li>
+
 <?php } ?>
 
 <div class="clear"></div>
@@ -125,11 +124,13 @@ if( get_option('site_type') == 'land' ) { ?>
 		<span>Viser innslag som deltar på flere av dine lokalmønstringer</span>
 	</li>
 <?php } ?>
+<?php if( get_option('site_type') != 'land' ) { ?>
 	<li class="clickable rapport" data-file="videresendte">
 		<?= UKMN_icoAlt('user', 'Videresendte fra min mønstring', $raport_icon_size) ?>
 		<div class="title">Videresendte fra din mønstring</div>
 		<span>Liste (inkl. kontaktinfo) over deltakere som er videresendt fra din mønstring</span>
 	</li>
+<?php } ?>
 	<li class="clickable rapport" data-file="diplomer">
 		<?= UKMN_icoAlt('diplom', "Diplomer", $raport_icon_size ) ?>
 		<div class="title">Diplomer</div>
@@ -165,6 +166,14 @@ if( get_option('site_type') == 'land' ) { ?>
 		<div class="title">Tekniske prøver</div>
 		<span>Skreddersy en oversikt til dine teknikere for en best mulig mønstring</span>
 	</li>
+<?php	if(get_option('site_type') == 'fylke') {?>
+		<li class="clickable rapport_direct" data-target="?page=UKMrapport_admin&festival=media">
+		<?= UKMN_icoAlt('media', "Sveve-eksport", $raport_icon_size ) ?>
+		<div class="title">Mediefiler</div>
+		<span>Last ned mediefiler som skal brukes til program og lignende</span>
+	</li>
+<?php } ?>
+	
 	<li class="clickable rapport" data-file="analogt_juryskjema">
 		<?= UKMN_icoAlt('gavel', "Juryskjema for utskrift", $raport_icon_size ) ?>
 		<div class="title">Juryskjema</div>
