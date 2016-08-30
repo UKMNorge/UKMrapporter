@@ -2,7 +2,7 @@
 <table class="table table-striped">
 	{% for person in personer %}
 		<tr>
-			<th>{{ person.getInnslag() }}</th>
+			<th align="left">{{ person.getInnslag() }}</th>
 			<td>{{ person.getNavn() }}</td>
 			<td class="UKMsms">{{ person.getMobil() }}</td>
 			<td><a href="{{ person.getEpost() }}" class="UKMMAIL">{{ person.getEpost() }}</a></td>
