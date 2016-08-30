@@ -1,0 +1,17 @@
+<h2>Kontaktliste</h2>
+<table class="table table-striped">
+	{% for person in personer %}
+		<tr>
+			<th>{{ person.getInnslag() }}</th>
+			<td>{{ person.getNavn() }}</td>
+			<td class="UKMsms">{{ person.getMobil() }}</td>
+			<td><a href="{{ person.getEpost() }}" class="UKMMAIL">{{ person.getEpost() }}</a></td>
+			<td>{{ person.getTypeNavn() }}</td>
+			<td>{{ person.getKommune() }}</td>
+		</tr>
+	{% else %}
+		<tr>
+			<td>Fant ingen personer som passer kriteriene</td>
+		</tr>
+	{% endfor %}
+</table>

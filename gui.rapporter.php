@@ -70,13 +70,6 @@ if( get_option('site_type') == 'land' ) { ?>
 		<div class="title">Statistikksenter</div>
 		<span>Alt om din mønstring - i tall og grafer</span>
 	</li>
-
-<?php /*	<li class="clickable rapport" data-file="statistikk">
-		<?= UKMN_icoAlt('graph', "Statistikk", $raport_icon_size ) ?>
-		<div class="title">Statistikk</div>
-		<span>Statistikk nasjonalt, regionalt og lokalt. Alt du trenger!</span>
-	</li>
-*/ ?>
 <?php	if(get_option('site_type') == 'fylke') {?>
 	<li class="clickable rapport" data-file="videresendingsskjema">
 		<?= UKMN_icoAlt('buss', "Oppsummering digitalt infoskjema", $raport_icon_size ) ?>
@@ -93,6 +86,23 @@ if( get_option('site_type') == 'land' ) { ?>
 
 <div class="clear"></div>
 </ul>
+
+<?php if( isset( $_GET['dev'] ) ) { ?>
+<span><?= UKMN_ico('mobile', $category_icon_size)?><h2 class="rapport_kategori">SMS</h2></span>
+<ul class="rapportcontainer" data-kat="personer">
+	<li class="clickable rapport" data-file="sms_type">
+		<?= UKMN_icoAlt('group-config', 'Alle innslag', $raport_icon_size ) ?>
+		<div class="title">Kontaktinfo etter type</div>
+		<span>Hent ut kontaktinfo for noen typer innslag på din mønstring (scene, utstilling osv)</span>
+	</li>
+	<li class="clickable rapport" data-file="sms_hendelse">
+		<?= UKMN_icoAlt('list', "Kontaktlister", $raport_icon_size ) ?>
+		<div class="title">Kontaktinfo etter hendelse</div>
+		<span>Hent ut kontaktinfo for noen hendelser på din mønstring</span>
+	</li>
+</ul>
+<div class="clear"></div>
+<?php } ?>
 
 
 <span><?= UKMN_ico('people', $category_icon_size)?><h2 class="rapport_kategori">Personer</h2></span>
