@@ -115,6 +115,14 @@ class valgt_rapport extends rapport {
 		$section = $this->word_init('landscape');
 		
 		$tab = $section->addTable(array('align'=>'center'));
+		$tab->addRow();
+		woCell($tab, 3000, 'Innslag', 'bold');
+		woCell($tab, 3000, 'Navn', 'bold');
+		woCell($tab, 3000, 'Mobil', 'bold');
+		woCell($tab, 3000, 'Epost', 'bold');
+		woCell($tab, 3000, 'Type', 'bold');
+		woCell($tab, 3000, 'Kommune', 'bold');
+
 		foreach($this->_getRenderData() as $person){
 			$tab->addRow();
 			woCell($tab, 3000, $person->getInnslag(), 'bold');
@@ -141,11 +149,11 @@ class valgt_rapport extends rapport {
 		
 		$row = 1;
 		exCell('A'.$row, 'Innslag', 'bold');
-		exCell('B'.$row, 'Navn');
-		exCell('C'.$row, 'Mobil');
-		exCell('D'.$row, 'E-post');
-		exCell('E'.$row, 'Type');
-		exCell('F'.$row, 'Kommune');
+		exCell('B'.$row, 'Navn', 'bold');
+		exCell('C'.$row, 'Mobil', 'bold');
+		exCell('D'.$row, 'E-post', 'bold');
+		exCell('E'.$row, 'Type', 'bold');
+		exCell('F'.$row, 'Kommune', 'bold');
 		
 		foreach($this->_getRenderData() as $person){
 			$row++;
