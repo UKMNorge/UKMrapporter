@@ -3,10 +3,14 @@ require_once('UKM/monstring.class.php');
 require_once('UKM/innslag_typer.class.php');
 
 class renderData {
-	public function __construct( $innslag, $person ) {
+	public function __construct( $innslag, $person, $type ) {
 		$this->type = $innslag->getType()->getKey();
 		$this->typeNavn = $innslag->getType()->getNavn();
-		$this->kommune = $innslag->getKommune()->getNavn();
+		if( 'land' == $type ) {
+			$this->kommune = $innslag->getFylke()->getNavn();
+		} else {
+			$this->kommune = $innslag->getKommune()->getNavn();
+		}
 		$this->innslag = $innslag->getNavn();
 		$this->navn = $person->getNavn();
 		$this->mobil = $person->getMobil();
@@ -56,11 +60,14 @@ class valgt_rapport extends rapport {
 		parent::__construct($rapport, $kategori);
 		$g = $this->optGrp('geo','Deltakere fra');
 		
-		if( 'kommune' == $this->getMonstring()->getType() && $this->getMonstring()->erFellesMonstring() ) {
+		if( 'land' == $this->getMonstring()->getType() ) {
+			foreach( fylker::getAll() as $fylke ) {
+				$this->opt($g, 'geo_'. $fylke->getId(), $fylke->getNavn() );
+			}
+		} else {
 			foreach( $this->getMonstring()->getKommuner() as $kommune ) {
 				$this->opt($g, 'geo_'. $kommune->getId(), $kommune->getNavn() );
 			}
-			
 		}
 
 		$e = $this->optGrp('er','som er');
@@ -177,11 +184,11 @@ class valgt_rapport extends rapport {
 				continue;
 			}
 			if( $this->show('er_kontaktperson') ) {
-				$renderData[] = new renderData( $innslag, $innslag->getKontaktPerson() );
+				$renderData[] = new renderData( $innslag, $innslag->getKontaktPerson(), $this->getMonstring()->getType() );
 			}
 			if( $this->show('er_deltaker') ) {
 				foreach( $innslag->getPersoner()->getAll() as $person ) {
-					$renderData[] = new renderData( $innslag, $person );
+					$renderData[] = new renderData( $innslag, $person, $this->getMonstring()->getType() );
 				}
 			}
 		}
@@ -193,8 +200,8 @@ class valgt_rapport extends rapport {
 		$skip = false;
 		// SJEKK OM DEN GEOGRAFISKE TILHØRIGHETEN ER OK
 		switch( $this->validateGeo ) {
-			case 'all':
-				$skip = false;
+			case 'fylke':
+				$skip = !in_array( $innslag->getFylke()->getId(), $this->fylker );
 				break;
 			case 'kommune':
 				$skip = !in_array( $innslag->getKommune()->getId(), $this->kommuner );
@@ -234,7 +241,18 @@ class valgt_rapport extends rapport {
 		}
 		
 		// HAR VALGT GEOGRAFI
-		if( 'kommune' == $this->getMonstring()->getType() && $this->getMonstring()->erFellesmonstring() ) {
+		if( 'land' == $this->getMonstring()->getType() ) {
+			$this->validateGeo = 'fylke';
+			foreach( fylker::getAll() as $fylke ) {
+				// Hvis krysset av for kommune, legg til i kommune-array
+				if( $this->show('geo_'. $fylke->getId() ) ) {
+					$this->fylker[] = $fylke->getId();
+				}				
+			}
+			if( 0 == sizeof( $this->fylker ) ) {
+				throw new Exception('Du må velge minst ett fylke');
+			}
+		} else {
 			$this->validateGeo = 'kommune';
 			## Loop alle kommuner og sjekk om de er krysset av
 			$this->kommuner = array();
@@ -247,8 +265,6 @@ class valgt_rapport extends rapport {
 			if( 0 == sizeof( $this->kommuner ) ) {
 				throw new Exception('Du må velge minst én kommune/bydel!');
 			}
-		} else {
-			$this->validateGeo = 'all';
 		}
 	}
 	
