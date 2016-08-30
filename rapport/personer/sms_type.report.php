@@ -106,8 +106,6 @@ class valgt_rapport extends rapport {
 	public function generateWord(){
 		global $PHPWord;		
 		$section = $this->word_init('landscape');
-
-		$grupperte_innslag = $this->_innslag();
 		
 		$tab = $section->addTable(array('align'=>'center'));
 		foreach($this->_getRenderData() as $person){
