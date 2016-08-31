@@ -246,7 +246,7 @@ class valgt_rapport extends rapport {
 						exCell(i2a($col).$row, $titteltext);
 					}
 
-					if($this->show('d_vis') && $this->report_extended ) { #&& !$i->tittellos()){
+					if($this->show('d_vis') ) {#&& !$i->tittellos() ) {
 						$counter = 0;
 						if(get_option('site_type')!=='kommune')
 							$i->videresendte($this->pl_id);
@@ -396,7 +396,7 @@ class valgt_rapport extends rapport {
 						woText($section, $titteltext);
 					}
 
-					if($this->show('d_vis') && $this->report_extended) { #&& !$i->tittellos()){
+					if($this->show('d_vis') && !$i->tittellos() ){
 						woText($section, 'Personer: ', 'bold');
 						
 						if(get_option('site_type')!=='kommune')
@@ -416,7 +416,7 @@ class valgt_rapport extends rapport {
 									? ' ('. $d->g('instrument').')'
 									: ''
 									)
-								.($this->show('d_mobil')
+								.($this->report_extended && $this->show('d_mobil')
 									? ' - mobil: '.$d->g('p_phone')
 									: '')
 								.($counter < sizeof($deltakere) ? ', ' : '')
@@ -750,7 +750,7 @@ class valgt_rapport extends rapport {
 									? '<div class="detaljer">('. $d->g('instrument').')</div>'
 									: ''
 									)
-								.($this->show('d_mobil')
+								.($this->report_extended && $this->show('d_mobil')
 									? '<div class="detaljer">- mobil: <span class="UKMSMS">'. $d->g('p_phone') .'</span></div>'
 									: '')
 								.($counter < sizeof($deltakere) ? '<div class="separator">,</div>' : '')
