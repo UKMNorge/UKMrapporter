@@ -36,29 +36,18 @@ else
 				<ul class="optGrp" id="<?= $group?>">
 					<li class="name"><?= $group?></li>
 				<?php
-					## MERKELIG TANKEGANG, SELECT ERSTATTER IKKE MANGE CHECKBOXES
-					if(true) { #sizeof($grp_options) < 15) {
-						foreach($grp_options as $key => $info) {
-							if(empty($info['name'])){ ?>
-								<br />
-							<?php 
-							} else { ?>
-							<li class="option" id="<?= $info['name']?>">
-							<label><input type="<?= $info['type']?>" name="options[]" <?= ($info['checked'] ? 'checked="checked"':'') ?> value="<?= $info['name']?>" /><?= $info['name'] ?></label>
-							</li>
-						<?php
-							}
-						}
-					} else {
-						$grp_options_as_text = '';
-						foreach($grp_options as $key => $info) {
-							$grp_options_as_text .= '<option value="'.$info['name'].'">'.$info['name'].'</option>';
-						} ?>
+					foreach($grp_options as $key => $info) {
+						if(empty($info['name'])){ ?>
+							<br />
+						<?php 
+						} else { ?>
 						<li class="option" id="<?= $info['name']?>">
-						<select name="options[]"><?= $grp_options_as_text ?></select>
+						<label><input type="<?= $info['type']?>" name="options[]" <?= ($info['checked'] ? 'checked="checked"':'') ?> value="<?= $info['name']?>" /><?= $info['name'] ?></label>
 						</li>
-					<?php 
-					} ?>
+					<?php
+						}
+					}
+				 ?>
 				</ul>
 			<?php
 			} ?>

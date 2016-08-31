@@ -22,7 +22,7 @@ class valgt_rapport extends rapport {
 		$r = $this->optGrp('h','Forestillinger');
 		$this->det_finnes_ingen_monstringer = sizeof($ramme)==0;
 		foreach($ramme as $con)
-			$this->opt($r, 'c_'.$con['c_id'], $con['c_name']);
+			$this->opt($r, 'c_'.$con['c_id'], empty($con['c_name']) ? 'Hendelse uten navn': $con['c_name']);
 			
 		$i = $this->optGrp('i','Info om innslaget');
 		$this->opt($i, 'i_kategori', 'Kategori');
@@ -36,10 +36,14 @@ class valgt_rapport extends rapport {
 		$this->opt($t, 't_detaljer', 'Vis detaljert tittelinfo');
 		
 		$d = $this->optGrp('d', 'Deltakere');
-		$this->opt($d, 'd_kontakt', 'Vis kontaktpersoner');
+		if($this->report_extended) {
+			$this->opt($d, 'd_kontakt', 'Vis kontaktpersoner');
+		}
 		$this->opt($d, 'd_vis', 'Vis deltakere');
 		$this->opt($d, 'd_alder', 'Vis alder');
-		$this->opt($d, 'd_mobil', 'Vis mobilnummer');
+		if($this->report_extended) {
+			$this->opt($d, 'd_mobil', 'Vis mobilnummer');
+		}
 		$this->opt($d, 'd_funksjon', 'Vis rolle/funksjon/instrument');
 		
 		if($this->report_extended) {
@@ -242,7 +246,7 @@ class valgt_rapport extends rapport {
 						exCell(i2a($col).$row, $titteltext);
 					}
 
-					if($this->show('d_vis') && !$i->tittellos()){
+					if($this->show('d_vis') ) { #&& !$i->tittellos()){
 						$counter = 0;
 						if(get_option('site_type')!=='kommune')
 							$i->videresendte($this->pl_id);
@@ -392,7 +396,7 @@ class valgt_rapport extends rapport {
 						woText($section, $titteltext);
 					}
 
-					if($this->show('d_vis') && !$i->tittellos()){
+					if($this->show('d_vis') ) { #&& !$i->tittellos()){
 						woText($section, 'Personer: ', 'bold');
 						
 						if(get_option('site_type')!=='kommune')
