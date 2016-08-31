@@ -246,7 +246,7 @@ class valgt_rapport extends rapport {
 						exCell(i2a($col).$row, $titteltext);
 					}
 
-					if($this->show('d_vis') ) { #&& !$i->tittellos()){
+					if($this->show('d_vis') && $this->report_extended ) { #&& !$i->tittellos()){
 						$counter = 0;
 						if(get_option('site_type')!=='kommune')
 							$i->videresendte($this->pl_id);
@@ -396,7 +396,7 @@ class valgt_rapport extends rapport {
 						woText($section, $titteltext);
 					}
 
-					if($this->show('d_vis') ) { #&& !$i->tittellos()){
+					if($this->show('d_vis') && $this->report_extended) { #&& !$i->tittellos()){
 						woText($section, 'Personer: ', 'bold');
 						
 						if(get_option('site_type')!=='kommune')
