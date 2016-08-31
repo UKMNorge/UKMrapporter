@@ -396,7 +396,8 @@ class valgt_rapport extends rapport {
 						woText($section, $titteltext);
 					}
 
-					if($this->show('d_vis') && !$i->tittellos() ){
+					// Hvis program og innslaget har titler, ELLER hvis extended_report og vis deltakere (uavhengig av titler)
+					if( ($this->show('d_vis') && !$i->tittellos() ) || $this->show('d_vis') && $this->report_extended )){
 						woText($section, 'Personer: ', 'bold');
 						
 						if(get_option('site_type')!=='kommune')
