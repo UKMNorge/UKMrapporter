@@ -732,7 +732,8 @@ class valgt_rapport extends rapport {
 						echo '</div>';
 					}
 
-					if($this->show('d_vis') && !$i->tittellos()){
+					// Hvis program og innslaget har titler, ELLER hvis extended_report og vis deltakere (uavhengig av titler)
+					if( ($this->show('d_vis') && !$i->tittellos() ) || ($this->show('d_vis') && $this->report_extended ) ){
 						echo '<div class="deltakere">'
 							.'<div class="deltakere-label">Personer:</div>';
 						if(get_option('site_type')!=='kommune')
