@@ -213,3 +213,5 @@ jQuery(document).on('click', '.UKMTV img', function(){
 						'" style="max-width: 100%; border:none;"></iframe>').slideDown();
 	jQuery(this).slideUp();
 });
+
+jQuery(document).on('click', '.clickChildLink', function() { window.location.href = jQuery(this).find('.clickMe').attr('href'); });

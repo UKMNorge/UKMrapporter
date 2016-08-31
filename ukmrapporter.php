@@ -53,20 +53,16 @@ function UKMMrapport_dash_shortcut( $shortcuts ) {
 
 
 function UKMrapport_scriptsandstyles() {
+	wp_enqueue_script('WPbootstrap3_js');
+	wp_enqueue_style('WPbootstrap3_css');
+
 	wp_enqueue_style( 'jquery-ui-style', WP_PLUGIN_URL .'/UKMNorge/js/css/jquery-ui-1.7.3.custom.css');
 	wp_enqueue_style( 'UKMrapporter_style', WP_PLUGIN_URL .'/UKMrapporter/rapporter.style.css');
-#	wp_enqueue_style( 'UKMrapport_program', WP_PLUGIN_URL .'/UKMrapport/program.style.css');
 
 	wp_enqueue_script('GOOGLEchart', 'https://www.google.com/jsapi');
 
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('jqueryGoogleUI', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js');
-/*
-	wp_enqueue_script('jquery-ui-core');
-	wp_enqueue_script('jquery-ui-sortable');
-	wp_enqueue_script('jquery-ui-effects-core');
-	wp_enqueue_script('jquery-ui-effects', '/wp-content/plugins/project_manager/scripts/ui.effects.js');
-*/
 
 	wp_enqueue_script('UKMprintarea', WP_PLUGIN_URL . '/UKMrapporter/printarea.script.js' );
 	wp_enqueue_script('UKMrapport_script', WP_PLUGIN_URL . '/UKMrapporter/rapport.script.js' );
@@ -96,8 +92,10 @@ function UKMrapport_admin() {
 		require_once('rapport/'.$_GET['kat'].'/'.$_GET['rapport'].'.report.php');
 		require_once('gui.rapport.php');
 	} else {
+		$TWIG = [];
 		require_once('clean_order_concerts.inc.php');
-		require_once('gui.rapporter.php');
+		require_once('controller/dashboard.controller.php');
+		echo TWIG('dashboard.html.twig', $TWIG, dirname(__FILE__), true);
 	}
 }
 

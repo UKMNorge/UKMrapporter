@@ -1,0 +1,31 @@
+{% for kategori in rapporter.getAll() %}
+	<div class="row">
+		<img src="http://ico.ukm.no/{{ kategori.getIcon() }}-256.png" height="40" style="margin: 0px 8px 0px 15px" class="pull-left" border="0" />
+		<h2 style="margin: 7px 0px;">{{ kategori.getNavn() }}</h2>
+		<div class="clearfix"></div>
+	</div>
+	<div class="">
+		<ul class="list-unstyled">
+			{% for rapport in kategori.getRapporter() %}
+				<li class="clickChildLink clickable col-xs-6 col-sm-4 col-md-3 col-lg-2">
+					<div class="well" style="background:#fff; padding:1%;">
+						<div style="display: inline-block; width:20%; padding:0px; vertical-align:top; margin:0px; min-height:100px;">
+							<img src="http://ico.ukm.no/{{ rapport.icon }}-256.png" width="45" style="float:left; max-width:90%" border="0" />
+						</div>
+						<div style="display: inline-block; width:77%; padding:0px; margin:0px; min-height:100px;">
+							<p>
+								<a href="?page=UKMrapport_admin&{{ rapport.link }}" class="clickMe" style="color:#000;">
+									<b>{{ rapport.navn }}</b>
+								</a>
+								<br />
+								{{ rapport.beskrivelse|raw }}
+							</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
+	<div class="clearfix"></div>
+	</div>
+{% endfor %}

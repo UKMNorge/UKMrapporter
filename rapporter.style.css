@@ -12,6 +12,9 @@ ul {}
 	clear:both;
 }
 
+.label {
+	color: #000 !important;
+}
 .rapport, 
 .rapport_direct {
 	display:block;
