@@ -1016,6 +1016,13 @@ class valgt_rapport extends rapport {
 			if($key == 'Andre innslag') {
 				$nt['annetkat'][ucfirst($inn->g('bt_name'))]['inn']++;
 				$nt['annetkat'][ucfirst($inn->g('bt_name'))]['pers'] += sizeof($personer);
+				if(is_super_admin()) {
+					echo '<pre>sizeof($personer):<br>';
+					var_dump(sizeof($personer));
+					echo '<br>Personer:<br>';
+					var_dump($personer);
+					echo '</pre>';
+				}
 				#$nt['annetkat'][ucfirst($inn->g('bt_name'))]['titler_ant'] += sizeof($titler);
 
 			}
