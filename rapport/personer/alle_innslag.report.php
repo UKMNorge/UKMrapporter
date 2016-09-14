@@ -1016,7 +1016,7 @@ class valgt_rapport extends rapport {
 			if($key == 'Andre innslag') {
 				$nt['annetkat'][ucfirst($inn->g('bt_name'))]['inn']++;
 				$nt['annetkat'][ucfirst($inn->g('bt_name'))]['pers'] += sizeof($personer);
-				if(is_super_admin()) {
+				if(false) {
 					echo '<pre>sizeof($personer):<br>';
 					var_dump(sizeof($personer));
 					echo '<br>Personer:<br>';
@@ -1089,7 +1089,8 @@ class valgt_rapport extends rapport {
 		foreach($innslag as $inn_array){
 			$inn = new innslag($inn_array['b_id']);
 			if(get_option('site_type')!='kommune')
-				$inn->videresendte(get_option('pl_id'));
+				$inn->videresendte($this->pl_id);
+				#$inn->videresendte(get_option('pl_id'));
 			$this->innslag[$inn->g('b_id')] = $inn;
 
 			$storekey = $this->storekey($inn_array['b_name'], $innslagene);
@@ -1115,7 +1116,8 @@ class valgt_rapport extends rapport {
 		foreach($innslag as $inn_array) {
 			$inn = new innslag($inn_array['b_id']);
 			if(get_option('site_type')!='kommune')
-				$inn->videresendte(get_option('pl_id'));
+				$inn->videresendte($this->pl_id);
+				#$inn->videresendte(get_option('pl_id'));
 			$this->innslag[$inn->g('b_id')] = $inn;
 			$storekey = $this->storekey($inn_array['b_name'], $innslagene[$inn->g('bt_name')]);
 			$innslagene[$inn->g('bt_name')][$storekey] = $inn;
@@ -1140,7 +1142,8 @@ class valgt_rapport extends rapport {
 		foreach($innslag as $inn_array) {
 			$inn = new innslag($inn_array['b_id']);
 			if(get_option('site_type')!='kommune')
-				$inn->videresendte(get_option('pl_id'));
+				$inn->videresendte($this->pl_id);
+				#$inn->videresendte(get_option('pl_id'));
 			$inn->loadGEO();
 			$this->innslag[$inn->g('b_id')] = $inn;
 			$storekey = $this->storekey($inn_array['b_name'], $innslagene[$inn->g($field)]);
@@ -1167,7 +1170,8 @@ class valgt_rapport extends rapport {
 		foreach($innslag as $inn_array) {
 			$inn = new innslag($inn_array['b_id']);
 			if(get_option('site_type')!='kommune')
-				$inn->videresendte(get_option('pl_id'));
+				$inn->videresendte($this->pl_id);
+				#$inn->videresendte(get_option('pl_id'));
 			$inn->loadGEO();
 			$this->innslag[$inn->g('b_id')] = $inn;
 			$storekey = $this->storekey($inn->g('bt_id').' '.$inn_array['b_name'], $innslagene[$inn->g($field)]);
@@ -1193,7 +1197,8 @@ class valgt_rapport extends rapport {
 		foreach($innslag as $inn_array) {
 			$inn = new innslag($inn_array['b_id']);
 			if(get_option('site_type')!='kommune')
-				$inn->videresendte(get_option('pl_id'));
+				$inn->videresendte($this->pl_id);
+				#$inn->videresendte(get_option('pl_id'));
 			$inn->loadGEO();
 			$this->innslag[$inn->g('b_id')] = $inn;
 			$storekey = $this->storekey($inn->g($field).' '.$inn_array['b_name'], $innslagene[$inn->g('bt_name')]);
