@@ -17,7 +17,7 @@ for( $i=$TWIG['startyear']; $i<=$TWIG['stopyear']; $i++ ) {
 		}
 		
 		$sesongdata = new stdClass();
-		$sesongdata->monstringer = $monstringCollection->getAllByFylke( $fylke );
+		$sesongdata->monstringer = $monstringCollection->utenGjester( $monstringCollection->getAllByFylke( $fylke ) );
 		$sesongdata->count_alle_monstringer = sizeof( $sesongdata->monstringer );
 		
 		// LOOP ALLE MØNSTRINGER
@@ -44,5 +44,4 @@ for( $i=$TWIG['startyear']; $i<=$TWIG['stopyear']; $i++ ) {
 	}
 }
 
-#echo '<pre>';var_dump( $monstringer );echo'</pre>';
 $TWIG['fylker'] = $monstringer;

@@ -16,7 +16,7 @@
 		<tbody>
 			{% for i in startyear..stopyear %}
 				<tr>
-					<th>{{ i }}</th>
+					<th><a href="?page=UKMrapport_admin&network=monstringer_i_fylket&fylke={{fylke.info.getId()}}&sesong={{i}}">{{ i }}</a></th>
 					<td>
 						{{ fylke.info.getKommuner().count() }}
 					</td>
