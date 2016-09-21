@@ -39,6 +39,7 @@ class rapporter {
 	public function __construct( ) {
 		$this->kategorier = [];
 		$this->add('monstring', 'antall_monstringer');
+		$this->add('monstring', 'kommuner_per_monstring');
 	}
 	
 	public function getAll() {
@@ -75,9 +76,16 @@ class rapporter {
 				$rapport->navn = 'Mønstringer per fylke';
 				$rapport->beskrivelse = 'Antall mønstringer som har vært arrangert de siste årene, gruppert per fylke';
 			break;
+			case 'kommuner_per_monstring':
+				$rapport->icon = 'colosseum';
+				$rapport->link = 'network=kommuner_per_monstring';
+				$rapport->navn = 'Kommuner per mønstring';
+				$rapport->beskrivelse = 'Antall mønstringer på nasjonalt nivå';
+			break;
+
 		}
 		return $rapport;
 	}
 }
 
-$TWIG['rapporter'] = new rapporter( get_option('site_type') );
+$TWIG['rapporter'] = new rapporter();
