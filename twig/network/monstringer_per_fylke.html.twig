@@ -10,6 +10,8 @@
 				<th>Komuner involvert <br />i en mønstring</th>
 				<th>Antall arrangerte<br />mønstringer</th>
 				<th>Kommuner i snitt per mønstring</th>
+				<th>Påmeldte per mønstring</th>
+				<th>Påmeldte</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -29,6 +31,12 @@
 						{% else %}
 							0
 						{% endif %}
+					</td>
+					<td>
+						{{ (fylke.pameldte[ i ] / fylke.monstringer[i].registrert )|round }}
+					</td>
+					<td>
+						{{ fylke.pameldte[ i ] }}
 					</td>
 				</tr>
 			{% endfor %}
