@@ -7,7 +7,7 @@ $monstringer = [];
 
 $TWIG['startyear'] = 2010;
 $TWIG['stopyear'] = get_site_option('season');
-for( $i=$TWIG['startyear']; $i<$TWIG['stopyear']; $i++ ) {
+for( $i=$TWIG['startyear']; $i<=$TWIG['stopyear']; $i++ ) {
 	$monstringCollection = new monstringer_v2( $i );
 	foreach( fylker::getAll() as $fylke ) {
 		if( !isset( $monstringer[ $fylke->getLink() ] ) ) {
