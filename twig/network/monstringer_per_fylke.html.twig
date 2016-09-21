@@ -9,8 +9,7 @@
 				<th>Antall kommuner</th>
 				<th>Komuner involvert <br />i en mønstring</th>
 				<th>Antall arrangerte<br />mønstringer</th>
-				<th class="text-danger">Uregistrerte<br />mønstringer</th>
-				<th class="text-danger">Kommuner involvert <br />uregistrerte kommuner</th>
+				<th>Kommuner i snitt per mønstring</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -18,17 +17,14 @@
 				<tr>
 					<th><a href="?page=UKMrapport_admin&network=monstringer_i_fylket&fylke={{fylke.info.getId()}}&sesong={{i}}">{{ i }}</a></th>
 					<td>
-						{{ fylke.info.getKommuner().count() }}
+						{{ fylke.info.getKommunerUtenGjester()|length }}
 					</td>
 					<td>
 						{{ fylke.monstringer[i].kommuner_registrert }}
 					</td>
 					<td>{{ fylke.monstringer[i].registrert }}</td>
-					<td {{ fylke.monstringer[i].uregistrert > 0 ? 'class="text-danger"' : '' }}>
-						{{ fylke.monstringer[i].uregistrert }}
-					</td>
-					<td {{ fylke.monstringer[i].uregistrert > 0 ? 'class="text-danger"' : '' }}>
-						{{ fylke.monstringer[i].kommuner_uregistrert }}
+					<td>
+						{{ (fylke.monstringer[i].kommuner_registrert / fylke.monstringer[i].registrert)|round(1) }}
 					</td>
 				</tr>
 			{% endfor %}
