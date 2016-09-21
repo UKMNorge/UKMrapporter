@@ -1,7 +1,7 @@
 <h1>Mønstringer per fylke</h1>
 
 {% for fylke in fylker %}
-	<h2>{{ fylke.info.getNavn() }} <small>{{ fylke.info.getKommuner().count() }} kommuner</small></h2>
+	<h2>{{ fylke.info.getNavn() }} <small>{{ fylke.info.getKommunerUtenGjester()|length }} kommuner</small></h2>
 	<table class="table table-striped">
 		<thead>
 			<tr>
