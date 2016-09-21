@@ -6,6 +6,7 @@
 			<th>År</th>
 			<th>Antall kommuner</th>
 			<th>Komuner involvert <br />i en mønstring</th>
+			<th>Andel kommuner involvert<br /> i en mønstring</th>
 			<th>Antall arrangerte<br />mønstringer</th>
 			<th>Kommuner i snitt per mønstring</th>
 		</tr>
@@ -17,6 +18,8 @@
 				<td>{{ kommuner }}</td>
 				<td>
 					{{ sesong.kommuner_registrert }}
+				</td>
+				<td>{{ ((100/kommuner) * sesong.kommuner_registrert)|round }}%
 				</td>
 				<td>{{ sesong.monstringer }}</td>
 				<td>
