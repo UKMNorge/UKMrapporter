@@ -21,7 +21,9 @@ for( $i=$TWIG['startyear']; $i<=$TWIG['stopyear']; $i++ ) {
 		$sesongdata->monstringer = $monstringCollection->utenGjester( $monstringCollection->getAllByFylke( $fylke ) );
 		$sesongdata->count_alle_monstringer = sizeof( $sesongdata->monstringer );
 		if( !isset( $monstringer[ $fylke->getLink() ]->pameldte[ $i ] ) ) {
-			$monstringer[ $fylke->getLink() ]->pameldte[ $i ] = 0;
+			$statistikk = new statistikk();
+			$statistikk->setFylke( $fylke->getId() );
+			$monstringer[ $fylke->getLink() ]->pameldte[ $i ] = $statistikk->getTotal( $i )['persons'];
 		}
 		
 		// LOOP ALLE MØNSTRINGER
@@ -38,7 +40,6 @@ for( $i=$TWIG['startyear']; $i<=$TWIG['stopyear']; $i++ ) {
 				$count_kommuner_uregistrert += $sesong_monstring->getAntallKommuner();
 			}
 			
-			$monstringer[ $fylke->getLink() ]->pameldte[ $i ] += $sesong_monstring->getStatistikk()->getTotal( $i )['persons'];
 		}
 		
 
