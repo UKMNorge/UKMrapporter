@@ -32,8 +32,11 @@
 							0
 						{% endif %}
 					</td>
-					<td>
-						{{ (fylke.pameldte[ i ] / fylke.monstringer[i].registrert )|round }}
+					<td>{% if fylke.monstringer[i].registrert == 0 %}
+							0
+						{% else %}
+							{{ (fylke.pameldte[ i ] / fylke.monstringer[i].registrert )|round }}
+						{% endif %}
 					</td>
 					<td>
 						{{ fylke.pameldte[ i ] }}
