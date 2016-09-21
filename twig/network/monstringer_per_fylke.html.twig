@@ -24,7 +24,11 @@
 					</td>
 					<td>{{ fylke.monstringer[i].registrert }}</td>
 					<td>
-						{{ (fylke.monstringer[i].kommuner_registrert / fylke.monstringer[i].registrert)|round(1) }}
+						{% if fylke.monstringer[i].registrert > 0 %}
+							{{ (fylke.monstringer[i].kommuner_registrert / fylke.monstringer[i].registrert)|round(1) }}
+						{% else %}
+							0
+						{% endif %}
 					</td>
 				</tr>
 			{% endfor %}
