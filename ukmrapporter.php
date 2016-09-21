@@ -23,7 +23,13 @@ if(is_admin()) {
 	
 	add_action('wp_ajax_UKMrapport_countPrint', 'UKMrapport_countPrint');
 }
+add_action('network_admin_menu', 'UKMrapport_network_menu');
 
+
+function UKMrapport_network_menu() {
+	$page = add_menu_page('Rapporter', 'Rapporter', 'superadmin', 'UKMrapport_admin','UKMrapport_admin', 'http://ico.ukm.no/graph-menu.png',2101);
+	add_action( 'admin_print_styles-' . $page, 'UKMrapport_scriptsandstyles' );
+}
 function UKMrapport_countPrint(){
 	$qry = new SQLins('log_rapporter_format');
 	$qry->add('f_type', $_POST['log']);
@@ -71,9 +77,9 @@ function UKMrapport_scriptsandstyles() {
 
 ## SHOW STATS OF PLACES
 function UKMrapport_admin() {
+	$TWIG = array();
 	if(isset($_GET['stat'])) {
 		$VIEW = $_GET['stat'];
-		$TWIG = array();
 		require_once('statistikk/controller.php');
 
 		echo TWIG( $VIEW.'.twig.html', $TWIG, dirname(__FILE__), true);
@@ -84,15 +90,20 @@ function UKMrapport_admin() {
 		echo TWIG('festival/'. $VIEW .'.html.twig', $TWIG, dirname(__FILE__), true);		
 	} elseif( isset( $_GET['fylkestimeplan'] )) {
 		$VIEW = 'fylkestimeplan';
-		$TWIG = array();
 		require_once('fylkestimeplan/controller.php');
 		echo TWIG( 'fylkestimeplan/generate.twig.html', $TWIG, dirname(__FILE__), true);
 	} elseif(isset($_GET['rapport'])&&$_GET['rapport']!=='undefined'&&isset($_GET['kat'])) {
 		require_once('class.rapport.php');
 		require_once('rapport/'.$_GET['kat'].'/'.$_GET['rapport'].'.report.php');
 		require_once('gui.rapport.php');
+	} elseif( isset( $_GET['network'] ) ) {
+		$VIEW = $_GET['network'];
+		require_once('controller/network/'. $_GET['network'] .'.controller.php');
+		echo TWIG( 'network/'. $VIEW . '.html.twig', $TWIG, dirname( __FILE__ ), true );
+	} elseif( is_network_admin() ) {
+		require_once('controller/dashboard_network.controller.php');
+		echo TWIG('dashboard.html.twig', $TWIG, dirname(__FILE__), true);
 	} else {
-		$TWIG = [];
 		require_once('clean_order_concerts.inc.php');
 		require_once('controller/dashboard.controller.php');
 		echo TWIG('dashboard.html.twig', $TWIG, dirname(__FILE__), true);
