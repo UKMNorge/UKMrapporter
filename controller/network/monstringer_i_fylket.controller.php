@@ -1,6 +1,6 @@
 <?php
 require_once('UKM/fylker.class.php');
-require_once('UKM/monstring.class.php');
+require_once('UKM/monstringer.class.php');
 
 $fylke = fylker::getById( $_GET['fylke'] );
 $fylke->setAttr('sesong', $_GET['sesong'] );
