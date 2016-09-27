@@ -55,6 +55,7 @@ class rapporter {
 				$this->add('kontakt', 'kontaktliste');
 				$this->add('kontakt', 'duplikat');
 				$this->add('kontakt', 'sveveeksport');
+				$this->add('kontakt', 'husk');
 				
 				$this->add('personer', 'alle_innslag');
 				$this->add('personer', 'inn_og_utlevering');
@@ -76,6 +77,7 @@ class rapporter {
 				$this->add('kontakt', 'sms_hendelse');
 				$this->add('kontakt', 'kontaktliste');
 				$this->add('kontakt', 'duplikat');
+				$this->add('kontakt', 'husk');
 
 				$this->add('personer', 'alle_innslag');
 				$this->add('personer', 'inn_og_utlevering');
@@ -96,6 +98,7 @@ class rapporter {
 				$this->add('kontakt', 'sms_hendelse');
 				$this->add('kontakt', 'kontaktliste');
 				$this->add('kontakt', 'duplikat');
+				$this->add('kontakt', 'husk');
 				
 				$this->add('personer', 'alle_innslag');
 				$this->add('personer', 'inn_og_utlevering');
@@ -296,6 +299,13 @@ class rapporter {
 				$rapport->beskrivelse = 'Last ned mediefiler som skal brukes til program og lignende';
 			break;
 
+			case 'husk':
+				#$rapport->icon = 'mapmarker-bubble-blue';
+				$rapport->icon = 'mobile';
+				$rapport->link = 'rapport=husk&kat=personer';
+				$rapport->navn = 'Rekruttering';
+				$rapport->beskrivelse = 'Mobilnummer fra husk.ukm.no';
+			break;
 			
 			default:
 			case 'default':
