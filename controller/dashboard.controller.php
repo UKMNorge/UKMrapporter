@@ -53,9 +53,9 @@ class rapporter {
 				$this->add('kontakt', 'sms_type');
 				$this->add('kontakt', 'sms_hendelse');
 				$this->add('kontakt', 'kontaktliste');
+				$this->add('kontakt', 'husk');
 				$this->add('kontakt', 'duplikat');
 				$this->add('kontakt', 'sveveeksport');
-				$this->add('kontakt', 'husk');
 				
 				$this->add('personer', 'alle_innslag');
 				$this->add('personer', 'inn_og_utlevering');
@@ -76,8 +76,8 @@ class rapporter {
 				$this->add('kontakt', 'sms_type');
 				$this->add('kontakt', 'sms_hendelse');
 				$this->add('kontakt', 'kontaktliste');
-				$this->add('kontakt', 'duplikat');
 				$this->add('kontakt', 'husk');
+				$this->add('kontakt', 'duplikat');
 
 				$this->add('personer', 'alle_innslag');
 				$this->add('personer', 'inn_og_utlevering');
@@ -97,8 +97,8 @@ class rapporter {
 				$this->add('kontakt', 'sms_type');
 				$this->add('kontakt', 'sms_hendelse');
 				$this->add('kontakt', 'kontaktliste');
-				$this->add('kontakt', 'duplikat');
 				$this->add('kontakt', 'husk');
+				$this->add('kontakt', 'duplikat');
 				
 				$this->add('personer', 'alle_innslag');
 				$this->add('personer', 'inn_og_utlevering');

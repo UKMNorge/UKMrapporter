@@ -2,6 +2,7 @@
 
 require_once('UKM/monstring.class.php');
 require_once(ABSPATH.'wp-content/plugins/UKMrekruttering/class/MobilnummerForSted.class.php');
+require_once('UKM/inc/twig-admin.inc.php');
 
 class valgt_rapport extends rapport {
 	
@@ -20,6 +21,7 @@ class valgt_rapport extends rapport {
 	}
 
 	public function generate() {
+
 		echo $this->html_init('Mobilnummer fra husk.ukm.no');
 
 		if( !($this->show('f_fylke') || $this->show('f_kommuner')) && get_option('site_type') == 'fylke') {
@@ -44,9 +46,8 @@ class valgt_rapport extends rapport {
 			foreach ($alle_nummer as $nummer) {
 				// Echo date if not equal to the previous date
 				$newDate = new DateTime($nummer->timestamp->date);
-				$newDate = $newDate->format("d.m");
 				if($newDate != $oldDate) {
-					echo '<h4>'.$newDate.'</h4>';
+					echo '<h4>'.TWIG_date($newDate->getTimestamp(), 'd. M').'</h4>';
 				}
 				$oldDate = $newDate;
 
