@@ -27,7 +27,7 @@ class valgt_rapport extends rapport {
 		}
 
 
-		if( get_option('site_type') == 'kommune' || ( get_option('site_type') == 'fylke' && $this->show('f_fylke') ) ) {
+		if( get_option('site_type') == 'kommune' || get_option('site_type') == 'land' || ( get_option('site_type') == 'fylke' && $this->show('f_fylke') ) ) {
 			$alle_nummer = $this->_getNumbersForPlace()->data;
 			
 			if(empty($alle_nummer)) {
