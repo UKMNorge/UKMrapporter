@@ -46,8 +46,9 @@ class valgt_rapport extends rapport {
 			foreach ($alle_nummer as $nummer) {
 				// Echo date if not equal to the previous date
 				$newDate = new DateTime($nummer->timestamp->date);
+				$newDate = TWIG_date($newDate->getTimestamp(), 'd. M');
 				if($newDate != $oldDate) {
-					echo '<h4>'.TWIG_date($newDate->getTimestamp(), 'd. M').'</h4>';
+					echo '<h4>'.$newDate.'</h4>';
 				}
 				$oldDate = $newDate;
 
