@@ -1,7 +1,7 @@
 <?php
 
 require_once('UKM/monstring.class.php');
-require_once(ABSPATH.'wp-content/plugins/UKMrekruttering/class/MobilnummerForSted.class.php');
+require_once(ABSPATH.'wp-content/plugins/UKMpr/class/MobilnummerForSted.class.php');
 require_once('UKM/inc/twig-admin.inc.php');
 
 class valgt_rapport extends rapport {

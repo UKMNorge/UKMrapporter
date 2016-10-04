@@ -301,10 +301,10 @@ class rapporter {
 
 			case 'husk':
 				#$rapport->icon = 'mapmarker-bubble-blue';
-				$rapport->icon = 'mobile';
+				$rapport->icon = 'megaphone';
 				$rapport->link = 'rapport=husk&kat=personer';
-				$rapport->navn = 'Rekruttering';
-				$rapport->beskrivelse = 'Mobilnummer fra husk.ukm.no';
+				$rapport->navn = 'Husk UKM';
+				$rapport->beskrivelse = 'Alle mobilnummer fra rekrutteringsverktøyet ditt, Husk UKM';
 			break;
 			
 			default:
