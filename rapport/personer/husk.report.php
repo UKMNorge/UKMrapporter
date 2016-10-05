@@ -34,7 +34,7 @@ class valgt_rapport extends rapport {
 			
 			if(empty($alle_nummer)) {
 				echo '<h3>Ingen mobilnummer</h3>';
-				echo '<p>Les mer om husk.ukm.no på <a href="?page=UKMpr">Rekruttering</a>.</p>';
+				echo '<p>Les mer om husk.ukm.no på <a href="?page=UKMmarketing">Rekruttering</a>.</p>';
 				return;
 			}
 
@@ -66,7 +66,7 @@ class valgt_rapport extends rapport {
 			echo '<p>Det er dessverre ikke mulig å hente ut mobilnummer fra alle kommunene i fylket enda. Funksjonalitet kommer!</p>';
 		}
 
-		echo '<p>Les mer om husk.ukm.no på <a href="?page=UKMpr">Rekruttering</a>.</p>';
+		echo '<p>Les mer om husk.ukm.no på <a href="?page=UKMmarketing">Rekruttering</a>.</p>';
 		
 	}
 
