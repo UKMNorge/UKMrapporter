@@ -53,7 +53,6 @@ class rapporter {
 				$this->add('kontakt', 'sms_type');
 				$this->add('kontakt', 'sms_hendelse');
 				$this->add('kontakt', 'kontaktliste');
-				$this->add('kontakt', 'husk');
 				$this->add('kontakt', 'duplikat');
 				$this->add('kontakt', 'sveveeksport');
 				
@@ -67,6 +66,9 @@ class rapporter {
 				$this->add('program', 'media');
 				$this->add('program', 'juryskjema');
 				$this->add('program', 'fylkestimeplan');
+				
+				$this->add('helarig', 'husk');
+				$this->add('helarig', 'rsvp');
 			break;
 			case 'fylke':
 				$this->add('monstring', 'statistikk');
@@ -76,7 +78,6 @@ class rapporter {
 				$this->add('kontakt', 'sms_type');
 				$this->add('kontakt', 'sms_hendelse');
 				$this->add('kontakt', 'kontaktliste');
-				$this->add('kontakt', 'husk');
 				$this->add('kontakt', 'duplikat');
 
 				$this->add('personer', 'alle_innslag');
@@ -90,6 +91,9 @@ class rapporter {
 				$this->add('program', 'kunstkatalog');
 				$this->add('program', 'media');
 				$this->add('program', 'juryskjema');
+				
+				$this->add('helarig', 'husk');
+				$this->add('helarig', 'rsvp');
 			break;
 			default:
 				$this->add('monstring', 'statistikk');
@@ -97,7 +101,6 @@ class rapporter {
 				$this->add('kontakt', 'sms_type');
 				$this->add('kontakt', 'sms_hendelse');
 				$this->add('kontakt', 'kontaktliste');
-				$this->add('kontakt', 'husk');
 				$this->add('kontakt', 'duplikat');
 				
 				$this->add('personer', 'alle_innslag');
@@ -109,6 +112,9 @@ class rapporter {
 				$this->add('program', 'tekniske_prover');
 				$this->add('program', 'kunstkatalog');
 				$this->add('program', 'juryskjema');
+				
+				$this->add('helarig', 'husk');
+				$this->add('helarig', 'rsvp');
 			break;
 		}
 	}
@@ -134,6 +140,7 @@ class rapporter {
 			case 'kontakt':		return new kategori('megaphone', 'Kontakt', 'megaphone');
 			case 'personer':	return new kategori('personer', 'Personer', 'people');
 			case 'program':		return new kategori('program', 'Program', 'chart');
+			case 'helarig':		return new kategori('helarig', 'Helårig', 'group-meeting');
 		}
 	}
 	
@@ -300,11 +307,17 @@ class rapporter {
 			break;
 
 			case 'husk':
-				#$rapport->icon = 'mapmarker-bubble-blue';
 				$rapport->icon = 'megaphone';
-				$rapport->link = 'rapport=husk&kat=personer';
+				$rapport->link = 'rapport=husk&kat=helarig';
 				$rapport->navn = 'Husk UKM';
-				$rapport->beskrivelse = 'Alle mobilnummer fra rekrutteringsverktøyet ditt, Husk UKM';
+				$rapport->beskrivelse = 'Mobilnummer fra rekrutterings-verktøyet "Husk UKM"';
+			break;
+
+			case 'rsvp':
+				$rapport->icon = 'group-meeting';
+				$rapport->link = 'rapport=rsvp&kat=helarig';
+				$rapport->navn = 'Helårig UKM';
+				$rapport->beskrivelse = 'Alt om dine helårige arrangementer';
 			break;
 			
 			default:
