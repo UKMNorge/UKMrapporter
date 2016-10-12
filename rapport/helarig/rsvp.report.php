@@ -105,24 +105,102 @@ class valgt_rapport extends rapport {
 			woText($section, 'Du må velge minst én type status!');
 			$error = true;
 		}
-		
-		foreach( $selected_events as $event ) {
-			woText($section, $event->name, 'h3');
-			
-			foreach( $this->_status() as $status_id => $status_name ) {
-				try {
-					if( $this->show($status_id) ) {
-						$attending = $this->_find( $status_id, $event->id );
-						woText($section, $status_name .' ('. sizeof( $attending ).' personer)', 'h4');
-						foreach( $attending as $attendee ) {
-							woText($section, $attendee->first_name .' '. $attendee->last_name .' '. $attendee->phone);
+
+		if( !$error ) {		
+			foreach( $selected_events as $event ) {
+				woText($section, $event->name, 'h3');
+				
+				foreach( $this->_status() as $status_id => $status_name ) {
+					try {
+						if( $this->show($status_id) ) {
+							$attending = $this->_find( $status_id, $event->id );
+							woText($section, $status_name .' ('. sizeof( $attending ).' personer)', 'h4');
+							foreach( $attending as $attendee ) {
+								woText($section, $attendee->first_name .' '. $attendee->last_name .' '. $attendee->phone);
+							}
+							if( 0 == sizeof( $attending ) ) {
+								woText($section, 'Ingen personer');
+							}
 						}
-						if( 0 == sizeof( $attending ) ) {
-							woText($section, 'Ingen personer');
-						}
+					} catch( Exception $e ) {
+						woText($section, 'Beklager, en ukjent feil oppsto. API sier: '. $e->getMessage() );
 					}
-				} catch( Exception $e ) {
-					woText($section, 'Beklager, en ukjent feil oppsto. API sier: '. $e->getMessage() );
+				}
+			}
+		}
+		return $this->woWrite();
+	}
+
+	/**
+	 * generateExcel function
+	 * 
+	 * Genererer et excel-dokument med rapporten.
+	 *
+	 * @access public
+	 * @return String download-URL
+	 */		
+	public function generateExcel(){
+		$navn = 'Alle innslag';
+		global $objPHPExcel;
+		$this->excel_init('landscape');
+		
+		exSheetName('INNSLAG');
+		
+		$objPHPExcel->createSheet(1);
+		$objPHPExcel->setActiveSheetIndex(1);
+		exSheetName('DELTAKERE','f69a9b');
+		$error = false;
+		
+		global $PHPWord;		
+		$section = $this->word_init('portrait');
+
+		if( 0 == sizeof( $this->_events() ) ) {
+			exCell('A1', 'Du må sette opp minst én hendelse i <a href="admin.php?page=UKMrsvp">helårig UKM</a> før du kan bruke denne rapporten', 'bold');
+			$error = true;
+		}
+		
+		$selected_events = [];
+		foreach( $this->_events() as $event ) {
+			if( $this->show('h_'. $event->id ) ) {
+				$selected_events[] = $event;
+			}
+		}
+		if( 0 == sizeof( $selected_events ) ) {
+			exCell('A2', 'Du må velge minst én hendelse', 'bold');
+			$error = true;
+		}
+		
+		if( !$this->show('s_kommer') && !$this->show('s_kanskje') && !$this->show('s_kommerikke') && !$this->show('s_venter') ) {
+			exCell('A3', 'Du må velge minst én type status!', 'bold');
+			$error = true;
+		}
+		
+		if( !$error ) {
+			$row = 1;
+			exCell('A1', 'Hendelse', 'bold');
+			exCell('B1', 'Status', 'bold');
+			exCell('C1', 'Fornavn', 'bold');
+			exCell('D1', 'Etternavn', 'bold');
+			exCell('E1', 'Mobil', 'bold');
+			foreach( $selected_events as $event ) {
+				foreach( $this->_status() as $status_id => $status_name ) {
+					try {
+						if( $this->show($status_id) ) {
+							$attending = $this->_find( $status_id, $event->id );
+							woText($section, $status_name .' ('. sizeof( $attending ).' personer)', 'h4');
+							foreach( $attending as $attendee ) {
+								$row++;
+								exCell('A'.$row, $event->name);
+								exCell('B'.$row, $status_name);
+								exCell('C'.$row, $attendee->first_name);
+								exCell('D'.$row, $attendee->last_name); 
+								exCell('E'.$row, $attendee->phone);
+							}
+						}
+					} catch( Exception $e ) {
+						$row++;
+						exCell('A'.$row.':E'.$row, 'Beklager, en ukjent feil oppsto. API sier: '. $e->getMessage() );
+					}
 				}
 			}
 		}
