@@ -63,6 +63,7 @@ class valgt_rapport extends rapport {
 					if( $this->show($status_id) ) {
 						$attending = $this->_find( $status_id, $event->id );
 						echo '<h4>'. $status_name .' ('. sizeof( $attending ).' personer) </h4>';
+						var_dump( $attending );
 						foreach( $attending as $attendee ) {
 							echo '<b>'. $attendee->first_name .' '. $attendee->last_name .'</b> '.
 								'<span class="UKMSMS">'. $attendee->phone .'</span><br />';
@@ -257,6 +258,7 @@ class valgt_rapport extends rapport {
 	
 	private function _events() {
 		if( false == $this->events ) {
+			var_dump( $this->_owner() );
 			$events = $this->_eventManager()->fetchEvents($this->_owner());
 			$this->events = $events->data;
 		}
