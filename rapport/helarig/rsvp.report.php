@@ -10,75 +10,19 @@ class valgt_rapport extends rapport {
 	var $events = false;
 	var $eventmanager = false;
 	
-	private function _owner() {
-		$site_type = get_option('site_type');
-		if ($site_type == 'kommune' || $site_type == 'fylke') {
-			return get_option('pl_id');
-		} else {
-			return 'UKMNorge';
-		}
-	}
-	
-	private function _eventManager() {
-		if( false == $this->eventmanager ) {
-			$api_key = 'ukmno_rsvp';
-			$secretFinder = new SecretFinder();
-			$this->eventmanager = new EventManager($api_key, $secretFinder->getSecret($api_key));
-		}
-		return $this->eventmanager;
-	}
-	
-	private function _events() {
-		if( false == $this->events ) {
-			$events = $this->_eventManager()->fetchEvents($this->_owner());
-			$this->events = $events->data;
-		}
-		
-		return $this->events;
-	}
-	
-	private function _find( $status, $eventId ) {
-		switch( $status ) {
-			case 's_kommer':
-				$data = $this->_eventManager()->findAttending($eventId, $this->_owner());
-				if( false == $data->success ) {
-					throw new Exception('API-feil. Kunne ikke hente deltakere');
-				}
-			break;
-			case 's_kanskje':
-				throw new Exception('Feil i rapporten - støtter ikke kanskje');
-				$data = $this->_eventManager()->findMaybe($eventId, $this->_owner());
-				if( false == $data->success ) {
-					throw new Exception('API-feil. Kunne ikke hente deltakere');
-				}
-			break;
-			case 's_kommerikke':
-				$data = $this->_eventManager()->findNotComing($eventId, $this->_owner());
-				if( false == $data->success ) {
-					throw new Exception('API-feil. Kunne ikke hente deltakere');
-				}
-			break;
-
-			default:
-				throw new Exception('Feil i rapporten. Kontakt UKM Norge');
-		}
-		return $data->data;
-	}
-	
 	private function _status() {
-		return array('s_kommer' => 'De som kommer',
-					's_kanskje' => 'De som kanskje kommer',
+		return array(
+					's_kommer' => 'De som kommer',
+#					's_kanskje' => 'De som kanskje kommer',
 					's_kommerikke' => 'De som ikke kommer',
 					's_venter' => 'De som står på venteliste'
 					);
 	}
-	
+
 	public function __construct($rapport, $kategori) {
 		parent::__construct($rapport, $kategori);
 
 		$this->monstring = new monstring_v2(get_option('pl_id'));
-
-
 
 		$h = $this->optGrp('h','Velg hendelse');
 		foreach( $this->_events() as $event ) {
@@ -112,7 +56,6 @@ class valgt_rapport extends rapport {
 		}
 		
 		foreach( $selected_events as $event ) {
-			
 			echo '<h3>'. $event->name .'</h3>';
 			
 			foreach( $this->_status() as $status_id => $status_name ) {
@@ -123,12 +66,129 @@ class valgt_rapport extends rapport {
 						foreach( $attending as $attendee ) {
 							echo '<b>'. $attendee->first_name .' '. $attendee->last_name .'</b> '. $attendee->phone .'<br />';
 						}
-		
+						if( 0 == sizeof( $attending ) ) {
+							echo 'Ingen personer';
+						}
 					}
 				} catch( Exception $e ) {
 					die('<b>Beklager, en ukjent feil oppsto. API sier: </b>'. $e->getMessage() );
 				}
 			}
 		}
+	}
+	
+	
+
+	public function generateWord() {
+		$error = false;
+		
+		global $PHPWord;		
+		$section = $this->word_init('portrait');
+
+		if( 0 == sizeof( $this->_events() ) ) {
+			woText($section, 'Du må sette opp minst én hendelse i <a href="admin.php?page=UKMrsvp">helårig UKM</a> før du kan bruke denne rapporten');
+			$error = true;
+		}
+		
+		$selected_events = [];
+		foreach( $this->_events() as $event ) {
+			if( $this->show('h_'. $event->id ) ) {
+				$selected_events[] = $event;
+			}
+		}
+		if( 0 == sizeof( $selected_events ) ) {
+			woText($section, 'Du må velge minst én hendelse');
+			$error = true;
+		}
+		
+		if( !$this->show('s_kommer') && !$this->show('s_kanskje') && !$this->show('s_kommerikke') && !$this->show('s_venter') ) {
+			woText($section, 'Du må velge minst én type status!');
+			$error = true;
+		}
+		
+		foreach( $selected_events as $event ) {
+			woText($section, $event->name, 'h3');
+			
+			foreach( $this->_status() as $status_id => $status_name ) {
+				try {
+					if( $this->show($status_id) ) {
+						$attending = $this->_find( $status_id, $event->id );
+						woText($section, $status_name .' ('. sizeof( $attending ).' personer)', 'h4');
+						foreach( $attending as $attendee ) {
+							woText($section, $attendee->first_name .' '. $attendee->last_name .' '. $attendee->phone);
+						}
+						if( 0 == sizeof( $attending ) ) {
+							woText($section, 'Ingen personer');
+						}
+					}
+				} catch( Exception $e ) {
+					woText($section, 'Beklager, en ukjent feil oppsto. API sier: '. $e->getMessage() );
+				}
+			}
+		}
+		return $this->woWrite();
+	}
+
+	
+	private function _find( $status, $eventId ) {
+		switch( $status ) {
+			case 's_kommer':
+				$data = $this->_eventManager()->findAttending($eventId, $this->_owner());
+				if( false == $data->success ) {
+					throw new Exception('API-feil. Kunne ikke hente deltakere');
+				}
+			break;
+			case 's_kommerikke':
+				$data = $this->_eventManager()->findNotComing($eventId, $this->_owner());
+				if( false == $data->success ) {
+					throw new Exception('API-feil. Kunne ikke hente deltakere');
+				}
+			break;
+			case 's_venter':
+				$data = $this->_eventManager()->findWaiting($eventId, $this->_owner());
+				if( false == $data->success ) {
+					throw new Exception('API-feil. Kunne ikke hente deltakere');
+				}
+			break;
+
+			case 's_kanskje':
+				throw new Exception('Feil i rapporten - støtter ikke "kanskje');
+				$data = $this->_eventManager()->findMaybe($eventId, $this->_owner());
+				if( false == $data->success ) {
+					throw new Exception('API-feil. Kunne ikke hente deltakere');
+				}
+			break;
+
+			default:
+				throw new Exception('Feil i rapporten. Kontakt UKM Norge');
+		}
+		return $data->data;
+	}
+
+	private function _owner() {
+		$site_type = get_option('site_type');
+		if ($site_type == 'kommune' || $site_type == 'fylke') {
+			return get_option('pl_id');
+		} else {
+			return 'UKMNorge';
+		}
+	}
+	
+	private function _eventManager() {
+		if( false == $this->eventmanager ) {
+			$api_key = 'ukmno_rsvp';
+			$secretFinder = new SecretFinder();
+			$this->eventmanager = new EventManager($api_key, $secretFinder->getSecret($api_key));
+		}
+		return $this->eventmanager;
+	}
+	
+	private function _events() {
+		if( false == $this->events ) {
+			$events = $this->_eventManager()->fetchEvents($this->_owner());
+			$this->events = $events->data;
+		}
+		
+		return $this->events;
 	}
 }
