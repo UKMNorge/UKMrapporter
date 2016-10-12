@@ -182,7 +182,6 @@ class valgt_rapport extends rapport {
 					try {
 						if( $this->show($status_id) ) {
 							$attending = $this->_find( $status_id, $event->id );
-							woText($section, $status_name .' ('. sizeof( $attending ).' personer)', 'h4');
 							foreach( $attending as $attendee ) {
 								$row++;
 								exCell('A'.$row, $event->name);
