@@ -64,7 +64,8 @@ class valgt_rapport extends rapport {
 						$attending = $this->_find( $status_id, $event->id );
 						echo '<h4>'. $status_name .' ('. sizeof( $attending ).' personer) </h4>';
 						foreach( $attending as $attendee ) {
-							echo '<b>'. $attendee->first_name .' '. $attendee->last_name .'</b> '. $attendee->phone .'<br />';
+							echo '<b>'. $attendee->first_name .' '. $attendee->last_name .'</b> '.
+								'<span class="UKMSMS">'. $attendee->phone .'</span><br />';
 						}
 						if( 0 == sizeof( $attending ) ) {
 							echo 'Ingen personer';
@@ -142,18 +143,12 @@ class valgt_rapport extends rapport {
 	public function generateExcel(){
 		$navn = 'Alle innslag';
 		global $objPHPExcel;
-		$this->excel_init('landscape');
+		$this->excel_init('portrait');
 		
-		exSheetName('INNSLAG');
-		
-		$objPHPExcel->createSheet(1);
-		$objPHPExcel->setActiveSheetIndex(1);
-		exSheetName('DELTAKERE','f69a9b');
+		exSheetName('Ark1');
+
 		$error = false;
 		
-		global $PHPWord;		
-		$section = $this->word_init('portrait');
-
 		if( 0 == sizeof( $this->_events() ) ) {
 			exCell('A1', 'Du må sette opp minst én hendelse i <a href="admin.php?page=UKMrsvp">helårig UKM</a> før du kan bruke denne rapporten', 'bold');
 			$error = true;
