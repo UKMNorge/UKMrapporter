@@ -385,7 +385,7 @@ class valgt_rapport extends rapport {
 
 			foreach($grupperte_innslag as $grp => $innslag){
 				if($grp !== 0)
-					echo '<h3 class="grp">'.$grp.'</h3>';
+					echo '<br /><h3 class="grp">'.$grp.'</h3>';
 				foreach($innslag as $inn) {
 					$kontakt = $inn->kontaktperson();
 					## LAST INN GEOGRAFI KUN HVIS NØDVENDIG
