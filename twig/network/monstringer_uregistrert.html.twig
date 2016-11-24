@@ -1,7 +1,7 @@
 <h1>Uregistrerte mønstringer per fylke</h1>
 
 {% for fylke in fylker %}
-	<h2>{{ fylke.getNavn() }} <small>{{ fylke.monstringer_uregistrerte|length }} uregistrerte mønstringer</h2>
+	<h2>{{ fylke.getNavn() }} <small>{{ fylke.monstringer_uregistrerte|length }} uregistrert{{ fylke.monstringer_uregistrerte|length == 1 ? '':'e' }} mønstringer</h2>
     <p>
         {% for monstring in fylke.monstringer_uregistrerte %}
             {{ monstring.getNavn() }}{{ not loop.last ? '<br /> ':'' }}
