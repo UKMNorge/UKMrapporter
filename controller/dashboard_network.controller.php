@@ -40,6 +40,7 @@ class rapporter {
 		$this->kategorier = [];
 		$this->add('monstring', 'antall_monstringer');
 		$this->add('monstring', 'kommuner_per_monstring');
+		$this->add('monstring', 'uregistrerte_monstringer');
 	}
 	
 	public function getAll() {
@@ -81,6 +82,12 @@ class rapporter {
 				$rapport->link = 'network=kommuner_per_monstring';
 				$rapport->navn = 'Kommuner per mønstring';
 				$rapport->beskrivelse = 'Antall mønstringer på nasjonalt nivå';
+			break;
+			case 'uregistrerte_monstringer':
+				$rapport->icon = 'clock';
+				$rapport->link = 'network=monstringer_uregistrert';
+				$rapport->navn = 'Uregistrerte mønstringer';
+				$rapport->beskrivelse = 'Gruppert per fylke';
 			break;
 
 		}
