@@ -99,7 +99,7 @@ class extended_rapport extends valgt_rapport {
 					
 					// TABELLEN OG TOM ØVERSTE CELLE (placeholder / spacetaker? :p)
 					$tab = $section->addTable();
-					$tab->addRow(12520);
+					$tab->addRow(12350);
 					$c = $tab->addCell(11000);
 					woText($c, ' ');
 					
@@ -114,6 +114,7 @@ class extended_rapport extends valgt_rapport {
 						woText($c, 'UKM i '. $this->m->g('pl_name'), 'diplom_monstring');
 #					woText($c, $inn->g('fylke').($this->show('i_kommune') ? ' - '.$inn->g('kommune') : ''));
 #					woText($c, $inn->g('kommune'));
+					$section->addPageBreak();
 				}
 			}
 		}
