@@ -99,7 +99,7 @@ class extended_rapport extends valgt_rapport {
 					
 					// TABELLEN OG TOM ØVERSTE CELLE (placeholder / spacetaker? :p)
 					$tab = $section->addTable();
-					$tab->addRow(12620);
+					$tab->addRow(12520);
 					$c = $tab->addCell(11000);
 					woText($c, ' ');
 					
