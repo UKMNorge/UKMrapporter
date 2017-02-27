@@ -335,7 +335,7 @@ class valgt_rapport extends rapport {
 	**/
 	private function getMonstring() {
 		if( null == $this->monstring ) {
-			$this->monstring = new monstring_v2( get_option('pl_id') );
+			$this->monstring = new monstring_v2( $this->pl_id );
 		}
 		return $this->monstring;
 	}
