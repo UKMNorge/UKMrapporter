@@ -120,7 +120,7 @@ class valgt_rapport extends rapport {
 	 */
 	public function generate() {
 		$TWIG['personer'] = $this->_getRenderData();
-		$TWIG['monstring'] = this->getMonstring();
+		$TWIG['monstring'] = $this->getMonstring();
 		echo TWIG('sms.html.twig', $TWIG, dirname( dirname( dirname(__FILE__) ) ), true);
 	}
 
