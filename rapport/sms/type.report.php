@@ -247,7 +247,7 @@ class valgt_rapport extends rapport {
 		// HVIS TREG: Skriv om denne til å laste inn alle aktive forestillinger, og loop disse.
 		// Denne tilnærmingen laster inn veldig mange forestillingsobjekter..
 		if($this->report_extended == 'hendelse') {
-			return 0 == sizeof( array_intersect( $innslag->getProgram( $this->getMonstring()->getId() )->getIdArray( 'getAllInkludertSkjulte' ), $this->selectedType ));
+			return 0 == sizeof( array_intersect( $innslag->getProgram( $this->getMonstring() )->getIdArray( 'getAllInkludertSkjulte' ), $this->selectedType ));
 		}
 
 		// SJEKK OM TYPE INNSLAG ER OK
