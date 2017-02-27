@@ -338,6 +338,11 @@ class valgt_rapport extends rapport {
 		if( null == $this->monstring ) {
 			$this->monstring = new monstring_v2( $this->pl_id );
 		}
+		// Reload hvis pl_id avviker fra lastet pl_id. 
+		// Brukes for å håndtere at valgt sesong ikke er aktiv sesong
+		if( $this->monstring->getId() != $this->pl_id ) {
+			$this->monstring = new monstring_v2( $this->pl_id );
+		} 
 		return $this->monstring;
 	}
 }
