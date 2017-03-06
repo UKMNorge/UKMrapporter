@@ -70,6 +70,34 @@
 				</table>
 			</div>
 		</div>
+
+		<h2>Antall personer per kommuner i {{monstring.name}}</h2>
+		
+		<div class="container col-xs-12">
+			<div class="well">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th></th>
+							{% for ssn in seasons %}
+							<th>{{ssn}}</th>
+							{% endfor %}
+						</tr>
+					</thead>
+					<tbody>
+						{% for kommune, data in dekningsgrad %}
+							<tr>
+								<th>{{kommune}}</th>
+								{% for season, details in data %}
+								<td>{{details.deltakere}}</td>
+								{% endfor %}
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
 	{% endif %}
 
 	{% if stat_type == 'land' %}
