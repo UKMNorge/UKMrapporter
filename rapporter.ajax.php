@@ -18,6 +18,8 @@ function UKMrapport_ajax(){
 		$log = 'word';
 	elseif(isset($_POST['excel']))
 		$log = 'excel';
+	elseif(isset($_POST['csv']))
+		$log = 'csv';
 	else
 		$log = 'skjerm';
 	
@@ -47,6 +49,22 @@ function UKMrapport_ajax(){
 			die('<h2>Beklager!</h2>'
 				.'Rapporten finnes ikke i excel-format');
 	
+		die('<h2>Rapport klar!</h2>'
+			.'Du skal nå få opp spørsmål om å laste ned rapporten. '
+			.'Hvis dette ikke skjer i løpet av de neste 5 sekundene kan du høyreklikke og velge &quot;lagre mål som&quot; '
+			.'<a href="'.$link.'" id="downloadLink">her</a>');
+	}
+
+	if(isset($_POST['csv'])) {
+		$link = $r->generateCSV();
+
+		if( 'ukm.dev' == UKM_HOSTNAME ) {
+			die(); // generateCSV() skriver hvor filen er lagret i dev-modus.
+		}
+		if( !$link ) {
+			die('<h2>Beklager!</h2>'
+				.'Klarte ikke å generere rapporten til deg.');
+		}
 		die('<h2>Rapport klar!</h2>'
 			.'Du skal nå få opp spørsmål om å laste ned rapporten. '
 			.'Hvis dette ikke skjer i løpet av de neste 5 sekundene kan du høyreklikke og velge &quot;lagre mål som&quot; '

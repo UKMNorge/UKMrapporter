@@ -111,6 +111,9 @@ else
 	<li id="skrivut"><?= UKMN_ico('print', 40)?><div class="text">Skriv ut</div></li>
 	<li id="word"><?= UKMN_ico('word-mac', 40)?><div class="text">Last ned som Word-dokument</div></li>
 	<li id="excel"><?= UKMN_ico('excel-mac', 40)?><div class="text">Last ned som Excel-dokument</div></li>
+	<?php if( 'program' == $_GET['rapport'] ) { ?>
+		<li id="csv"><?= UKMN_ico('list', 40)?><div class="text">Last ned som CSV-dokument</div></li>
+	<?php } ?> 
 </ul>
 <ul class="contact_actions" style="display:none;">
 	<li id="mail"><?= UKMN_ico('mail', 40)?><div class="text">Send e-post til alle i rapporten</div></li>

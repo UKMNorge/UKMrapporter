@@ -364,6 +364,43 @@ class rapport{
 		return preg_replace('/[^a-z]/i', '', strtolower($name));
 	}
 	
+	/**
+	 * csv_write function
+	 *
+	 * Creates a file for the CSV-export and writes to it.
+	 * Returns a 
+	 * By @asgeirsh, 26.03.2017
+	 *
+	 */
+	public function csv_write($data) {
+		$tmp_folder = '/home/ukmno/public_subdomains/download/rapporter/';
+		if( 'ukm.dev' == UKM_HOSTNAME ) {
+			$tmp_folder = '/tmp/rapporter/';
+		} 
+		$name = 'UKMRapport_'.$this->pl_id.'_'.$this->_sanName().'_'.date('dmYhis').'.csv';
+
+
+		if ( !is_dir($tmp_folder) ) {
+			mkdir($tmp_folder);
+		}
+		$file = fopen($tmp_folder.$name, 'x');
+		if( false == $file) {
+			echo '<h2>Failed to create file for writing.</h2>';
+			return false;
+		}
+		$write_result = fwrite($file, $data);
+		if( false == $write_result ) {
+			echo '<h2>Failed to write to file.</h2>';
+			return false;
+		}
+		fclose($file);
+
+		$link = 'http://download.ukm.no/?folder=rapporter&filename='.urlencode($name);
+		if( 'ukm.dev' == UKM_HOSTNAME ) {
+			echo '<br><h4>File was written to '.$tmp_folder.$name.'</h4>';
+		}
+		return $link;
+	}
 	
 	/********************************************************************************/
 	/*									WORD (public)								*/
@@ -390,7 +427,6 @@ class rapport{
 		$properties->setModified( time() );
 
 		// Definer noen styles
-
 		$PHPWord->addFontStyle('f_p', array('size'=>10));
 		$PHPWord->addParagraphStyle('p_p', array('spaceAfter'=>0, 'spaceBefore'=>0));
 		$PHPWord->addParagraphStyle('p_bold', array('spaceAfter'=>0, 'spaceBefore'=>0));
