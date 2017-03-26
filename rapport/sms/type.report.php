@@ -120,6 +120,7 @@ class valgt_rapport extends rapport {
 	 */
 	public function generate() {
 		$TWIG['personer'] = $this->_getRenderData();
+		$TWIG['monstring'] = $this->getMonstring();
 		echo TWIG('sms.html.twig', $TWIG, dirname( dirname( dirname(__FILE__) ) ), true);
 	}
 
@@ -247,7 +248,7 @@ class valgt_rapport extends rapport {
 		// HVIS TREG: Skriv om denne til å laste inn alle aktive forestillinger, og loop disse.
 		// Denne tilnærmingen laster inn veldig mange forestillingsobjekter..
 		if($this->report_extended == 'hendelse') {
-			return 0 == sizeof( array_intersect( $innslag->getProgram( $this->getMonstring()->getId() )->getIdArray( 'getAllInkludertSkjulte' ), $this->selectedType ));
+			return 0 == sizeof( array_intersect( $innslag->getProgram( $this->getMonstring() )->getIdArray( 'getAllInkludertSkjulte' ), $this->selectedType ));
 		}
 
 		// SJEKK OM TYPE INNSLAG ER OK
@@ -335,8 +336,13 @@ class valgt_rapport extends rapport {
 	**/
 	private function getMonstring() {
 		if( null == $this->monstring ) {
-			$this->monstring = new monstring_v2( get_option('pl_id') );
+			$this->monstring = new monstring_v2( $this->pl_id );
 		}
+		// Reload hvis pl_id avviker fra lastet pl_id. 
+		// Brukes for å håndtere at valgt sesong ikke er aktiv sesong
+		if( $this->monstring->getId() != $this->pl_id ) {
+			$this->monstring = new monstring_v2( $this->pl_id );
+		} 
 		return $this->monstring;
 	}
 }
