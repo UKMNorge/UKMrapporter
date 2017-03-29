@@ -91,7 +91,7 @@ jQuery(document).ready(function(){
 	});
 
 	/// CSV-rapport
-	jQuery('.actions > li#csv').click(function() {
+	jQuery('.actions > a#csv').click(function() {
 		console.log("Preparing CSV");
 		var data = 	'action=UKMrapport_ajax'
 				 +	'&get='+jQuery('#UKMrapport').attr('data-rapport')
