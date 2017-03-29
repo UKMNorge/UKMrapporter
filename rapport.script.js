@@ -90,6 +90,32 @@ jQuery(document).ready(function(){
 		});
 	});
 
+	/// CSV-rapport
+	jQuery('.actions > a#csv').click(function() {
+		console.log("Preparing CSV");
+		var data = 	'action=UKMrapport_ajax'
+				 +	'&get='+jQuery('#UKMrapport').attr('data-rapport')
+				 +	'&kat='+jQuery('#UKMrapport').attr('data-kat')
+				 +	'&csv=true'
+				 + 	'&'+jQuery('#UKMrapport').serialize();
+
+		jQuery('#report_container').hide();
+		jQuery('#report_container_word').html('<span class="loading"><img src="http://ico.ukm.no/loading.gif" width="32" /><div>Vennligst vent, gjør klar CSV-rapport for nedlasting...</div></span>');
+		
+		jQuery.post(ajaxurl, data, function(response) {
+			// Print the response.
+			jQuery("#report_container_word").html(response);
+			
+			// Auto-download
+			/*link = jQuery("#downloadLink").attr('href');
+
+			if( link !== undefined && link !== null ) {
+				window.location.href = link;
+			}*/
+		});
+
+	});
+
 
 	jQuery('li.option, .actions > li, .contact_actions > li').addClass('clickable');
 

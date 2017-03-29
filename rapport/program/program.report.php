@@ -527,7 +527,62 @@ class valgt_rapport extends rapport {
 		}
 		return $this->woWrite();
 	}
-	
+
+	/**
+	 * Generate CSV-file for use in automated graphics-generation.
+	 * By @asgeirsh, 26.03.2017.
+	 *
+	 * Properly formatted CSV is hard to export from Excel (requires manual modification).
+	 * This module provides CSV-export of user data in a nice, usable format.
+	 * Produces files directly compatible with Adobe software, unlike Excel (UTF-8 must still be manually selected on import).
+	 *
+	 * Does not allow dynamic data selection - will only use Innslag, Kommune and Titler at the moment.
+	 * Can generate lists for more than one concert at a time.
+	 *
+	 * @access public
+	 * @return String download-URL
+	 */
+	public function generateCSV() {
+		$concerts = $this->_program();
+		$data = '';
+		// TODO: Insert a selector for OS-version... 
+		// \r is OS 7, \r\n is Windows, \n is Unix / OS X. Windows can transparently read/convert \n, apparently.
+		$eol = "\n";
+		
+		if( !is_array($concerts) || sizeof($concerts)==0 ) {
+			echo 'Ingen forestillinger valgt';
+			return;
+		}
+
+		// Export a header-line
+		$data = 'Innslag,Kommune,Titler'.$eol;
+
+		// Add data for each concert
+		foreach( $concerts as $con ) {
+			// Innslag:
+			$program = $con->innslag();
+			foreach ( $program as $i ) {
+				$innslag = new innslag( $i['b_id'] );
+				$titler = $innslag->titler( get_option('pl_id') );	
+
+				// Hvis innslaget har en eller flere titler genererer vi en linje for hver låt
+				foreach ( $titler as $tittel ) {
+					$data .= '"'.$innslag->g('b_name').'",';
+					$data .= '"'.$innslag->g('b_kommune').'",';
+					$data .= '"'.$tittel->g('tittel').'"'.$eol;	
+				}
+				// Edge-case: Hvis innslaget ikke har noen titler - legg til "Ukjent tittel"
+				if ( 0 == count($titler) ) {
+					$data .= '"'.$innslag->g('b_name').'",';
+					$data .= '"'.$innslag->g('b_kommune').'",';
+					$data .= '"Ukjent tittel"'.$eol;		
+				}
+				
+			}
+		} // End loops
+
+		return $this->csv_write($data);
+	}
 	
 	/**
 	 * generate function
