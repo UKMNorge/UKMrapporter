@@ -57,12 +57,14 @@ class valgt_rapport extends rapport {
 			$this->format($k, 'k_ingen', 'Ingen kommentarbokser');
 			$this->format($k, 'k_liten', 'Små kommentarbokser');
 			$this->format($k, 'k_stor', 'Store kommentarbokser');
-			#$this->format($k, 'k_side', 'Vis ett innslag per ark');
 			
 			$b = $this->formatGrp('b', 'Hvilke bokser vil du ha?');
 			$this->format($b, 'b_generell', 'Generell kommentar');
 			$this->format($b, 'b_lyd', 'Lyd');
 			$this->format($b, 'b_lys', 'Lys');
+			
+			$p = $this->formatGrp('p', 'Sideskift');
+			$this->format($p, 'p_side', 'Vis ett innslag per ark');
 		}
 		$p = $this->optGrp('p', 'Info om forestillingen');
 		$this->opt($p, 'p_varig', 'Vis beregnet varighet');
@@ -517,6 +519,10 @@ class valgt_rapport extends rapport {
 						$section->addPageBreak();
 
 					}
+					
+					if($this->report_extended == 'tekniske_prover' && $this->showFormat('p_side') ) {
+						$section->addPageBreak();
+					}
 
 					
 					///////
@@ -919,6 +925,10 @@ class valgt_rapport extends rapport {
 						echo '</div>';
 					}
 					
+					if( $this->report_extended == 'tekniske_prover' && $this->showFormat('p_side') ) {
+						echo '<div style="page-break-after: always;"></div>';
+					}
+									
 					echo '<div class="clear"></div>';
 
 					echo '</li>';
