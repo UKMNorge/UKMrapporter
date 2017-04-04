@@ -212,8 +212,17 @@ class valgt_rapport extends rapport {
 				$renderData[] = new renderData( $innslag, $innslag->getKontaktPerson(), $this->getMonstring()->getType() );
 			}
 			if( $this->show('er_deltaker') ) {
-				foreach( $innslag->getPersoner()->getAll() as $person ) {
-					$renderData[] = new renderData( $innslag, $person, $this->getMonstring()->getType() );
+				// Fylke og land
+				if( get_option('site_type') != 'kommune' ) {
+					foreach( $innslag->getPersoner()->getAllVideresendt( get_option('pl_id') ) as $person ) {
+						$renderData[] = new renderData( $innslag, $person, $this->getMonstring()->getType() );
+					}
+				}
+				// Lokalmønstringer
+				else {
+					foreach( $innslag->getPersoner()->getAll() as $person ) {
+						$renderData[] = new renderData( $innslag, $person, $this->getMonstring()->getType() );
+					}
 				}
 			}
 		}
