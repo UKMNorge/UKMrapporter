@@ -94,7 +94,13 @@ class valgt_rapport extends rapport {
 			
 			// Hvis kontaktperson skal vises
 			if( $this->show('h_kontaktp') ) {
-				exCell(i2a($col).$rad, $kontaktperson->get('p_firstname'). ' '. $kontaktperson->get('p_lastname')); // Kontaktperson-navn
+					exCell(i2a($col).$rad, ( $kontaktperson->get('p_firstname')
+											. ' '
+											. $kontaktperson->get('p_lastname')
+											. ($this->show('h_vis') ? ' (kontaktperson)' : '')
+											)
+
+					); // Kontaktperson-navn
 				$col++;
 				if( $this->show('p_mobil') ) {
 					exCell(i2a($col).$rad, $kontaktperson->get('p_phone'));
@@ -128,21 +134,15 @@ class valgt_rapport extends rapport {
 					$rad++;
 					exCell(i2a($col).$rad, $v['b_name']); 
 					$col++;
-					exCell(i2a($col).$rad, ( $kontaktperson->get('p_firstname')
-											. ' '
-											. $kontaktperson->get('p_lastname')
-											. ($this->show('h_vis') ? ' (kontaktperson)' : '')
-											)
-
-					); // Kontaktperson-navn
+					exCell(i2a($col).$rad, $person->get('p_firstname'). ' '. $person->get('p_lastname')); // Kontaktperson-navn
 					$col++;
 
 					if( $this->show('p_mobil') ) {
-						exCell(i2a($col).$rad, $kontaktperson->get('p_phone'));
+						exCell(i2a($col).$rad, $person->get('p_phone'));
 						$col++;
 					}
 					if( $this->show('p_epost') ) {
-						exCell(i2a($col).$rad, $kontaktperson->get('p_email'));
+						exCell(i2a($col).$rad, $person->get('p_email'));
 						$col++;
 					}
 					if( $this->show('i_kommune') ) {
