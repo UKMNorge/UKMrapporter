@@ -55,69 +55,82 @@ class valgt_rapport extends rapport {
 		
 		exSheetName('INNSLAG', '6dc6c1');
 		
-		$rad = $p2rad = $p3rad = 1;
-		$headerRad = 1;
+		$rad = 1;
 		$col = 1;
 		$videresendte = $this->m->videresendte();
 
-		// Innslagsnavn, personer, mobilnummer, e-post, kommune
+		// HEADERS
 		exCell(i2a($col).$rad, 'Innslagsnavn', 'bold'); $col++;
-		if ($this->show('h_vis') || $this->show('h_kontaktp')) 
-			exCell(i2a($col).$rad, 'Personer', 'bold'); $col++;
-		if ($this->show('p_mobil') || $this->show('h_kontaktp'))
-			exCell(i2a($col).$rad, 'Mobilnummer', 'bold'); $col++;
-		if ($this->show('h_kontaktp'))
-			exCell(i2a($col).$rad, 'E-post', 'bold'); $col++;
-		if ($this->show('i_kommune'))
-			exCell(i2a($col).$rad, 'Kommune', 'bold'); $col++;
-
-		foreach ($videresendte as $v) {
-			// Prep
-			$innslag = new innslag($v['b_id']);
+		if( $this->show('h_vis') || $this->show('h_kontaktp') ) {
+			exCell(i2a($col).$rad, 'Personer', 'bold');
+			$col++;
+		}
+		if( $this->show('p_mobil') ) {
+			exCell(i2a($col).$rad, 'Mobilnummer', 'bold');
+			$col++;
+		}
+		if( $this->show('p_epost') ) {
+			exCell(i2a($col).$rad, 'E-post', 'bold');
+			$col++;
+		}
+		if( $this->show('i_kommune') ) {
+			exCell(i2a($col).$rad, 'Kommune', 'bold');
+			$col++;
+		}
+		
+		$rad++;
+	
+		// Innslag
 			$col = 1;
-			$rad++;
-			$innslag->loadGEO();
-			$personer = $innslag->personer();
-			$kontaktperson = $innslag->kontaktperson();
-
-			// Fill cells
 			exCell(i2a($col).$rad, $v['b_name']); 
 			$col++;
-			if ($this->show('h_kontaktp')) {
+			
+			// Hvis kontaktperson skal vises
+			if( $this->show('h_kontaktp') ) {
 				exCell(i2a($col).$rad, $kontaktperson->get('p_firstname'). ' '. $kontaktperson->get('p_lastname')); // Kontaktperson-navn
 				$col++;
-			}
-			elseif (!$this->show('h_kontaktp') && $this->show('h_vis')) {
-				$col++;
-			}
-
-			if ($this->show('h_kontaktp')) {
 				exCell(i2a($col).$rad, $kontaktperson->get('p_phone'));
 				$col++;
-			}
-			elseif ( !$this->show('h_kontaktp') && $this->show('p_mobil')) {
-				$col++;
-			}
-
-			if ($this->show('h_kontaktp')) {
 				exCell(i2a($col).$rad, $kontaktperson->get('p_email'));
 				$col++;
-			} elseif ( !$this->show('h_kontaktp') && $this->show('p_mobil')) { 
-				$col++;
+			// Hvis kontaktpersonen ikke skal vises
+			} else { 
+				if( $this->show('h_vis') ) {
+					$col++;
+				}
+				if( $this->show('p_mobil') ) {
+					$col++;
+				}
+				if( $this->show('p_epost') ) {
+					$col++;
+				}
 			}
-
-			if ($this->show('i_kommune'))
+			if( $this->show('i_kommune') ) {
 				exCell(i2a($col).$rad, $innslag->get('kommune'));
-
-			foreach ($personer as $person) {
-				$rad++;
-				$col = 2;
-				
-				exCell(i2a($col).$rad, $person['p_firstname'].' '.$person['p_lastname']);
-				$col++;
-				exCell(i2a($col).$rad, $person['p_phone']);
 			}
-		}
+
+			## Personer i innslaget
+			if ($this->show('h_vis')) {
+				$personer = $innslag->personObjekter();
+				foreach($personer as $person) {
+					$col = 2; // Ikkev vis innslagsnavnet per person
+					$rad++;
+					exCell(i2a($col).$rad, $kontaktperson->get('p_firstname'). ' '. $kontaktperson->get('p_lastname')); // Kontaktperson-navn
+					$col++;
+
+					if( $this->show('p_mobil') ) {
+						exCell(i2a($col).$rad, $kontaktperson->get('p_phone'));
+						$col++;
+					}
+					if( $this->show('p_epost') ) {
+						exCell(i2a($col).$rad, $kontaktperson->get('p_email'));
+						$col++;
+					}
+					if( $this->show('i_kommune') ) {
+						exCell(i2a($col).$rad, $innslag->get('kommune'));
+					}
+				}
+			}
 
 		return $this->exWrite();
 	}
