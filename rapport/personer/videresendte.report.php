@@ -253,8 +253,8 @@ class valgt_rapport extends rapport {
 					echo '<tr>';
 					echo '<td></td>'; // ikke vis innslagsnavnet per person
 					echo '<td class="name">'.$person->get('p_firstname').' '.$person->get('p_lastname').'</td>';
-					echo ($this->show('p_mobil') ) ? '<td class="mobil UKMSMS">'.$person->get('p_phone').'</td>' : '<td></td>';
-					echo ($this->show('p_epost') ) ? '<td class="epost UKMMAIL">'.$person->get('p_email').'</td>' : '<td></td>';
+					echo ($this->show('p_mobil') ) ? '<td class="mobil UKMSMS">'.$person->get('p_phone').'</td>' : '';
+					echo ($this->show('p_epost') ) ? '<td class="epost UKMMAIL">'.$person->get('p_email').'</td>' : '';
 					echo ($this->show('i_kommune')) ? '<td class="kommune">'.$innslag->get('kommune').'</td>' : '';
 					echo '</tr>';
 				}
