@@ -80,7 +80,6 @@ class valgt_rapport extends rapport {
 			
 		// Innslag
 		foreach ($videresendte as $v) {
-			$rad++;
 			$innslag = new innslag($v['b_id']);
 			if ($this->show('i_kommune')) {
 				$innslag->loadGEO();
@@ -88,6 +87,7 @@ class valgt_rapport extends rapport {
 			
 			// Hvis kontaktperson skal vises
 			if( $this->show('h_kontaktp') ) {
+				$rad++;
 				#### Kontaktperson
 				$kontaktperson = $innslag->kontaktperson();
 				$col = 1;
