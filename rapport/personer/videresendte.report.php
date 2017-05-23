@@ -30,6 +30,7 @@ class valgt_rapport extends rapport {
 		$this->opt($g, 'h_vis', 'Vis alle deltakere');
 
 		$this->opt($g, 'p_mobil', 'Vis mobilnummer');
+		$this->opt($g, 'p_epost', 'Vis e-post');
 		
 		$g = $this->optGrp('i','Info om innslaget');
 		$this->opt($g, 'i_kommune', 'Vis kommune');
@@ -193,49 +194,49 @@ class valgt_rapport extends rapport {
 		echo '<tr class="headers" style="font-weight: bold;">';
 		echo '<td>Innslagsnavn</td>';
 		echo ($this->show('h_vis') || $this->show('h_kontaktp')) ? '<td>Personer</td>' : '';
-		echo ($this->show('p_mobil') || $this->show('h_kontaktp')) ? '<td>Mobilnummer</td>' : '';
-		echo ($this->show('h_kontaktp')) ? '<td>E-post</td>' : '';
+		echo ($this->show('p_mobil')) ? '<td>Mobilnummer</td>' : '';
+		echo ($this->show('p_epost')) ? '<td>E-post</td>' : '';
 		echo ($this->show('i_kommune')) ? '<td>Kommune</td>' : '';
 		echo '</tr>';
 
 		foreach ($videresendte as $v) {
 
-			#var_dump($v);
 			$innslag = new innslag($v['b_id']);
 			if ($this->show('i_kommune')) {
 				$innslag->loadGEO();
 			}
 		#### Kontaktperson
 			$kontaktperson = $innslag->kontaktperson();
-			#var_dump($kontaktperson);
 
 
 			## Innslag
-			echo '<tr class="">';
-			echo '<td class="">'.$innslag->get('b_name').'</td>';
-			echo ($this->show('h_kontaktp')) ? '<td class="">'.$kontaktperson->get('p_firstname').' '.$kontaktperson->get('p_lastname').'</td>' : '';
-			echo ($this->show('h_vis') && !$this->show('h_kontaktp')) ? '<td></td>' : '';
-			if ($this->show('h_kontaktp')) { 
-				echo '<td class="mobil UKMSMS">'.$kontaktperson->get('p_phone').'</td>';
-			} elseif ( !$this->show('h_kontaktp') && $this->show('p_mobil')) { 
-				#echo '<td class="mobil UKMSMS">'.$kontaktperson->get('p_phone').'</td>';
+			echo '<tr>';
+			echo '<td>'.$innslag->get('b_name').'</td>';
+
+			// Hvis kontaktperson skal vises
+			if( $this->show('h_kontaktp') ) {
+				echo '<td>'.$kontaktperson->get('p_firstname').' '.$kontaktperson->get('p_lastname').'</td>';
+				echo $this->show('p_mobil') ? '<td class="mobil UKMSMS">'.$kontaktperson->get('p_phone').'</td>' : '';
+				echo $this->show('p_epost') ? '<td class="UKMMAIL epost">'.$kontaktperson->get('p_email').'</td>' : '';
+			// Hvis kontaktpersonen ikke skal vises
+			} else { 
 				echo '<td></td>';
+				echo $this->show('p_mobil') ? '<td></td>' : '';
+				echo $this->show('p_epost') ? '<td></td>' : '';
 			}
-			else {
-				#echo '<td></td>';
-			}
-			echo ($this->show('h_kontaktp')) ? '<td class="UKMMAIL epost">'.$kontaktperson->get('p_email').'</td>' : '';
 			echo ($this->show('i_kommune')) ? '<td class="kommune">'.$innslag->get('kommune').'</td>' : '';
+
 			echo '</tr>';
 	
 			## Personer i innslaget
 			if ($this->show('h_vis')) {
-				$personer = $innslag->personer();
+				$personer = $innslag->personObjekter();
 				foreach($personer as $person) {
-					echo '<tr class="">';
-					echo '<td class=""></td>';
-					echo '<td class="name">'.$person['p_firstname'].' '.$person['p_lastname'].'</td>';
-					echo ($this->show('p_mobil') ) ? '<td class="mobil UKMSMS">'.$person['p_phone'].'</td>' : '<td></td>';
+					echo '<tr>';
+					echo '<td></td>'; // ikke vis innslagsnavnet per person
+					echo '<td class="name">'.$person->get('firstname').' '.$person->get('lastname').'</td>';
+					echo ($this->show('p_mobil') ) ? '<td class="mobil UKMSMS">'.$person->get('phone').'</td>' : '<td></td>';
+					echo ($this->show('p_epost') ) ? '<td class="epost UKMMAIL">'.$person->get('email').'</td>' : '<td></td>';
 					echo '</tr>';
 				}
 			}
