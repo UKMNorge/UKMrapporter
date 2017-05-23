@@ -77,12 +77,10 @@ class valgt_rapport extends rapport {
 			exCell(i2a($col).$rad, 'Kommune', 'bold');
 			$col++;
 		}
-		
-		$rad++;
-	
+			
 		// Innslag
 		foreach ($videresendte as $v) {
-
+			$rad++;
 			$innslag = new innslag($v['b_id']);
 			if ($this->show('i_kommune')) {
 				$innslag->loadGEO();
