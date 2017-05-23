@@ -231,6 +231,7 @@ class valgt_rapport extends rapport {
 			## Personer i innslaget
 			if ($this->show('h_vis')) {
 				$personer = $innslag->personObjekter();
+				var_dump( $personer );				
 				foreach($personer as $person) {
 					echo '<tr>';
 					echo '<td></td>'; // ikke vis innslagsnavnet per person
