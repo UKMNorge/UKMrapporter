@@ -98,10 +98,14 @@ class valgt_rapport extends rapport {
 			if( $this->show('h_kontaktp') ) {
 				exCell(i2a($col).$rad, $kontaktperson->get('p_firstname'). ' '. $kontaktperson->get('p_lastname')); // Kontaktperson-navn
 				$col++;
-				exCell(i2a($col).$rad, $kontaktperson->get('p_phone'));
-				$col++;
-				exCell(i2a($col).$rad, $kontaktperson->get('p_email'));
-				$col++;
+				if( $this->show('p_mobil') ) {
+					exCell(i2a($col).$rad, $kontaktperson->get('p_phone'));
+					$col++;
+				}
+				if( $this->show('p_epost') ) {
+					exCell(i2a($col).$rad, $kontaktperson->get('p_email'));
+					$col++;
+				}
 			// Hvis kontaktpersonen ikke skal vises
 			} else { 
 				if( $this->show('h_vis') ) {
