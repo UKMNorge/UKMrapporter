@@ -124,9 +124,15 @@ class valgt_rapport extends rapport {
 			if ($this->show('h_vis')) {
 				$personer = $innslag->personObjekter();
 				foreach($personer as $person) {
-					$col = 2; // Ikkev vis innslagsnavnet per person
+					$col = 1; 
 					$rad++;
-					exCell(i2a($col).$rad, $kontaktperson->get('p_firstname'). ' '. $kontaktperson->get('p_lastname')); // Kontaktperson-navn
+					exCell(i2a($col).$rad, $v['b_name']); 
+					exCell(i2a($col).$rad, ($kontaktperson->get('p_firstname')
+											. ' '
+											. $kontaktperson->get('p_lastname')
+											. ($this->show('h_vis') ? ' (kontaktperson)' : '')
+
+					); // Kontaktperson-navn
 					$col++;
 
 					if( $this->show('p_mobil') ) {
