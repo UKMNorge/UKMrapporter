@@ -73,7 +73,7 @@ class valgt_rapport extends rapport {
 		$g = $this->optGrp('geo','Deltakere fra');
 		// UKM-FESTIVALEN BRUKER FYLKER
 		if( 'land' == $this->getMonstring()->getType() ) {
-			foreach( fylker::getAll() as $fylke ) {
+			foreach( fylker::getAllInkludertGjester() as $fylke ) {
 				$this->opt($g, 'geo_'. $fylke->getId(), $fylke->getNavn() );
 			}
 		// FYLKE OG LOKALMØNSTRING BRUKER KOMMUNER
