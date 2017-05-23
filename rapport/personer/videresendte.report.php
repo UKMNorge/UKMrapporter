@@ -182,7 +182,6 @@ class valgt_rapport extends rapport {
 				$personer = $innslag->personObjekter();
 				foreach($personer as $person) {
 					$pText = $person->get('p_firstname').' '.$person->get('p_lastname').', '.$person->get('p_phone').', '.$person->get('p_email').'.';
-					$pText = htmlspecialchars("\t").$pText;
 					woText($section, $pText);
 				}
 			}
