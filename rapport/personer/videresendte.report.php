@@ -81,6 +81,15 @@ class valgt_rapport extends rapport {
 		$rad++;
 	
 		// Innslag
+		foreach ($videresendte as $v) {
+
+			$innslag = new innslag($v['b_id']);
+			if ($this->show('i_kommune')) {
+				$innslag->loadGEO();
+			}
+			#### Kontaktperson
+			$kontaktperson = $innslag->kontaktperson();
+
 			$col = 1;
 			exCell(i2a($col).$rad, $v['b_name']); 
 			$col++;
