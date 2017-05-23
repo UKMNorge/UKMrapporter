@@ -219,7 +219,7 @@ class valgt_rapport extends rapport {
 					.  $kontaktperson->get('p_firstname')
 					.  ' '
 					.  $kontaktperson->get('p_lastname')
-					. ($this->show('h_vis') ? '<small>(kontaktperson)</small>' : '')
+					. ($this->show('h_vis') ? ' <small>(kontaktperson)</small>' : '')
 					. '</td>';
 				echo $this->show('p_mobil') ? '<td class="mobil UKMSMS">'.$kontaktperson->get('p_phone').'</td>' : '';
 				echo $this->show('p_epost') ? '<td class="UKMMAIL epost">'.$kontaktperson->get('p_email').'</td>' : '';
@@ -242,6 +242,7 @@ class valgt_rapport extends rapport {
 					echo '<td class="name">'.$person->get('p_firstname').' '.$person->get('p_lastname').'</td>';
 					echo ($this->show('p_mobil') ) ? '<td class="mobil UKMSMS">'.$person->get('p_phone').'</td>' : '<td></td>';
 					echo ($this->show('p_epost') ) ? '<td class="epost UKMMAIL">'.$person->get('p_email').'</td>' : '<td></td>';
+					echo ($this->show('i_kommune')) ? '<td class="kommune">'.$innslag->get('kommune').'</td>' : '';
 					echo '</tr>';
 				}
 			}
