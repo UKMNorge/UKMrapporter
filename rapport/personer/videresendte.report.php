@@ -220,7 +220,7 @@ class valgt_rapport extends rapport {
 				echo $this->show('p_epost') ? '<td class="UKMMAIL epost">'.$kontaktperson->get('p_email').'</td>' : '';
 			// Hvis kontaktpersonen ikke skal vises
 			} else { 
-				echo '<td></td>';
+				echo $this->show('h_vis') ?'<td></td>' : '';
 				echo $this->show('p_mobil') ? '<td></td>' : '';
 				echo $this->show('p_epost') ? '<td></td>' : '';
 			}
