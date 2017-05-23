@@ -179,15 +179,14 @@ class valgt_rapport extends rapport {
 			}
 			// List opp deltakere
 			if ($this->show('h_vis')) {
-				foreach ($personer as $person) {
-					#var_dump($person);
-					$pText = $person['p_firstname'].' '.$person['p_lastname'].', '.$person['p_phone'];
+				$personer = $innslag->personObjekter();
+				foreach($personer as $person) {
+					$pText = $person->get('p_firstname').' '.$person->get('p_lastname').', '.$person->get('p_phone').', '.$person->get('p_email').'.';
 					$pText = htmlspecialchars("\t").$pText;
 					woText($section, $pText);
 				}
 			}
 		}
-
 		return $this->woWrite();
 	}
 
