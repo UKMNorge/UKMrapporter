@@ -140,6 +140,7 @@ class valgt_rapport extends rapport {
 					}
 				}
 			}
+		}
 
 		return $this->exWrite();
 	}
