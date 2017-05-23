@@ -85,16 +85,15 @@ class valgt_rapport extends rapport {
 			if ($this->show('i_kommune')) {
 				$innslag->loadGEO();
 			}
-			#### Kontaktperson
-			$kontaktperson = $innslag->kontaktperson();
-
-			$col = 1;
-			exCell(i2a($col).$rad, $v['b_name']); 
-			$col++;
 			
 			// Hvis kontaktperson skal vises
 			if( $this->show('h_kontaktp') ) {
-					exCell(i2a($col).$rad, ( $kontaktperson->get('p_firstname')
+				#### Kontaktperson
+				$kontaktperson = $innslag->kontaktperson();
+				$col = 1;
+				exCell(i2a($col).$rad, $v['b_name']); 
+				$col++;
+				exCell(i2a($col).$rad, ( $kontaktperson->get('p_firstname')
 											. ' '
 											. $kontaktperson->get('p_lastname')
 											. ($this->show('h_vis') ? ' (kontaktperson)' : '')
@@ -110,20 +109,9 @@ class valgt_rapport extends rapport {
 					exCell(i2a($col).$rad, $kontaktperson->get('p_email'));
 					$col++;
 				}
-			// Hvis kontaktpersonen ikke skal vises
-			} else { 
-				if( $this->show('h_vis') ) {
-					$col++;
+				if( $this->show('i_kommune') ) {
+					exCell(i2a($col).$rad, $innslag->get('kommune'));
 				}
-				if( $this->show('p_mobil') ) {
-					$col++;
-				}
-				if( $this->show('p_epost') ) {
-					$col++;
-				}
-			}
-			if( $this->show('i_kommune') ) {
-				exCell(i2a($col).$rad, $innslag->get('kommune'));
 			}
 
 			## Personer i innslaget
