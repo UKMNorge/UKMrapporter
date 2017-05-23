@@ -231,13 +231,12 @@ class valgt_rapport extends rapport {
 			## Personer i innslaget
 			if ($this->show('h_vis')) {
 				$personer = $innslag->personObjekter();
-				var_dump( $personer );				
 				foreach($personer as $person) {
 					echo '<tr>';
 					echo '<td></td>'; // ikke vis innslagsnavnet per person
-					echo '<td class="name">'.$person->get('firstname').' '.$person->get('lastname').'</td>';
-					echo ($this->show('p_mobil') ) ? '<td class="mobil UKMSMS">'.$person->get('phone').'</td>' : '<td></td>';
-					echo ($this->show('p_epost') ) ? '<td class="epost UKMMAIL">'.$person->get('email').'</td>' : '<td></td>';
+					echo '<td class="name">'.$person->get('p_firstname').' '.$person->get('p_lastname').'</td>';
+					echo ($this->show('p_mobil') ) ? '<td class="mobil UKMSMS">'.$person->get('p_phone').'</td>' : '<td></td>';
+					echo ($this->show('p_epost') ) ? '<td class="epost UKMMAIL">'.$person->get('p_email').'</td>' : '<td></td>';
 					echo '</tr>';
 				}
 			}
