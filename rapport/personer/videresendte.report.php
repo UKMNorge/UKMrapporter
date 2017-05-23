@@ -127,6 +127,7 @@ class valgt_rapport extends rapport {
 					$col = 1; 
 					$rad++;
 					exCell(i2a($col).$rad, $v['b_name']); 
+					$col++;
 					exCell(i2a($col).$rad, ( $kontaktperson->get('p_firstname')
 											. ' '
 											. $kontaktperson->get('p_lastname')
