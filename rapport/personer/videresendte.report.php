@@ -215,7 +215,12 @@ class valgt_rapport extends rapport {
 
 			// Hvis kontaktperson skal vises
 			if( $this->show('h_kontaktp') ) {
-				echo '<td>'.$kontaktperson->get('p_firstname').' '.$kontaktperson->get('p_lastname').'</td>';
+				echo '<td>'
+					.  $kontaktperson->get('p_firstname')
+					.  ' '
+					.  $kontaktperson->get('p_lastname')
+					. ($this->show('h_vis') ? '<small>(kontaktperson)</small>' : '')
+					. '</td>';
 				echo $this->show('p_mobil') ? '<td class="mobil UKMSMS">'.$kontaktperson->get('p_phone').'</td>' : '';
 				echo $this->show('p_epost') ? '<td class="UKMMAIL epost">'.$kontaktperson->get('p_email').'</td>' : '';
 			// Hvis kontaktpersonen ikke skal vises
