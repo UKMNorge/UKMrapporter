@@ -15,5 +15,5 @@ if( isset( $_GET['c_id'] ) || isset( $_GET['kunstnere'] ) ) {
 		$VIEW = 'media_download';
 	}
 } else {
-	$TWIG['forestillinger'] = $m->forestillinger();
+	$TWIG['forestillinger'] = $m->forestillinger('c_start', false);
 }
