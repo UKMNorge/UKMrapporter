@@ -405,7 +405,7 @@ class valgt_rapport extends rapport {
 								? '<div class="alder">'.$p->alder().' år</div>'
 								: '')
 							.($this->show('p_mobil')
-								? '<div class="mobil UKMSMS">'. $p->g('p_phone') .'&nbsp;</div>'
+								? '<div class="mobil UKMSMS">'. $p->g('p_phone') .'</div>'
 								: '')
 							.($this->show('p_rolle')
 								? '<div class="rolle">Kontaktperson</div>'
@@ -445,7 +445,7 @@ class valgt_rapport extends rapport {
 									? '<div class="alder">'.$p->alder().' år</div>'
 									: '')
 								.($this->show('p_mobil')
-									? '<div class="mobil UKMSMS">'. $p->g('p_phone') .'&nbsp;</div>'
+									? '<div class="mobil UKMSMS">'. $p->g('p_phone') .'</div>'
 									: '')
 								.($this->show('p_rolle')
 									? '<div class="rolle">'.$p->g('instrument').'&nbsp;</div>'
