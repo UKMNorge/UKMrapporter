@@ -28,6 +28,19 @@ if( !file_exists( $STORAGE ) ) {
 	mkdir( $STORAGE, 0777, true );
 }
 
+$fylker = fylker::getAllInkludertFalske();
+foreach( $fylker as $fylke ) {
+	$fylkeExcel = exInit('PERFYLKE');
+	
+	exSheetName( $band_type_name );
+
+	excolwidth('A',30);
+	excolwidth('B',13);
+	excell('A1','Navn');
+	excell('B1','Nummer');
+
+	$excel[ $fylke->getNavn() ] = $fylkeExcel;	
+}
 
 foreach($innslag as $band_type => $bands) {
 
