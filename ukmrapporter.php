@@ -27,7 +27,7 @@ add_action('network_admin_menu', 'UKMrapport_network_menu');
 
 
 function UKMrapport_network_menu() {
-	$page = add_menu_page('Rapporter', 'Rapporter', 'superadmin', 'UKMrapport_admin','UKMrapport_admin', 'http://ico.ukm.no/graph-menu.png',2101);
+	$page = add_menu_page('Rapporter', 'Rapporter', 'superadmin', 'UKMrapport_admin','UKMrapport_admin', '//ico.ukm.no/graph-menu.png',2101);
 	add_action( 'admin_print_styles-' . $page, 'UKMrapport_scriptsandstyles' );
 }
 function UKMrapport_countPrint(){
@@ -41,7 +41,7 @@ function UKMrapport_countPrint(){
 
 ## CREATE A MENU
 function UKMrapport_menu() {
-	UKM_add_menu_page('monstring','Rapporter', 'Rapporter', 'ukm_rapporter', 'UKMrapport_admin', 'UKMrapport_admin', 'http://ico.ukm.no/graph-menu.png',15);    
+	UKM_add_menu_page('monstring','Rapporter', 'Rapporter', 'ukm_rapporter', 'UKMrapport_admin', 'UKMrapport_admin', '//ico.ukm.no/graph-menu.png',15);    
 	UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_scriptsandstyles' );
 	if(isset($_GET['stat'])||isset($_GET['fylkestimeplan'])||isset($_GET['festival'])) {
 		UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_statistikk_scripts_and_styles' );
@@ -51,7 +51,7 @@ function UKMMrapport_dash_shortcut( $shortcuts ) {
 	$shortcut = new stdClass();
 	$shortcut->url = 'admin.php?page=UKMrapport_admin';
 	$shortcut->title = 'Rapporter';
-	$shortcut->icon = 'http://ico.ukm.no/graph-menu.png';
+	$shortcut->icon = '//ico.ukm.no/graph-menu.png';
 	$shortcuts[] = $shortcut;
 	
 	return $shortcuts;
@@ -68,7 +68,7 @@ function UKMrapport_scriptsandstyles() {
 	wp_enqueue_script('GOOGLEchart', 'https://www.google.com/jsapi');
 
 	wp_enqueue_script('jquery');
-	wp_enqueue_script('jqueryGoogleUI', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js');
+	wp_enqueue_script('jqueryGoogleUI', '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js');
 
 	wp_enqueue_script('UKMprintarea', WP_PLUGIN_URL . '/UKMrapporter/printarea.script.js' );
 	wp_enqueue_script('UKMrapport_script', WP_PLUGIN_URL . '/UKMrapporter/rapport.script.js' );

@@ -80,9 +80,9 @@ class valgt_rapport extends rapport {
 	private function _preGenerate(){
 		UKM_loader('private');
 		if(($this->showformat('s_andre') || $this->showformat('s_order')) && $this->m->g('season') == 2013)
-			die('<strong>Beklager, 2013-tall er ikke tilgjengelig enda.</strong> Se de offentlige sidene for oppdaterte tall (<a href="http://ukm.no/din_monstring/" target="_blank">http://ukm.no/din_monstring/</a>)');
+			die('<strong>Beklager, 2013-tall er ikke tilgjengelig enda.</strong> Se de offentlige sidene for oppdaterte tall (<a href="//ukm.no/din_monstring/" target="_blank">//ukm.no/din_monstring/</a>)');
 		else
-			echo('<strong>Beklager, 2013-tall er ikke tilgjengelig enda.</strong> Se de offentlige sidene for oppdaterte tall (<a href="http://ukm.no/din_monstring/" target="_blank">http://ukm.no/din_monstring/</a>)');
+			echo('<strong>Beklager, 2013-tall er ikke tilgjengelig enda.</strong> Se de offentlige sidene for oppdaterte tall (<a href="//ukm.no/din_monstring/" target="_blank">//ukm.no/din_monstring/</a>)');
 		$this->_plids();
 		$qry = new SQL($this->_qry());
 		$res = $qry->run();

@@ -154,7 +154,7 @@ class valgt_rapport extends rapport {
 
 						// HVIS BILDE SKAL VÆRE MED, SETT INN BILDE
 						if( $this->show('b_vis') ) {
-							$image = is_object($tittelen->bilde) ? str_replace('http://'. $_SERVER['HTTP_HOST'].'/',
+							$image = is_object($tittelen->bilde) ? str_replace('https://'. $_SERVER['HTTP_HOST'].'/',
 																				'/home/ukmno/public_html/',
 																				$tittelen->bilde->src)
 																 : false;

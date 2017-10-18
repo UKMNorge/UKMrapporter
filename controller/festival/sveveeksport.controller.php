@@ -120,6 +120,6 @@ foreach($innslag as $band_type => $bands) {
 	$excelData->url = exWrite($objPHPExcel, 'UKMF_Sveveksport_'.preg_replace('/[^A-Za-z0-9-.\/]/', '', $excelData->name));
 	
 	$TWIG['excel'][] = $excelData;
-	$TWIG['zip'] = $zip->compress(); //'http://download.ukm.no/zip/'.$zipname; 
+	$TWIG['zip'] = $zip->compress(); //'https://download.ukm.no/zip/'.$zipname; 
 
 }

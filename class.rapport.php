@@ -395,7 +395,7 @@ class rapport{
 		}
 		fclose($file);
 
-		$link = 'http://download.ukm.no/?folder=rapporter&filename='.urlencode($name);
+		$link = '//download.ukm.no/?folder=rapporter&filename='.urlencode($name);
 		if( 'ukm.dev' == UKM_HOSTNAME ) {
 			echo '<br><h4>File was written to '.$tmp_folder.$name.'</h4>';
 		}
@@ -581,7 +581,7 @@ class rapport{
 		}
 
 		return '<div class="rapportinfo">
-				<img src="http://ico.ukm.no/grafikk/UKM_logo.png" width="100" />
+				<img src="//ico.ukm.no/grafikk/UKM_logo.png" width="100" />
 				<div class="navn">'.$navn.'</div>
 				<div class="sted">'.$this->m->g('pl_name').' ('.$this->m->g('season').')</div>
 				' .($t ? '<h3 class="heading">'.$heading.'</h3>'.$text : '').'

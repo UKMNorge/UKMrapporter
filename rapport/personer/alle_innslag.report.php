@@ -73,8 +73,8 @@ class valgt_rapport extends rapport {
 		$this->format($g, 'n_tall', 'Vis nøkkeltall for rapporten');
 		$this->format($g, 'n_gtall', 'Vis nøkkeltall for hver gruppering');
 		
-#		$this->helper('http://download.ukm.no/UKM_diplommal_lokal.dot', 'diplommal lokal');
-#		$this->helper('http://download.ukm.no/UKM_diplommal_fylke.dot', 'diplommal fylke');
+#		$this->helper('https://download.ukm.no/UKM_diplommal_lokal.dot', 'diplommal lokal');
+#		$this->helper('https://download.ukm.no/UKM_diplommal_fylke.dot', 'diplommal fylke');
 		
 		$this->_postConstruct();	
 	}

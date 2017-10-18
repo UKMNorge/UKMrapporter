@@ -61,6 +61,6 @@ foreach( $ledere as $leder ) {
 	excell('E'.$rad, $leder->gratis ? 'Gratis' : 'Betalt');
 }
 exWrite($objPHPExcel,'UKMF_Ledermiddag_UKMFestivalen');
-$TWIG['excel_middag'] = 'http://download.ukm.no/phpexcel/UKMF_Ledermiddag_UKMFestivalen.xlsx';
+$TWIG['excel_middag'] = '//download.ukm.no/phpexcel/UKMF_Ledermiddag_UKMFestivalen.xlsx';
 
 $TWIG['ledere'] = $ledere;

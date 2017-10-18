@@ -16,13 +16,13 @@ jQuery(document).ready(function(){
 	
 	// Aktiver rapportfunksjonalitet
 	jQuery('.rapport').click(function(){
-		window.location.href = 'http://'+window.location.hostname +window.location.pathname 
+		window.location.href = 'https://'+window.location.hostname +window.location.pathname 
 							+  '?page=UKMrapport_admin'
 							+  '&rapport='+ jQuery(this).attr('data-file')
 							+  '&kat=' + jQuery(this).parents('ul').attr('data-kat');
 	});
 	jQuery('.rapport_direct').click(function(){
-		window.location.href = 'http://'+window.location.hostname +window.location.pathname 
+		window.location.href = 'https://'+window.location.hostname +window.location.pathname 
 							+ jQuery(this).attr('data-target')
 							;
 	});
@@ -41,7 +41,7 @@ jQuery(document).ready(function(){
 				 + '&kat='+jQuery('#UKMrapport').attr('data-kat')
 				 + '&'+jQuery('#UKMrapport').serialize();
 		jQuery('#report_container').show();
-		jQuery('#report_container').html('<span class="loading"><img src="http://ico.ukm.no/loading.gif" width="32" /><div>Vennligst vent, genererer rapport...</div></span>');
+		jQuery('#report_container').html('<span class="loading"><img src="//ico.ukm.no/loading.gif" width="32" /><div>Vennligst vent, genererer rapport...</div></span>');
 		jQuery('#report_container_word').html('');
 
 		jQuery.post(ajaxurl, data, function(response){
@@ -60,7 +60,7 @@ jQuery(document).ready(function(){
 				 + '&'+jQuery('#UKMrapport').serialize();
 
 		jQuery('#report_container').hide();
-		jQuery('#report_container_word').html('<span class="loading"><img src="http://ico.ukm.no/loading.gif" width="32" /><div>Vennligst vent, gjør klar Word-rapport for nedlasting…</div></span>');
+		jQuery('#report_container_word').html('<span class="loading"><img src="//ico.ukm.no/loading.gif" width="32" /><div>Vennligst vent, gjør klar Word-rapport for nedlasting…</div></span>');
 		
 		jQuery.post(ajaxurl, data, function(response){
 			jQuery('#report_container_word').html(response);
@@ -80,7 +80,7 @@ jQuery(document).ready(function(){
 				 + '&'+jQuery('#UKMrapport').serialize();
 
 		jQuery('#report_container').hide();
-		jQuery('#report_container_word').html('<span class="loading"><img src="http://ico.ukm.no/loading.gif" width="32" /><div>Vennligst vent, gjør klar Excel-rapport for nedlasting...</div></span>');
+		jQuery('#report_container_word').html('<span class="loading"><img src="//ico.ukm.no/loading.gif" width="32" /><div>Vennligst vent, gjør klar Excel-rapport for nedlasting...</div></span>');
 		
 		jQuery.post(ajaxurl, data, function(response){
 			jQuery('#report_container_word').html(response);
@@ -99,7 +99,7 @@ jQuery(document).ready(function(){
 				 + 	'&'+jQuery('#UKMrapport').serialize();
 
 		jQuery('#report_container').hide();
-		jQuery('#report_container_word').html('<span class="loading"><img src="http://ico.ukm.no/loading.gif" width="32" /><div>Vennligst vent, gjør klar CSV-rapport for nedlasting...</div></span>');
+		jQuery('#report_container_word').html('<span class="loading"><img src="//ico.ukm.no/loading.gif" width="32" /><div>Vennligst vent, gjør klar CSV-rapport for nedlasting...</div></span>');
 		
 		jQuery.post(ajaxurl, data, function(response) {
 			// Print the response.

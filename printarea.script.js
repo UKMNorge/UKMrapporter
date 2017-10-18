@@ -81,7 +81,7 @@
         var standard = settings.strict == false ? " Trasitional" : "";
         var dtd = settings.strict == false ? "loose" : "strict";
 
-        return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01' + standard + '//EN" "http://www.w3.org/TR/html4/' + dtd +  '.dtd">';
+        return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01' + standard + '//EN" "https://www.w3.org/TR/html4/' + dtd +  '.dtd">';
     }
 
     function getHead(){
