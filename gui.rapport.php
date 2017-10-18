@@ -108,9 +108,9 @@ else
 	</form>
 </div>
 <ul class="actions" style="display:none;">
-	<li id="skrivut"><?= UKMN_ico('print', 40)?><div class="text">Skriv ut</div></li>
-	<li id="word"><?= UKMN_ico('word-mac', 40)?><div class="text">Last ned som Word-dokument</div></li>
-	<li id="excel"><?= UKMN_ico('excel-mac', 40)?><div class="text">Last ned som Excel-dokument</div></li>
+	<li id="skrivut"><img src="//ico.ukm.no/print-256.png" width="40" /><div class="text">Skriv ut</div></li>
+	<li id="word"><img src="//ico.ukm.no/word-mac-256.png" width="40" /><div class="text">Last ned som Word-dokument</div></li>
+	<li id="excel"><img src="//ico.ukm.no/excel-mac-256.png" width="40" /><div class="text">Last ned som Excel-dokument</div></li>
 		<?php if( 'program' == $_GET['rapport'] ) { ?>
 			<div class="col-xs-8">&nbsp;</div>
 			<br /><br /><br /><br />
@@ -119,8 +119,8 @@ else
 	</li>
 </ul>
 <ul class="contact_actions" style="display:none;">
-	<li id="mail"><?= UKMN_ico('mail', 40)?><div class="text">Send e-post til alle i rapporten</div></li>
-	<li id="sms"><?= UKMN_ico('mobile', 40)?><div class="text">Send SMS til alle i rapporten</div></li>
+	<li id="mail"><img src="//ico.ukm.no/mail-256.png" width="40" /><div class="text">Send e-post til alle i rapporten</div></li>
+	<li id="sms"><img src="//ico.ukm.no/mobile-256.png" width="40" /><div class="text">Send SMS til alle i rapporten</div></li>
 </ul>
 
 <div class="clear"></div>
