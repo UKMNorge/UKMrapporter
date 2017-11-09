@@ -569,8 +569,13 @@ class rapport{
 
 	
 	public function html_init($navn=false) {
-		if(!$navn)
-			$navn = ucfirst(str_replace('_',' ',$this->name));
+		if(!$navn) {
+			if( !empty( $this->navn ) ) {
+				$navn = $this->navn;
+			} else {
+				$navn = ucfirst(str_replace('_',' ',$this->name));
+			}
+		}
 
 		$t = $this->frontInfo();
 		if ($t) {

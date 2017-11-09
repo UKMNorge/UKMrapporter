@@ -290,8 +290,8 @@ class rapporter {
 			case 'juryskjema':
 				$rapport->icon = 'gavel';
 				$rapport->link = 'rapport=analogt_juryskjema&kat=program';
-				$rapport->navn = 'Juryskjema';
-				$rapport->beskrivelse = 'Juryskjema for utskrift';
+				$rapport->navn = 'Vurderingsskjema';
+				$rapport->beskrivelse = 'For fagpanelets vurdering av innslag';
 			break;
 			case 'fylkestimeplan':
 				$rapport->icon = 'schedule';

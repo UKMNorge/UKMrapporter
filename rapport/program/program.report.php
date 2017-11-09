@@ -12,11 +12,15 @@ class valgt_rapport extends rapport {
 	 */
 	public function __construct($rapport, $kategori){
 		parent::__construct($rapport, $kategori);
-		
-		if($this->report_extended == 'tekniske_prover')
+
+		if( $this->report_extended == 'tekniske_prover' ) {
 			$this->navn = 'Tekniske prøver';
-		else
+		} elseif( $this->report_extended == 'juryskjema_utskrift' ) {
+			$this->navn = 'Vurderingsskjema for fagpanel';
+		} else {
 			$this->navn = 'Program'; 
+		}
+
 		$m = new monstring($this->pl_id);
 		$ramme = $m->forestillinger('c_start',false);
 		$r = $this->optGrp('h','Forestillinger');
@@ -488,7 +492,7 @@ class valgt_rapport extends rapport {
 									 'borderBottomSize'=>9, 'borderBottomColor'=>'000000',
 									 'borderLeftSize'=>9, 'borderLeftColor'=>'000000',
 									 );
-						woText($section, 'Juryskjema: ', 'h2');
+						woText($section, 'Vurderingsskjema: ', 'h2');
 
 						$tab = $section->addTable(array('align'=>'center'));
 						
@@ -839,7 +843,7 @@ class valgt_rapport extends rapport {
 					
 					if($this->report_extended == 'juryskjema_utskrift') {
 						echo '<div class="juryskjema">'
-								.'<div class="deltakere-label">Juryskjema</div>'
+								.'<div class="deltakere-label">Vurderingsskjema</div>'
 
 								.'<div class="left">Originalitet</div>'
 								.'<div class="right">Kreativitet</div>'
