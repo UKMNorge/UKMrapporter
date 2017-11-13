@@ -59,6 +59,7 @@ class rapporter {
 				$this->add('personer', 'alle_innslag');
 				$this->add('personer', 'inn_og_utlevering');
 				$this->add('personer', 'diplomer');
+				$this->add('personer', 'qr');
 
 				$this->add('program', 'program');
 				$this->add('program', 'tekniske_prover');
@@ -83,6 +84,7 @@ class rapporter {
 				$this->add('personer', 'alle_innslag');
 				$this->add('personer', 'inn_og_utlevering');
 				$this->add('personer', 'turneliste');
+				$this->add('personer', 'qr');
 				$this->add('personer', 'diplomer');
 				$this->add('personer', 'videresendte');
 				
@@ -105,6 +107,7 @@ class rapporter {
 				
 				$this->add('personer', 'alle_innslag');
 				$this->add('personer', 'inn_og_utlevering');
+				$this->add('personer', 'qr');
 				$this->add('personer', 'diplomer');
 				$this->add('personer', 'videresendte');
 
@@ -319,7 +322,13 @@ class rapporter {
 				$rapport->navn = 'Helårig UKM';
 				$rapport->beskrivelse = 'Alt om dine helårige arrangementer';
 			break;
-			
+
+			case 'qr':
+				$rapport->icon = 'qr';
+				$rapport->link = 'festival=qr&sort=forestilling';
+				$rapport->navn = 'QR-koder';
+				$rapport->beskrivelse = 'Lag QR-koder for dine innslag - sortert per forestilling';
+			break;			
 			default:
 			case 'default':
 				$rapport->icon = 'ladybug';

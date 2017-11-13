@@ -76,6 +76,8 @@ function UKMrapport_scriptsandstyles() {
 
 ## SHOW STATS OF PLACES
 function UKMrapport_admin() {
+	define('PLUGIN_DIR', dirname( __FILE__ ).'/' );
+
 	$TWIG = array();
 	if(isset($_GET['stat'])) {
 		$VIEW = $_GET['stat'];
