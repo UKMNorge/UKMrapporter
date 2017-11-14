@@ -59,7 +59,7 @@ if( $monstring->getInnslag()->getAntall() > 0 ) {
 		
 		$zip->add(
 			$qr->path .'.png',
-			utf8_encode($innslag->getNavn().'.png')
+			$innslag->getNavn().'.png'
 		);
 	}
 	$zipfile = new stdClass();
