@@ -150,7 +150,7 @@ class valgt_rapport extends rapport {
 			}
 			if($this->show('i_konferansier')){
 				$col++;
-				exCell(i2a($col).'1', 'Konferansiertekster', 'bold');
+				exCell(i2a($col).'1', 'Konferansiertekster (beskrivelse)', 'bold');
 			}
 
 			if($this->show('i_tekniske')){
@@ -282,7 +282,7 @@ class valgt_rapport extends rapport {
 					
 					if($this->show('i_konferansier')){
 						$col++;
-						exCell(i2a($col).$row, $i->g('td_konferansier'));
+						exCell(i2a($col).$row, $i->g('b_description') .' '. $i->g('td_konferansier'));
 					}
 
 					if($this->show('i_tekniske')){
@@ -439,7 +439,7 @@ class valgt_rapport extends rapport {
 					
 					if($this->show('i_konferansier')){
 						woText($section, 'Konferansiertekster: ', 'bold');
-						woText($section, $i->g('td_konferansier'));
+						woText($section, $i->g('b_description') .' '. $i->g('td_konferansier'));
 					}
 
 					if($this->show('i_tekniske')){
@@ -830,6 +830,7 @@ class valgt_rapport extends rapport {
 					if($this->show('i_konferansier')){
 						echo '<div class="deltakere">'
 							.'<div class="deltakere-label">Konferansiertekster:</div>'
+							.$i->g('b_description')
 							.$i->g('td_konferansier')
 							.'</div>';
 					}

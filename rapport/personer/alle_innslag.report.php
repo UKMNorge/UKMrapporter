@@ -20,7 +20,7 @@ class valgt_rapport extends rapport {
 		$this->opt($g, 'i_fylke', 'Vis fylke');
 		$this->opt($g, 'i_kommune', 'Vis kommune');
 		$this->opt($g, 'i_tekn', 'Vis tekniske behov');
-		$this->opt($g, 'i_konf', 'Vis konferansiertekster');
+		$this->opt($g, 'i_konf', 'Vis konferansiertekster (beskrivelse)');
 
 		$g = $this->optGrp('p','Info om enkeltpersoner');
 		$this->opt($g, 'p_kontaktp', 'Vis kontaktperson');
@@ -165,7 +165,7 @@ class valgt_rapport extends rapport {
 				if($this->show('i_konf')){
 					$col++;
 					excell(i2a($col).$headerRad, 'Tekst til konferansierer','bold');
-					excell(i2a($col).$rad, $inn->g('td_konferansier'));
+					excell(i2a($col).$rad, $inn->g('b_description') .' '. $inn->g('td_konferansier'));
 				}
 #				excell('A1:'.i2a($col).'1', 'Innslagsinformasjon');
 
@@ -601,7 +601,7 @@ class valgt_rapport extends rapport {
 
 				if($this->show('i_konf')){
 					woText($section, 'Tekst til konferansierer; ', 'bold');
-					woText($section, $inn->g('td_konferansier'));
+					woText($section, $inn->g('b_description') .' '.$inn->g('td_konferansier'));
 				}
 
 				$section->addTextBreak(2);
@@ -902,7 +902,7 @@ class valgt_rapport extends rapport {
 						### VIS KONFERANSIERTEKSTER
 						. ($this->show('i_konf')
 							? '<div class="label">Tekst til konferansierer: </div>'
-							. '<div class="desc">'. $inn->g('td_konferansier') .'</div>'
+							. '<div class="desc">'. $inn->g('b_description') .' '. $inn->g('td_konferansier') .'</div>'
 							: '')
 
 						### VIS UKM-TV
