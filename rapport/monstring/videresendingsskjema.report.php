@@ -56,7 +56,7 @@ class valgt_rapport extends rapport {
 			exSheetName('AVSNITT_'. $ark, $color);
 
 			/* FØRSTE RAD OVERSKRIFT */
-			exCell( 'A1:'.i2a( sizeof( $data )+1 ).'1', $group, 'bold' );
+			exCell( 'A1:'.i2a( sizeof( $data )+1 ).'1', $group, 'h1' );
 			
 			/* HEADER ROW */
 			$col = 1;
