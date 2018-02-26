@@ -85,7 +85,7 @@ class valgt_rapport extends rapport {
 			woText($c, 'Mønstring', 'bold');
 			foreach( $data as $question ) {
 				$c = $tab->addCell($colsize);
-				woText( $c, $question['title'] );
+				woText( $c, $question['title'], 'bold' );
 			}
 			foreach( $monstringsnavn as $pl_id => $pl_name ) {
 				// Hopp over de som ikke har levert hvis valgt
@@ -93,13 +93,16 @@ class valgt_rapport extends rapport {
 					continue;
 				}
 				
+				// NY RAD
 				$tab->addRow();
-
+				
+				// Mønstringsnavn
 				$c = $tab->addCell($colsize);
 				woText( $c,  $pl_name );
+				// Alle spørsmål
 				foreach( $data as $question ) {
 					$c = $tab->addCell($colsize);
-					woText( $c, $this->_styleAnswer($svar[ $pl_id ][$question['id']]) );
+					woText( $c, $this->_styleAnswer($svar[ $pl_id ][$question['id']], true) );
 				}
 			}
 			
