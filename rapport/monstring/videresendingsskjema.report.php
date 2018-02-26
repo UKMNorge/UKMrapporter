@@ -12,6 +12,10 @@ class valgt_rapport extends rapport {
 	 */
 	public function __construct($rapport, $kategori){
 		parent::__construct($rapport, $kategori);
+
+		$g = $this->optGrp('v','Visning');
+		$this->opt($g, 'v_status', 'Vis status innlevering');
+		$this->opt($g, 'v_levert', 'Kun vis svar fra de som har levert skjema');
 	}
 
 	public function generateExcel() {
@@ -65,10 +69,9 @@ class valgt_rapport extends rapport {
 		global $PHPWord;		
 		$section = $this->word_init('landscape');
 
-		foreach( $this->_data() as $key => $val)
+		foreach( $this->_data() as $key => $val) {
 			$$key = $val;
-			
-		$colsize = round(17000 / sizeof($monstringsnavn));
+		}
 
 		foreach($sporsmal as $group => $data) {
 			woText($section, $group, 'h1');
@@ -77,26 +80,27 @@ class valgt_rapport extends rapport {
 			$tab->addRow();
 
 			$c = $tab->addCell($colsize);
-			woText($c, 'Spørsmål','bold');
-			foreach($monstringsnavn as $pl_name) {
-				$c = $tab->addCell($colsize);
-				woText($c, $pl_name, 'bold');
-			}
+			woText($c, 'Mønstring', 'bold');
 			foreach( $data as $question ) {
-				$tab->addRow();
-				
 				$c = $tab->addCell($colsize);
-				woText($c, $question['title'],'bold');
-				foreach($monstringsnavn as $lokalid => $pl_name) {
+				woText( $question['title'] );
+			}
+			foreach( $monstringsnavn as $pl_id => $pl_name ) {
+				// Hopp over de som ikke har levert hvis valgt
+				if( $this->show('v_levert') && sizeof( $svar[ $pl_id ] ) == 0 ) {
+					continue;
+				}
+				
+				$tab->addRow();
+
+				$c = $tab->addCell($colsize);
+				woText( $pl_name );
+				foreach( $data as $question ) {
 					$c = $tab->addCell($colsize);
-					$answer = $this->_styleAnswer($svar[$lokalid][$question['id']], true);
-					if(is_array($answer))
-						foreach($answer as $a)
-							woText($c, $a);
-					else
-						woText($c, $answer);
+					woText( $this->_styleAnswer($svar[ $pl_id ][$question['id']]) );
 				}
 			}
+			
 			$section->addPageBreak();
 		}
 		return $this->woWrite();
@@ -141,60 +145,6 @@ class valgt_rapport extends rapport {
 		return array('sporsmal' => $sporsmal, 'monstringsnavn' => $monstringsnavn, 'svar' => $svar);
 	}
 	
-	/**
-	 * generate function
-	 * 
-	 * Genererer selve rapporten i HTML-visning
-	 *
-	 * @access public
-	 * @return void
-	 */	
-	public function generate() {
-		echo $this->html_init();
-
-		foreach( $this->_data() as $key => $val)
-			$$key = $val;
-	
-		#echo '<pre>'; var_dump($sporsmal); echo '</pre>';
-		if(!$sporsmal) {
-			echo '<h3>Det er ikke laget noe videresendingsskjema for dette fylket.</h3>';
-			echo '<p>Velg "Lag skjema for videresending" i venstremenyen.</p>';
-		}
-		else {
-			foreach($sporsmal as $group => $data) { ?>
-				<h2><?= $group ?></h2>
-				<table class="videresendingsskjema"><?php /*  style="width: <?= 120*sizeof($monstringsnavn) ?>px;"> */ ?>
-					<tr class="vss_header">
-						<th class="vss_sporsmal">Spørsmål</th>
-						<?php
-						foreach($monstringsnavn as $pl_name) { ?>
-							<th class="vss_monstring"><?= $pl_name ?></th>
-						<?php
-						} ?>
-					</tr>
-				<?php
-				foreach( $data as $question ) { ?>
-					<tr class="vss_sporsmal_rad">
-						<th class="vss_sporsmal"><?= $question['title'] ?></th>
-						<?php
-						foreach($monstringsnavn as $lokalid => $pl_name) { ?>
-							<td class="vss_monstring"><?= $this->_styleAnswer($svar[$lokalid][$question['id']]) ?></td>
-						<?php } ?>
-					</tr>
-				<?php
-				} ?>
-				</table>
-				<?php
-			} 
-		}?>
-		<script language="javascript">
-			jQuery(document).ready(function(){
-				jQuery('.videresendingsskjema tr:odd').addClass('odd');
-			});
-		</script>		
-	<?php
-	}
-	
 	private function _styleAnswer($answer, $clean=false) {
 		if($answer == 'true')
 			return 'JA';
@@ -211,20 +161,103 @@ class valgt_rapport extends rapport {
 		}
 		return $answer;
 	}
+	
+	/**
+	 * generate function
+	 * 
+	 * Genererer selve rapporten i HTML-visning
+	 *
+	 * @access public
+	 * @return void
+	 */	
+	public function generate() {
+		echo $this->html_init();
+
+		/**
+		 * SETTER:
+		 * $sporsmal
+		 * $monstringsnavn
+		 * $svar
+		**/
+		foreach( $this->_data() as $key => $val) {
+			$$key = $val;
+		}
+		
+		
+		
+		if($this->show('v_status')) {
+			?>
+			<h2>Status innlevering</h2>
+			<table class="videresendingsskjema">
+				<thead>
+					<tr>
+						<th>Mønstringsnavn</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					foreach( $monstringsnavn as $pl_id => $pl_name ) {
+						?>
+						<tr class="<?php echo sizeof( $svar[ $pl_id ] ) == 0 ? 'alert-danger' : 'alert-success' ?>">
+							<td><?php echo $pl_name ?></td>
+							<td><?php echo sizeof( $svar[ $pl_id ] ) == 0 ? 'Ikke levert' : 'Levert' ?></td>
+						</tr>
+						<?php
+					}
+					?>
+				</tbody>
+			</table>
+			<?php
+		}
+		
+		if(!$sporsmal) {
+			echo '<h3>Det er ikke laget noe videresendingsskjema for dette fylket.</h3>';
+			echo '<p>Velg "Lag skjema for videresending" i venstremenyen.</p>';
+		}
+		else {
+			foreach($sporsmal as $group => $data) { ?>
+				<h2><?= $group ?></h2>
+				<table class="videresendingsskjema"><?php /*  style="width: <?= 120*sizeof($monstringsnavn) ?>px;"> */ ?>
+					<tr class="vss_sporsmal_rad">
+						<th>Mønstring</th>
+						<?php
+						foreach( $data as $question ) {
+							echo '<th>'. $question['title'] .'</th>';
+						}
+						?>
+					</tr>
+					<?php
+					foreach( $monstringsnavn as $pl_id => $pl_name ) {
+						// Hopp over de som ikke har levert hvis valgt
+						if( $this->show('v_levert') && sizeof( $svar[ $pl_id ] ) == 0 ) {
+							continue;
+						}
+						?>
+						<tr>
+							<td><?php echo $pl_name ?></td>
+							<?php
+							foreach( $data as $question ) {
+							?>
+								<td>
+									<?php echo $this->_styleAnswer($svar[ $pl_id ][$question['id']]) ?>
+								</td>
+							<?php
+							}
+							?>
+						</tr>
+					<?php
+					}
+					?>
+				</table>
+				<?php
+			} 
+		}?>
+		<script language="javascript">
+			jQuery(document).ready(function(){
+				jQuery('.videresendingsskjema tr:odd').addClass('odd');
+			});
+		</script>		
+	<?php
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
