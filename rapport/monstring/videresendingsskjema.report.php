@@ -55,7 +55,7 @@ class valgt_rapport extends rapport {
 
 				$celle = i2a( $col ).$row;
 				if( $question['type'] == 'kontakt' ) {
-					$col += 3;
+					$col += 2;
 					$celle .= ':'. i2a( $col ).$row;
 				}
 				exCell( $celle, $question['title'], 'bold' );
@@ -84,8 +84,9 @@ class valgt_rapport extends rapport {
 						exCell( i2a( $col ).$row, $current_svar[1] );
 						$col++;
 						exCell( i2a( $col ).$row, $current_svar[2] );
+					} else {
+						exCell( i2a( $col ).$row, $current_svar );
 					}
-					exCell( i2a( $col ).$row, $current_svar );
 				}
 			}
 		}
