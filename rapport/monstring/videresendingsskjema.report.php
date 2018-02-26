@@ -155,7 +155,7 @@ class valgt_rapport extends rapport {
 				if( $r['q_type'] == 'overskrift')
 					$sporsmal_key = utf8_encode($r['q_title']);
 				else 
-					$sporsmal[$sporsmal_key][] = array('title' => utf8_encode($r['q_title']), 'id' => $r['q_id']);
+					$sporsmal[$sporsmal_key][] = array('title' => utf8_encode($r['q_title']), 'id' => $r['q_id'], 'type' => $r['q_type'] );
 			}
 		}
 		
