@@ -52,7 +52,13 @@ class valgt_rapport extends rapport {
 			/* LOOP SPØRSMÅL */
 			foreach( $data as $question ) {
 				$col++;
-				exCell( i2a( $col ).$row, $question['title'], 'bold' );
+
+				$celle = i2a( $col ).$row;
+				if( $question['type'] == 'kontakt' ) {
+					$col += 3;
+					$celle .= ':'. i2a( $col ).$row;
+				}
+				exCell( $celle, $question['title'], 'bold' );
 			}
 			
 			/* DATA ROWS */
@@ -71,8 +77,13 @@ class valgt_rapport extends rapport {
 				foreach( $data as $question ) {
 					$col++;
 					$current_svar = $this->_styleAnswer( $svar[ $pl_id ][ $question['id'] ], true );
-					if( is_array( $current_svar ) ) {
-						$current_svar = implode(' ', $current_svar );
+
+					if( is_array( $question['type'] == 'kontakt' ) ) {
+						exCell( i2a( $col ).$row, $current_svar[0] );
+						$col++;
+						exCell( i2a( $col ).$row, $current_svar[1] );
+						$col++;
+						exCell( i2a( $col ).$row, $current_svar[2] );
 					}
 					exCell( i2a( $col ).$row, $current_svar );
 				}
