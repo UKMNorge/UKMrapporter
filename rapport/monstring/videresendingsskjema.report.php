@@ -78,7 +78,7 @@ class valgt_rapport extends rapport {
 					$col++;
 					$current_svar = $this->_styleAnswer( $svar[ $pl_id ][ $question['id'] ], true );
 
-					if( is_array( $question['type'] == 'kontakt' ) ) {
+					if( $question['type'] == 'kontakt' ) {
 						exCell( i2a( $col ).$row, $current_svar[0] );
 						$col++;
 						exCell( i2a( $col ).$row, $current_svar[1] );
