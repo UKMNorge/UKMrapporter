@@ -19,15 +19,26 @@ class valgt_rapport extends rapport {
 	}
 
 	public function generateExcel() {
+		
 		global $objPHPExcel;
 		//$objPHPExcel = new PHPExcel();
 		$this->excel_init('landscape');
 		
 		exSheetName('VIDERESENDINGSSKJEMA');
-		foreach( $this->_data() as $key => $val)
+		foreach( $this->_data() as $key => $val) {
 			$$key = $val;
-			
+		}
+		
+		$ark = 1;
 		$col = $row = 1;
+
+
+		$objPHPExcel->createSheet( $ark );
+		$objPHPExcel->setActiveSheetIndex( $ark);
+		$color = 'f69a9b';
+		exSheetName('AVSNITT_'. $ark, $color);
+
+					
 		exCell(i2a($col).$row, 'Avsnitt', 'bold');
 		$col++;
 		exCell(i2a($col).$row, 'Spørsmål', 'bold');
@@ -62,6 +73,7 @@ class valgt_rapport extends rapport {
 			}
 		}
 		return $this->exWrite();
+
 	}
 
 
