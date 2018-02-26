@@ -29,6 +29,19 @@ class valgt_rapport extends rapport {
 			$$key = $val;
 		}
 		
+		$ark = 0;
+		exCell( 'A1:B1', 'Innholdsfortegnelse', 'h1' );
+
+		$row = 2;
+		exCell( 'A'.$row, 'Gruppe spørsmål', 'bold');
+		exCell( 'B'.$row, 'Excel-ark', 'bold');
+		
+		foreach($sporsmal as $group => $data) {
+			$row++;
+			$ark++;
+			exCell('A'.$row, $group , 'bold');
+			exCell('B'.$row, 'AVSNITT_'. $ark );
+		}
 		
 		/** LAG REFERANSE PÅ SIDE 1 */
 		
