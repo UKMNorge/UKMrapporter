@@ -102,7 +102,12 @@ class valgt_rapport extends rapport {
 				// Alle spørsmål
 				foreach( $data as $question ) {
 					$c = $tab->addCell($colsize);
-					woText( $c, $this->_styleAnswer($svar[ $pl_id ][$question['id']], true) );
+					
+					$current_svar = $this->_styleAnswer( $svar[ $pl_id ][ $question['id'] ], true );
+					if( is_array( $current_svar ) ) {
+						$current_svar = implode(' ', $current_svar );
+					}
+					woText( $c, $current_svar );
 				}
 			}
 			
