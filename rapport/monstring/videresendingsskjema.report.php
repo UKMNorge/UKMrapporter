@@ -29,51 +29,57 @@ class valgt_rapport extends rapport {
 			$$key = $val;
 		}
 		
-		$ark = 1;
-		$col = $row = 1;
-
-
-		$objPHPExcel->createSheet( $ark );
-		$objPHPExcel->setActiveSheetIndex( $ark);
-		$color = 'f69a9b';
-		exSheetName('AVSNITT_'. $ark, $color);
-
-					
-		exCell(i2a($col).$row, 'Avsnitt', 'bold');
-		$col++;
-		exCell(i2a($col).$row, 'Spørsmål', 'bold');
-		foreach($monstringsnavn as $pl_name) {
-			$col++;
-			exCell(i2a($col).$row.':'.i2a($col+2).$row, $pl_name, 'bold');
-			$col = $col+2;
-		}
-		$row++;
-		$col = 1;
+		
+		/** LAG REFERANSE PÅ SIDE 1 */
+		
+		$ark = 0;
 		foreach($sporsmal as $group => $data) {
+			
+			/** OPPRETT ARK */
+			$ark++;
+			$objPHPExcel->createSheet( $ark );
+			$objPHPExcel->setActiveSheetIndex( $ark);
+			$color = 'f69a9b';
+			exSheetName('AVSNITT_'. $ark, $color);
+
+			/* FØRSTE RAD OVERSKRIFT */
+			exCell( 'A1:'.i2a( sizeof( $data )+1 ), $group, 'bold' );
+			
+			/* HEADER ROW */
+			$col = 1;
+			$row = 2;
+			exCell( 'A'. $row, 'Mønstring', 'bold');
+			/* LOOP SPØRSMÅL */
 			foreach( $data as $question ) {
-				exCell(i2a($col).$row, $group, 'bold');
 				$col++;
-				exCell(i2a($col).$row, $question['title'], 'bold');
-				foreach($monstringsnavn as $lokalid => $pl_name) {
-					$answer = $this->_styleAnswer($svar[$lokalid][$question['id']], true);
-					$col++;
-					if(is_array($answer)) {
-						exCell(i2a($col).$row, $answer[0]);
-						$col++;
-						exCell(i2a($col).$row, $answer[1]);
-						$col++;
-						exCell(i2a($col).$row, $answer[2]);
-					} else {
-						exCell(i2a($col).$row.':'.i2a($col+2).$row, $answer);
-						$col += 2;
-					}
+				exCell( i2a( $col ).$row, $question['title'], 'bold' );
+			}
+			
+			/* DATA ROWS */
+			foreach( $monstringsnavn as $pl_id => $pl_name ) {
+				// Hopp over de som ikke har levert hvis valgt
+				if( $this->show('v_levert') && sizeof( $svar[ $pl_id ] ) == 0 ) {
+					continue;
 				}
+				
+				/* HVEM HAR SVART */
 				$col = 1;
 				$row++;
+				exCell( i2a( $col ).$row, $pl_name, 'bold' );
+
+				/* LOOP SPØRSMÅL */
+				foreach( $data as $question ) {
+					$col++;
+					$current_svar = $this->_styleAnswer( $svar[ $pl_id ][ $question['id'] ], true );
+					if( is_array( $current_svar ) ) {
+						$current_svar = implode(' ', $current_svar );
+					}
+					exCell( i2a( $col ).$row, $current_svar );
+				}
 			}
 		}
 		return $this->exWrite();
-
+		
 	}
 
 
