@@ -72,9 +72,11 @@ class rapporter {
 				$this->add('helarig', 'rsvp');
 			break;
 			case 'fylke':
-				$this->add('monstring', 'statistikk');
 				$this->add('monstring', 'videresendingsskjema');
-				$this->add('monstring', 'lokalkontakter');
+				$this->add('monstring', 'datablad');
+
+				$this->add('fylke', 'statistikk');
+				$this->add('fylke', 'lokalkontakter');
 
 				$this->add('kontakt', 'sms_type');
 				$this->add('kontakt', 'sms_hendelse');
@@ -139,7 +141,8 @@ class rapporter {
 	public function createKategori( $kategoriID ) {
 		switch( $kategoriID ) {
 			case 'festival':	return new kategori('festival', 'Festivalen', 'palm-tree');
-			case 'monstring':	return new kategori('monstring', 'Mønstring', 'hus');
+			case 'monstring':	return new kategori('monstring', (get_option('site_type')=='fylke'?'Festivalen':'Mønstringen'), 'hus');
+			case 'fylke':		return new kategori('fylke', 'Fylket', 'map');
 			case 'kontakt':		return new kategori('megaphone', 'Kontakt', 'megaphone');
 			case 'personer':	return new kategori('personer', 'Personer', 'people');
 			case 'program':		return new kategori('program', 'Program', 'chart');
@@ -258,15 +261,21 @@ class rapporter {
 				$rapport->navn = 'Videresendte fra din mønstring';
 				$rapport->beskrivelse = 'Kontaktinfo for deltakere videresendt fra din mønstring';
 			break;
+			case 'datablad':
+				$rapport->icon = 'clipboard';
+				$rapport->link = 'rapport=datablad&kat=monstring';
+				$rapport->navn = 'Alt fra kommunene';
+				$rapport->beskrivelse = 'Fullstendig oversikt over lokalmønstringenes videresendinger';
+			break;
 			case 'videresendingsskjema':
 				$rapport->icon = 'buss';
 				$rapport->link = 'rapport=videresendingsskjema&kat=monstring';
-				$rapport->navn = 'Videresendingsskjema';
-				$rapport->beskrivelse = 'Viser hva kommunene har skrevet i videresendingsskjemaet';
+				$rapport->navn = 'Videresendings-skjema';
+				$rapport->beskrivelse = 'Viser hva kommunene har skrevet i videresendings-skjemaet';
 			break;
 			case 'lokalkontakter':
 				$rapport->icon = 'user-black';
-				$rapport->link = 'rapport=lokalkontakter&kat=monstring';
+				$rapport->link = 'rapport=lokalkontakter&kat=fylket';
 				$rapport->navn = 'Lokalkontakter';
 				$rapport->beskrivelse = 'Lister ut alle lokalkontakter i fylket';
 			break;
