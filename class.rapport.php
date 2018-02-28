@@ -1,6 +1,9 @@
 <?php
 
 class rapport{
+	
+	var $monstring_v2 = null;
+	
 	/********************************************************************************/
 	/*									PUBLIC										*/
 	/********************************************************************************/
@@ -33,6 +36,13 @@ class rapport{
 
 		$this->pl_id = $m->g('pl_id');
 		return true;
+	}
+	
+	public function getMonstring() {
+		if( null == $this->monstring_v2 ) {
+			$this->monstring_v2 = new monstring_v2( $this->pl_id );
+		}
+		return $this->monstring_v2;
 	}
 	
 	public function _postConstruct(){	
