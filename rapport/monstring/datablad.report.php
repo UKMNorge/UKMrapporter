@@ -14,8 +14,6 @@ class valgt_rapport extends rapport {
 	 */
 	public function __construct($rapport, $kategori){
 		parent::__construct($rapport, $kategori);
-		$g = $this->optGrp('i','Hvilke kontaktpersoner');
-		$this->opt($g, 'i_kontakter', 'Alle som er registrert på lokalsidene');
 		
 		$this->_postConstruct();	
 	}
@@ -177,7 +175,7 @@ class valgt_rapport extends rapport {
 						echo '<strong>'. $element->title .': </strong>';
 						switch( $element->type ) {
 							case 'janei':
-								echo $element->value == 'true' ? 'JA' : 'NEI' .'<br />';
+								echo $element->value == 'true' ? 'JA' : 'NEI';
 								break;
 							case 'kontakt':
 								echo $element->value->navn . ' - '.
@@ -185,9 +183,10 @@ class valgt_rapport extends rapport {
 									'<a href="mailto:'.$element->value->epost .'" class="UKMMAIL">'. $element->value->epost .'</a>';
 								 break;
 							default:
-								echo $element->value .'<br />';
+								echo $element->value;
 								break;
 						}
+						echo '<br />';
 					}
 				}
 			}
