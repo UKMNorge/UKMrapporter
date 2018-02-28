@@ -20,15 +20,7 @@ class valgt_rapport extends rapport {
 	
 	
 	public function generateExcel() {
-		global $objPHPExcel;
-		//$objPHPExcel = new PHPExcel();
-		$this->excel_init('landscape');
-		exSheetName('LOKALKONTAKTER');
-
-		$row = 1;
-	
-		exCell('A'.$row, 'Navn','bold');
-		return $this->exWrite();
+		return false;
 
 	}
 	
@@ -42,7 +34,7 @@ class valgt_rapport extends rapport {
 	 */	
 	public function generateWord() {
 		global $PHPWord;		
-		$section = $this->word_init('landscape');
+		$section = $this->word_init('portrait');
 
 		$lokalmonstringer = stat_monstringer_v2::utenGjester( 
 			stat_monstringer_v2::getAllByFylke(
@@ -52,14 +44,16 @@ class valgt_rapport extends rapport {
 		);
 		
 		foreach( $lokalmonstringer as $lokalmonstring ) {
-			woText($section, $lokalmonstring->getNavn(), 'h1');
+			$section = $PHPWord->createSection(array('orientation' => 'portrait'));
 			
+			woText( $section, $lokalmonstring->getNavn(), 'h1');			
 			if( $this->getMonstring()->harSkjema() ) {
 				$skjema = $lokalmonstring->getSkjema()->getQuestionsWithAnswers();
 
 				foreach( $skjema as $element ) {
 					if( $element->type == 'overskrift' ) {
-						woText($section, $element->title, 'h3');
+#						$section->addPageBreak();
+						woText($section, $element->title, 'h2');
 					} else {
 						woText($section, $element->title .':', 'bold');
 						switch( $element->type ) {
@@ -77,7 +71,8 @@ class valgt_rapport extends rapport {
 				}
 			}
 			
-			woText($section, 'Videresendte', 'h2');
+			$section = $PHPWord->createSection(array('orientation' => 'landscape'));
+			woText($section, 'Videresendte fra '. $lokalmonstring->getNavn(), 'h2');
 			
 			$tab = $section->addTable(array('align'=>'center'));
 			$tab->addRow();
@@ -99,13 +94,13 @@ class valgt_rapport extends rapport {
 			foreach( $lokalmonstring->getInnslag()->getAll() as $innslag ) {
 				if( $this->getMonstring()->getInnslag()->har( $innslag->getId() ) ) {
 
+					$tab->addRow();
+					
 					woText( $tab->addCell( $bredde_innslag ), $innslag->getNavn() );
 					woText( $tab->addCell( $bredde_type ), $innslag->getType() );
-					woText( $tab->addCell( $bredde_kontakt ), 
-						$innslag->getKontaktperson()->getNavn() .' - '.
-						$innslag->getKontaktperson()->getMobil() .' - '.
-						$innslag->getKontaktperson()->getEpost()
-					);
+					$celle = $tab->addCell( $bredde_kontakt );
+					woText( $celle, $innslag->getKontaktperson()->getNavn() );
+					woText( $celle, $innslag->getKontaktperson()->getMobil() .' - '. $innslag->getKontaktperson()->getEpost() );
 
 					if( $innslag->getType()->harTitler() ) {
 						// PERSONER
@@ -138,7 +133,6 @@ class valgt_rapport extends rapport {
 					}
 				}
 			}
-			$section->addPageBreak();
 		}
 		return $this->woWrite();
 	}
