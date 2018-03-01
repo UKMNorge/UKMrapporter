@@ -343,7 +343,7 @@ class valgt_rapport extends rapport {
 	 * getMonstring
 	 * Hjelper for å hente mønstringsdata
 	**/
-	private function getMonstring() {
+	public function getMonstring() {
 		if( null == $this->monstring ) {
 			$this->monstring = new monstring_v2( $this->pl_id );
 		}
