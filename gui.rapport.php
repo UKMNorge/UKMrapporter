@@ -69,7 +69,7 @@ else
 				if(sizeof($grp_formats) < 15) {
 					foreach($grp_formats as $key => $info) { ?>
 						<li class="option" id="<?= preg_replace('/[^A-Za-z0-9_]/', '', $info['name'])?>">
-						<label><input type="<?= $info['type']?>" name="formats[]" <?= ($info['checked'] ? 'checked="checked"':'') ?>value="<?= preg_replace('/[^A-Za-z0-9_]/', '',$info['name'])?>" /><?= $info['name'] ?></label>
+						<label><input type="<?= $info['type']?>" name="formats[<?= $info['gruppe'] ?>][]" <?= ($info['checked'] ? 'checked="checked"':'') ?>value="<?= preg_replace('/[^A-Za-z0-9_]/', '',$info['name'])?>" /><?= $info['name'] ?></label>
 						</li>
 					<?php
 					}
@@ -79,7 +79,7 @@ else
 						$format_options_as_text .= '<option value="'.$info['name'].'">'.$info['name'].'</option>';
 					} ?>
 					<li class="option" id="<?= $info['name']?>">
-					<select name="formats[]"><?= $format_options ?></select>
+					<select name="formats[<?= $info['gruppe'] ?>][]"><?= $format_options ?></select>
 					</li>
 				<?php } ?>
 				</ul>

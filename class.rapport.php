@@ -254,15 +254,18 @@ class rapport{
 	 * @return array options and states
 	 */
 	 public function get_formats() {
-	 	if(is_array($this->formatGrps))
- 		foreach($this->formatGrps as $key => $name) {
- 			foreach($this->format[$key] as $optKey => $optName) {
-				if($this->formatGrps_type[$key]=='radio')
-					$state = $this->_log_mostPop($this->format[$key], $optKey);
-	 			$options[$name][$optKey] = array('checked'=>$state,
-	 											 'name'=>$optName,
-	 											 'type'=>$this->formatGrps_type[$key]
-	 											 );
+	 	if(is_array($this->formatGrps)) {
+	 		foreach($this->formatGrps as $key => $name) {
+	 			foreach($this->format[$key] as $optKey => $optName) {
+					if($this->formatGrps_type[$key]=='radio') {
+						$state = $this->_log_mostPop($this->format[$key], $optKey);
+					}
+		 			$options[$name][$optKey] = array('gruppe' => $key,
+		 											 'checked'=>$state,
+		 											 'name'=>$optName,
+		 											 'type'=>$this->formatGrps_type[$key]
+		 											 );
+				}
 			}
 		}	
 		return $options;

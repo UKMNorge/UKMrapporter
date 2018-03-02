@@ -35,7 +35,7 @@ class extended_rapport extends valgt_rapport {
 		unset($this->optGrps['i']);
 		unset($this->opts['i']);	
 		
-		$b = $this->formatGrp('n', 'Flytt teksten lengre ned');
+		$b = $this->formatGrp('n', 'Flytt teksten lengre ned', 'radio');
 		$this->format($b, 'n_ett', 'Ett hakk');
 		$this->format($b, 'n_to', 'To hakk');
 		$this->format($b, 'n_tre', 'Tre hakk');

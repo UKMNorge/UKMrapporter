@@ -12,7 +12,18 @@ function UKMrapport_ajax(){
 	if($season==false)
 		die('<h3>Beklager, finner ikke data for '.$_POST['season'].'-sesongen</h3>');
 	$options = $r->setShow($_POST['options']);
-	$formats = $r->setShowFormat($_POST['formats']);
+	
+	$tmp_formats = [];
+	foreach( $_POST['formats'] as $key => $val ) {
+		if( is_array( $val ) ) {
+			$tmp_formats = array_merge( $tmp_formats, $val );
+		} else {
+			$tmp_formats[] = $val;
+		}
+	}
+	
+#	$formats = $r->setShowFormat($_POST['formats']);
+	$formats = $r->setShowFormat( $tmp_formats );
 	
 	if(isset($_POST['word']))
 		$log = 'word';
