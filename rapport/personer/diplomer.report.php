@@ -33,7 +33,15 @@ class extended_rapport extends valgt_rapport {
 		unset($this->helper_files);
 		
 		unset($this->optGrps['i']);
-		unset($this->opts['i']);		
+		unset($this->opts['i']);	
+		
+		$b = $this->formatGrp('n', 'Flytt teksten lengre ned', 'radio');
+		$this->format($b, 'n_ett', 'Ett hakk');
+		$this->format($b, 'n_to', 'To hakk');
+		$this->format($b, 'n_tre', 'Tre hakk');
+		$this->format($b, 'n_fire', 'Fire hakk');
+		$this->format($b, 'n_fem', 'Fem hakk');
+	
 /*
 		$unset_opts['i']['i_katogsjan']	= true;
 		$unset_opts['i']['i_varig']		= true;
@@ -99,7 +107,20 @@ class extended_rapport extends valgt_rapport {
 					
 					// TABELLEN OG TOM ØVERSTE CELLE (placeholder / spacetaker? :p)
 					$tab = $section->addTable();
-					$tab->addRow(12350);
+
+					if( $this->showFormat('n_ett') ) {
+						$tab->addRow(12850);
+					} elseif( $this->showFormat('n_to') ) {
+						$tab->addRow(13350);
+					} elseif( $this->showFormat('n_tre') ) {
+						$tab->addRow(13850);
+					} elseif( $this->showFormat('n_fire') ) {
+						$tab->addRow(14350);
+					} elseif( $this->showFormat('n_fem') ) {
+						$tab->addRow(14850);
+					} else {
+						$tab->addRow(12350);
+					}
 					$c = $tab->addCell(11000);
 					woText($c, ' ');
 					
