@@ -14,11 +14,13 @@ function UKMrapport_ajax(){
 	$options = $r->setShow($_POST['options']);
 	
 	$tmp_formats = [];
-	foreach( $_POST['formats'] as $key => $val ) {
-		if( is_array( $val ) ) {
-			$tmp_formats = array_merge( $tmp_formats, $val );
-		} else {
-			$tmp_formats[] = $val;
+	if( is_array( $_POST['formats'] ) ) {
+		foreach( $_POST['formats'] as $key => $val ) {
+			if( is_array( $val ) ) {
+				$tmp_formats = array_merge( $tmp_formats, $val );
+			} else {
+				$tmp_formats[] = $val;
+			}
 		}
 	}
 	
