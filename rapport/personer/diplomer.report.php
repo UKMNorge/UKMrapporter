@@ -35,7 +35,7 @@ class extended_rapport extends valgt_rapport {
 		unset($this->optGrps['i']);
 		unset($this->opts['i']);	
 		
-		$b = $this->formatGrp('n', 'Flytt teksten lengre ned', 'radio');
+		$b = $this->formatGrp('n', 'Flytt teksten lengre ned');
 		$this->format($b, 'n_ett', 'Ett hakk');
 		$this->format($b, 'n_to', 'To hakk');
 		$this->format($b, 'n_tre', 'Tre hakk');
@@ -109,15 +109,15 @@ class extended_rapport extends valgt_rapport {
 					$tab = $section->addTable();
 
 					if( $this->showFormat('n_ett') ) {
-						$tab->addRow(12850);
+						$tab->addRow(12450);
 					} elseif( $this->showFormat('n_to') ) {
-						$tab->addRow(13350);
+						$tab->addRow(12550);
 					} elseif( $this->showFormat('n_tre') ) {
-						$tab->addRow(13850);
+						$tab->addRow(12650);
 					} elseif( $this->showFormat('n_fire') ) {
-						$tab->addRow(14350);
+						$tab->addRow(12750);
 					} elseif( $this->showFormat('n_fem') ) {
-						$tab->addRow(14850);
+						$tab->addRow(12850);
 					} else {
 						$tab->addRow(12350);
 					}
