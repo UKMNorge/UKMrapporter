@@ -54,6 +54,8 @@ class valgt_rapport extends rapport {
 		$this->excel_init('landscape');
 		
 		exSheetName('INNSLAG', '6dc6c1');
+		$rad = 1;
+		$col = 1;
 		
 		$navn = 'Videresendte';
 		$section = $this->word_init('portrait', $navn);
