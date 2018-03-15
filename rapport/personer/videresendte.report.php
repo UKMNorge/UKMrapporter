@@ -55,9 +55,11 @@ class valgt_rapport extends rapport {
 		
 		exSheetName('INNSLAG', '6dc6c1');
 		
-		$rad = 1;
-		$col = 1;
-		$videresendte = $this->m->videresendte();
+		$navn = 'Videresendte';
+		$section = $this->word_init('portrait', $navn);
+		$monstring = new monstring_v2( get_option('pl_id') );
+		$videresend_til = $this->getVideresendTil( $monstring );
+		$videresendte = $this->getVideresendte();
 
 		// HEADERS
 		exCell(i2a($col).$rad, 'Innslagsnavn', 'bold'); $col++;
@@ -79,62 +81,61 @@ class valgt_rapport extends rapport {
 		}
 			
 		// Innslag
-		foreach ($videresendte as $v) {
-			$innslag = new innslag($v['b_id']);
-			if ($this->show('i_kommune')) {
-				$innslag->loadGEO();
+		foreach ($videresendte as $innslag) {
+			#### Kontaktperson
+			if( $monstring->getType() == 'kommune' ) {
+				$personer = $innslag->getPersoner()->getAllVideresendt( $videresend_til[ $innslag->getFylke()->getId() ] );
+			} else {
+				$personer = $innslag->getPersoner()->getAllVideresendt( array_pop( $videresend_til ) );
 			}
 			
 			// Hvis kontaktperson skal vises
 			if( $this->show('h_kontaktp') ) {
 				$rad++;
 				#### Kontaktperson
-				$kontaktperson = $innslag->kontaktperson();
+				$kontaktperson = $innslag->getKontaktperson();
 				$col = 1;
-				exCell(i2a($col).$rad, $v['b_name']); 
+				exCell(i2a($col).$rad, $innslag->getNavn()); 
 				$col++;
-				exCell(i2a($col).$rad, ( $kontaktperson->get('p_firstname')
-											. ' '
-											. $kontaktperson->get('p_lastname')
-											. ($this->show('h_vis') ? ' (kontaktperson)' : '')
-											)
+				exCell(i2a($col).$rad, ( $kontaktperson->getNavn()
+										. ($this->show('h_vis') ? ' (kontaktperson)' : '')
+										)
 
-					); // Kontaktperson-navn
+				); // Kontaktperson-navn
 				$col++;
 				if( $this->show('p_mobil') ) {
-					exCell(i2a($col).$rad, $kontaktperson->get('p_phone'));
+					exCell(i2a($col).$rad, $kontaktperson->getMobil());
 					$col++;
 				}
 				if( $this->show('p_epost') ) {
-					exCell(i2a($col).$rad, $kontaktperson->get('p_email'));
+					exCell(i2a($col).$rad, $kontaktperson->getEpost());
 					$col++;
 				}
 				if( $this->show('i_kommune') ) {
-					exCell(i2a($col).$rad, $innslag->get('kommune'));
+					exCell(i2a($col).$rad, $innslag->getKommune()->getNavn());
 				}
 			}
 
 			## Personer i innslaget
 			if ($this->show('h_vis')) {
-				$personer = $innslag->personObjekter();
 				foreach($personer as $person) {
 					$col = 1; 
 					$rad++;
-					exCell(i2a($col).$rad, $v['b_name']); 
+					exCell(i2a($col).$rad, $innslag->getNavn()); 
 					$col++;
-					exCell(i2a($col).$rad, $person->get('p_firstname'). ' '. $person->get('p_lastname')); // Kontaktperson-navn
+					exCell(i2a($col).$rad, $person->getNavn());
 					$col++;
 
 					if( $this->show('p_mobil') ) {
-						exCell(i2a($col).$rad, $person->get('p_phone'));
+						exCell(i2a($col).$rad, $person->getMobil());
 						$col++;
 					}
 					if( $this->show('p_epost') ) {
-						exCell(i2a($col).$rad, $person->get('p_email'));
+						exCell(i2a($col).$rad, $person->getEpost());
 						$col++;
 					}
 					if( $this->show('i_kommune') ) {
-						exCell(i2a($col).$rad, $innslag->get('kommune'));
+						exCell(i2a($col).$rad, $innslag->getKommune()->getNavn());
 					}
 				}
 			}
@@ -155,33 +156,36 @@ class valgt_rapport extends rapport {
 		global $objPHPExcel;
 		$navn = 'Videresendte';
 		$section = $this->word_init('portrait', $navn);
-		$videresendte = $this->m->videresendte();
+		$monstring = new monstring_v2( get_option('pl_id') );
+		$videresend_til = $this->getVideresendTil( $monstring );
+		$videresendte = $this->getVideresendte();
 
-		foreach ($videresendte as $v) {
-			// Prep
-			$innslag = new innslag($v['b_id']);
+		foreach ($videresendte as $innslag) {
+		#### Kontaktperson
 			$col = 1;
 			$rad++;
-			$innslag->loadGEO();
-			$personer = $innslag->personer();
-			$kontaktperson = $innslag->kontaktperson();
+			$kontaktperson = $innslag->getKontaktperson();
+			if( $monstring->getType() == 'kommune' ) {
+				$personer = $innslag->getPersoner()->getAllVideresendt( $videresend_til[ $innslag->getFylke()->getId() ] );
+			} else {
+				$personer = $innslag->getPersoner()->getAllVideresendt( array_pop( $videresend_til ) );
+			}
 
 			// Lag header
-			$text = $innslag->get('b_name');
+			$text = $innslag->getNavn();
 			if ($this->show('i_kommune'))
-				$text .= ' ('.$innslag->get('kommune').')';
+				$text .= ' ('.$innslag->getKommune()->getNavn().')';
 
 			woText($section, $text, 'h2');
 			// Lag paragraf
 			if ($this->show('h_kontaktp')) {
-				$text = 'Kontaktperson: '.$kontaktperson->get('p_firstname'). ' '. $kontaktperson->get('p_lastname'). ', '. $kontaktperson->get('p_phone').', '.$kontaktperson->get('p_email').'.';
+				$text = 'Kontaktperson: '.$kontaktperson->getNavn(). ', '. $kontaktperson->getMobil().', '.$kontaktperson->getEpost().'.';
 				woText($section, $text);
 			}
 			// List opp deltakere
 			if ($this->show('h_vis')) {
-				$personer = $innslag->personObjekter();
 				foreach($personer as $person) {
-					$pText = $person->get('p_firstname').' '.$person->get('p_lastname').', '.$person->get('p_phone').', '.$person->get('p_email').'.';
+					$pText = $person->getNavn().', '.$person->getMobil().', '.$person->getEpost().'.';
 					woText($section, $pText);
 				}
 			}
@@ -199,8 +203,10 @@ class valgt_rapport extends rapport {
 	 */	
 	public function generate() {
 		echo '<h3>Videresendte fra '.$this->m->get('pl_name').'</h3>';
-		$videresendte = $this->m->videresendte();
-	
+		$monstring = new monstring_v2( get_option('pl_id') );
+		$videresend_til = $this->getVideresendTil( $monstring );
+		$videresendte = $this->getVideresendte();
+		
 	#### Formatted output:
 
 		if(empty($videresendte)){
@@ -218,50 +224,48 @@ class valgt_rapport extends rapport {
 		echo ($this->show('i_kommune')) ? '<td>Kommune</td>' : '';
 		echo '</tr>';
 
-		foreach ($videresendte as $v) {
-
-			$innslag = new innslag($v['b_id']);
-			if ($this->show('i_kommune')) {
-				$innslag->loadGEO();
-			}
+		foreach ($videresendte as $innslag) {
 		#### Kontaktperson
-			$kontaktperson = $innslag->kontaktperson();
-
+			$kontaktperson = $innslag->getKontaktperson();
 
 			## Innslag
 			echo '<tr>';
-			echo '<td>'.$innslag->get('b_name').'</td>';
+			echo '<td>'.$innslag->getNavn().'</td>';
 
 			// Hvis kontaktperson skal vises
 			if( $this->show('h_kontaktp') ) {
 				echo '<td>'
-					.  $kontaktperson->get('p_firstname')
-					.  ' '
-					.  $kontaktperson->get('p_lastname')
+					.  $kontaktperson->getNavn()
 					. ($this->show('h_vis') ? ' <small>(kontaktperson)</small>' : '')
 					. '</td>';
-				echo $this->show('p_mobil') ? '<td class="mobil UKMSMS">'.$kontaktperson->get('p_phone').'</td>' : '';
-				echo $this->show('p_epost') ? '<td class="UKMMAIL epost">'.$kontaktperson->get('p_email').'</td>' : '';
+				echo $this->show('p_mobil') ? '<td class="mobil UKMSMS">'.$kontaktperson->getMobil().'</td>' : '';
+				echo $this->show('p_epost') ? '<td class="UKMMAIL epost">'.$kontaktperson->getEpost().'</td>' : '';
 			// Hvis kontaktpersonen ikke skal vises
 			} else { 
 				echo $this->show('h_vis') ?'<td></td>' : '';
 				echo $this->show('p_mobil') ? '<td></td>' : '';
 				echo $this->show('p_epost') ? '<td></td>' : '';
 			}
-			echo ($this->show('i_kommune')) ? '<td class="kommune">'.$innslag->get('kommune').'</td>' : '';
+			echo ($this->show('i_kommune')) ? '<td class="kommune">'.$innslag->getKommune()->getNavn().'</td>' : '';
 
 			echo '</tr>';
 	
 			## Personer i innslaget
 			if ($this->show('h_vis')) {
-				$personer = $innslag->personObjekter();
+				
+				if( $monstring->getType() == 'kommune' ) {
+					$personer = $innslag->getPersoner()->getAllVideresendt( $videresend_til[ $innslag->getFylke()->getId() ] );
+				} else {
+					$personer = $innslag->getPersoner()->getAllVideresendt( array_pop( $videresend_til ) );
+				}
+
 				foreach($personer as $person) {
 					echo '<tr>';
 					echo '<td></td>'; // ikke vis innslagsnavnet per person
-					echo '<td class="name">'.$person->get('p_firstname').' '.$person->get('p_lastname').'</td>';
-					echo ($this->show('p_mobil') ) ? '<td class="mobil UKMSMS">'.$person->get('p_phone').'</td>' : '';
-					echo ($this->show('p_epost') ) ? '<td class="epost UKMMAIL">'.$person->get('p_email').'</td>' : '';
-					echo ($this->show('i_kommune')) ? '<td class="kommune">'.$innslag->get('kommune').'</td>' : '';
+					echo '<td class="name">'.$person->getNavn() .'</td>';
+					echo ($this->show('p_mobil') ) ? '<td class="mobil UKMSMS">'. $person->getMobil() .'</td>' : '';
+					echo ($this->show('p_epost') ) ? '<td class="epost UKMMAIL">'. $person->getEpost() .'</td>' : '';
+					echo ($this->show('i_kommune')) ? '<td class="kommune">'. $innslag->getKommune()->getNavn() .'</td>' : '';
 					echo '</tr>';
 				}
 			}
@@ -270,5 +274,35 @@ class valgt_rapport extends rapport {
 		echo '</ul>';
 	}
 
+	public function getVideresendte() {
+		$monstring = new monstring_v2( get_option('pl_id') );
+		$videresend_til = $this->getVideresendTil( $monstring );
+	
+		$alle_innslag = [];
+		foreach( $videresend_til as $monstring_videre) {
+			$alle_videresendte = $monstring->getInnslag()->getVideresendte( $monstring_videre );
+			
+			foreach( $alle_videresendte as $innslag ) {
+				$alle_innslag[] = $innslag;
+			}
+			
+		}
+
+		return $alle_innslag;
+	}
+
+	public function getVideresendTil( $monstring ) {	
+		if( $monstring->getType() == 'kommune' ) {
+			$fylkesmonstringer = $monstring->getFylkesMonstringer();
+			
+			foreach( $fylkesmonstringer as $fylkesmonstring ) {
+				$videresend_til[ $fylkesmonstring->getFylke()->getId() ] = $fylkesmonstring;
+			}
+		} else {
+			$videresend_til = [ stat_monstringer_v2::land( $monstring->getSesong() ) ];
+		}
+		
+		return $videresend_til;
+	}
 
 }
