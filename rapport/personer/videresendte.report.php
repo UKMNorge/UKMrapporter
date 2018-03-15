@@ -60,8 +60,7 @@ class valgt_rapport extends rapport {
 		$navn = 'Videresendte';
 		$section = $this->word_init('portrait', $navn);
 		$monstring = new monstring_v2( get_option('pl_id') );
-		$videresend_til = $this->getVideresendTil( $monstring );
-		$videresendte = $this->getVideresendte();
+		$videresendte = $monstring->getInnslag()->getVideresendte();
 
 		// HEADERS
 		exCell(i2a($col).$rad, 'Innslagsnavn', 'bold'); $col++;
@@ -84,12 +83,7 @@ class valgt_rapport extends rapport {
 			
 		// Innslag
 		foreach ($videresendte as $innslag) {
-			#### Kontaktperson
-			if( $monstring->getType() == 'kommune' ) {
-				$personer = $innslag->getPersoner()->getAllVideresendt( $videresend_til[ $innslag->getFylke()->getId() ] );
-			} else {
-				$personer = $innslag->getPersoner()->getAllVideresendt( array_pop( $videresend_til ) );
-			}
+			$personer = $innslag->getPersoner()->getAllVideresendt( $innslag->getContext()->getVideresendTil() );
 			
 			// Hvis kontaktperson skal vises
 			if( $this->show('h_kontaktp') ) {
@@ -159,19 +153,14 @@ class valgt_rapport extends rapport {
 		$navn = 'Videresendte';
 		$section = $this->word_init('portrait', $navn);
 		$monstring = new monstring_v2( get_option('pl_id') );
-		$videresend_til = $this->getVideresendTil( $monstring );
-		$videresendte = $this->getVideresendte();
+		$videresendte = $monstring->getInnslag()->getVideresendte();
 
 		foreach ($videresendte as $innslag) {
 		#### Kontaktperson
 			$col = 1;
 			$rad++;
 			$kontaktperson = $innslag->getKontaktperson();
-			if( $monstring->getType() == 'kommune' ) {
-				$personer = $innslag->getPersoner()->getAllVideresendt( $videresend_til[ $innslag->getFylke()->getId() ] );
-			} else {
-				$personer = $innslag->getPersoner()->getAllVideresendt( array_pop( $videresend_til ) );
-			}
+			$personer = $innslag->getPersoner()->getAllVideresendt( $innslag->getContext()->getVideresendTil() );
 
 			// Lag header
 			$text = $innslag->getNavn();
@@ -206,8 +195,7 @@ class valgt_rapport extends rapport {
 	public function generate() {
 		echo '<h3>Videresendte fra '.$this->m->get('pl_name').'</h3>';
 		$monstring = new monstring_v2( get_option('pl_id') );
-		$videresend_til = $this->getVideresendTil( $monstring );
-		$videresendte = $this->getVideresendte();
+		$videresendte = $monstring->getInnslag()->getVideresendte();
 		
 	#### Formatted output:
 
@@ -254,12 +242,7 @@ class valgt_rapport extends rapport {
 	
 			## Personer i innslaget
 			if ($this->show('h_vis')) {
-				
-				if( $monstring->getType() == 'kommune' ) {
-					$personer = $innslag->getPersoner()->getAllVideresendt( $videresend_til[ $innslag->getFylke()->getId() ] );
-				} else {
-					$personer = $innslag->getPersoner()->getAllVideresendt( array_pop( $videresend_til ) );
-				}
+				$personer = $innslag->getPersoner()->getAllVideresendt( $innslag->getContext()->getVideresendTil() );
 
 				foreach($personer as $person) {
 					echo '<tr>';
@@ -275,36 +258,4 @@ class valgt_rapport extends rapport {
 
 		echo '</ul>';
 	}
-
-	public function getVideresendte() {
-		$monstring = new monstring_v2( get_option('pl_id') );
-		$videresend_til = $this->getVideresendTil( $monstring );
-	
-		$alle_innslag = [];
-		foreach( $videresend_til as $monstring_videre) {
-			$alle_videresendte = $monstring->getInnslag()->getVideresendte( $monstring_videre );
-			
-			foreach( $alle_videresendte as $innslag ) {
-				$alle_innslag[] = $innslag;
-			}
-			
-		}
-
-		return $alle_innslag;
-	}
-
-	public function getVideresendTil( $monstring ) {	
-		if( $monstring->getType() == 'kommune' ) {
-			$fylkesmonstringer = $monstring->getFylkesMonstringer();
-			
-			foreach( $fylkesmonstringer as $fylkesmonstring ) {
-				$videresend_til[ $fylkesmonstring->getFylke()->getId() ] = $fylkesmonstring;
-			}
-		} else {
-			$videresend_til = [ stat_monstringer_v2::land( $monstring->getSesong() ) ];
-		}
-		
-		return $videresend_til;
-	}
-
 }
