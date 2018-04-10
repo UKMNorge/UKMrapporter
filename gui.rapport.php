@@ -111,7 +111,7 @@ else
 	<li id="skrivut"><img src="//ico.ukm.no/print-256.png" width="40" /><div class="text">Skriv ut</div></li>
 	<li id="word"><img src="//ico.ukm.no/word-mac-256.png" width="40" /><div class="text">Last ned som Word-dokument</div></li>
 	<li id="excel"><img src="//ico.ukm.no/excel-mac-256.png" width="40" /><div class="text">Last ned som Excel-dokument</div></li>
-		<?php if( 'program' == $_GET['rapport'] ) { ?>
+		<?php if( is_super_admin() && 'program' == $_GET['rapport'] ) { ?>
 			<div class="col-xs-8">&nbsp;</div>
 			<br /><br /><br /><br />
 			<a href="#" id="csv" class="clickable">Last ned som CSV-dokument</a>
