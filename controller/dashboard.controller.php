@@ -42,6 +42,7 @@ class rapporter {
 		switch( $this->type ) {
 			case 'land':
 				$this->add('monstring', 'statistikk');
+				$this->add('monstring', 'nominerte');
 
 				$this->add('festival', 'reise');
 				$this->add('festival', 'mat');
@@ -153,6 +154,12 @@ class rapporter {
 	public function createRapport( $rapportID ) {
 		$rapport = new stdClass();
 		switch( $rapportID ) {
+			case 'nominerte':
+				$rapport->icon = 'babushka';
+				$rapport->link = 'festival=nominerte';
+				$rapport->navn = 'Nominerte';
+				$rapport->beskrivelse = 'Datablad om alle nominerte';
+			break;
 			case 'reise':
 				$rapport->icon = 'buss';
 				$rapport->link = 'festival=reise';

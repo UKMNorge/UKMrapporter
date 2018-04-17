@@ -1,0 +1,94 @@
+<style>
+	.mt-5 {
+		margin-top: 2em;
+	}
+	
+	.label-as-badge {
+		border-radius: 1em;
+	}
+</style>
+
+<img src="//ico.ukm.no/babushka-128.png" width="150" class="pull-right float-right" style="margin: 2em;" />
+<h1>
+	Alle nominerte:
+	{% if type == 'arrangor' %}
+		Arrangører
+	{% elseif type == 'media' %}
+		UKM Media
+	{% elseif type == 'konferansier' %}
+		Konferansierer
+	{% else %}
+		Velg type
+	{% endif %}
+</h1>
+
+{% if type == 'velg' %}
+	<p>
+		<a href="?page={{ GET('page') }}&festival=nominerte&type=arrangor" class="btn btn-primary">Arrangører</a>
+		&nbsp; 
+		<a href="?page={{ GET('page') }}&festival=nominerte&type=media" class="btn btn-primary">Media</a>
+		&nbsp; 
+		<a href="?page={{ GET('page') }}&festival=nominerte&type=konferansier" class="btn btn-primary">Konferansierer</a>
+	</p>
+{% else %}
+	
+	<p class="lead">OBS: også deltakere som har fylt ut skjema, men ikke blitt nominert fra fylkesnivå vises i listen!</p>
+	
+	<a href="{{ link }}" class="btn btn-success btn-large">Last ned word-fil</a>
+	
+	<h2>Status nominasjoner</h2>
+	
+	{% for fylke in fylker %}
+		<h3 class="mt-5">
+			{{ fylke.getNavn() }}
+			<label class="label label-{{ nominerte[ fylke.getId() ]|length == 0 ? 'danger' : 'success' }} label-as-badge small">
+				{{ nominerte[ fylke.getId() ]|length }}
+			</label>
+		</h3>
+		
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Navn</th>
+					<th>Status</th>
+					<th>Skjema voksen</th>
+					<th>Skjema ungdom</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				{% for nominert in nominerte[ fylke.getId() ] %}
+					<tr>
+						<td>{{ nominert.getNavn() }}</td>
+						<td>
+							{% if nominert.erVideresendtTil( festivalen ) %}
+								<img src="//ico.ukm.no/check-32.png" width="16" />
+								Videresendt
+							{% elseif nominert.getNominasjon( festivalen ).erNominert() %}
+								<img src="//ico.ukm.no/babushka-32.png" width="16" />
+								Nominert
+							{% else %}
+								{% if nominert.getNominasjon( festivalen ).harVoksenSkjema() and nominert.getNominasjon( festivalen ).harDeltakerskjema() %}
+									<img src="//ico.ukm.no/circle-green-32.png" width="12" />&nbsp;
+								{% else %}
+									<img src="//ico.ukm.no/circle-red-32.png" width="12" />&nbsp;
+								{% endif %}
+								Ikke nominert
+							{% endif %}
+						</td>
+						<td class="text-{{ nominert.getNominasjon( festivalen ).harVoksenskjema() ? 'success' : 'error' }}">
+							Har {{ not nominert.getNominasjon( festivalen ).harVoksenskjema() ? 'ikke' }} voksenskjema
+						</td>
+						<td class="text-{{ nominert.getNominasjon( festivalen ).harDeltakerskjema() ? 'success' : 'error' }}">
+							Har {{ not nominert.getNominasjon( festivalen ).harDeltakerskjema() ? 'ikke' }} deltakerskjema
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="4">Ingen nominerte fra {{ fylke.getNavn() }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endfor %}
+{% endif %}
