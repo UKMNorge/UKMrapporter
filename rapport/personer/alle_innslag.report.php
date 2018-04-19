@@ -14,6 +14,7 @@ class valgt_rapport extends rapport {
 	 */
 	public function __construct($rapport, $kategori){
 		parent::__construct($rapport, $kategori);
+		
 		$g = $this->optGrp('i','Info om innslaget');
 		$this->opt($g, 'i_katogsjan', 'Vis kategori og sjanger');
 		$this->opt($g, 'i_varig', 'Vis innslagets varighet');
@@ -705,7 +706,7 @@ class valgt_rapport extends rapport {
 						<div class="varighet bold"><?= UKMN_tid($ntval['titler_tid'])?></div>
 					</li>
 				<?php
-					if($ntkey == 'Scene') {
+					if($ntkey == 'Scene' && is_array( $nt['scenekat'] ) ) {
 						foreach($nt['scenekat'] as $skkey => $skval){
 							?><li class="low">
 								<div class="normallabel"><?= $skkey ?></div>
@@ -1111,6 +1112,53 @@ class valgt_rapport extends rapport {
 		return $key;
 	}
 	
+	
+	private function _hentInnslag() {
+		$m = new monstring($this->pl_id);
+		
+		if( $this->report_extended != 'innslag_type' ) {
+			return $m->innslag();
+		}
+		
+		// Hvis krysset av for alle, vis alle da
+		if( $this->show('y_alle') ) {
+			return $m->innslag();
+		}
+		// Vis kun valgte typer
+		else {
+			$valgte_innslag = [];
+			
+			foreach( $m->innslag() as $innslag ) {
+				#var_dump( $innslag );
+				// Scene
+				if( $innslag['bt_id'] == 1 && $this->show('y_scene') ) {
+					$valgte_innslag[] = $innslag; 
+				}
+				// Film
+				elseif( $innslag['bt_id'] == 2 && $this->show('y_film') ) {
+					$valgte_innslag[] = $innslag; 
+				}
+				// Utstilling
+				elseif( $innslag['bt_id'] == 3 && $this->show('y_utstilling') ) {
+					$valgte_innslag[] = $innslag; 
+				}
+				// Arrangør
+				elseif( in_array($innslag['bt_id'], [7,8]) && $this->show('y_arrangor') ) {
+					$valgte_innslag[] = $innslag; 
+				}
+				// Konferansier
+				elseif( $innslag['bt_id'] == 4 && $this->show('y_konferansier') ) {
+					$valgte_innslag[] = $innslag; 
+				}
+				// Media
+				elseif( $innslag['bt_id'] == 5 && $this->show('y_media') ) {
+					$valgte_innslag[] = $innslag; 
+				}
+			}
+			return $valgte_innslag;
+		}
+		
+	}
 	/**
 	 * _innslag_sortert_navn function
 	 * 
@@ -1120,9 +1168,7 @@ class valgt_rapport extends rapport {
 	 * @return array
 	 */	
 	public function _innslag_sortert_navn(){
-		$m = new monstring($this->pl_id);
-		
-		$innslag = $m->innslag();
+		$innslag = $this->_hentInnslag();
 		foreach($innslag as $inn_array){
 			$inn = new innslag($inn_array['b_id']);
 			if(get_option('site_type')!='kommune')
@@ -1147,9 +1193,7 @@ class valgt_rapport extends rapport {
 	 * @return array
 	 */	
 	public function _innslag_gruppert_type(){
-		$m = new monstring($this->pl_id);
-		
-		$innslag = $m->innslag();
+		$innslag = $this->_hentInnslag();
 		foreach($innslag as $inn_array) {
 			$inn = new innslag($inn_array['b_id']);
 			if(get_option('site_type')!='kommune')
@@ -1173,9 +1217,7 @@ class valgt_rapport extends rapport {
 	 * @return array
 	 */	
 	public function _innslag_gruppert_geo($field='kommune'){
-		$m = new monstring($this->pl_id);
-		
-		$innslag = $m->innslag();
+		$innslag = $this->_hentInnslag();
 		foreach($innslag as $inn_array) {
 			$inn = new innslag($inn_array['b_id']);
 			if(get_option('site_type')!='kommune')
@@ -1201,9 +1243,7 @@ class valgt_rapport extends rapport {
 	 * @return array
 	 */	
 	public function _innslag_gruppert_geo_type($field='kommune'){
-		$m = new monstring($this->pl_id);
-		
-		$innslag = $m->innslag();
+		$innslag = $this->_hentInnslag();
 		foreach($innslag as $inn_array) {
 			$inn = new innslag($inn_array['b_id']);
 			if(get_option('site_type')!='kommune')
@@ -1228,9 +1268,7 @@ class valgt_rapport extends rapport {
 	 * @return array
 	 */	
 	public function _innslag_gruppert_type_geo($field='kommune'){
-		$m = new monstring($this->pl_id);
-		
-		$innslag = $m->innslag();
+		$innslag = $this->_hentInnslag();
 		foreach($innslag as $inn_array) {
 			$inn = new innslag($inn_array['b_id']);
 			if(get_option('site_type')!='kommune')
