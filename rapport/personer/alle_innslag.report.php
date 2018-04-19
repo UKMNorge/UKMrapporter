@@ -38,6 +38,7 @@ class valgt_rapport extends rapport {
 
 		$m = $this->optGrp('m','Visning på skjerm');
 		$this->opt($m, 'm_ukmtv', 'Vis UKM-TV');
+		$this->opt($m, 'm_kunst', 'Vis bilde av kunstverk');
 
 		$g = $this->formatGrp('g', 'Gruppering', 'radio');
 		$this->format($g, 'g_ingen', 'Alfabetisk sortert');
@@ -688,7 +689,7 @@ class valgt_rapport extends rapport {
 				
 				<ul class="nokkeltall">
 					<li class="header">
-						<div class="label">Kategori</div>
+						<div class="bold">Kategori</div>
 						<div class="header innslag">Innslag</div>
 						<div class="header personer">Personer</div>
 						<div class="header titler">Titler</div>
@@ -697,7 +698,7 @@ class valgt_rapport extends rapport {
 				<?php
 				foreach($nt['typer'] as $ntkey => $ntval) {
 					?><li>
-						<div class="label"><?= $ntkey ?></div>
+						<div class="bold"><?= $ntkey ?></div>
 						<div class="innslag bold"><?= $ntval['inn']?></div>
 						<div class="personer bold"><?= $ntval['pers']?></div>
 						<div class="titler bold"><?= $ntval['titler_ant']?></div>
@@ -730,19 +731,19 @@ class valgt_rapport extends rapport {
 				}
 				?>
 					<li>
-						<div class="label">&nbsp;</div>
+						<div class="bold">&nbsp;</div>
 						<div class="innslag">&nbsp;</div>
 						<div class="personer">&nbsp;</div>
 					</li>
 					<li>
-						<div class="label">Sum</div>
+						<div class="bold">Sum</div>
 						<div class="innslag"><?= $nt['innslag']?></div>
 						<div class="personer bold"><?= $nt['personer']?></div>
 						<div class="personer bold"><?= $nt['titler_ant']?></div>
 						<div class="personer bold"><?= UKMN_tid($nt['titler_tid'])?></div>
 					</li>
 					<li>
-						<div class="label">Unike personer</div>
+						<div class="bold">Unike personer</div>
 						<div class="innslag">&nbsp;</div>
 						<div class="personer"><?= $nt['unike']?></div>
 						<div class="clear"></div>
@@ -782,7 +783,39 @@ class valgt_rapport extends rapport {
 							$UKMTVhtml = 'Ingen filmer lastet opp';
 						}
 					}
-			
+					
+					// KUNST-BILDER
+					if( $this->show('m_kunst') && $inn->g('bt_id') == 3 ) {
+						$innslag_v2 = new innslag_v2( $inn->g('b_id') );
+						
+						$titler = $inn->titler($this->pl_id);
+						$html_bilder = '';
+						foreach($titler as $t) {
+							try {
+								$bilde = $innslag_v2->getBilder()->getValgt( $t->g('t_id') );
+								$bilde_html = 
+									'<a href="'. $bilde->getSize('original')->getUrl() .'" target="_blank">Last ned</a>'.
+									'<br />'.
+									'<img src="'. $bilde->getSize('medium')->getUrl() .'" />'
+									;
+								$bilde_none = '';
+							} catch( Exception $e ) {
+								$bilde_none = ': Ikke valgt bilde!';
+								$bilde_html = '';
+							}
+							
+							$html_bilder .= 
+								'<div style="margin-left: 25px;">'.
+									'<div class="bold">'.
+										' - '. $t->g('tittel') . $bilde_none . 
+									'</div>'.
+									'<div>'. 
+										$bilde_html .
+									'</div>'.
+								'</div>'
+								;
+						}
+					}
 					echo '<li class="innslag">'
 						### NAVN, KAT&SJAN, FYLKE OG KOMMUNE FOR INNSLAG 
 						.	'<div class="b_name_cont">'
@@ -818,7 +851,7 @@ class valgt_rapport extends rapport {
 						
 						### KONTAKTPERSON
 						. ($this->show('p_kontaktp')
-								? '<div class="label">Kontaktperson: '
+								? '<div class="bold">Kontaktperson: '
 								.	$kontakt->g('name')
 								.	' ('.$kontakt->alder().' år) '
 								.	'- mobil: <span class="UKMSMS">'.$kontakt->g('p_phone') .'</span> - e-post: <a href="mailto:'. $kontakt->g('p_email').'" class="UKMMAIL">'.$kontakt->g('p_email').'</a>'
@@ -826,7 +859,7 @@ class valgt_rapport extends rapport {
 								: '')
 						;
 						if($this->show('p_vis')){
-							echo '<div class="label">Deltakere: </div>'
+							echo '<div class="bold">Deltakere: </div>'
 								.'<div class="desc">';
 							$personer = $inn->personObjekter();
 							$i=0;
@@ -858,7 +891,7 @@ class valgt_rapport extends rapport {
 						}
 						
 						if($this->show('t_vis') && !$inn->tittellos()){
-							echo '<div class="label">Titler: </div>'
+							echo '<div class="bold">Titler: </div>'
 								.'<div class="desc">';
 							$titler = $inn->titler($this->pl_id);
 							$i=0;
@@ -895,22 +928,26 @@ class valgt_rapport extends rapport {
 						echo ''
 						### VIS TEKNISKE KRAV
 						. ($this->show('i_tekn')
-							? '<div class="label">Tekniske behov: </div>'
+							? '<div class="bold">Tekniske behov: </div>'
 							. '<div class="desc">'. $inn->g('td_demand') .'</div>'
 							: '')
 						
 						### VIS KONFERANSIERTEKSTER
 						. ($this->show('i_konf')
-							? '<div class="label">Tekst til konferansierer: </div>'
+							? '<div class="bold">Tekst til konferansierer: </div>'
 							. '<div class="desc">'. $inn->g('b_description') .' '. $inn->g('td_konferansier') .'</div>'
 							: '')
 
 						### VIS UKM-TV
 						. ($this->show('m_ukmtv')
-							? '<div class="label">Opplastede filmer i UKM-TV</div>'
+							? '<div class="bold">Opplastede filmer i UKM-TV</div>'
 							. '<div class="desc">'. $UKMTVhtml .'</div>'
 							: '')
 
+						. ( ($this->show('m_kunst') && $inn->g('bt_id') == 3 )
+							? '<div class="bold">Bilde av kunstverk</div>'. $html_bilder
+							: ''
+							)
 						
 						. '</li>';
 				}
@@ -920,22 +957,22 @@ class valgt_rapport extends rapport {
 							
 							<div class="clear clearfix clear-fix"></div>
 							<div class="data">'.$group_sum_bands.'</div>
-							<div class="label">Antall innslag:</div>'
+							<div class="bold">Antall innslag:</div>'
 
 							.($this->show('t_vis') 
 							? '<div class="clear clearfix clear-fix"></div>
 							<div class="data">'.$group_sum_titles.'</div>
-							<div class="label">Antall titler:</div>'
+							<div class="bold">Antall titler:</div>'
 							: '')
 
 							.($this->show('p_vis') 
 							? '<div class="clear clearfix clear-fix"></div>
 								<div class="data">'.sizeof($group_sum_all_p).'</div>
-								<div class="label">Antall personer:</div>
+								<div class="bold">Antall personer:</div>
 								
 								<div class="clear clearfix clear-fix"></div>
 								<div class="data">'.sizeof($group_sum_uni_p).'</div>
-								<div class="label">Antall unike personer:</div>'
+								<div class="bold">Antall unike personer:</div>'
 							: '')
 
 							.($this->show('t_varig') && $this->show('t_vis')
