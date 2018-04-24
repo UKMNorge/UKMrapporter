@@ -119,6 +119,28 @@ if( isset( $_GET['type'] ) ) {
 				$c = $tab->addCell(3500);
 				woText($c, $person->getMobil(),'bold');
 				
+				
+				// ARRANGØRER
+				if( $valgt_type == 8 && !empty( $nominasjon->getSorry() )) {
+					$message = 'OBS: Deltakeren har på et tidspunkt sagt at '.
+						$person->getKjonnspronomen() .' ikke kan være med på ';
+					switch( $nominasjon->getSorry() ) {
+						case 'begge':
+							$message .= 'planleggingshelg og UKM-festivalen.';
+							break;
+						case 'planleggingshelg':
+							$message .= 'planleggingshelgen';
+							break;
+						case 'festivalen':
+							$message .= 'UKM-festivalen';
+							break;
+					}
+					woText($section, $message, 'h3');
+					woText($section, 'Deltakeren har gått tilbake i skjemaet og sagt at '. $person->getKjonnspronomen().
+						' kan være med likevel, så alt er teoretisk sett i orden, men det er verdt å dobbeltsjekke.' );
+				}
+
+				
 				/*******************************************************/
 				/* MEDIA DELTAKERSKJEMA
 				/*******************************************************/
