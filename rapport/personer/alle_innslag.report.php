@@ -776,7 +776,7 @@ class valgt_rapport extends rapport {
 							foreach( $media['tv'] as $tv_id => $tv ) {
 								$UKMTVhtml .= '<div class="UKMTV clickable">'
 											. '	<div class="image"><img src="'. $tv->image_url .'" style="max-width:100%;" /></div>'
-											. '	<div class="embedcontainer" style="display:none;" data-framesource="'. $tv->embed_url .'">'
+											. '	<div class="embedcontainer" style="display:none;" data-framesource="'. $tv->embed_url .'"></div>'
 											.'</div>';
 							}
 						}
