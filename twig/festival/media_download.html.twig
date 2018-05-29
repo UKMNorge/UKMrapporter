@@ -28,6 +28,8 @@
 					<li class="well card {{ tittel.media.image == 'none_uploaded' or tittel.media.image == 'none_selected' ? 'alert alert-danger' : '' }}">
 						<div class="pull-left">
 							{{ i.rekkefolge is not empty ? i.rekkefolge~'.' : '' }} {{ i.navn }} - {{ tittel.get('tittel') }}
+							<br />
+							<small>{{ i.fylke }}</small>
 						</div>
 						<div class="pull-right">
 							<small>
@@ -45,6 +47,8 @@
 				<li class="well card {{ i.media.image == 'none_uploaded' or i.media.image == 'none_selected' ? 'alert alert-danger' : '' }}">
 					<div class="pull-left">
 						{{ i.rekkefolge is not empty ? i.rekkefolge~'.' : '' }} {{ i.navn }}
+						<br />
+						<small>{{ i.fylke }}</small>
 					</div>
 					<div class="pull-right">
 						<small>

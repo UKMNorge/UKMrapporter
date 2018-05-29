@@ -16,9 +16,11 @@ $counter = 0;
 foreach( $alle_innslag as $order => $inn ) {
 	$i = new innslag( $inn['b_id'] );
 	
-	if( $i->tittellos() )
-		continue;
-		
+	#if( $i->tittellos() )
+	#	continue;
+	
+	$i->loadGEO();	
+	
 	$innslag = new stdClass();
 	$innslag->ID 		= $i->g('b_id');
 	$innslag->navn 		= $i->g('b_name');
