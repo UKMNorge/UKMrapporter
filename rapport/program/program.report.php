@@ -49,6 +49,9 @@ class valgt_rapport extends rapport {
 			$this->opt($d, 'd_mobil', 'Vis mobilnummer');
 		}
 		$this->opt($d, 'd_funksjon', 'Vis rolle/funksjon/instrument');
+		if( get_option('site_type') == 'land' && $this->report_extended ) {
+			$this->opt($d, 'd_summering', 'Summér antall personer per hendelse');
+		}
 		
 		if($this->report_extended) {
 			$this->opt($i, 'i_tekniske', 'Tekniske behov');
@@ -612,6 +615,8 @@ class valgt_rapport extends rapport {
 				echo '<div class="error"><strong>For at denne rapporten skal fungere må du sette et program for mønstringen din.</strong> <br />Dette gjør du ved å velge program i menyen til venstre</div>';
 		} else {
 			foreach($concerts as $c){
+				$totalt_antall_personer = 0;
+
 				$sted = $c->g('c_place');
 				if(!empty($sted))
 					$sted = ' - '. $sted;
@@ -806,6 +811,7 @@ class valgt_rapport extends rapport {
 						$deltakere = $i->personer();
 						$counter = 0;
 						foreach($deltakere as $delt) {
+							$totalt_antall_personer++;
 							$counter++;
 							$d = new person($delt['p_id'], $i->g('b_id'));
 							echo '<div class="name">'.$d->g('name').'</div>'
@@ -941,6 +947,9 @@ class valgt_rapport extends rapport {
 				</ul>
 				<div class="clear"></div>
 				<?php
+					if( $this->report_extended == 'tekniske_prover' && $this->show('d_summering') ) {
+						echo '<h4 align="right">Antall personer i '. $c->g('c_name') .': '. $totalt_antall_personer .'</h4>';
+					}
 			}
 		}
 	}
