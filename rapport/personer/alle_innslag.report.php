@@ -1154,6 +1154,10 @@ class valgt_rapport extends rapport {
 				elseif( $innslag['bt_id'] == 5 && $this->show('y_media') ) {
 					$valgte_innslag[] = $innslag; 
 				}
+				// Ressurs
+				elseif( $innslag['bt_id'] == 10 && $this->show('y_ressurs') ) {
+					$valgte_innslag[] = $innslag; 
+				}
 			}
 			return $valgte_innslag;
 		}

@@ -13,6 +13,7 @@ class extended_rapport extends valgt_rapport {
 		$this->opt($g, 'y_arrangor', 'Arrangør');
 		$this->opt($g, 'y_konferansier', 'Konferansier');
 		$this->opt($g, 'y_media', 'UKM Media');
+		$this->opt($g, 'y_ressurs', 'UKM-ressurs');
 
 
 		parent::__construct($rapport, $kategori);
