@@ -48,10 +48,6 @@ foreach( $alle_innslag as $order => $inn ) {
 	// VI LETER BILDER AV KUNSTVERK OG SCENEINNSLAG
 	} else {
 		switch( $i->g('bt_form') ) {
-			case 'smartukm_titles_video':
-				$sort = 'film';
-				$innslag->media->image = 'skal_ikke_ha';
-				break;
 			case 'smartukm_titles_exhibition':
 				$sort = 'kunst';			
 				$titler = $i->titler( $m->g('pl_id'), $videresendtil->ID );
@@ -72,7 +68,11 @@ foreach( $alle_innslag as $order => $inn ) {
 				}
 				break;
 			default:
-				$sort = 'scene';
+				if( $i->g('bt_form') == 'smartukm_titles_video' ) {
+					$sort = 'film';
+				} else {
+					$sort = 'scene';
+				}
 				
 				if( sizeof( $related_media['image'] ) == 0 ) {
 					$innslag->media->image = 'none_uploaded';
