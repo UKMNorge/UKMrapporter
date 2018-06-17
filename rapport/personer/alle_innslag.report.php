@@ -1116,6 +1116,27 @@ class valgt_rapport extends rapport {
 	private function _hentInnslag() {
 		$m = new monstring($this->pl_id);
 		
+		if( $this->report_extended == 'innslag_fylke' ) {
+			$monstring = new monstring_v2( get_option('pl_id') );
+			
+			foreach( $monstring->getInnslag()->getAll() as $innslag ) {
+				$geo_key = 'f_'. $innslag->getFylke()->getId();
+				
+				if( $this->show( $geo_key ) ) {
+					$innslag_intermediary = [
+						'b_id' => $innslag->getId(),
+						'b_status' => $innslag->getStatus(),
+						'bt_id' => $innslag->getType()->getId(),
+						'bt_form' => $innslag->getType()->getTabell(),
+						'b_name' => $innslag->getNavn(),
+					];
+					
+					$alle_innslag[] = $innslag_intermediary;
+				}
+			}
+			return $alle_innslag;
+		}
+		
 		if( $this->report_extended != 'innslag_type' ) {
 			return $m->innslag();
 		}

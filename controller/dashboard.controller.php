@@ -59,6 +59,7 @@ class rapporter {
 				
 				$this->add('personer', 'alle_innslag');
 				$this->add('personer', 'alle_innslag_type');
+				$this->add('personer', 'alle_innslag_fylke');
 				$this->add('personer', 'inn_og_utlevering');
 				$this->add('personer', 'diplomer');
 				$this->add('personer', 'qr');
@@ -251,6 +252,13 @@ class rapporter {
 				$rapport->link = 'rapport=alle_innslag_type&kat=personer';
 				$rapport->navn = 'Alle innslag per type';
 				$rapport->beskrivelse = 'Alle innslag på mønstringen med mulighet til å hente kun gitte typer.';
+			break;
+
+			case 'alle_innslag_fylke':
+				$rapport->icon = 'toy-yellow';
+				$rapport->link = 'rapport=alle_innslag_fylke&kat=personer';
+				$rapport->navn = 'Alle innslag per fylke';
+				$rapport->beskrivelse = 'Alle innslag på mønstringen med mulighet til å hente kun fra gitte fylker.';
 			break;
 
 			case 'inn_og_utlevering':
