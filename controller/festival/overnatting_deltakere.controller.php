@@ -27,10 +27,20 @@ foreach( array_reverse($netter) as $natt ) {
 				AND `dato` = '#dag_#mnd'
 				AND `pl_id_to` = '#monstring'
 				ORDER BY `place`.`pl_name` ASC, `leder`.`l_navn` ASC",*/
-	$sql = new SQL("SELECT *, (`nattleder`.`id` > 0) AS `is_nattleder` FROM `smartukm_videresending_ledere_natt` AS `natt`
-				JOIN `smartukm_videresending_ledere_ny` AS `leder` ON (`leder`.`l_id` = `natt`.`l_id`)
-				JOIN `smartukm_place` AS `place` ON (`place`.`pl_id` = `leder`.`pl_id_from`)
-				LEFT JOIN `smartukm_videresending_ledere_nattleder` AS `nattleder` ON (`nattleder`.`dato` = '#dag_#mnd' AND `nattleder`.`l_id` = `leder`.`l_id`)
+	$sql = new SQL("SELECT *, 
+					`smartukm_fylke`.`name` AS `fylke_navn`,
+					(`nattleder`.`id` > 0) AS `is_nattleder` 
+				FROM `smartukm_videresending_ledere_natt` AS `natt`
+				JOIN `smartukm_videresending_ledere_ny` AS `leder` 
+					ON (`leder`.`l_id` = `natt`.`l_id`)
+				JOIN `smartukm_place` AS `place` 
+					ON (`place`.`pl_id` = `leder`.`pl_id_from`)
+				LEFT JOIN `smartukm_fylke` 
+					ON (`smartukm_fylke`.`id` = `place`.`pl_fylke`)
+				LEFT JOIN `smartukm_videresending_ledere_nattleder` AS `nattleder` 
+					ON (`nattleder`.`dato` = '#dag.#mnd' AND `nattleder`.`l_id` = `leder`.`l_id`)
+				LEFT JOIN `smartukm_fylke` AS `fylke`
+					ON (`fylke`.`id` = `place`.`pl_fylke`)
 				WHERE `sted` = 'deltakere'
 				AND `natt`.`dato` = '#dag_#mnd'
 				AND `pl_id_to` = '#monstring'
@@ -46,7 +56,7 @@ foreach( array_reverse($netter) as $natt ) {
 		} else {
 			$style = 'normal';
 		}
-		excell('A'.$rad, utf8_encode($r['pl_name']), $style);
+		excell('A'.$rad, utf8_encode($r['fylke_navn']), $style);
 		excell('B'.$rad, $r['l_navn'], $style);
 		excell('C'.$rad, $r['l_mobilnummer'], $style);
 		excell('D'.$rad, $r['l_epost'], $style);
