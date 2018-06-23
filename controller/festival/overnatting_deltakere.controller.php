@@ -60,7 +60,7 @@ foreach( array_reverse($netter) as $natt ) {
 		excell('B'.$rad, $r['l_navn'], $style);
 		excell('C'.$rad, $r['l_mobilnummer'], $style);
 		excell('D'.$rad, $r['l_epost'], $style);
-		excell('E'.$rad, $r['is_nattleder'] ? 'HOVEDLEDER' : '', $style);
+		excell('E'.$rad, $r['is_nattleder'] ? 'KONTAKTPERSON I NATT' : '', $style);
 	}
 }
 $TWIG['excel_deltakerovernatting'] = exWrite($objPHPExcel,'UKMF'.get_option('season').'_Deltakerovernatting_UKM_Norge');	
