@@ -11,7 +11,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							   array('kommune' => $kommune_id)
 							  );
 			$lokalRES = $lokalQRY->run();
-			while( $r = mysql_fetch_assoc( $lokalRES ) ) {
+			while( $r = SQL::fetch( $lokalRES ) ) {
 				$malgruppe[ $r['season'] ][ $kommune_name ] = $r['prosent'];
 			}
 			
@@ -23,7 +23,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							   GROUP BY `season`"
 							  );
 			$litenRES = $litenQRY->run();
-			while( $r = mysql_fetch_assoc( $litenRES ) ) {
+			while( $r = SQL::fetch( $litenRES ) ) {
 				$malgruppe[ $r['season'] ][ 'Snitt små kommuner' ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
 			}
 			
@@ -35,7 +35,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							   GROUP BY `season`"
 							  );
 			$storRES = $storQRY->run();
-			while( $r = mysql_fetch_assoc( $storRES ) ) {
+			while( $r = SQL::fetch( $storRES ) ) {
 				$malgruppe[ $r['season'] ][ 'Snitt store kommuner' ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
 			}
 			
@@ -48,7 +48,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							   array('fylke' => $TWIG['monstring']->fylke->id)
 							  );
 			$fylkeRES = $fylkeQRY->run();
-			while( $r = mysql_fetch_assoc( $fylkeRES ) ) {
+			while( $r = SQL::fetch( $fylkeRES ) ) {
 				if( $r['malgruppe'] == 0 ) {
 					$malgruppe[ $r['season'] ][ 'Utvikling '. $TWIG['monstring']->fylke->name ] = 0;
 				} else {
@@ -62,7 +62,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							   GROUP BY `season`"
 							  );
 			$nasjonalRES = $nasjonalQRY->run();
-			while( $r = mysql_fetch_assoc( $nasjonalRES ) ) {
+			while( $r = SQL::fetch( $nasjonalRES ) ) {
 				$malgruppe[ $r['season'] ][ 'Utvikling nasjonalt' ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
 			}
 			
@@ -82,7 +82,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							   array('fylke' => $TWIG['monstring']->fylke->id)
 							  );
 			$fylkeRES = $fylkeQRY->run();
-			while( $r = mysql_fetch_assoc( $fylkeRES ) ) {
+			while( $r = SQL::fetch( $fylkeRES ) ) {
 				$malgruppe[ $r['season'] ][ 'Utvikling '. $TWIG['monstring']->fylke->name ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
 			}
 			
@@ -92,7 +92,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							   GROUP BY `season`"
 							  );
 			$nasjonalRES = $nasjonalQRY->run();
-			while( $r = mysql_fetch_assoc( $nasjonalRES ) ) {
+			while( $r = SQL::fetch( $nasjonalRES ) ) {
 				$malgruppe[ $r['season'] ][ 'Utvikling nasjonalt' ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
 			}
 	
@@ -110,7 +110,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 								 array('fylke' => $TWIG['monstring']->fylke->id)
 								);
 			$topbotRes = $topbotQry->run();
-			while( $r = mysql_fetch_assoc( $topbotRes ) ) {
+			while( $r = SQL::fetch( $topbotRes ) ) {
 				$data = array( 'malgruppe' => $r['malgruppe'], 'deltakere' => $r['deltakere']);
 				if( $data['malgruppe'] > 0 ) {
 					$data['dekningsgrad'] = round((100/$r['malgruppe'])*$r['deltakere'],2);
@@ -169,7 +169,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 							   GROUP BY `season`"
 							  );
 			$nasjonalRES = $nasjonalQRY->run();
-			while( $r = mysql_fetch_assoc( $nasjonalRES ) ) {
+			while( $r = SQL::fetch( $nasjonalRES ) ) {
 				$malgruppe[ $r['season'] ][ 'Utvikling nasjonalt' ] = round( (100/$r['malgruppe'])*$r['deltakere']  ,2);
 			}
 
@@ -188,7 +188,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 								 array());
 			$topbotRes = $topbotQry->run();
 			
-			while( $r = mysql_fetch_assoc( $topbotRes ) ) {
+			while( $r = SQL::fetch( $topbotRes ) ) {
 				$fylke[ $r['f_id'] ][ $r['season'] ] = array( 'malgruppe' => $r['malgruppe'], 'deltakere' => $r['deltakere'] );
 				$fylke[ $r['f_id'] ][ 'total' ]['malgruppe'] += $r['malgruppe'];
 				$fylke[ $r['f_id'] ][ 'total' ]['deltakere'] += $r['deltakere'];
