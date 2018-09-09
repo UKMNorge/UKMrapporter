@@ -25,7 +25,7 @@ excell('C1','Nummer');
 excell('D1','E-post');
 
 $rad = 1;
-while( $r = mysql_fetch_assoc( $res ) ) {
+while( $r = SQL::fetch( $res ) ) {
 	$leder = new leder( $r['l_id'] );
 	
 	$rad++;
