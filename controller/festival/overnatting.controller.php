@@ -9,7 +9,7 @@ require_once( 'UKM/inc/excel.inc.php');
 					   ORDER BY `name` ASC");
 	$fylker = $fylker->run();
 	
-	while($row = mysql_fetch_assoc($fylker)) {
+	while($row = SQL::fetch($fylker)) {
 		$fylke = new fylke_monstring($row['id'], get_option('season'));
 		$fylke = $fylke->monstring_get();
 	
