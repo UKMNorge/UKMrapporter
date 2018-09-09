@@ -23,7 +23,7 @@ foreach( $netter as $num => $data ) {
 	excell(i2a($col+$num).$rad, date('D d.m',$data->timestamp),'bold');
 }
 
-while( $r = mysql_fetch_assoc( $res ) ) {
+while( $r = SQL::fetch( $res ) ) {
 	$rad++;
 	$leder = new leder( $r['l_id'] );
 	$navn = empty($leder->l_navn) ? 'Leder uten navn' : $leder->l_navn;
@@ -59,7 +59,7 @@ $sql = new SQL("SELECT `p`.`navn`,
 				ORDER BY `p`.`gruppe` ASC, `rel`.`rom_id` ASC 
 				");
 $res = $sql->run();
-while( $r = mysql_fetch_assoc( $res ) ) {
+while( $r = SQL::fetch( $res ) ) {
 	$ressurspersoner[ $r['gruppe'] ][] = $r;
 }
 
