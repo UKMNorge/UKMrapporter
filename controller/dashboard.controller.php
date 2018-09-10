@@ -325,7 +325,7 @@ class rapporter {
 			break;
 			case 'juryskjema':
 				$rapport->icon = 'gavel';
-				$rapport->link = 'rapport=analogt_juryskjema&kat=program';
+				$rapport->link = 'rapport=vurderingsskjema&kat=program';
 				$rapport->navn = 'Vurderingsskjema';
 				$rapport->beskrivelse = 'For fagpanelets vurdering av innslag';
 			break;
