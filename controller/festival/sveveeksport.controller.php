@@ -8,7 +8,7 @@ global $objPHPExcel;
 $band_types = new SQL("SELECT * FROM `smartukm_band_type`");
 $band_types = $band_types->run();
 while($band_type = SQL::fetch($band_types))
-	$bt[$band_type['bt_id']] = utf8_encode($band_type['bt_name']);
+	$bt[$band_type['bt_id']] = $band_type['bt_name'];
 
 $m = new monstring(get_option('pl_id'));
 $innslag = $m->innslag_btid();

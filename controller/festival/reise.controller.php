@@ -47,7 +47,7 @@ while( $r = SQL::fetch( $res ) ) {
  
 	$rad++;
 	excell('A'.$rad, (string) $r['reise_inn_tidspunkt']);
-	excell('B'.$rad, (string) utf8_encode($r['pl_name']));
+	excell('B'.$rad, (string) $r['pl_name']);
 	excell('C'.$rad, (string) $r['reise_inn_mate']);
 	excell('D'.$rad, (string) $r['reise_inn_sted']);
 	excell('E'.$rad, (string) $r['reise_inn_dato']);
@@ -58,7 +58,7 @@ while( $r = SQL::fetch( $res ) ) {
 	
 	$objPHPExcel->setActiveSheetIndex(1);
 	excell('A'.$rad, (string) $r['reise_ut_tidspunkt']);
-	excell('B'.$rad, (string) utf8_encode($r['pl_name']));
+	excell('B'.$rad, (string) $r['pl_name']);
 	excell('C'.$rad, (string) $r['reise_ut_mate']);
 	excell('D'.$rad, (string) $r['reise_ut_dato']);
 	excell('E'.$rad, (string) $r['systemet_overnatting_spektrumdeltakere']);
