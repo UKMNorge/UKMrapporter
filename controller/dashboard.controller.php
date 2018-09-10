@@ -145,7 +145,7 @@ class rapporter {
 	public function createKategori( $kategoriID ) {
 		switch( $kategoriID ) {
 			case 'festival':	return new kategori('festival', 'Festivalen', 'palm-tree');
-			case 'monstring':	return new kategori('monstring', (get_option('site_type')=='fylke'?'Festivalen':'Mønstringen'), 'hus');
+			case 'monstring':	return new kategori('monstring', (get_option('site_type')=='fylke'?'Fylkesfestivalen':'Mønstringen'), 'hus');
 			case 'fylke':		return new kategori('fylke', 'Fylket', 'map');
 			case 'kontakt':		return new kategori('megaphone', 'Kontakt', 'megaphone');
 			case 'personer':	return new kategori('personer', 'Personer', 'people');
