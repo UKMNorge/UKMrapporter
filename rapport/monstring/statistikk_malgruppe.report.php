@@ -87,7 +87,7 @@ class valgt_rapport extends rapport {
 		$qry = new SQL($this->_qry());
 		$res = $qry->run();
 
-		while($r = mysql_fetch_assoc($res)){
+		while($r = SQL::fetch($res)){
 			// Lagre mønstringen i array med kommunenavn kommaseparert
 			// (brukere herper mønstringsnavn...)
 			if($r['season']!=2013) {
@@ -706,7 +706,7 @@ class valgt_rapport extends rapport {
 		   array('idfylke'=>$fylke, 'season'=>$this->m->g('season')));
 		}
 		$res = $qry->run();
-		while($r = mysql_fetch_assoc($res)){
+		while($r = SQL::fetch($res)){
 			$this->pl_nametrans[$r['pl_name']] = $r['pl_id'];
 			$this->pl_ids[] = $r['pl_id'];
 			$this->_finn_kommuner($r['pl_id'], $r['pl_name']);
@@ -732,7 +732,7 @@ class valgt_rapport extends rapport {
 						ORDER BY `pl_k_id` ASC",
 						array('plid'=>$plid));
 		$res = $qry->run();
-		while($r = mysql_fetch_assoc($res)){
+		while($r = SQL::fetch($res)){
 			$this->goodNames[$this->_statname($plname)][] = $r['name'];
 		}
 	}

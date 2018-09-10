@@ -15,7 +15,7 @@ $sql = new SQL("SELECT `ledermiddag_ukm` AS `ukm`,
 $res = $sql->run();
 
 $ledere = array();
-while( $r = mysql_fetch_assoc( $res ) ) {
+while( $r = SQL::fetch( $res ) ) {
 	$pl_to = new monstring( $r['pl_from'] );
 	if( !empty( $r['ukm'] ) && is_numeric( $r['ukm'] ) ) {
 		$leder = new leder( $r['ukm'] );

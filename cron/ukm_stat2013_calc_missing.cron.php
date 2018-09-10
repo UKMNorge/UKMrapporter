@@ -21,7 +21,7 @@ echo '<h1>Beregner målgrupper og dekning for '. $SEASON .'</h1>';
 $kommuneQRY = new SQL("SELECT * FROM `smartukm_kommune`");
 $kommuneRES = $kommuneQRY->run();
 
-while( $kommune = mysql_fetch_assoc( $kommuneRES ) ) {
+while( $kommune = SQL::fetch( $kommuneRES ) ) {
 	echo '<h2>'. $kommune['name'].'</h2>';
 	$missing_monstring = new kommune_monstring( $kommune['id'], $SEASON );
 	$missing_pl = $missing_monstring->monstring_get();

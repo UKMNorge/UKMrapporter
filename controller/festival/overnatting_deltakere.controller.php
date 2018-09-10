@@ -49,7 +49,7 @@ foreach( array_reverse($netter) as $natt ) {
 						`leder`.`l_navn` ASC",
 				array('dag' => $natt->dag, 'mnd' => $natt->mnd, 'monstring' => get_option('pl_id')));
 	$res = $sql->run();
-	while( $r = mysql_fetch_assoc( $res ) ) {
+	while( $r = SQL::fetch( $res ) ) {
 		$rad++;
 		if( $r['is_nattleder'] ) {
 			$style = 'bold';

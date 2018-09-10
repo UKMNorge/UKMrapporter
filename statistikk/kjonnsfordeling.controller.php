@@ -91,7 +91,7 @@ if($TWIG['stat_type']=='kommune') {
 function calc_kjonnsfordeling( $kommune_id, $missing, $persQry ) {
 	$kjonnsfordeling = array();
 	$persRes = $persQry->run();
-	while( $r = mysql_fetch_assoc( $persRes ) ) {
+	while( $r = SQL::fetch( $persRes ) ) {
 		$raw[ $r['season'] ][ $r['sex'] ] = $r['personer'];
 	}
 	

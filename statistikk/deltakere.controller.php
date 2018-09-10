@@ -125,7 +125,7 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 						   GROUP BY `f_id`, `season`
 						   ORDER BY `f_id`, `season`");
 	$missingRes = $missingQry->run();
-	while( $r = mysql_fetch_assoc( $missingRes ) ) {
+	while( $r = SQL::fetch( $missingRes ) ) {
 		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] = $r['missing'];
 		if( $r['season'] == $TWIG['season'] ) {
 			$TWIG['statistikk_fylker_sammenlignet'][ utf8_encode( $r['name'] ) ] += $r['missing'];
@@ -142,7 +142,7 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 							 WHERE `f`.`id` < 21"
 							);
 	$fylkeMissing = $fylkeMissing->run();
-	while( $r = mysql_fetch_assoc( $fylkeMissing ) ) {
+	while( $r = SQL::fetch( $fylkeMissing ) ) {
 		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] += $r['pl_missing'];
 		if( $r['season'] == $TWIG['season'] ) {
 			$TWIG['statistikk_fylker_sammenlignet'][ utf8_encode( $r['name'] ) ] += $r['pl_missing'];
@@ -160,7 +160,7 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 							  GROUP BY `season`, `f_id`
 							  ORDER BY `f_id`, `season`");
 	$registeredRes = $registeredQry->run();
-	while( $r = mysql_fetch_assoc( $registeredRes ) ) {	
+	while( $r = SQL::fetch( $registeredRes ) ) {	
 		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] += $r['personer'];
 		if( $r['season'] != 2009 ) {
 			$TWIG['statistikk_detaljert'][ utf8_encode($r['name']) ][ $r['season'] ]['personer'] += $r['personer'];
@@ -181,7 +181,7 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 					   GROUP BY `season`, `f_id`"
 					  );
 	$innRes = $innQry->run();
-	while( $r = mysql_fetch_assoc( $innRes ) ) {
+	while( $r = SQL::fetch( $innRes ) ) {
 		if( $r['season'] != 2009 ) {
 			$TWIG['statistikk_detaljert'][ utf8_encode($r['name']) ][ $r['season'] ]['innslag'] = $r['innslag'];
 		}
@@ -216,7 +216,7 @@ function calc_deltakere( $kommune_id, $missing, $persQry ) {
 	global $stat_deltakere, $stat_deltakere_fylke;
 		
 	$persRes = $persQry->run();
-	while( $r = mysql_fetch_assoc( $persRes ) ) {
+	while( $r = SQL::fetch( $persRes ) ) {
 		$stat_deltakere[ $r['season'] ]['personer'] = $r['personer'];
 		$stat_deltakere_fylke[ $r['season'] ]['personer'] += $r['personer'];
 	}
@@ -234,7 +234,7 @@ function calc_innslag( $kommune_id, $innQry ) {
 	global $stat_deltakere, $stat_deltakere_fylke;
 		
 	$innRes = $innQry->run();
-	while( $r = mysql_fetch_assoc( $innRes ) ) {
+	while( $r = SQL::fetch( $innRes ) ) {
 		$stat_deltakere[ $r['season'] ]['innslag'] = $r['innslag'];
 		$stat_deltakere_fylke[ $r['season'] ]['innslag'] += $r['innslag'];
 	}

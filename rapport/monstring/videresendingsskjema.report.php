@@ -176,7 +176,7 @@ class valgt_rapport extends rapport {
 		if(!$res) {
 			echo '<h3>Det er ikke laget noe videresendingsskjema for dette fylket</h3>';
 		} else {
-			while( $r = mysql_fetch_assoc( $res )) {
+			while( $r = SQL::fetch( $res )) {
 				if( $r['q_type'] == 'overskrift')
 					$sporsmal_key = utf8_encode($r['q_title']);
 				else 

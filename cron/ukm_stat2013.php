@@ -91,7 +91,7 @@ ob_start();
 	
 	echo_flush( 'Loop alle mønstringer', 0, 'h1');
 	$TEST_COUNT = 0;
-	while( ($r = mysql_fetch_assoc($monstringer)) && $TEST_COUNT < 10) {
+	while( ($r = SQL::fetch($monstringer)) && $TEST_COUNT < 10) {
 		$monstring = new monstring($r['pl_id']);
 		echo_flush( $monstring->g('pl_name'), 0, 'h2' );
 		// For hvert innslag i en monstring ...
@@ -164,7 +164,7 @@ ob_start();
 				// echo($sql->debug());
 
 				// Sjekke om ting skal settes inn eller oppdateres
-				if (mysql_num_rows($sql->run()) > 0)
+				if (SQL::numRows($sql->run()) > 0)
 					$sql_ins = new SQLins('ukm_statistics', array(
 						"b_id" => $stats_info["b_id"], // innslag-id
 						"p_id" => $stats_info["p_id"], // person-id

@@ -42,7 +42,7 @@ excell('F'.$rad, 'Kommentarer','bold');
 #excell('G'.$rad, 'Alle samtidig?','bold');
 
 
-while( $r = mysql_fetch_assoc( $res ) ) {
+while( $r = SQL::fetch( $res ) ) {
 	$objPHPExcel->setActiveSheetIndex(0);
  
 	$rad++;

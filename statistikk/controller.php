@@ -63,7 +63,7 @@ if($TWIG['stat_type'] == 'land') {
 						   WHERE `season` > 0
 						   GROUP BY `season`");
 	$missingRes = $missingQry->run();
-	while( $r = mysql_fetch_assoc( $missingRes ) ) {
+	while( $r = SQL::fetch( $missingRes ) ) {
 		$TWIG['missing'][ 'nasjonalt' ][ $r['season'] ] = $r['missing'];
 	}
 	
@@ -92,7 +92,7 @@ if($TWIG['stat_type'] == 'land') {
 						   array('fylke' => $monstring->fylke->id)
 						  );
 	$kommuneRes = $kommuneQry->run();
-	while( $r = mysql_fetch_assoc( $kommuneRes ) ) {
+	while( $r = SQL::fetch( $kommuneRes ) ) {
 		$kommuner_i_fylket[ utf8_encode($r['name']) ] = $r['id'];
 		$TWIG['statistikk_detaljert'][ $r['id'] ]['metadata'] = array('id' => $r['id'], 'name' => utf8_encode($r['name']) );
 	}

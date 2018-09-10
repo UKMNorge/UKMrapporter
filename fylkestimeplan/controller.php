@@ -40,7 +40,7 @@ $fylkeSQL = new SQL("SELECT *
 				   FROM `smartukm_fylke`
 				   ORDER BY `name` ASC");
 $fylkeRES = $fylkeSQL->run();
-while( $f = mysql_fetch_assoc( $fylkeRES ) ) {
+while( $f = SQL::fetch( $fylkeRES ) ) {
 	$fylke = new stdClass();
 	$fylke->navn = utf8_encode( $f['name'] );
 	$fylke->ID = $f['id'];

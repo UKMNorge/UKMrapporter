@@ -94,7 +94,7 @@ class rapport{
 						array('plid'=>$this->pl_id,
 							  'rapport'=>$this->name));
 		$res = $qry->run();
-		while($r = mysql_fetch_assoc($res)) {
+		while($r = SQL::fetch($res)) {
 			$this->log_antall_visninger[$r['ubrc_valg']] = (int)$r['ant_visninger'];
 		}
 	}

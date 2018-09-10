@@ -136,7 +136,7 @@ if($TWIG['stat_type']=='kommune') {
 
 function calc_sjangerfordeling( $kommune_id, $missing, $persQry, $innslag=false ) {
 	$persRes = $persQry->run();
-		while( $r = mysql_fetch_assoc( $persRes ) ) {
+		while( $r = SQL::fetch( $persRes ) ) {
 			if( $r['bt_id'] == 1 && !empty( $r['subcat'] ) ) {
 				if( strpos($r['subcat'], 'annet' ) !== false ) {
 					$kategori = 'Annet_scene';

@@ -76,7 +76,7 @@ function calc_aldersfordeling( $seasons, $persQry ) {
 							 'total' => 0);
 	}
 	$persRes = $persQry->run();
-	while( $r = mysql_fetch_assoc( $persRes ) ) {
+	while( $r = SQL::fetch( $persRes ) ) {
 		$group = group( (int) $r['age'] );
 		
 		if( isset( $raw[ $r['season'] ][ $group ] ) )

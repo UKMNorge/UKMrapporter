@@ -950,7 +950,7 @@ if($this->showformat('s_tidligere')){
 		   array('idfylke'=>$fylke, 'season'=>$this->m->g('season')));
 		}
 		$res = $qry->run();
-		while($r = mysql_fetch_assoc($res)){
+		while($r = SQL::fetch($res)){
 			$this->pl_nametrans[$r['pl_name']] = $r['pl_id'];
 			$this->pl_ids[] = $r['pl_id'];
 			$this->_finn_kommuner($r['pl_id'], $r['pl_name']);
@@ -974,7 +974,7 @@ if($this->showformat('s_tidligere')){
 						ORDER BY `pl_k_id` ASC",
 						array('plid'=>$plid));
 		$res = $qry->run();
-		while($r = mysql_fetch_assoc($res)){
+		while($r = SQL::fetch($res)){
 			$this->goodNames[$this->_statname($plname)][] = utf8_encode($r['name']);
 		}
 	}
