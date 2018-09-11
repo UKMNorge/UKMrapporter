@@ -1,4 +1,5 @@
 <?php
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class rapport{
 	
@@ -429,7 +430,7 @@ class rapport{
 			    'marginBottom' => 1100));
 		if(!$name)
 			$name = $this->name;
-		$properties = $PHPWord->getProperties();
+		$properties = $PHPWord->getDocInfo(); 
 		$properties->setCreator('UKM Norge'); 
 		$properties->setCompany('UKM Norges arrangørsystem');
 		$properties->setTitle('UKM-rapport '. ucfirst(str_replace('_',' ',$name)));
@@ -490,9 +491,12 @@ class rapport{
 		$t = $this->frontInfo();
 		if ($t) {
 			woText($section, ''); // Adds an empty line before contacts
-			woText($section, array_shift($t), 'diplom_mellom'); 
-			foreach ($t as $v)
-				woText($section, $v, 'diplom_monstring');
+			if( is_array( $t ) ) {
+				woText($section, array_shift($t), 'diplom_mellom'); 
+				foreach ($t as $v) {
+					woText($section, $v, 'diplom_monstring');
+				}
+			}
 		}
 		$section->addPageBreak();
 		
@@ -541,7 +545,8 @@ class rapport{
 	public function excel_init($navn=false){
 		global $objPHPExcel;
 		require_once('UKM/inc/excel.inc.php');
-
+		$objPHPExcel = new Spreadsheet();
+		
 		// Endret parameter 22.11.12, navn fungerer nå som direction mens navn hentes fra klassen
 		if($navn == 'portrait' || $navn == 'landscape') {
 			$orientation = $navn;
