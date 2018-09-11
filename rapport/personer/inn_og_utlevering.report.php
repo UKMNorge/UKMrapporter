@@ -167,7 +167,7 @@ class valgt_rapport extends rapport {
 						}
 						
 						$c = $tab->addCell($col_inn);
-						$c->addImage('/home/ukmno/public_html/wp-content/plugins/UKMrapporter/avkrysningsboks_inn_ut.jpg', array('width'=>60, 'height'=>38, 'align'=>'center'));
+						$c->addImage( dirname( __FILE__, 3 ) . '/img/avkrysningsboks_inn_ut.jpg', array('width'=>60, 'height'=>38, 'align'=>'center'));
 
 						$c = $tab->addCell($col_inn/2);
 						$c = $tab->addCell($col_navn);

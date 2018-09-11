@@ -99,7 +99,7 @@ foreach( $fylker as $fylke ) {
 	
 	$current_day = '';
 	global $PHPWord;
-	$PHPWord = new PHPWord();
+	$PHPWord = new PhpWord();
 	$section = word_init('Fylkestimeplan '. $fylke->navn);
 	foreach( $fylke->hendelser as $hendelse ) {
 		if( (string)$current_day != (string)$hendelse->info->dag ) {
