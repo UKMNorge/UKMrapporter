@@ -85,8 +85,8 @@ jQuery(document).ready(function(){
 		jQuery.post(ajaxurl, data, function(response){
 			jQuery('#report_container_word').html(response);
 			link = jQuery('#downloadLink').attr('href');
-			if(link !== undefined && link !== null)
-				window.location.href = link;
+			//if(link !== undefined && link !== null)
+			//	window.location.href = link;
 		});
 	});
 
