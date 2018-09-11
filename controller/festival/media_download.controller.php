@@ -1,4 +1,6 @@
 <?php
+require_once(PLUGIN_DIR_UKMRAPPORTER.'functions/v1_image_selected.function.php');
+
 if( isset( $_GET['kunstnere'] ) ) {
 	$zipnavn = 'UKM-Festivalen '. date('Y') .' Kunstnere';
 	$alle_innslag = $m->innslag();
@@ -35,7 +37,7 @@ foreach( $alle_innslag as $order => $inn ) {
 		}
 		$innslag->rekkefolge = '';
 	
-		if( sizeof( $related_media['image'] ) == 0 ) {
+		if( is_array( $related_media['image'] ) && sizeof( $related_media['image'] ) == 0 ) {
 			$innslag->media->image = 'none_uploaded';
 		} else {
 			$innslag->media->image = image_selected( $innslag, 0, 'bilde_kunstner', 'original' );
