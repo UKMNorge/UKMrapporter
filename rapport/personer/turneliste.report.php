@@ -72,11 +72,11 @@ class valgt_rapport extends rapport {
 				elseif($band->g('b_kommune') !== $kommune)
 						$all_same_kommune = false;
 				$first = false;
-				$kommune = new kommune( $band->g('b_kommune') );				
+				
 				$collect_infos[] = array('bname' => $band->g('b_name'),
 										'contact' => $contact->g('name'),
 										'bt_name' => $band->g('bt_name'),
-										'kommune' => $kommune->getNavn()
+										'kommune' => utf8_encode(UKMN_kommune($band->g('b_kommune')))
 										);
 			}
 			if(!$all_same_kommune) {
@@ -122,11 +122,10 @@ class valgt_rapport extends rapport {
 				$first = false;
 				$contact = new person($band->g('b_contact'));
 	
-				$kommune = new kommune( $band->g('b_kommune') );
 				$collect_infos[] = array('bname' => $band->g('b_name'),
 										'contact' => $contact->g('name'),
 										'bt_name' => $band->g('bt_name'),
-										'kommune' => $kommune->getNavn()
+										'kommune' => utf8_encode(UKMN_kommune($band->g('b_kommune')))
 										);
 			}
 			if(!$all_same_kommune) {
@@ -202,11 +201,10 @@ class valgt_rapport extends rapport {
 						$all_same_kommune = false;
 				$first = false;
 				
-				$kommune = new kommune( $band->g('b_kommune') );
 				$collect_infos[] = array('bname' => $band->g('b_name'),
 										'contact' => $contact->g('name'),
 										'bt_name' => $band->g('bt_name'),
-										'kommune' => $kommune->getNavn()
+										'kommune' => utf8_encode(UKMN_kommune($band->g('b_kommune')))
 										);
 			}
 			if(!$all_same_kommune) {
@@ -251,11 +249,10 @@ class valgt_rapport extends rapport {
 				$first = false;
 				$contact = new person($band->g('b_contact'));
 	
-				$kommune = new kommune( $band->g('b_kommune') );
 				$collect_infos[] = array('bname' => $band->g('b_name'),
 										'contact' => $contact->g('name'),
 										'bt_name' => $band->g('bt_name'),
-										'kommune' => $kommune->getNavn()
+										'kommune' => utf8_encode(UKMN_kommune($band->g('b_kommune')))
 										);
 			}
 			if(!$all_same_kommune) {
@@ -268,7 +265,7 @@ class valgt_rapport extends rapport {
 				}
 			}
 		}
-		return $this->woWrite();
+		return $thiswoWrite();
 	}
 	
 	
@@ -329,12 +326,11 @@ class valgt_rapport extends rapport {
 						$all_same_kommune = false;
 				$first = false;
 				
-				$kommune = new kommune( $band->g('b_kommune') );
 				$collect_infos .= '<tr>'
 								.	'<td>'.$band->g('b_name').' &nbsp;</td>'
 								.	'<td>'.$contact->g('name').' &nbsp;</td>'
 								.	'<td>'.$band->g('bt_name').' &nbsp;</td>'
-								.	'<td>'.$kommune->getNavn().' &nbsp;</td>'
+								.	'<td>'.utf8_encode(UKMN_kommune($band->g('b_kommune'))).' &nbsp;</td>'
 								.'</tr>';
 			}
 			if(!$all_same_kommune)
@@ -378,12 +374,11 @@ class valgt_rapport extends rapport {
 				$first = false;
 				$contact = new person($band->g('b_contact'));
 	
-				$kommune = new kommune( $band->g('b_kommune') );
 				$collect_infos .= '<tr>'
 								.	'<td>'.$band->g('b_name').' &nbsp;</td>'
 								.	'<td>'.$contact->g('name').' &nbsp;</td>'
 								.	'<td>'.$band->g('bt_name').' &nbsp;</td>'
-								.	'<td>'.$kommune->getNavn().' &nbsp;</td>'
+								.	'<td>'.utf8_encode(UKMN_kommune($band->g('b_kommune'))).' &nbsp;</td>'
 								.'</tr>';
 			}
 			if(!$all_same_kommune)
