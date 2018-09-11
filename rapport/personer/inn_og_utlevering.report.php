@@ -73,7 +73,7 @@ class valgt_rapport extends rapport {
 						exCell('B'.$row, '');
 						exCell('C'.$row, $tittelen->g('tittel'));
 						exCell('D'.$row, $inn->g('b_name'));
-						exCell('E'.$row, $inn->info['kommune_utf8']);
+						exCell('E'.$row, $inn->info['kommune']);
 						exCell('F'.$row, $tittelen->g('detaljer'));
 						exCell('G'.$row, '');
 					}
@@ -180,9 +180,9 @@ class valgt_rapport extends rapport {
 						$inn->loadGEO(); 
 						$c = $tab->addCell($col_detaljer);
 						if( get_option('site_type') == 'land' ) {
-							woText($c, $inn->info['fylke_utf8']);
+							woText($c, $inn->info['fylke']);
 						} else {
-							woText($c, $inn->info['kommune_utf8']);
+							woText($c, $inn->info['kommune']);
 						}
 
 						$c = $tab->addCell($col_sign, array('borderBottomSize'=>9, 'borderBottomColor'=>'000000'));
@@ -248,7 +248,7 @@ class valgt_rapport extends rapport {
 							else 
 								echo '<div class="detaljer" style="width: 130px">&nbsp;</div>';
 						?>
-						<div class="detaljer"><?php $inn->loadGEO(); echo get_option('site_type') == 'land' ? $inn->info['fylke_utf8'] : $inn->info['kommune_utf8']; ?></div>
+						<div class="detaljer"><?php $inn->loadGEO(); echo get_option('site_type') == 'land' ? $inn->info['fylke'] : $inn->info['kommune']; ?></div>
 						<div class="sign"></div>
 					</li>
 				<?php
@@ -298,7 +298,7 @@ class valgt_rapport extends rapport {
 					$tittel->bilde = image_selected( $inn, $tittel->g('t_id') );
 				}
 				if( $this->showFormat('sort_geo') ) {
-					$geoKey = get_option('site_type') == 'land' ? $inn->info['fylke_utf8'] : $inn->info['kommune_utf8'];
+					$geoKey = get_option('site_type') == 'land' ? $inn->info['fylke'] : $inn->info['kommune'];
 					$sortKey = $geoKey .' '. strtolower( $inn->g('bt_name') );
 				} else {
 					#else vil da være sort_alp
