@@ -482,8 +482,7 @@ class rapport{
 			woText($section, '','rapportIkonSpacerLandscape');
 		else
 			woText($section, '','rapportIkonSpacer');
-		
-		$section->addImage(dirname( __FILE__ ) . '/img/UKM_logo.png', array('width'=>300, 'height'=>164, 'align'=>'center'));
+		$section->addImage('/home/ukmno/public_html/wp-content/plugins/UKMrapporter/UKM_logo.png', array('width'=>300, 'height'=>164, 'align'=>'center'));
 
 		woText($section, ucfirst(str_replace('_',' ',$name)), 'rapport');
 		woText($section, $this->m->g('pl_name').' ('.$this->m->g('season').')','place');
