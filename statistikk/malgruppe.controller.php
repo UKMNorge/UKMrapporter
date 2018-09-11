@@ -119,11 +119,11 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 				}
 				$kommune[ $r['k_id'] ][ $r['season'] ] = $data;
 				if($r['season'] != 2009) {
-					$TWIG['dekningsgrad'][ utf8_encode($r['name'])][ $r['season'] ] = $data;
+					$TWIG['dekningsgrad'][ $r['name'] ][ $r['season'] ] = $data;
 				}
 				$kommune[ $r['k_id'] ][ 'total' ]['malgruppe'] += $r['malgruppe'];
 				$kommune[ $r['k_id'] ][ 'total' ]['deltakere'] += $r['deltakere'];
-				$kommunenavn[ $r['k_id'] ] = utf8_encode( $r['name'] );
+				$kommunenavn[ $r['k_id'] ] = $r['name'];
 			}
 	
 			foreach( $kommune as $k_id => $data ) {
@@ -192,7 +192,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 				$fylke[ $r['f_id'] ][ $r['season'] ] = array( 'malgruppe' => $r['malgruppe'], 'deltakere' => $r['deltakere'] );
 				$fylke[ $r['f_id'] ][ 'total' ]['malgruppe'] += $r['malgruppe'];
 				$fylke[ $r['f_id'] ][ 'total' ]['deltakere'] += $r['deltakere'];
-				$fylkenavn[ $r['f_id'] ] = utf8_encode($r['name']);
+				$fylkenavn[ $r['f_id'] ] = $r['name'];
 							
 				if( $r['malgruppe'] > 0 ) {
 					$fylke_dekning = round((100/$r['malgruppe'])*$r['deltakere'],2);
@@ -201,7 +201,7 @@ if($TWIG['monstring']->fylke->id != 3 || $TWIG['stat_type']=='land') {
 				}
 				
 				if($r['season'] != 2009) {
-					$TWIG['dekningsgrad'][ utf8_encode($r['name'])][ $r['season'] ] = $fylke_dekning;
+					$TWIG['dekningsgrad'][ $r['name']][ $r['season'] ] = $fylke_dekning;
 				}
 			}
 			

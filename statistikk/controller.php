@@ -93,8 +93,8 @@ if($TWIG['stat_type'] == 'land') {
 						  );
 	$kommuneRes = $kommuneQry->run();
 	while( $r = SQL::fetch( $kommuneRes ) ) {
-		$kommuner_i_fylket[ utf8_encode($r['name']) ] = $r['id'];
-		$TWIG['statistikk_detaljert'][ $r['id'] ]['metadata'] = array('id' => $r['id'], 'name' => utf8_encode($r['name']) );
+		$kommuner_i_fylket[ $r['name'] ] = $r['id'];
+		$TWIG['statistikk_detaljert'][ $r['id'] ]['metadata'] = array('id' => $r['id'], 'name' => $r['name'] );
 	}
 	
 	$TWIG['kommuner_i_fylket'] = $kommuner_i_fylket;
