@@ -527,7 +527,7 @@ class rapport{
 	/**
 	 * woWrite function
 	 * 
-	 * Generer excel-dokument av rapporten
+	 * Generer word-dokument av rapporten
 	 *
 	 * @access private
 	 * @return string safename
@@ -540,7 +540,6 @@ class rapport{
 	public function excel_init($navn=false){
 		global $objPHPExcel;
 		require_once('UKM/inc/excel.inc.php');
-		$objPHPExcel = new PHPExcel();
 
 		// Endret parameter 22.11.12, navn fungerer nå som direction mens navn hentes fra klassen
 		if($navn == 'portrait' || $navn == 'landscape') {
