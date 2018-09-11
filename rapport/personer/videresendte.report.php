@@ -15,10 +15,6 @@ class valgt_rapport extends rapport {
 	 * @return class object
 	 */
 	public function __construct($rapport, $kategori){
-		if (UKM_HOSTNAME == 'ukm.dev') {
-			define('EXCEL_WRITE_PATH', '/tmp/');
-			define('WORD_WRITE_PATH', '/tmp/');
-		}
 		parent::__construct($rapport, $kategori);
 
 		$this->navn = 'Videresendte fra min mønstring';
