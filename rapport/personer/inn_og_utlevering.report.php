@@ -272,7 +272,7 @@ class valgt_rapport extends rapport {
 	 */	
 	private function _objektene() {
 		if( $this->show('b_vis') ) {
-			require_once( PLUGIN_DIR_PATH_UKMFESTIVALEN.'../UKMvideresending_festival/functions.php' );
+			require_once(PLUGIN_DIR_UKMRAPPORTER.'functions/v1_image_selected.function.php');
 		}
 		$innslagene = $this->m->innslag();
 		foreach($innslagene as $innslag) {
