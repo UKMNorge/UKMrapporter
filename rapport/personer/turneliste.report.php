@@ -1,4 +1,6 @@
 <?php
+require_once('UKM/kommune.class.php');
+
 class valgt_rapport extends rapport {
 	/**
 	 * class constructor
@@ -72,13 +74,13 @@ class valgt_rapport extends rapport {
 				elseif($band->g('b_kommune') !== $kommune)
 						$all_same_kommune = false;
 				$first = false;
-				
-				require_once('UKM/kommune.class.php');
+
 				$kommune = new kommune( $band->g('b_kommune') );
 				$collect_infos[] = array('bname' => $band->g('b_name'),
 										'contact' => $contact->g('name'),
 										'bt_name' => $band->g('bt_name'),
 										'kommune' => $kommune->getNavn(),
+
 										);
 			}
 			if(!$all_same_kommune) {
@@ -124,12 +126,11 @@ class valgt_rapport extends rapport {
 				$first = false;
 				$contact = new person($band->g('b_contact'));
 	
-				require_once('UKM/kommune.class.php');
 				$kommune = new kommune( $band->g('b_kommune') );
 				$collect_infos[] = array('bname' => $band->g('b_name'),
 										'contact' => $contact->g('name'),
 										'bt_name' => $band->g('bt_name'),
-										'kommune' => $kommune->getNavn(),
+										'kommune' => $kommune->getNavn()
 										);
 			}
 			if(!$all_same_kommune) {
@@ -205,12 +206,11 @@ class valgt_rapport extends rapport {
 						$all_same_kommune = false;
 				$first = false;
 				
-				require_once('UKM/kommune.class.php');
 				$kommune = new kommune( $band->g('b_kommune') );
 				$collect_infos[] = array('bname' => $band->g('b_name'),
 										'contact' => $contact->g('name'),
 										'bt_name' => $band->g('bt_name'),
-										'kommune' => $kommune->getNavn(),
+										'kommune' => $kommune->getNavn()
 										);
 			}
 			if(!$all_same_kommune) {
@@ -255,12 +255,11 @@ class valgt_rapport extends rapport {
 				$first = false;
 				$contact = new person($band->g('b_contact'));
 	
-				require_once('UKM/kommune.class.php');
 				$kommune = new kommune( $band->g('b_kommune') );
 				$collect_infos[] = array('bname' => $band->g('b_name'),
 										'contact' => $contact->g('name'),
 										'bt_name' => $band->g('bt_name'),
-										'kommune' => $kommune->getNavn(),
+										'kommune' => $kommune->getNavn()
 										);
 			}
 			if(!$all_same_kommune) {
@@ -273,7 +272,7 @@ class valgt_rapport extends rapport {
 				}
 			}
 		}
-		return $thiswoWrite();
+		return $this->woWrite();
 	}
 	
 	
@@ -334,13 +333,12 @@ class valgt_rapport extends rapport {
 						$all_same_kommune = false;
 				$first = false;
 				
-				require_once('UKM/kommune.class.php');
 				$kommune = new kommune( $band->g('b_kommune') );
 				$collect_infos .= '<tr>'
 								.	'<td>'.$band->g('b_name').' &nbsp;</td>'
 								.	'<td>'.$contact->g('name').' &nbsp;</td>'
 								.	'<td>'.$band->g('bt_name').' &nbsp;</td>'
-								.	'<td>'. $kommune->getNavn() .' &nbsp;</td>'
+								.	'<td>'.$kommune->getNavn().' &nbsp;</td>'
 								.'</tr>';
 			}
 			if(!$all_same_kommune)
@@ -383,14 +381,12 @@ class valgt_rapport extends rapport {
 						$all_same_kommune = false;
 				$first = false;
 				$contact = new person($band->g('b_contact'));
-
-				require_once('UKM/kommune.class.php');
 				$kommune = new kommune( $band->g('b_kommune') );
 				$collect_infos .= '<tr>'
 								.	'<td>'.$band->g('b_name').' &nbsp;</td>'
 								.	'<td>'.$contact->g('name').' &nbsp;</td>'
 								.	'<td>'.$band->g('bt_name').' &nbsp;</td>'
-								.	'<td>'. $kommune->getNavn() .' &nbsp;</td>'
+								.	'<td>'.$kommune->getNavn().' &nbsp;</td>'
 								.'</tr>';
 			}
 			if(!$all_same_kommune)
