@@ -21,7 +21,7 @@
 			<table class="table table-striped" style="max-width: 400px">
 				{% embed "details_sjangerfordeling_tableheader.twig.html" %}{% endembed %}
 				{% for ar, data in kommune.sjangerfordeling %}
-					{% set onepercent = 100/data.total %}
+					{% set onepercent = data.total == 0 ? 0 : (100/data.total) %}
 					{% embed "details_sjangerfordeling_tablerowPercent.twig.html" %}{% endembed %}
 				{% endfor %}
 
@@ -42,7 +42,7 @@
 			<table class="table table-striped" style="max-width: 400px">
 				{% embed "details_sjangerfordeling_tableheader.twig.html" %}{% endembed %}
 				{% for ar, data in kommune.sjangerfordeling_innslag %}
-					{% set onepercent = 100/data.total %}
+					{% set onepercent = data.total == 0 ? 0 : (100/data.total) %}
 					{% embed "details_sjangerfordeling_tablerowPercent.twig.html" %}{% endembed %}
 				{% endfor %}
 			</table>

@@ -52,7 +52,7 @@
 					</tr>
 				</thead>
 				{% for ar, data in kommune.aldersfordeling_total %}
-					{% set onepercent = 100/data.total %}
+					{% set onepercent = data.total == 0 ? 0 : (100/data.total) %}
 					<tr>
 						<td align="right">{{ ar }}</td>
 						<td align="right">100%</td>
