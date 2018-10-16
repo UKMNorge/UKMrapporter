@@ -126,12 +126,12 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 						   ORDER BY `f_id`, `season`");
 	$missingRes = $missingQry->run();
 	while( $r = SQL::fetch( $missingRes ) ) {
-		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] = $r['missing'];
+		$TWIG['monstringer_stacked'][ $r['season'] ][ $r['name'] ] = $r['missing'];
 		if( $r['season'] == $TWIG['season'] ) {
-			$TWIG['statistikk_fylker_sammenlignet'][ utf8_encode( $r['name'] ) ] += $r['missing'];
+			$TWIG['statistikk_fylker_sammenlignet'][ $r['name'] ] += $r['missing'];
 		}
 		if( $r['season'] != 2009 ) {
-			$TWIG['statistikk_detaljert'][ utf8_encode($r['name']) ][ $r['season'] ]['personer'] = $r['missing'];
+			$TWIG['statistikk_detaljert'][ $r['name'] ][ $r['season'] ]['personer'] = $r['missing'];
 		}
 	}
 	
@@ -143,9 +143,9 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 							);
 	$fylkeMissing = $fylkeMissing->run();
 	while( $r = SQL::fetch( $fylkeMissing ) ) {
-		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] += $r['pl_missing'];
+		$TWIG['monstringer_stacked'][ $r['season'] ][ $r['name'] ] += $r['pl_missing'];
 		if( $r['season'] == $TWIG['season'] ) {
-			$TWIG['statistikk_fylker_sammenlignet'][ utf8_encode( $r['name'] ) ] += $r['pl_missing'];
+			$TWIG['statistikk_fylker_sammenlignet'][ $r['name'] ] += $r['pl_missing'];
 		}
 	}
 	
@@ -161,12 +161,12 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 							  ORDER BY `f_id`, `season`");
 	$registeredRes = $registeredQry->run();
 	while( $r = SQL::fetch( $registeredRes ) ) {	
-		$TWIG['monstringer_stacked'][ $r['season'] ][ utf8_encode($r['name']) ] += $r['personer'];
+		$TWIG['monstringer_stacked'][ $r['season'] ][ $r['name'] ] += $r['personer'];
 		if( $r['season'] != 2009 ) {
-			$TWIG['statistikk_detaljert'][ utf8_encode($r['name']) ][ $r['season'] ]['personer'] += $r['personer'];
+			$TWIG['statistikk_detaljert'][ $r['name'] ][ $r['season'] ]['personer'] += $r['personer'];
 		}
 		if( $r['season'] == $TWIG['season'] ) {
-			$TWIG['statistikk_fylker_sammenlignet'][ utf8_encode( $r['name'] ) ] += $r['personer'];
+			$TWIG['statistikk_fylker_sammenlignet'][ $r['name'] ] += $r['personer'];
 		}
 	}
 	
@@ -183,7 +183,7 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 	$innRes = $innQry->run();
 	while( $r = SQL::fetch( $innRes ) ) {
 		if( $r['season'] != 2009 ) {
-			$TWIG['statistikk_detaljert'][ utf8_encode($r['name']) ][ $r['season'] ]['innslag'] = $r['innslag'];
+			$TWIG['statistikk_detaljert'][ $r['name'] ][ $r['season'] ]['innslag'] = $r['innslag'];
 		}
 	}
 	

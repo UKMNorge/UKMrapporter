@@ -15,7 +15,7 @@ class valgt_rapport extends rapport {
 
 		if( $this->report_extended == 'tekniske_prover' ) {
 			$this->navn = 'Tekniske prøver';
-		} elseif( $this->report_extended == 'juryskjema_utskrift' ) {
+		} elseif( $this->report_extended == 'vurderingsskjema' ) {
 			$this->navn = 'Vurderingsskjema for fagpanel';
 		} else {
 			$this->navn = 'Program'; 
@@ -489,7 +489,7 @@ class valgt_rapport extends rapport {
 						}
 					}
 					
-					if($this->report_extended == 'juryskjema_utskrift') {
+					if($this->report_extended == 'vurderingsskjema') {
 						$jurybox = array('borderTopSize'=>9, 'borderTopColor'=>'000000',
 									 'borderRightSize'=>9, 'borderRightColor'=>'000000',
 									 'borderBottomSize'=>9, 'borderBottomColor'=>'000000',
@@ -692,93 +692,6 @@ class valgt_rapport extends rapport {
 							.'</div>';
 					}
 					
-					if($this->report_extended == 'juryskjema') {
-						$alle_vurderinger = jury_vurderinger_forestilling($c->g('c_id'));
-						if(!is_array($alle_vurderinger[$i->g('b_id')])) {?>
-							<div class="juryering"><h3>Innslaget er ikke vurdert</h3></div>
-						<?php
-						} else { ?>
-						<div class="juryering">
-							<table class="juryering_tall" cellpadding="0" cellspacing="0">
-								<tr class="header">
-									<th>Helhetsvurdering</th>
-						<?php
-						$header = true;
-						#$sumsum = 0;
-							foreach($alle_vurderinger[$i->g('b_id')] as $kriterie => $vurderinger) {
-								if($kriterie !== 'helhet')
-									continue;
-									
-								if($header) {
-									foreach($alle_vurderinger[$i->g('b_id')][$kriterie] as $medlem => $data) { ?>
-										<th class="medlem" alt="<?= jury_medlem($medlem)?>" alt="<?= jury_medlem($medlem)?>"><?= shortString(jury_medlem($medlem),10) ?></th>
-									<?php
-									}
-									$header = false;
-									?>
-									<th class="sum">SUM</th>
-									<th class="snitt">SNITT</th>
-									</tr>
-									<?php
-								} ?>
-									<tr>
-										<th class="kriterie">Poeng</th>
-								<?php
-								$sum = 0;
-								$snitt = 0;
-								$ant_vurderinger = 0;
-								foreach($vurderinger as $medlem => $vurdering) { ?>
-										<td class="poeng"><?= $vurdering['poeng'] ?></td>
-								<?php
-									$sum += $vurdering['poeng'];
-									$ant_vurderinger++;
-									#$sumsum += $vurdering['poeng'];
-								} ?>
-									<td class="sum"><?= $sum ?></td>
-									<td class="snitt"><?= round($sum / $ant_vurderinger, 2) ?></td>
-								</tr>
-							<?php
-							}
-							/*	<tr class="sum">
-									<th class="kriterie">SUM</th>
-									<th colspan="<?= $ant_vurderinger ?>"></th>
-									<th class="sum"><?= $sumsum ?></th>
-									<th class="snitt"><?= round($sumsum / $ant_vurderinger, 2) ?></th>
-								</tr>
-							*/ ?>
-							</table>
-	
-								<table class="juryering_kommentarer" cellpadding="0" cellspacing="0">
-									<tr class="header">
-										<td class="spacer"></td>
-										<th class="medlem">Jurymedlem</th>
-										<th class="kommentar">Kommentar</th>
-									</tr>
-							<?php
-							$header = true;
-							foreach($alle_vurderinger[$i->g('b_id')] as $kriterie => $vurderinger) { ?>
-									<tr class="kriterie">
-										<th colspan="3"><?= $kriterie ?></th>
-									</tr>
-							<?php	
-								foreach($vurderinger as $medlem => $vurdering) { ?>
-									<tr>
-										<td></td>
-										<th><?= jury_medlem($medlem) ?></th>
-										<td><?= utf8_encode($vurdering['kommentar']) ?></td>
-									</tr>
-	
-								<?php
-								} ?>
-							<?php
-							} ?>
-							</table>
-							</div>
-							<div style="page-break-after: always;"></div>
-							<?php
-							#echo '<pre>'; var_dump($data); echo '</pre>';
-						}
-					}
 					if($this->show('t_vis') && !$i->tittellos()){
 						echo '<div class="titler">'
 							.'<div class="titler-label">Titler:</div>';
@@ -848,7 +761,7 @@ class valgt_rapport extends rapport {
 							.'</div>';
 					}
 					
-					if($this->report_extended == 'juryskjema_utskrift') {
+					if($this->report_extended == 'vurderingsskjema') {
 						echo '<div class="juryskjema">'
 								.'<div class="deltakere-label">Vurderingsskjema</div>'
 

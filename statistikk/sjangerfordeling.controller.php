@@ -147,7 +147,7 @@ function calc_sjangerfordeling( $kommune_id, $missing, $persQry, $innslag=false 
 			} elseif( $r['bt_id'] == 7 ) {
 				$kategori = 'Diverse';
 			} else {
-				$kategori = utf8_encode($r['bt_name']);
+				$kategori = $r['bt_name'];
 			}
 			
 			$kategori = str_replace('ø','o', $kategori);

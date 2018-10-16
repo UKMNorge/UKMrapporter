@@ -1,4 +1,5 @@
 <?php
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class rapport{
 	
@@ -429,7 +430,7 @@ class rapport{
 			    'marginBottom' => 1100));
 		if(!$name)
 			$name = $this->name;
-		$properties = $PHPWord->getProperties();
+		$properties = $PHPWord->getDocInfo(); 
 		$properties->setCreator('UKM Norge'); 
 		$properties->setCompany('UKM Norges arrangørsystem');
 		$properties->setTitle('UKM-rapport '. ucfirst(str_replace('_',' ',$name)));
@@ -482,16 +483,20 @@ class rapport{
 			woText($section, '','rapportIkonSpacerLandscape');
 		else
 			woText($section, '','rapportIkonSpacer');
-		$section->addImage('/home/ukmno/public_html/wp-content/plugins/UKMrapporter/UKM_logo.png', array('width'=>300, 'height'=>164, 'align'=>'center'));
+		
+		$section->addImage(dirname( __FILE__ ) . '/img/UKM_logo.png', array('width'=>300, 'height'=>164, 'align'=>'center'));
 
 		woText($section, ucfirst(str_replace('_',' ',$name)), 'rapport');
 		woText($section, $this->m->g('pl_name').' ('.$this->m->g('season').')','place');
 		$t = $this->frontInfo();
 		if ($t) {
 			woText($section, ''); // Adds an empty line before contacts
-			woText($section, array_shift($t), 'diplom_mellom'); 
-			foreach ($t as $v)
-				woText($section, $v, 'diplom_monstring');
+			if( is_array( $t ) ) {
+				woText($section, array_shift($t), 'diplom_mellom'); 
+				foreach ($t as $v) {
+					woText($section, $v, 'diplom_monstring');
+				}
+			}
 		}
 		$section->addPageBreak();
 		
@@ -527,7 +532,7 @@ class rapport{
 	/**
 	 * woWrite function
 	 * 
-	 * Generer excel-dokument av rapporten
+	 * Generer word-dokument av rapporten
 	 *
 	 * @access private
 	 * @return string safename
@@ -540,8 +545,8 @@ class rapport{
 	public function excel_init($navn=false){
 		global $objPHPExcel;
 		require_once('UKM/inc/excel.inc.php');
-		$objPHPExcel = new PHPExcel();
-
+		$objPHPExcel = new Spreadsheet();
+		
 		// Endret parameter 22.11.12, navn fungerer nå som direction mens navn hentes fra klassen
 		if($navn == 'portrait' || $navn == 'landscape') {
 			$orientation = $navn;

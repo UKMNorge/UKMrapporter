@@ -8,9 +8,10 @@ Version: 1.0
 Author URI: http://www.ukm-norge.no
 */
 ini_set('display_errors', true);
+define('PLUGIN_DIR_UKMRAPPORTER', dirname( __FILE__ ).'/' );
 
 if(is_admin()) {
-	global $blog_id;
+
 	if( in_array( get_option('site_type'), array('kommune','fylke','land')) ) {
 		add_action('UKM_admin_menu', 'UKMrapport_menu');
 		add_action('UKMWPDASH_shortcuts', 'UKMMrapport_dash_shortcut', 50);
