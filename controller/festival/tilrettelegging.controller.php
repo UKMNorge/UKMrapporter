@@ -37,14 +37,14 @@ while( $r = SQL::fetch( $res ) ) {
 	$objPHPExcel->setActiveSheetIndex(0);
 
 	$rad++;
-	excell('A'.$rad, (string) $r['pl_name']);
+	excell('A'.$rad, (string) utf8_encode($r['pl_name']));
 	excell('B'.$rad, $r['mat_vegetarianere']);
 	excell('C'.$rad, $r['mat_soliaki']);
 	excell('D'.$rad, $r['mat_svinekjott']);
 	excell('E'.$rad, (string) $r['mat_annet']);
 	
 	$objPHPExcel->setActiveSheetIndex(1);
-	excell('A'.$rad, (string) $r['pl_name']);
+	excell('A'.$rad, (string) utf8_encode($r['pl_name']));
 	excell('B'.$rad, (string) $r['tilrettelegging_bevegelseshemninger']);
 	excell('C'.$rad, (string) $r['tilrettelegging_annet']);
 }
