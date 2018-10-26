@@ -56,7 +56,7 @@ foreach( array_reverse($netter) as $natt ) {
 		} else {
 			$style = 'normal';
 		}
-		excell('A'.$rad, utf8_encode($r['fylke_navn']), $style);
+		excell('A'.$rad, $r['fylke_navn'], $style);
 		excell('B'.$rad, $r['l_navn'], $style);
 		excell('C'.$rad, $r['l_mobilnummer'], $style);
 		excell('D'.$rad, $r['l_epost'], $style);
