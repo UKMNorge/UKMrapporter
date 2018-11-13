@@ -127,11 +127,13 @@ function calc_missing( $TWIG, $kommune_array, $fylke=false ) {
 			$monstring = $monstring->monstring_get();
 			
 			$kommuner = $monstring->g('kommuner');
-			$num_kommuner = sizeof( $kommuner );
-			
 			$missing  = $monstring->get('pl_missing');
 			
-			$my_missing = floor( $missing / $num_kommuner );
+			if( is_array( $kommuner ) && sizeof( $kommuner ) > 0 ) {
+				$my_missing = floor( $missing / sizeof( $kommuner ) );
+			} else {
+				 $my_missing = $missing;
+			}
 			
 			$TWIG['missing'][ $kommune ][ $ssn ] = $my_missing;
 			$TWIG['missing_total_kommuner'][ $ssn ] += $my_missing;
