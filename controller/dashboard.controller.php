@@ -47,7 +47,7 @@ class rapporter {
 				$this->add('festival', 'reise');
 				$this->add('festival', 'mat');
 				$this->add('festival', 'ledere');
-				$this->add('festival', 'ledermiddag');
+				#$this->add('festival', 'ledermiddag');
 				$this->add('festival', 'hotell');
 				$this->add('festival', 'deltakerovernatting');
 

@@ -96,7 +96,7 @@ foreach( $ressurspersoner as $gruppe => $personer ) {
 		$rad++;
 		excell('A'.$rad, ucfirst(substr($p['romtype'],0,1)). $p['rom']);
 		excell('B'.$rad, $p['romtype'],'bold');
-		excell('C'.$rad, utf8_encode($p['navn']),'bold');
+		excell('C'.$rad, $p['navn'],'bold');
 		excell('D'.$rad, $p['mobil']);
 		excell('E'.$rad, $p['epost']);
 		$start = $p['ankomst'];
