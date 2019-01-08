@@ -43,6 +43,7 @@ class rapporter {
 			case 'land':
 				$this->add('monstring', 'statistikk');
 				$this->add('monstring', 'nominerte');
+				$this->add('monstring', 'filmogfoto');
 
 				$this->add('festival', 'reise');
 				$this->add('festival', 'mat');
@@ -77,6 +78,7 @@ class rapporter {
 			case 'fylke':
 				$this->add('monstring', 'videresendingsskjema');
 				$this->add('monstring', 'datablad');
+				$this->add('monstring', 'filmogfoto');
 
 				$this->add('fylke', 'statistikk');
 				$this->add('fylke', 'lokalkontakter');
@@ -105,6 +107,7 @@ class rapporter {
 			break;
 			default:
 				$this->add('monstring', 'statistikk');
+				$this->add('monstring', 'filmogfoto');
 
 				$this->add('kontakt', 'sms_type');
 				$this->add('kontakt', 'sms_hendelse');
@@ -157,7 +160,13 @@ class rapporter {
 	public function createRapport( $rapportID ) {
 		$rapport = new stdClass();
 		switch( $rapportID ) {
-			case 'nominerte':
+			case 'filmogfoto':
+				$rapport->icon = 'stop';
+				$rapport->link = 'rapport=filmogfoto&kat=personer';
+				$rapport->navn = 'Film- og fotorettigheter';
+				$rapport->beskrivelse = 'Hvem som har reservert seg mot film- og foto.';
+			break;
+            case 'nominerte':
 				$rapport->icon = 'babushka';
 				$rapport->link = 'festival=nominerte';
 				$rapport->navn = 'Nominerte';
