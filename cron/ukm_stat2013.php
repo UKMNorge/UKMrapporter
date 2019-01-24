@@ -107,7 +107,7 @@ ob_start();
 					$age = 0;
 				
 				$first_name = $person->get("p_firstname");
-				$first_name = split(" ", str_replace("-", " ", $first_name) );
+				$first_name = explode(" ", str_replace("-", " ", $first_name) );
 				$first_name = $first_name[0];
 				
 				$time = $innslag->get('time_status_8');
