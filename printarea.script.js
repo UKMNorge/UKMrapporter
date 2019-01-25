@@ -34,7 +34,8 @@
                      popY     : 200,
                      popTitle : '',
                      popClose : false,
-                     waitBeforePrint: 800 };
+                     waitBeforePrint:1400
+                    };
 
     var settings = {};//global settings
 
