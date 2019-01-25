@@ -762,195 +762,197 @@ class valgt_rapport extends rapport {
 				$group_sum_titles = 0;
 				$group_sum_all_p = array();
 				$group_sum_uni_p = array();
-				foreach($innslag as $inn) {
-					$group_sum_bands++;
-					$kontakt = $inn->kontaktperson();
-					## LAST INN GEOGRAFI KUN HVIS NØDVENDIG
-					if($this->show('i_fylke')||$this->show('i_kommune'))
-						$inn->loadGeo();
-						
-					$UKMTVhtml = '';
-					if( $this->show('m_ukmtv') ) {
-						$media = $inn->related_items();
-						if( isset( $media['tv'] ) && sizeof( $media['tv'] ) > 0) {
-							foreach( $media['tv'] as $tv_id => $tv ) {
-								$UKMTVhtml .= '<div class="UKMTV clickable">'
-											. '	<div class="image"><img src="'. $tv->image_url .'" style="max-width:100%;" /></div>'
-											. '	<div class="embedcontainer" style="display:none;" data-framesource="'. $tv->embed_url .'"></div>'
-											.'</div>';
-							}
-						}
-						if( empty( $UKMTVhtml ) ) {
-							$UKMTVhtml = 'Ingen filmer lastet opp';
-						}
-					}
-					
-					// KUNST-BILDER
-					if( $this->show('m_kunst') && $inn->g('bt_id') == 3 ) {
-						$innslag_v2 = new innslag_v2( $inn->g('b_id') );
-						
-						$titler = $inn->titler($this->pl_id);
-						$html_bilder = '';
-						foreach($titler as $t) {
-							try {
-								$bilde = $innslag_v2->getBilder()->getValgt( $t->g('t_id') );
-								$bilde_html = 
-									'<a href="'. $bilde->getSize('original')->getUrl() .'" target="_blank">Last ned</a>'.
-									'<br />'.
-									'<img src="'. $bilde->getSize('medium')->getUrl() .'" />'
-									;
-								$bilde_none = '';
-							} catch( Exception $e ) {
-								$bilde_none = ': Ikke valgt bilde!';
-								$bilde_html = '';
-							}
-							
-							$html_bilder .= 
-								'<div style="margin-left: 25px;">'.
-									'<div class="bold">'.
-										' - '. $t->g('tittel') . $bilde_none . 
-									'</div>'.
-									'<div>'. 
-										$bilde_html .
-									'</div>'.
-								'</div>'
-								;
-						}
-					}
-					echo '<li class="innslag">'
-						### NAVN, KAT&SJAN, FYLKE OG KOMMUNE FOR INNSLAG 
-						.	'<div class="b_name_cont">'
-						### NAVN
-						.		'<div class="b_name">'.$inn->g('b_name').'</div>'
-						
-						### VARIGHET
-						.		($this->show('i_varig')
-									? '<div class="meta small">'.(!$inn->tittellos()?$inn->tid($this->pl_id):'&nbsp;').'</div>'
-									: '')
-									
-						### FYLKE
-						.		($this->show('i_fylke')
-									? '<div class="meta">'.$inn->g('fylke').($this->show('i_kommune') ? ' - '.$inn->g('kommune') : '').'</div>'
-									: '')
-		
-						### KOMMUNE
-						.		(!$this->show('i_fylke') && $this->show('i_kommune')
-									? '<div class="meta">'.$inn->g('kommune').'</div>'
-									: '')
-						### KATEGORI OG SJANGER
-						.		($this->show('i_katogsjan')
-									? '<div class="meta">'
-										.($inn->g('bt_id')==2	?	'Film - '	:	'')
-										.($inn->g('bt_id')==3	?	'Utstilling - '	:	'')
-										. $inn->g('kategori_og_sjanger').'</div>'
-									: '')
-						
-		
-						.	'<div class="clear"></div>'
-						.	'</div>'
-						.	'<div class="clear"></div>'
-						
-						### KONTAKTPERSON
-						. ($this->show('p_kontaktp')
-								? '<div class="bold">Kontaktperson: '
-								.	$kontakt->g('name')
-								.	' ('.$kontakt->alder().' år) '
-								.	'- mobil: <span class="UKMSMS">'.$kontakt->g('p_phone') .'</span> - e-post: <a href="mailto:'. $kontakt->g('p_email').'" class="UKMMAIL">'.$kontakt->g('p_email').'</a>'
-								.	'</div>'
-								: '')
-						;
-						if($this->show('p_vis')){
-							echo '<div class="bold">Deltakere: </div>'
-								.'<div class="desc">';
-							$personer = $inn->personObjekter();
-							$i=0;
-							foreach($personer as $p) {
-								$group_sum_all_p[] = $p->g('p_id');
-								$group_sum_uni_p[ $p->g('p_id') ] = 1;
-								$i++;
-								echo $p->g('name')
-									.($this->show('p_alder')
-										? ' ('.$p->alder().' år) '
-										: '')
-									.($this->show('p_instrument')
-										? ' <em>'.$p->g('instrument').'</em> '
-										: '')
-									.($this->show('p_mobil')
-										? ' - mobil: <span class="UKMSMS">'.$p->g('p_phone').'</span>'
-										: '')
-									.($this->show('p_epost')
-										? ' - e-post: <a href="mailto:'.$p->g('p_email').'" class="UKMMAIL">'.$p->g('p_email').'</a>'
-										: '')
+                if( is_array($innslag) ) {
+                    foreach($innslag as $inn) {
+                        $group_sum_bands++;
+                        $kontakt = $inn->kontaktperson();
+                        ## LAST INN GEOGRAFI KUN HVIS NØDVENDIG
+                        if($this->show('i_fylke')||$this->show('i_kommune'))
+                            $inn->loadGeo();
+                            
+                        $UKMTVhtml = '';
+                        if( $this->show('m_ukmtv') ) {
+                            $media = $inn->related_items();
+                            if( isset( $media['tv'] ) && sizeof( $media['tv'] ) > 0) {
+                                foreach( $media['tv'] as $tv_id => $tv ) {
+                                    $UKMTVhtml .= '<div class="UKMTV clickable">'
+                                                . '	<div class="image"><img src="'. $tv->image_url .'" style="max-width:100%;" /></div>'
+                                                . '	<div class="embedcontainer" style="display:none;" data-framesource="'. $tv->embed_url .'"></div>'
+                                                .'</div>';
+                                }
+                            }
+                            if( empty( $UKMTVhtml ) ) {
+                                $UKMTVhtml = 'Ingen filmer lastet opp';
+                            }
+                        }
+                        
+                        // KUNST-BILDER
+                        if( $this->show('m_kunst') && $inn->g('bt_id') == 3 ) {
+                            $innslag_v2 = new innslag_v2( $inn->g('b_id') );
+                            
+                            $titler = $inn->titler($this->pl_id);
+                            $html_bilder = '';
+                            foreach($titler as $t) {
+                                try {
+                                    $bilde = $innslag_v2->getBilder()->getValgt( $t->g('t_id') );
+                                    $bilde_html = 
+                                        '<a href="'. $bilde->getSize('original')->getUrl() .'" target="_blank">Last ned</a>'.
+                                        '<br />'.
+                                        '<img src="'. $bilde->getSize('medium')->getUrl() .'" />'
+                                        ;
+                                    $bilde_none = '';
+                                } catch( Exception $e ) {
+                                    $bilde_none = ': Ikke valgt bilde!';
+                                    $bilde_html = '';
+                                }
+                                
+                                $html_bilder .= 
+                                    '<div style="margin-left: 25px;">'.
+                                        '<div class="bold">'.
+                                            ' - '. $t->g('tittel') . $bilde_none . 
+                                        '</div>'.
+                                        '<div>'. 
+                                            $bilde_html .
+                                        '</div>'.
+                                    '</div>'
+                                    ;
+                            }
+                        }
+                        echo '<li class="innslag">'
+                            ### NAVN, KAT&SJAN, FYLKE OG KOMMUNE FOR INNSLAG 
+                            .	'<div class="b_name_cont">'
+                            ### NAVN
+                            .		'<div class="b_name">'.$inn->g('b_name').'</div>'
+                            
+                            ### VARIGHET
+                            .		($this->show('i_varig')
+                                        ? '<div class="meta small">'.(!$inn->tittellos()?$inn->tid($this->pl_id):'&nbsp;').'</div>'
+                                        : '')
+                                        
+                            ### FYLKE
+                            .		($this->show('i_fylke')
+                                        ? '<div class="meta">'.$inn->g('fylke').($this->show('i_kommune') ? ' - '.$inn->g('kommune') : '').'</div>'
+                                        : '')
+            
+                            ### KOMMUNE
+                            .		(!$this->show('i_fylke') && $this->show('i_kommune')
+                                        ? '<div class="meta">'.$inn->g('kommune').'</div>'
+                                        : '')
+                            ### KATEGORI OG SJANGER
+                            .		($this->show('i_katogsjan')
+                                        ? '<div class="meta">'
+                                            .($inn->g('bt_id')==2	?	'Film - '	:	'')
+                                            .($inn->g('bt_id')==3	?	'Utstilling - '	:	'')
+                                            . $inn->g('kategori_og_sjanger').'</div>'
+                                        : '')
+                            
+            
+                            .	'<div class="clear"></div>'
+                            .	'</div>'
+                            .	'<div class="clear"></div>'
+                            
+                            ### KONTAKTPERSON
+                            . ($this->show('p_kontaktp')
+                                    ? '<div class="bold">Kontaktperson: '
+                                    .	$kontakt->g('name')
+                                    .	' ('.$kontakt->alder().' år) '
+                                    .	'- mobil: <span class="UKMSMS">'.$kontakt->g('p_phone') .'</span> - e-post: <a href="mailto:'. $kontakt->g('p_email').'" class="UKMMAIL">'.$kontakt->g('p_email').'</a>'
+                                    .	'</div>'
+                                    : '')
+                            ;
+                            if($this->show('p_vis')){
+                                echo '<div class="bold">Deltakere: </div>'
+                                    .'<div class="desc">';
+                                $personer = $inn->personObjekter();
+                                $i=0;
+                                foreach($personer as $p) {
+                                    $group_sum_all_p[] = $p->g('p_id');
+                                    $group_sum_uni_p[ $p->g('p_id') ] = 1;
+                                    $i++;
+                                    echo $p->g('name')
+                                        .($this->show('p_alder')
+                                            ? ' ('.$p->alder().' år) '
+                                            : '')
+                                        .($this->show('p_instrument')
+                                            ? ' <em>'.$p->g('instrument').'</em> '
+                                            : '')
+                                        .($this->show('p_mobil')
+                                            ? ' - mobil: <span class="UKMSMS">'.$p->g('p_phone').'</span>'
+                                            : '')
+                                        .($this->show('p_epost')
+                                            ? ' - e-post: <a href="mailto:'.$p->g('p_email').'" class="UKMMAIL">'.$p->g('p_email').'</a>'
+                                            : '')
 
-									.($this->showFormat('op_p_break')
-										? '<br />'
-										: ($i < sizeof($personer) ? ', ':'')
-										)
-								;
-							}
-							echo '</div>';
-						}
-						
-						if($this->show('t_vis') && !$inn->tittellos()){
-							echo '<div class="bold">Titler: </div>'
-								.'<div class="desc">';
-							$titler = $inn->titler($this->pl_id);
-							$i=0;
-							foreach($titler as $t) {
-								$group_sum_time += $t->g('varighet');
-								$group_sum_titles++;
-								$i++;
-								$parentes = $t->g('parentes');
-								$parentes = rtrim($parentes, ' ');
-								$parentes = rtrim($parentes, ')');
-								echo $t->g('tittel')
-									.($this->show('t_varig')
-										? ' - varighet: '.$t->g('tid').''
-										: '')
-									.($this->show('t_detaljer')
-										? 	' '.$parentes.' '
-											. (($t->g('detaljer') && ($t->selvlaget || $t->instrumental) ? ', ' : ''))
-											. ($t->selvlaget ? 'selvlaget' : '')
-											. (($t->selvlaget && $t->instrumental) ? ', ' : '')
-											. ($t->instrumental ? 'instrumental' : '')
-											. ')'
-										: '')
-		
-									.($this->showFormat('op_t_break')
-										? '<br />'
-										: ($i < sizeof($titler) ? ', ':'')
-										)
-								;
-							}
-							echo '</div>';
-						}
-		
-						
-						echo ''
-						### VIS TEKNISKE KRAV
-						. ($this->show('i_tekn')
-							? '<div class="bold">Tekniske behov: </div>'
-							. '<div class="desc">'. $inn->g('td_demand') .'</div>'
-							: '')
-						
-						### VIS KONFERANSIERTEKSTER
-						. ($this->show('i_konf')
-							? '<div class="bold">Tekst til konferansierer: </div>'
-							. '<div class="desc">'. $inn->g('b_description') .' '. $inn->g('td_konferansier') .'</div>'
-							: '')
+                                        .($this->showFormat('op_p_break')
+                                            ? '<br />'
+                                            : ($i < sizeof($personer) ? ', ':'')
+                                            )
+                                    ;
+                                }
+                                echo '</div>';
+                            }
+                            
+                            if($this->show('t_vis') && !$inn->tittellos()){
+                                echo '<div class="bold">Titler: </div>'
+                                    .'<div class="desc">';
+                                $titler = $inn->titler($this->pl_id);
+                                $i=0;
+                                foreach($titler as $t) {
+                                    $group_sum_time += $t->g('varighet');
+                                    $group_sum_titles++;
+                                    $i++;
+                                    $parentes = $t->g('parentes');
+                                    $parentes = rtrim($parentes, ' ');
+                                    $parentes = rtrim($parentes, ')');
+                                    echo $t->g('tittel')
+                                        .($this->show('t_varig')
+                                            ? ' - varighet: '.$t->g('tid').''
+                                            : '')
+                                        .($this->show('t_detaljer')
+                                            ? 	' '.$parentes.' '
+                                                . (($t->g('detaljer') && ($t->selvlaget || $t->instrumental) ? ', ' : ''))
+                                                . ($t->selvlaget ? 'selvlaget' : '')
+                                                . (($t->selvlaget && $t->instrumental) ? ', ' : '')
+                                                . ($t->instrumental ? 'instrumental' : '')
+                                                . ')'
+                                            : '')
+            
+                                        .($this->showFormat('op_t_break')
+                                            ? '<br />'
+                                            : ($i < sizeof($titler) ? ', ':'')
+                                            )
+                                    ;
+                                }
+                                echo '</div>';
+                            }
+            
+                            
+                            echo ''
+                            ### VIS TEKNISKE KRAV
+                            . ($this->show('i_tekn')
+                                ? '<div class="bold">Tekniske behov: </div>'
+                                . '<div class="desc">'. $inn->g('td_demand') .'</div>'
+                                : '')
+                            
+                            ### VIS KONFERANSIERTEKSTER
+                            . ($this->show('i_konf')
+                                ? '<div class="bold">Tekst til konferansierer: </div>'
+                                . '<div class="desc">'. $inn->g('b_description') .' '. $inn->g('td_konferansier') .'</div>'
+                                : '')
 
-						### VIS UKM-TV
-						. ($this->show('m_ukmtv')
-							? '<div class="bold">Opplastede filmer i UKM-TV</div>'
-							. '<div class="desc">'. $UKMTVhtml .'</div>'
-							: '')
+                            ### VIS UKM-TV
+                            . ($this->show('m_ukmtv')
+                                ? '<div class="bold">Opplastede filmer i UKM-TV</div>'
+                                . '<div class="desc">'. $UKMTVhtml .'</div>'
+                                : '')
 
-						. ( ($this->show('m_kunst') && $inn->g('bt_id') == 3 )
-							? '<div class="bold">Bilde av kunstverk</div>'. $html_bilder
-							: ''
-							)
-						
-						. '</li>';
+                            . ( ($this->show('m_kunst') && $inn->g('bt_id') == 3 )
+                                ? '<div class="bold">Bilde av kunstverk</div>'. $html_bilder
+                                : ''
+                                )
+                            
+                            . '</li>';
+                    }
 				}
 				if($this->showFormat('n_gtall') && $grp !== 0)
 					echo '<li class="sum">
