@@ -1012,61 +1012,63 @@ class valgt_rapport extends rapport {
 		$nt = array('typer'=>array('Scene'=>array('inn'=>0,'pers'=>0),
 								   'Film'=>array('inn'=>0,'pers'=>0),
 								   'Utstilling'=>array('inn'=>0,'pers'=>0),
-								   'Andre innslag'=>array('inn'=>0,'pers'=>0)));
-		foreach($this->innslag as $inn){
-			$btid = $inn->g('bt_id');
-			// Antall innslag
-			switch($btid){
-				case 1:
-				case 2:
-				case 3:
-						$key = $inn->g('bt_name');		break;
-						break;
-				default:
-						$key = 'Andre innslag';			break;
-			}
-			$nt['typer'][$key]['inn']++;
-			
-			// Antall personer
-			$personer = $inn->personer();
-			
-			foreach($personer as $p_arr)
-				$unike[$p_arr['p_id']] = true;
+                                   'Andre innslag'=>array('inn'=>0,'pers'=>0)));
+        if( is_array( $this->innslag ) ) {
+            foreach($this->innslag as $inn){
+                $btid = $inn->g('bt_id');
+                // Antall innslag
+                switch($btid){
+                    case 1:
+                    case 2:
+                    case 3:
+                            $key = $inn->g('bt_name');		break;
+                            break;
+                    default:
+                            $key = 'Andre innslag';			break;
+                }
+                $nt['typer'][$key]['inn']++;
+                
+                // Antall personer
+                $personer = $inn->personer();
+                
+                foreach($personer as $p_arr)
+                    $unike[$p_arr['p_id']] = true;
 
-			$nt['typer'][$key]['pers'] += sizeof($personer);
-			$nt['personer'] += sizeof($personer);
-			$nt['innslag']++;
-			
-			$titler = $inn->titler($this->pl_id);
-			$innslag_tid = 0;
-			foreach($titler as $t) {
-				$innslag_tid += $t->g('varighet');
-				$nt['typer'][$key]['titler_tid'] += $innslag_tid;
-				$nt['titler_tid'] += $innslag_tid;
-				$nt['typer'][$key]['titler_ant']++;
-				$nt['titler_ant']++;
-			}
-			
-			if($btid==1) {
-				$nt['scenekat'][ucfirst($inn->g('b_kategori'))]['inn']++;
-				$nt['scenekat'][ucfirst($inn->g('b_kategori'))]['pers'] += sizeof($personer);
-				$nt['scenekat'][ucfirst($inn->g('b_kategori'))]['titler_ant'] += sizeof($titler);
-				$nt['scenekat'][ucfirst($inn->g('b_kategori'))]['titler_tid'] += $innslag_tid;
-			}
-			if($key == 'Andre innslag') {
-				$nt['annetkat'][ucfirst($inn->g('bt_name'))]['inn']++;
-				$nt['annetkat'][ucfirst($inn->g('bt_name'))]['pers'] += sizeof($personer);
-				if(false) {
-					echo '<pre>sizeof($personer):<br>';
-					var_dump(sizeof($personer));
-					echo '<br>Personer:<br>';
-					var_dump($personer);
-					echo '</pre>';
-				}
-				#$nt['annetkat'][ucfirst($inn->g('bt_name'))]['titler_ant'] += sizeof($titler);
+                $nt['typer'][$key]['pers'] += sizeof($personer);
+                $nt['personer'] += sizeof($personer);
+                $nt['innslag']++;
+                
+                $titler = $inn->titler($this->pl_id);
+                $innslag_tid = 0;
+                foreach($titler as $t) {
+                    $innslag_tid += $t->g('varighet');
+                    $nt['typer'][$key]['titler_tid'] += $innslag_tid;
+                    $nt['titler_tid'] += $innslag_tid;
+                    $nt['typer'][$key]['titler_ant']++;
+                    $nt['titler_ant']++;
+                }
+                
+                if($btid==1) {
+                    $nt['scenekat'][ucfirst($inn->g('b_kategori'))]['inn']++;
+                    $nt['scenekat'][ucfirst($inn->g('b_kategori'))]['pers'] += sizeof($personer);
+                    $nt['scenekat'][ucfirst($inn->g('b_kategori'))]['titler_ant'] += sizeof($titler);
+                    $nt['scenekat'][ucfirst($inn->g('b_kategori'))]['titler_tid'] += $innslag_tid;
+                }
+                if($key == 'Andre innslag') {
+                    $nt['annetkat'][ucfirst($inn->g('bt_name'))]['inn']++;
+                    $nt['annetkat'][ucfirst($inn->g('bt_name'))]['pers'] += sizeof($personer);
+                    if(false) {
+                        echo '<pre>sizeof($personer):<br>';
+                        var_dump(sizeof($personer));
+                        echo '<br>Personer:<br>';
+                        var_dump($personer);
+                        echo '</pre>';
+                    }
+                    #$nt['annetkat'][ucfirst($inn->g('bt_name'))]['titler_ant'] += sizeof($titler);
 
-			}
-		}
+                }
+            }
+        }
 		$nt['unike'] = sizeof($unike);
 
 
