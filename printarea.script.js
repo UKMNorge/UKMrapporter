@@ -33,7 +33,8 @@
                      popX     : 200,
                      popY     : 200,
                      popTitle : '',
-                     popClose : false };
+                     popClose : false,
+                     waitBeforePrint: 800 };
 
     var settings = {};//global settings
 
@@ -74,7 +75,7 @@
                 if ( settings.mode == modes.popup && settings.popClose ) {
                     printWindow.close();
                 }
-            }, 800);
+            }, settings.waitBeforePrint);
         }
 
     function docType()
