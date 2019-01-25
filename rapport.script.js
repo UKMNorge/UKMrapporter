@@ -153,7 +153,7 @@ jQuery(document).ready(function(){
 				 + '&'+jQuery('#UKMrapport').serialize();
 		
 		jQuery.post(ajaxurl, data, function(response){});	
-		jQuery('#report_container').printArea({mode: 'popup', popClose: true});
+		jQuery('#report_container').printArea({mode: 'popup', popClose: true, popWd: 800, popHt: 600});
 	});
 
 	jQuery('#avbrytvisrapport').live('click',function(){

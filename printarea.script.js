@@ -67,11 +67,14 @@
             writeDoc.write( docType() + "<html>" + getHead() + getBody(ele) + "</html>" );
             writeDoc.close();
 
+            
 //            printWindow.focus();
-            printWindow.print();
-
-            if ( settings.mode == modes.popup && settings.popClose )
-                printWindow.close();
+            setTimeout(function(){
+                printWindow.print();
+                if ( settings.mode == modes.popup && settings.popClose ) {
+                    printWindow.close();
+                }
+            }, 800);
         }
 
     function docType()
