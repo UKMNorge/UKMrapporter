@@ -105,6 +105,9 @@ if( isset( $_GET['type'] ) ) {
 						if( $nominasjon->getVertskap() ) {
 							woText($c, 'VERTSKAP', 'h2');
 						}
+						if( $nominasjon->getProdusent() ) {
+							woText($c, 'PRODUSENT', 'h2');
+						}
 					} else {
 						woText($c, 'IKKE VALGT', 'h2');
 					}
