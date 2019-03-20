@@ -51,6 +51,9 @@ if( !isset($_GET['gruppe'] ) ) {
 	$count = 0;
 	foreach( $collection->getInnslag()->getAll() as $innslag ) {
 		foreach( $innslag->getPersoner()->getAll() as $person ) {
+			if( !$person->getSensitivt( $requester )->getIntoleranse()->har() ) {
+				continue;
+			}
 			$col = $col_start;
 			$row++;
 			excell('A'.$row, $innslag->getKommune()->getFylke());
