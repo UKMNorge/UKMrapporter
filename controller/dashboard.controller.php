@@ -47,6 +47,7 @@ class rapporter {
 
 				$this->add('festival', 'reise');
 				$this->add('festival', 'mat');
+				$this->add('festival', 'tilrettelegging');
 				$this->add('festival', 'ledere');
 				#$this->add('festival', 'ledermiddag');
 				$this->add('festival', 'hotell');
@@ -178,11 +179,17 @@ class rapporter {
 				$rapport->navn = 'Reise';
 				$rapport->beskrivelse = 'Ankomst- og avreiseinformasjon fra fylkenes videresending';
 			break;
+			case 'tilrettelegging':
+				$rapport->icon = 'handicap';
+				$rapport->link = 'festival=tilrettelegging';
+				$rapport->navn = 'Tilrettelegging';
+				$rapport->beskrivelse = 'Behov for tilrettelegging';
+			break;
 			case 'mat':
 				$rapport->icon = 'medical-case';
-				$rapport->link = 'festival=tilrettelegging';
-				$rapport->navn = 'Mat og tilrettelegging';
-				$rapport->beskrivelse = 'Allergier og andre behov for tilrettelegging';
+				$rapport->link = 'festival=allergier';
+				$rapport->navn = 'Allergier og intoleranser';
+				$rapport->beskrivelse = 'Deltakernes behov mtp matservering';
 			break;
 			case 'ledere':
 				$rapport->icon = 'user-black';
