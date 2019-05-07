@@ -34,6 +34,8 @@ while( $r = SQL::fetch( $res ) ) {
 	excell('D'.$rad, $leder->l_epost);
 	
 	foreach( $netter as $num => $data ) {
+		$data->mnd = str_pad( $data->mnd, 2, "0", STR_PAD_LEFT );
+		$data->dag = str_pad( $data->dag, 2, "0", STR_PAD_LEFT );
 		$pa_hotell = $leder->natt[ $data->dag.'_'.$data->mnd ]->sted == 'hotell';
 		excell(i2a($col+$num).$rad, $pa_hotell ? 'x' : '-');
 		if( $pa_hotell ) {
