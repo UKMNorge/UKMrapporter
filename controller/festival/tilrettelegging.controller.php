@@ -11,39 +11,15 @@ $res = $sql->run();
 
 global $objPHPExcel;
 $objPHPExcel = null;
-exInit('Allergier og tilrettelegging UKM-Festivalen');
-exSheetName('Mat');
+exInit('Tilrettelegging på UKM-Festivalen');
 
-$objPHPExcel->createSheet(1);
-$objPHPExcel->setActiveSheetIndex(1);
-exSheetName('Tilrettelegging','f69a9b');
+excell('A1', 'Fylke','bold');
+excell('B1', 'Bevegelseshemninger','bold');
+excell('C1', 'Annet','bold');
 
-
-$objPHPExcel->setActiveSheetIndex(0);
 $rad = 1;
-excell('A'.$rad, 'Fylke','bold');
-excell('B'.$rad, 'Ant vegetarianere','bold');
-excell('C'.$rad, 'Ant søliaki','bold');
-excell('D'.$rad, 'Ant svinekjøtt','bold');
-excell('E'.$rad, 'Annet','bold');
-
-$objPHPExcel->setActiveSheetIndex(1);
-excell('A'.$rad, 'Fylke','bold');
-excell('B'.$rad, 'Bevegelseshemninger','bold');
-excell('C'.$rad, 'Annet','bold');
-
-
 while( $r = SQL::fetch( $res ) ) {
-	$objPHPExcel->setActiveSheetIndex(0);
-
 	$rad++;
-	excell('A'.$rad, (string) utf8_encode($r['pl_name']));
-	excell('B'.$rad, $r['mat_vegetarianere']);
-	excell('C'.$rad, $r['mat_soliaki']);
-	excell('D'.$rad, $r['mat_svinekjott']);
-	excell('E'.$rad, (string) $r['mat_annet']);
-	
-	$objPHPExcel->setActiveSheetIndex(1);
 	excell('A'.$rad, (string) utf8_encode($r['pl_name']));
 	excell('B'.$rad, (string) $r['tilrettelegging_bevegelseshemninger']);
 	excell('C'.$rad, (string) $r['tilrettelegging_annet']);
