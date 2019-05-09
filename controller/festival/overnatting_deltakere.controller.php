@@ -40,7 +40,7 @@ foreach( array_reverse($netter) as $natt ) {
 				LEFT JOIN `smartukm_fylke` 
 					ON (`smartukm_fylke`.`id` = `place`.`pl_fylke`)
 				LEFT JOIN `smartukm_videresending_ledere_nattleder` AS `nattleder` 
-					ON (`nattleder`.`dato` = '#dag.#mnd' AND `nattleder`.`l_id` = `leder`.`l_id`)
+					ON (`nattleder`.`dato` = '#dag_#mnd' AND `nattleder`.`l_id` = `leder`.`l_id`)
 				LEFT JOIN `smartukm_fylke` AS `fylke`
 					ON (`fylke`.`id` = `place`.`pl_fylke`)
 				WHERE `sted` = 'deltakere'
