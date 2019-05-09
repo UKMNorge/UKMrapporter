@@ -1,10 +1,11 @@
 {% if view != 'hendelser' %}
 	<h2>Allergier for {{ collection.getNavn() }}</h2>
 	<p class="lead">
-		Husk også å laste ned rapporten for "Tilrettelegging", 
+		Husk også å laste ned rapporten for 
+		"<a href="?page={{ GET('page') }}&festival=tilrettelegging">Tilrettelegging</a>", 
 		da flere fylker kan ha spesifisert allergier for sine ledere der.
 	</p>
-	
+
 	<p>
 		{% if count == 0 %}
 			Ingen allergier for {{ collection.getNavn() }}
