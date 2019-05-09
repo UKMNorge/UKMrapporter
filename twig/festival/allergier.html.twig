@@ -1,5 +1,9 @@
 {% if view != 'hendelser' %}
 	<h2>Allergier for {{ collection.getNavn() }}</h2>
+	<p class="lead">
+		Husk også å laste ned rapporten for "Tilrettelegging", 
+		da flere fylker kan ha spesifisert allergier for sine ledere der.
+	</p>
 	
 	<p>
 		{% if count == 0 %}
