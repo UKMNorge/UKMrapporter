@@ -8,6 +8,8 @@ exInit('Deltakerovernatting ledere UKM Norge');
 
 $index = 0;
 foreach( array_reverse($netter) as $natt ) {
+	$natt->mnd = str_pad( $natt->mnd, 2, "0", STR_PAD_LEFT );
+	$natt->dag = str_pad( $natt->dag, 2, "0", STR_PAD_LEFT );
 	$objPHPExcel->createSheet($index);
 	$objPHPExcel->setActiveSheetIndex($index);
 
