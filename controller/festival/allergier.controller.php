@@ -38,7 +38,7 @@ if( !isset($_GET['gruppe'] ) ) {
 	excell('B1', 'Innslag','bold');
 	excell('C1', 'Navn','bold');
 	excell('D1', 'Kommentar', 'bold');
-	$col_start = 3;
+	$col_start = 4;
 
 	$col = $col_start;
 	foreach( Allergener::getAll() as $allergen ) {
