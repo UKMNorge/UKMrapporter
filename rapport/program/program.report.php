@@ -372,7 +372,7 @@ class valgt_rapport extends rapport {
 							foreach( $i->playback() as $playback ) {
 								$textrun = $section->addTextRun();
 								$textrun->addText( $playback->name.': ', 'bold');
-								$textrun->addLink($playback->downloadNiceName( 'PLAYBACK-'. strtoupper($con->g('c_name')) .'-'. $order .' - '. $i->g('b_name') ), 'Last ned');	
+								$textrun->addLink($playback->downloadNiceName( 'PLAYBACK-'. strtoupper($con->g('c_name')) .'-NR'. $order .' - '. strtoupper($i->g('b_name')) .' - '. $playback->name ), 'Last ned');	
 								woText($section, empty( $playback->description ) ? 'Ingen beskrivelse' : $playback->description );
 							}
 						} else {
@@ -702,7 +702,7 @@ class valgt_rapport extends rapport {
 						if( is_array( $i->playback() ) && sizeof( $i->playback() ) > 0 ) {
 							foreach( $i->playback() as $playback ) {	
 								echo '<li class="list-group-item">'.
-									'<a href="'. $playback->downloadNiceName('PLAYBACK-'. strtoupper($c->g('c_name')) .'-'. $order .' - '. $i->g('b_name')) .'" target="_blank">'. $playback->name .'</a>'.
+									'<a href="'. $playback->downloadNiceName('PLAYBACK-'. strtoupper($c->g('c_name')) .'-NR'. $order .' - '. strtoupper($i->g('b_name')) .' - '. $playback->name) .'" target="_blank">'. $playback->name .'</a>'.
 									'<br />'. ( empty( $playback->description ) ? 'Ingen beskrivelse' : $playback->description ).
 									'</li>'
 								;
