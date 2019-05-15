@@ -368,7 +368,16 @@ class valgt_rapport extends rapport {
 					}
 					if($this->show('i_playback')) {
 						woText($section, 'Playback: ', 'bold');
-						woText($section, $i->playbackToString());
+						if( is_array( $i->playback() ) && sizeof( $i->playback() ) > 0 ) {
+							foreach( $i->playback() as $playback ) {
+								$textrun = $section->addTextRun();
+								$textrun->addText( $playback->name.': ', 'bold');
+								$textrun->addLink($playback->download(), $playback->download());	
+								woText($section, empty( $playback->description ) ? 'Ingen beskrivelse' : $playback->description );
+							}
+						} else {
+							woText($section, 'Har ikke playback-filer');
+						}
 					}
 					if($this->show('d_kontakt')){
 						$d = new person($i->g('b_contact'));
@@ -688,8 +697,21 @@ class valgt_rapport extends rapport {
 					if( $this->show('i_playback')) {
 						echo #'<div class="clear clearfix clear-fix"></div>'
 							'<div class="kontaktperson">'
-							.'<strong>Playback: </strong>' . $i->playbackToString()
-							.'</div>';
+							.'<strong>Playback: </strong>'
+							.'<ul class="list-group">';
+						if( is_array( $i->playback() ) && sizeof( $i->playback() ) > 0 ) {
+							foreach( $i->playback() as $playback ) {	
+								echo '<li class="list-group-item">'.
+									'<a href="'. $playback->download() .'" target="_blank">'. $playback->name .'</a>'.
+									'<br />'. ( empty( $playback->description ) ? 'Ingen beskrivelse' : $playback->description ).
+									'</li>'
+								;
+							}
+							echo '</ul>';
+						} else {
+							echo 'Har ikke playback-filer';
+						}
+						echo '</div>';
 					}
 					
 					if($this->show('t_vis') && !$i->tittellos()){
