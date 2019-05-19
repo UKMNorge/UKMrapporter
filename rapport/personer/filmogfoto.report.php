@@ -75,6 +75,12 @@ class valgt_rapport extends rapport {
             }
 
             foreach( $innslag->getSamtykke()->getAll() as $person ) {
+
+				// Ikke godt nok testet til å implementeres. 19.05.2019
+				#if( !$innslag->getPersoner()->harVideresendtPerson( $person->getPerson() ) ) {
+				#	continue;
+				#}
+
                 echo 
                     '<tr>'.
                         '<th>'. $innslag->getNavn().'</th>'.
@@ -82,7 +88,11 @@ class valgt_rapport extends rapport {
                         '<td>'. $person->getNavn() .'</td>'.
                         '<td><span class="UKMSMS">'. $person->getMobil() .'</span></td>'.
                         '<td class="text-'.( $person->getStatus()->getId() != 'ikke_godkjent' ? 'success' : 'danger' ).'">'. 
-                            $person->getStatus()->getNavn() .
+							$person->getStatus()->getNavn() .
+							( $innslag->getPersoner()->harVideresendtPerson( $person->getPerson() ) ?
+								'<br />ER IKKE VIDERESENDT!'
+								: ''
+							).
                         '</td>';                
                 
                 if( $person->getKategori()->getId() != '15o' ) {
