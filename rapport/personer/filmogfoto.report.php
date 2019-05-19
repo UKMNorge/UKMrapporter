@@ -74,14 +74,30 @@ class valgt_rapport extends rapport {
         foreach( $innslag_collection->getAll() as $innslag ) {
             if( !$innslag->getSamtykke()->harNei() ) {
                 continue;
-            }
+			}
+			
+			// Ikke godt nok testet til å implementeres. 19.05.2019
+			/*
+			$harNei = false;
+			foreach( $innslag->getSamtykke()->getAll() as $person ) {
+				if( 
+					$innslag->getPersoner()->harVideresendtPerson( $person->getPerson() ) 
+					&& 
+						(
+							$person->getStatus()->getId() == 'ikke_godkjent'
+							||
+							$person->getForesatt()->getStatus()->getId() == 'ikke_godkjent'
+						)
+				) {
+					$harNei = true;
+				}
+			}
+			if( !$harNei ) {
+				continue;
+			}
+			*/
 
             foreach( $innslag->getSamtykke()->getAll() as $person ) {
-
-				// Ikke godt nok testet til å implementeres. 19.05.2019
-				#if( !$innslag->getPersoner()->harVideresendtPerson( $person->getPerson() ) ) {
-				#	continue;
-				#}
 
                 echo 
                     '<tr>'.
