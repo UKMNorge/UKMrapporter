@@ -58,7 +58,9 @@ class valgt_rapport extends rapport {
                     '</tr>'.
                     '<tr>'.
                         '<th>Innslag</th>'.
-                        '<th>Type</th>'.
+						'<th>Type'.
+						( $this->getMonstring()->getType() == 'land' ? ' og fylke' : '' ).
+						'</th>'.
                         '<th>Navn</th>'.
                         '<th>Mobil</th>'.
                         '<th>Status</th>'.
@@ -84,7 +86,10 @@ class valgt_rapport extends rapport {
                 echo 
                     '<tr>'.
                         '<th>'. $innslag->getNavn().'</th>'.
-                        '<td>'. $innslag->getType()->getNavn() .'</td>'.
+						'<td>'. 
+							$innslag->getType()->getNavn() .
+							( $this->getMonstring()->getType() == 'land' ? '<br /><small>'.$innslag->getFylke()->getNavn().'</small>' : '' ).
+						'</td>'.
                         '<td>'. $person->getNavn() .'</td>'.
                         '<td><span class="UKMSMS">'. $person->getMobil() .'</span></td>'.
                         '<td class="text-'.( $person->getStatus()->getId() != 'ikke_godkjent' ? 'success' : 'danger' ).'">'. 
