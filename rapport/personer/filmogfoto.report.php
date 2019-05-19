@@ -89,7 +89,7 @@ class valgt_rapport extends rapport {
                         '<td><span class="UKMSMS">'. $person->getMobil() .'</span></td>'.
                         '<td class="text-'.( $person->getStatus()->getId() != 'ikke_godkjent' ? 'success' : 'danger' ).'">'. 
 							$person->getStatus()->getNavn() .
-							( !$innslag->getType()->harTitler() && $innslag->getPersoner()->harVideresendtPerson( $person->getPerson() ) ?
+							( !$innslag->getPersoner()->harVideresendtPerson( $person->getPerson() ) ?
 								'<br />(men er heller ikke videresendt)'
 								: ''
 							).
