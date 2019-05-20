@@ -99,8 +99,15 @@ foreach( $fylker as $fylke ) {
 	
 	$current_day = '';
 	global $PHPWord;
-	$PHPWord = new PhpWord();
-	$section = word_init('Fylkestimeplan '. $fylke->navn);
+
+	$wordConfig = new wordSettings();
+	$wordConfig->setName( 'Fylkestimeplan '. $fylke->navn)
+		->setTitle( 'Fylkestimeplan '. $fylke->navn )
+		->setDescription( $m->g('pl_name') );
+	$wordConfig->addText(
+		'Kontaktperson: Torstein Siegel 907 55 685'
+	);
+	$section = word_init($wordConfig);
 	foreach( $fylke->hendelser as $hendelse ) {
 		if( (string)$current_day != (string)$hendelse->info->dag ) {
 			$current_day = (string)$hendelse->info->dag;
