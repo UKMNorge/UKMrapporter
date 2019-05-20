@@ -104,7 +104,7 @@ foreach( $fylker as $fylke ) {
 	$wordConfig->setName( 'Fylkestimeplan '. $fylke->navn)
 		->setTitle( 'Fylkestimeplan '. $fylke->navn )
 		->setDescription( $m->g('pl_name') );
-	$wordConfig->addText(
+	$wordConfig->addInfo(
 		'Kontaktperson: Torstein Siegel 907 55 685'
 	);
 	$section = word_init($wordConfig);
