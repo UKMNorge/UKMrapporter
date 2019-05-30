@@ -53,7 +53,7 @@ foreach ($monstring->getProgram()->getAll() as $hendelse) {
 
 
 exWrite($objPHPExcel, 'UKMF_kjoreplan');
-$TWIG['excel_kjoreplan'] = '//download.ukm.no/phpexcel/UKMF_kjoreplan.xlsx';
+$TWIG['excel_kjoreplan'] = '//download.ukm.no/excel/UKMF_kjoreplan.xlsx';
 #$TWIG['excel_kjoreplan'] = '//download.ukm.dev/excel/UKMF_kjoreplan.xlsx';
 
 function stil($celle, $navn)
