@@ -68,6 +68,7 @@ class rapporter {
 
 				$this->add('program', 'program');
 				$this->add('program', 'tekniske_prover');
+				$this->add('program', 'kjoreplan');
 				$this->add('program', 'kunstkatalog');
 				$this->add('program', 'media');
 				$this->add('program', 'juryskjema');
@@ -161,6 +162,12 @@ class rapporter {
 	public function createRapport( $rapportID ) {
 		$rapport = new stdClass();
 		switch( $rapportID ) {
+			case 'kjoreplan':
+				$rapport->icon = 'coffee-folder';
+				$rapport->link = 'festival=kjoreplan';
+				$rapport->navn = 'Kjøreplan';
+				$rapport->beskrivelse = 'For forestillingene';
+			break;
 			case 'filmogfoto':
 				$rapport->icon = 'stop';
 				$rapport->link = 'rapport=filmogfoto&kat=personer';
