@@ -1,10 +1,13 @@
 <?php
 
+use PhpOffice\PhpWord\PhpWord;
+
 require_once('UKM/monstring.class.php');
 require_once('UKM/forestilling.class.php');
 require_once('UKM/innslag.class.php');
 require_once('UKM/person.class.php');
 require_once('UKM/inc/word.inc.php');
+
 global $PHPWord;
 
 setlocale(LC_ALL, 'nb_NO');
