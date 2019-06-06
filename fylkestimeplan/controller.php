@@ -42,7 +42,7 @@ $fylkeSQL = new SQL("SELECT *
 $fylkeRES = $fylkeSQL->run();
 while( $f = SQL::fetch( $fylkeRES ) ) {
 	$fylke = new stdClass();
-	$fylke->navn = utf8_encode( $f['name'] );
+	$fylke->navn = $f['name'];
 	$fylke->ID = $f['id'];
 	$fylke->hendelser = array();
 	
@@ -111,7 +111,7 @@ foreach( $fylker as $fylke ) {
 	foreach( $fylke->hendelser as $hendelse ) {
 		if( (string)$current_day != (string)$hendelse->info->dag ) {
 			$current_day = (string)$hendelse->info->dag;
-			woText($section, ucfirst(utf8_encode(strftime('%A %e.%m', $hendelse->info->timestamp))), 'h1_center');
+			woText($section, ucfirst(strftime('%A %e.%m', $hendelse->info->timestamp)), 'h1_center');
 		}
 
 		woText($section, $hendelse->info->navn, 'h2');
@@ -128,7 +128,7 @@ foreach( $fylker as $fylke ) {
 			woText($c, $innslag->navn .'(nr. '.$rekkefolge.')','bold');
 			// Oppmøtetid
 			$c = $tab->addCell(2700);
-			woText($c, 'Oppmøte: '.utf8_encode(strftime('%A %H:%M',$innslag->oppmote)), 'right');
+			woText($c, 'Oppmøte: '.strftime('%A %H:%M',$innslag->oppmote), 'right');
 			if( is_array( $innslag->personer ) ) {
 				foreach( $innslag->personer as $person ) {
 					// NY RAD
