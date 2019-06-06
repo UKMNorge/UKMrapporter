@@ -5,6 +5,7 @@ require_once('UKM/forestilling.class.php');
 require_once('UKM/innslag.class.php');
 require_once('UKM/person.class.php');
 require_once('UKM/inc/word.inc.php');
+global $PHPWord;
 
 setlocale(LC_ALL, 'nb_NO');
 
@@ -98,7 +99,8 @@ foreach( $fylker as $fylke ) {
 	ksort( $fylke->hendelser );
 	
 	$current_day = '';
-	global $PHPWord;
+	// Nytt word-dok per fylke
+	$PHPWord = new PHPWord();
 
 	$wordConfig = new wordSettings();
 	$wordConfig->setName( 'Fylkestimeplan '. $fylke->navn)
