@@ -17,3 +17,10 @@
 		{{leder.l_epost}}; 
 	{% endfor %}
 </p>
+
+<h3>Kommaseparerte mobilnummer (for sms-funksjonen)</h3>
+<p>
+	{% for leder in ledere if leder.l_mobilnummer is not empty %}
+		{{leder.l_mobilnummer}},
+	{% endfor %}
+</p>
