@@ -1,10 +1,14 @@
 <?php
 
+use PhpOffice\PhpWord\PhpWord;
+
 require_once('UKM/monstring.class.php');
 require_once('UKM/forestilling.class.php');
 require_once('UKM/innslag.class.php');
 require_once('UKM/person.class.php');
 require_once('UKM/inc/word.inc.php');
+
+global $PHPWord;
 
 setlocale(LC_ALL, 'nb_NO');
 
@@ -42,7 +46,7 @@ $fylkeSQL = new SQL("SELECT *
 $fylkeRES = $fylkeSQL->run();
 while( $f = SQL::fetch( $fylkeRES ) ) {
 	$fylke = new stdClass();
-	$fylke->navn = utf8_encode( $f['name'] );
+	$fylke->navn = $f['name'];
 	$fylke->ID = $f['id'];
 	$fylke->hendelser = array();
 	
@@ -98,7 +102,8 @@ foreach( $fylker as $fylke ) {
 	ksort( $fylke->hendelser );
 	
 	$current_day = '';
-	global $PHPWord;
+	// Nytt word-dok per fylke
+	$PHPWord = new PHPWord();
 
 	$wordConfig = new wordSettings();
 	$wordConfig->setName( 'Fylkestimeplan '. $fylke->navn)
@@ -111,7 +116,7 @@ foreach( $fylker as $fylke ) {
 	foreach( $fylke->hendelser as $hendelse ) {
 		if( (string)$current_day != (string)$hendelse->info->dag ) {
 			$current_day = (string)$hendelse->info->dag;
-			woText($section, ucfirst(utf8_encode(strftime('%A %e.%m', $hendelse->info->timestamp))), 'h1_center');
+			woText($section, ucfirst(strftime('%A %e.%m', $hendelse->info->timestamp)), 'h1_center');
 		}
 
 		woText($section, $hendelse->info->navn, 'h2');
@@ -128,7 +133,7 @@ foreach( $fylker as $fylke ) {
 			woText($c, $innslag->navn .'(nr. '.$rekkefolge.')','bold');
 			// Oppmøtetid
 			$c = $tab->addCell(2700);
-			woText($c, 'Oppmøte: '.utf8_encode(strftime('%A %H:%M',$innslag->oppmote)), 'right');
+			woText($c, 'Oppmøte: '.strftime('%A %H:%M',$innslag->oppmote), 'right');
 			if( is_array( $innslag->personer ) ) {
 				foreach( $innslag->personer as $person ) {
 					// NY RAD
