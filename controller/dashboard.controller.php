@@ -75,7 +75,7 @@ class rapporter {
 				$this->add('program', 'fylkestimeplan');
 				
 				$this->add('helarig', 'husk');
-				$this->add('helarig', 'rsvp');
+				$this->add('helarig', 'aviser');
 			break;
 			case 'fylke':
 				$this->add('monstring', 'videresendingsskjema');
@@ -105,7 +105,7 @@ class rapporter {
 				$this->add('program', 'juryskjema');
 				
 				$this->add('helarig', 'husk');
-				$this->add('helarig', 'rsvp');
+				$this->add('helarig', 'aviser');
 			break;
 			default:
 				$this->add('monstring', 'statistikk');
@@ -128,7 +128,6 @@ class rapporter {
 				$this->add('program', 'juryskjema');
 				
 				$this->add('helarig', 'husk');
-				$this->add('helarig', 'rsvp');
 			break;
 		}
 	}
@@ -370,6 +369,13 @@ class rapporter {
 				$rapport->link = 'rapport=husk&kat=helarig';
 				$rapport->navn = 'Husk UKM';
 				$rapport->beskrivelse = 'Mobilnummer fra rekrutterings-verktøyet "Husk UKM"';
+			break;
+
+			case 'aviser':
+				$rapport->icon = 'avis';
+				$rapport->link = 'rapport=avis&kat=helarig';
+				$rapport->navn = 'Pressemelding';
+				$rapport->beskrivelse = 'Kontaktinfo til alle dine lokalaviser';
 			break;
 
 			case 'rsvp':
