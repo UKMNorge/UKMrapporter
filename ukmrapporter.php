@@ -27,7 +27,15 @@ add_action('network_admin_menu', 'UKMrapport_network_menu');
 
 
 function UKMrapport_network_menu() {
-	$page = add_menu_page('Rapporter', 'Rapporter', 'superadmin', 'UKMrapport_admin','UKMrapport_admin', '//ico.ukm.no/graph-menu.png',2101);
+	$page = add_menu_page(
+		'Rapporter',
+		'Rapporter',
+		'superadmin',
+		'UKMrapport_admin',
+		'UKMrapport_admin',
+		'dashicons-analytics',#'//ico.ukm.no/graph-menu.png',
+		2101
+	);
 	add_action( 'admin_print_styles-' . $page, 'UKMrapport_scriptsandstyles' );
 }
 function UKMrapport_countPrint(){
@@ -47,7 +55,7 @@ function UKMrapport_menu() {
 		'ukm_rapporter',
 		'UKMrapport_admin',
 		'UKMrapport_admin',
-		'//ico.ukm.no/graph-menu.png',
+		'dashicons-analytics',#'//ico.ukm.no/graph-menu.png',
 		80
 	);
 
