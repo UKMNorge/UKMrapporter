@@ -135,10 +135,10 @@ if( $TWIG['stat_type'] == 'kommune' ) {
 		}
 	}
 	
-	// MISSING @ FYLKE
+    // MISSING @ FYLKE
 	$fylkeMissing = new SQL("SELECT `f`.`id`, `f`.`name`, `pl`.`season`, `pl_missing`
 							 FROM `smartukm_fylke` AS `f`
-							 LEFT JOIN `smartukm_place` AS `pl` ON (`pl`.`pl_fylke` = `f`.`id`)
+							 LEFT JOIN `smartukm_place` AS `pl` ON (`pl`.`pl_fylke` = `f`.`id` AND `pl`.`pl_owner_type` = 'fylke')
 							 WHERE `f`.`id` < 21"
 							);
 	$fylkeMissing = $fylkeMissing->run();
