@@ -1,6 +1,10 @@
 <?php
-require_once('UKM/monstring.class.php');
-require_once('UKM/innslag_typer.class.php');
+
+use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Geografi\Fylker;
+use UKMNorge\Innslag\Typer;
+
+require_once('UKM/Autoloader.php');
 
 /**
  * renderData
@@ -99,7 +103,7 @@ class valgt_rapport extends rapport {
 			$t = $this->optGrp('type', 'av typen');
 			foreach( $this->getMonstring()->getInnslagTyper() as $innslagType ) {
 				if( 1 == $innslagType->getId() ) {
-					foreach( innslag_typer::getAllScene() as $innslagTypeScene ) {
+					foreach( Typer::getAllScene() as $innslagTypeScene ) {
 						$this->opt( $t, 'type_'. $innslagTypeScene->getKey(), 'Scene: '. $innslagTypeScene->getNavn() );
 					}
 				} else {
@@ -295,7 +299,7 @@ class valgt_rapport extends rapport {
 		} else {
 			foreach( $this->getMonstring()->getInnslagTyper() as $innslagType ) {
 				if( 1 == $innslagType->getId() ) {
-					foreach( innslag_typer::getAllScene() as $innslagTypeScene ) {
+					foreach( Typer::getAllScene() as $innslagTypeScene ) {
 						if( $this->show('type_'. $innslagTypeScene->getKey()) ) {
 							$this->selectedType[] = $innslagTypeScene->getKey();
 						}
@@ -314,7 +318,7 @@ class valgt_rapport extends rapport {
 		// HAR VALGT GEOGRAFI
 		if( 'land' == $this->getMonstring()->getType() ) {
 			$this->validateGeo = 'fylke';
-			foreach( fylker::getAll() as $fylke ) {
+			foreach( Fylker::getAll() as $fylke ) {
 				// Hvis krysset av for kommune, legg til i kommune-array
 				if( $this->show('geo_'. $fylke->getId() ) ) {
 					$this->fylker[] = $fylke->getId();
@@ -345,12 +349,12 @@ class valgt_rapport extends rapport {
 	**/
 	public function getMonstring() {
 		if( null == $this->monstring ) {
-			$this->monstring = new monstring_v2( $this->pl_id );
+			$this->monstring = new Arrangement( $this->pl_id );
 		}
 		// Reload hvis pl_id avviker fra lastet pl_id. 
 		// Brukes for å håndtere at valgt sesong ikke er aktiv sesong
 		if( $this->monstring->getId() != $this->pl_id ) {
-			$this->monstring = new monstring_v2( $this->pl_id );
+			$this->monstring = new Arrangement( $this->pl_id );
 		} 
 		return $this->monstring;
 	}
