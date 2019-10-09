@@ -1,10 +1,12 @@
 <?php
-require_once('UKM/forestilling.class.php');
-$m = new monstring( get_option('pl_id') );
 
-$hendelser = $m->forestillinger('c_start', false);
+use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Arrangement\Program\Write;
 
-foreach( $hendelser as $hen ) {
-	$h = new forestilling( $hen['c_id'] );
-	$h->reCount();
+require_once('UKM/Autoloader.php');
+
+$arrangement = new Arrangement( get_option('pl_id') );
+
+foreach( $arrangement->getProgram()->getAll() as $hendelse ) {
+    Write::reOrder( $hendelse );
 }
