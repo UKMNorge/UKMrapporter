@@ -1,0 +1,139 @@
+<style>
+    .list-group-item input[type="checkbox"] {
+        margin-top: -0.2em;
+        margin-right: 0.5em;
+    }
+    li.list-group-item {
+        padding-top: 0.9em;
+    }
+
+    .question label {
+        margin-top: 0.5em;
+    }
+    .question {
+        margin-bottom: 1em;
+    }
+    .caps {
+        text-transform: uppercase;
+    }
+    .mt-4 {
+        margin-top: 1.5em;
+    }
+
+    li.list-group-item.list-group-title {
+        background: #0073aa;
+        color: #fff;
+    }
+
+    .previewList {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        clear: both;
+    }
+
+    .previewList ol {
+        width: 40%;
+    }
+
+    .preview-list-element > .content {
+        min-height: 3em;
+        margin: -10px -15px;
+        display: flex;
+        flex-direction: row;
+    }
+    .preview-list-element > .content > .radioContainer {
+        width: 3em;
+        vertical-align: center;
+        height: 100%;
+    }
+
+    .preview-list-element > .content > div:not(.radioContainer) {
+        margin: 10px 15px;
+    }
+
+    .radioContainer input {
+        margin: 1em;
+        padding: 0;
+    }
+    .previewList .preview {
+        width: 60%;
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 1em 1em 1em 2em;
+        vertical-align: top;
+        opacity: .75;
+    }
+
+    .previewList .preview h3:first-child {
+        margin-top: 0;
+    }
+
+    .previewList .list-group .list-group-item:first-child {
+        border-top-right-radius: 0;
+    }
+    .previewList .list-group .list-group-item:last-child {
+        border-bottom-right-radius: 0;
+    }
+
+    .previewList .list-group .list-group-item.selected {
+        background: #0073aa;
+        color: #fff;
+    }
+</style>
+
+<script>
+    $(document).on('click', '#openTemplate, #saveAsTemplate', (e) => {
+        $('#tilpass').fadeOut(200, (e)=>{
+            $('#maler').fadeIn(300);
+        })
+    });
+
+    $(document).on('click', '#saveAsTemplate', (e)=>{
+        console.log( $('#rapportTilpasninger').serialize() );
+    });
+
+    $(document).on('click', '.hideTemplateManager', (e)=>{
+        $('#maler').fadeOut(200, (e)=>{
+            $('#tilpass').fadeIn(300);
+        })
+    });
+</script>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-sm-12">
+            <h2>
+                Tilpass rapporten
+                <small>eller</small>
+                <button type="button" class="btn btn-default btn-sm" id="openTemplate">Åpne mal</button>
+            </h2>
+        </div>
+    </div>
+
+    <div id="tilpass">
+        <form id="rapportTilpasninger">
+            {% include rapport.getId()~'/tilpass.html.twig' %}
+
+            <p>&nbsp;</p>
+
+        </form>
+        <div class="row">
+            <div class="col-12 col-sm-12">
+                <button type="button" class="btn btn-primary btn-lg">Generer rapport</button>
+                <button type="button" class="btn btn-default" style="margin-left: 2em;" id="saveAsTemplate">lagre som mal</button>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="maler" style="display:none;">
+        <h3>Maler</h3>
+        <p>
+            Her må det være et skjema for å vise alle lagrede maler. Det er kanskje enklest å hente dette via JS og twigJS, for da vil det også funke
+            likt når det legges til en ny mal / en mal oppdateres.
+        </p>
+
+        <button type="button" class="btn btn-default hideTemplateManager">Lukk</button>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<h1>Rapporter</h1>
+
+
+{% for kategori in kategorier if kategori.harRapporter() %}
+    <h1>{{ kategori.getNavn() }}</h1>
+
+    {% for rapport in kategori.getRapporter() %}
+        <a href="?page={{GET('page')}}&action=rapport&rapport={{ rapport.getId() }}">
+            <div class="optionCard card" data-group="type" data-value="monstring">
+                <div class="dashicons {{ rapport.getIkon() }}"></div>
+                <div class="header">{{ rapport.getNavn() }}</div>
+                <p>{{ rapport.getBeskrivelse() }}</p>
+            </div>
+        </a>
+    {% else %}
+        <p>Ingen rapporter i
+            {{ kategori.getNavn() }}</p>
+    {% endfor %}
+
+{% else %}
+    <p>Beklager, du har ikke tilgang til noen rapporter.</p>
+{% endfor %}

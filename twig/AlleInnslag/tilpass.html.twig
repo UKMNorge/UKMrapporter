@@ -1,0 +1,150 @@
+<h3 class="mt-4">Velg informasjon som skal vises</h3>
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-4">
+        <ol class="list-group">
+            <li class="list-group-item list-group-title">
+                <h4>Om innslaget</h4>
+            </li>
+
+            {#<li class="list-group-item panel-title panel-primary">Innslaget</li>#}
+            {% include "checkbox.html.twig" with {id: 'kategori_og_sjanger', title: 'Kategori og sjanger'} %}
+            {% include "checkbox.html.twig" with {id: 'varighet', title: 'Varighet'} %}
+            {% include "checkbox.html.twig" with {id: 'fylke', title: 'Fylke'} %}
+            {% include "checkbox.html.twig" with {id: 'kommune', title: 'Kommune'} %}
+            {% include "checkbox.html.twig" with {id: 'beskrivelse', title: 'Beskrivelse'} %}
+            {% include "checkbox.html.twig" with {id: 'tekniske_behov', title: 'Tekniske behov'} %}
+            {% include "checkbox.html.twig" with {id: 'mediefiler', title: 'Mediefiler'} %}
+            {% include "checkbox.html.twig" with {id: 'ukmtv', title: 'Filmer fra UKM-TV', label: 'Kun tilgjengelig på skjerm'} %}
+            {% include "checkbox.html.twig" with {id: 'kunstverk', title: 'Bilde av kunstverk'} %}
+        </ol>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4">
+        {% embed "toggle.html.twig" with {id: 'vis_deltakere', title: 'Vis deltakere?', start: 'yes' } %}
+            {% block yes %}
+                {% include "checkbox.html.twig" with {id: 'deltakere_kategori_og_sjanger', title: 'Alder'} %}
+                {% include "checkbox.html.twig" with {id: 'deltakere_mobil', title: 'Mobilnummer'} %}
+                {% include "checkbox.html.twig" with {id: 'deltakere_rolle', title: 'Rolle / instrument / funksjon'} %}
+                {% include "options.html.twig" with {id: 'deltakere_visning', title: 'Velg visning', start: 'kompakt', options: [{id: 'kompakt', title: 'Kompakt'},{id: 'tabell', title: 'Tabell'}]} %}
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4">
+        {% embed "toggle.html.twig" with {id: 'vis_titler', title: 'Vis titler?', start: 'yes' } %}
+            {% block yes %}
+                {% include "checkbox.html.twig" with {id: 'tittel_varighet', title: 'Varighet'} %}
+                {% include "checkbox.html.twig" with {id: 'tittel_detaljer', title: 'Detaljer'} %}
+                {% include "options.html.twig" with {id: 'tittel_visning', title: 'Velg visning', start: 'kompakt', options: [{id: 'kompakt', title: 'Kompakt'},{id: 'tabell', title: 'Tabell'}]} %}
+            {% endblock %}
+        {% endembed %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-4">
+        {% embed "toggle.html.twig" with {id: 'vis_kontaktperson', title: 'Vis kontaktperson?', start: 'no' } %}
+            {% block yes %}
+                {% include "checkbox.html.twig" with {id: 'kontakt_kategori_og_sjanger', title: 'Alder'} %}
+                {% include "checkbox.html.twig" with {id: 'kontakt_mobil', title: 'Mobilnummer'} %}
+                {% include "checkbox.html.twig" with {id: 'kontakt_epost', title: 'E-post'} %}
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4">
+        {% embed "toggle.html.twig" with {id: 'vis_nokkeltall', title: 'Vis nøkkeltall?', start: 'no' } %}
+            {% block yes %}
+                {% include "checkbox.html.twig" with {id: 'nokkeltall_arrangement', title: 'For arrangementet'} %}
+                {% include "checkbox.html.twig" with {id: 'nokkeltall_gruppe', title: 'For hver gruppe'} %}
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        {% embed "preview/list.html.twig" with {id: 'grupper', title: 'Hvordan skal det sorteres?' } %}
+            {% block options %}
+                {% include "preview/option.html.twig" with {id: 'grupper', val: 'alfabetisk', title: 'Alfabetisk sortert'} %}
+                {% include "preview/option.html.twig" with {id: 'grupper', val: 'type', title: 'Gruppert etter type innslag', desc: 'deretter sortert alfabetisk'} %}
+                {% include "preview/option.html.twig" with {id: 'grupper', val: 'type_kommune', title: 'Gruppert etter type innslag og kommune', desc: 'Grupperes først i typer innslag, og deretter per kommune, før innslagene vises alfabetisk sortert'} %}
+                {% include "preview/option.html.twig" with {id: 'grupper', val: 'kommune', title: 'Gruppert etter kommune', desc: 'Grupperes per kommune, før innslagene vises alfabetisk sortert'} %}
+                {% include "preview/option.html.twig" with {id: 'grupper', val: 'kommune_type', title: 'Gruppert etter kommune og type innslag', desc: 'Grupperes per kommune, før innslagene vises alfabetisk sortert'} %}
+            {% endblock %}
+
+            {% block previews %}
+                {% embed "preview/preview.html.twig" with {id: 'alfabetisk'} %}
+                    {% block content %}
+                        Innslag A<br/>
+                        Innslag B<br/>
+                        Innslag C<br/>
+                        Innslag D<br/>
+                        Innslag E<br/>
+                        Innslag F
+                    {% endblock %}
+                {% endembed %}
+
+                {% embed "preview/preview.html.twig" with {id: 'type'} %}
+                    {% block content %}
+                        <h4>Media</h4>
+                        Innslag C<br/>
+                        Innslag D<br/>
+                        Innslag E
+                        <h4>Musikk</h4>
+                        Innslag A<br/>
+                        Innslag B<br/>
+                        Innslag F
+                    {% endblock %}
+                {% endembed %}
+
+                {% embed "preview/preview.html.twig" with {id: 'type_kommune'} %}
+                    {% block content %}
+                        <h4>Media</h4>
+                        <h5>Kommune X</h5>
+                        Innslag C<br/>
+                        Innslag D
+                        <h5>Kommune Y</h5>
+                        Innslag E
+                        <h4>Musikk</h4>
+                        <h5>Kommune X</h5>
+                        Innslag B
+                        <h5>Kommune Y</h5>
+                        Innslag A<br/>
+                        Innslag F
+                    {% endblock %}
+                {% endembed %}
+
+                {% embed "preview/preview.html.twig" with {id: 'kommune'} %}
+                    {% block content %}
+                        <h4>Kommune Y</h4>
+                        Innslag A<br/>
+                        Innslag E<br/>
+                        Innslag F
+                        <h4>Kommune X</h4>
+                        Innslag B<br/>
+                        Innslag C<br/>
+                        Innslag D
+                    {% endblock %}
+                {% endembed %}
+
+                {% embed "preview/preview.html.twig" with {id: 'kommune_type'} %}
+                    {% block content %}
+                        <h4>Kommune Y</h4>
+                        <h5>Media</h5>
+                        Innslag E
+                        <h5>Musikk</h5>
+                        Innslag A<br/>
+                        Innslag F
+                        <h4>Kommune X</h4>
+                        <h5>Media</h5>
+                        Innslag C<br/>
+                        Innslag D<br/>
+                        <h5>Musikk</h4>
+                        Innslag B
+                    {% endblock %}
+                {% endembed %}
+            {% endblock %}
+        {% endembed %}
+    </div>
+</div>

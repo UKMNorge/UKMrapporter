@@ -1,0 +1,10 @@
+<li class="list-group-item">
+    <label>{{ title }}</label>
+    <div class="btn-group pull-right radioButtons" data-name="{{ id }}" id="radioButton_{{id}}">
+        {% for option in options %}
+        <button type="button" class="btn btn-xs btn-default {{ start is defined and start == option.id ? 'selected' }}" value="{{option.id}}">
+            &nbsp; {{ option.title }} &nbsp;</button>
+        {% endfor %}
+    </div>
+    <div class="clearfix"></div>
+</li>
