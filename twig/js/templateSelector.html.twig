@@ -1,0 +1,10 @@
+<select class="templateSelector form-control">
+    <option value="new" selected>Opprett som ny mal</option>
+    {% if templates|length > 0 %}
+        <optgroup label="eller overskriv">
+        {% for template in templates %}
+            <option value="{{template.id}}">{{template.name}}</option>
+        {% endfor %}
+        </optgroup>
+    {% endif %}
+</ol>

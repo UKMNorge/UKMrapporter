@@ -22,6 +22,12 @@ class UKMrapporter extends Modul
 
     public static function hook()
     {
+
+        add_action(
+            'wp_ajax_UKMrapporter_ajax',
+            ['UKMrapporter', 'ajax']
+        );
+
         if (get_option('pl_id')) {
             add_action(
                 'admin_menu',
@@ -75,8 +81,12 @@ class UKMrapporter extends Modul
     {
         wp_enqueue_script('WPbootstrap3_js');
         wp_enqueue_style('WPbootstrap3_css');
+        wp_enqueue_script('TwigJS');
 
-        wp_enqueue_style('jquery-ui-style', self::getPluginPath() . 'UKMNorge/js/css/jquery-ui-1.7.3.custom.css');
+        wp_enqueue_style('UKMrapporter_css', self::getPluginUrl() . 'ukmrapporter.css');
+        wp_enqueue_script('UKMrapporter_js', self::getPluginUrl() . 'ukmrapporter.js');
+
+        wp_enqueue_style('jquery-ui-style', self::getPluginUrl() . 'UKMNorge/js/css/jquery-ui-1.7.3.custom.css');
         wp_enqueue_script('GOOGLEchart', 'https://www.google.com/jsapi');
 
         wp_enqueue_script('jquery');
@@ -86,7 +96,12 @@ class UKMrapporter extends Modul
     public static function autoload($class_name)
     {
         if (strpos($class_name, 'UKMNorge\Rapporter\\') === 0) {
-            $file = static::getPath().'rapporter/' . str_replace(
+            if( strpos( $class_name, 'UKMNorge\Rapporter\Template\\') === 0 ) {
+                $path = static::getPath().'class/';
+            } else {
+                $path = static::getPath().'rapporter/';
+            }
+            $file = $path . str_replace(
                 ['\\', 'UKMNorge/Rapporter/'],
                 ['/', ''],
                 $class_name

@@ -1,7 +1,7 @@
 <li class="list-group-item preview-list-element option" data-id="radio_{{id}}_{{ val }}" }}>
     <div class="content">
         <div class="radioContainer">
-            <input type="radio" name="{{ id }}" value="{{ val }}" id="radio_{{id}}_{{val}}" />
+            <input type="radio" name="{{ id }}" value="{{ val }}" id="radio_{{id}}_{{val}}" {{ selected is defined ? 'checked' }} />
         </div>
         <div class="optionContainer">
             <label>{{ title }}</label>

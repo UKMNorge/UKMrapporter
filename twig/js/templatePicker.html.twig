@@ -1,0 +1,12 @@
+<ol class="list-group" id="openTemplate">
+    {% for template in templates %}
+        <li class="list-group-item template clickable" data-id="{{template.id}}">
+            {{ template.name }}
+            <small class="text-muted">{{template.beskrivelse}}</small>
+        </li>
+    {% else %}
+        <li class="list-group-item">
+            Du har ingen maler for denne rapporten. Tilpass rapporten, og trykk "lagre som mal".
+        </li>
+    {% endfor %}
+</ol>

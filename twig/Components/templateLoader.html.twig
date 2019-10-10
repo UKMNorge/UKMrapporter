@@ -1,0 +1,39 @@
+<h3>Maler</h3>
+
+<div class="row">
+    <div class="col-12 col-sm-6">
+        <h4>Åpne mal</h4>
+        <div id="templatePicker"></div>
+    </div>
+
+    <div class="col-12 col-sm-6" id="templateSaver" style="display:none;">
+        <h4>Lagre mal</h4>
+        <form>
+            <div class="form-group" id="templateSelector" style="display:none;"></div>
+
+            <div class="form-group" id="templateName">
+                <label>Navn på mal</label>
+                <input type="text" name="navn" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label>Beskrivelse
+                    <span class="text-muted">(frivillig)</span>
+                </label>
+                <textarea name="beskrivelse" class="form-control"></textarea>
+            </div>
+
+            <input type="text" name="config" id="templateConfig"/>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-success submit">Lagre</button>
+            </div>
+        </form>
+
+        <div class="status alert alert-success">
+            Mal lagret!
+            <a href="#" class="generateReport">Vis rapport</a>
+        </div>
+    </div>
+</div>
+<button type="button" class="btn btn-default hideTemplateLoader">Lukk</button>
