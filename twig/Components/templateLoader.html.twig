@@ -6,10 +6,12 @@
         <div id="templatePicker"></div>
     </div>
 
-    <div class="col-12 col-sm-6" id="templateSaver" style="display:none;">
-        <h4>Lagre mal</h4>
+    <div class="col-12 col-sm-6" id="templateSaver" {#style="display:none;"#}>
         <form>
-            <div class="form-group" id="templateSelector" style="display:none;"></div>
+            <h4>Lagre mal</h4>
+            <div class="form-group templateSelector">
+                {% include "js/templateSelector.html.twig" %}
+            </div>
 
             <div class="form-group" id="templateName">
                 <label>Navn på mal</label>
@@ -26,11 +28,11 @@
             <input type="text" name="config" id="templateConfig"/>
 
             <div class="form-group">
-                <button type="button" class="btn btn-success submit">Lagre</button>
+                <button type="button" class="btn btn-success saveTemplate">Lagre</button>
             </div>
         </form>
 
-        <div class="status alert alert-success">
+        <div class="status alert alert-success" style="display:none;">
             Mal lagret!
             <a href="#" class="generateReport">Vis rapport</a>
         </div>
