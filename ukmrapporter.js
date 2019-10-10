@@ -10,16 +10,22 @@ var UKMrapporter = function($) {
     var loader = {
         selector: '#reportLoader',
         visible: () => {
-            $(this.selector).is(':visible');
+            $(loader.selector).is(':visible');
         },
         show: (e) => {
             preventDefault(e);
-            $(this.selector).show();
-            console.log('ShowLoader:' + this.selector);
+            $(loader.selector).show();
         },
         hide: (e) => {
             preventDefault(e);
-            $(this.selector).hide();
+            $(loader.selector).hide();
+        },
+        bind: () => {
+            $(document).on('click', '.hideReportLoader', loader.hide);
+            $(document).on('click', '.showReportLoader', loader.show);
+        },
+        init: () => {
+            loader.bind();
         }
     }
 
@@ -27,14 +33,21 @@ var UKMrapporter = function($) {
         selector: '#reportCustomizer',
         show: function(e) {
             preventDefault(e);
-            $(this.selector).show();
-            if (!templateLoader.visible()) {
-
+            $(customizer.selector).show();
+            if (!loader.visible()) {
+                loader.show();
             }
         },
         hide: (e) => {
             preventDefault(e);
-            $(this.selector).hide();
+            $(customizer.selector).hide();
+        },
+        bind: () => {
+            $(document).on('click', '.hideCustomizer', customizer.hide);
+            $(document).on('click', '.showCustomizer', customizer.show);
+        },
+        init: () => {
+            customizer.bind();
         }
     }
 
@@ -42,7 +55,7 @@ var UKMrapporter = function($) {
     var templateLoader = {
         selector: '#templateLoader',
         visible: () => {
-            return $(this.selector).is(':visible')
+            return $(templateLoader.selector).is(':visible')
         },
         show: (e) => {
             preventDefault(e);
@@ -53,19 +66,13 @@ var UKMrapporter = function($) {
             preventDefault(e);
             $('#templateLoader').hide();
         },
-        saver: (e) => {
-            return {
-                show: (e) => {
-                    preventDefault(e);
-                    if (!templateLoader.visible()) {
-                        templateLoader.show();
-                    }
-                    $('#templateSaver').show();
-                    this.show();
-                    templateLoader.show();
-                },
-            }
-        }
+        bind: () => {
+            $(document).on('click', '.hideTemplateLoader', templateLoader.hide);
+            $(document).on('click', '.showTemplateLoader', templateLoader.show);
+        },
+        init: () => {
+            templateLoader.bind();
+        },
     }
 
     var self = {
@@ -73,9 +80,15 @@ var UKMrapporter = function($) {
         customizer: customizer,
         templateLoader: templateLoader,
         init: () => {
+            self.loader.init();
+            self.customizer.init();
+            self.templateLoader.init()
+
             self.loader.show();
+            self.customizer.show();
         }
     }
+
 
     self.init();
 
