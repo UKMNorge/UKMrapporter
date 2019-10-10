@@ -1,5 +1,5 @@
 var UKMrapporter = function($) {
-    var templatesCollection = new Map();
+    var templateCollection = new Map();
     var emitter = UKMresources.emitter('UKMrapporter');
 
     var preventDefault = function(e) {
@@ -23,10 +23,12 @@ var UKMrapporter = function($) {
         show: (e) => {
             preventDefault(e);
             $(loader.selector).show();
+            emitter.emit('loader.show');
         },
         hide: (e) => {
             preventDefault(e);
             $(loader.selector).hide();
+            emitter.emit('loader.hide');
         },
         bind: () => {
             $(document).on('click', '.hideReportLoader', loader.hide);
@@ -63,6 +65,16 @@ var UKMrapporter = function($) {
             templateSaver.setConfig(
                 $(customizer.selector + ' form').serialize()
             );
+        },
+        reset: () => {
+            $(customizer.selector + 'input[type="checkbox"]').prop("checked", false);
+            $(customizer.selector + 'input[type="radio"]').prop("checked", false);
+        },
+        fill: (check) => {
+            $.each(check, function(key, value) {
+                console.log(customizer.selector + ' input[name="' + key + '"]');
+                $(customizer.selector + ' input[name="' + key + '"]').prop('checked', true);
+            });
         }
     }
 
@@ -87,7 +99,7 @@ var UKMrapporter = function($) {
                 }
                 // Lag lokal kopi for iterering
                 templates.array = [];
-                templatesCollection.forEach((value, key) => {
+                templateCollection.forEach((value, key) => {
                     templates.array.push(value);
                 });
 
@@ -95,10 +107,10 @@ var UKMrapporter = function($) {
             });
         },
         add: (template) => {
-            templatesCollection.set('template_' + template.id, template);
+            templateCollection.set('template_' + template.id, template);
         },
         get: (template_id) => {
-            return templatesCollection.get(template_id);
+            return templateCollection.get(template_id);
         },
         getAll: () => {
             return templates.array;
@@ -114,6 +126,7 @@ var UKMrapporter = function($) {
         selector: '#templatePicker',
         bind: () => {
             emitter.on('templates.loaded', templatePicker.render);
+            $(document).on('click', templatePicker.selector + ' li.template', templatePicker.load);
         },
         render: () => {
             $(templatePicker.selector).html(
@@ -122,6 +135,16 @@ var UKMrapporter = function($) {
                 })
             );
         },
+        load: (e) => {
+            console.log('loadTemplate ' + $(e.target).attr('data-id'));
+            customizer.reset();
+            customizer.fill(
+                templateCollection.get(
+                    'template_' + $(e.target).attr('data-id')
+                ).config
+            );
+            templateLoader.hide();
+        }
     };
 
     /**
@@ -161,6 +184,7 @@ var UKMrapporter = function($) {
             $(document).on('click', templateSaver.selector + ' .saveTemplate', templateSaver.save);
             emitter.on('template.saved', templateSaver.status.show);
             emitter.on('template.saved', templateSaver.reset);
+            emitter.on('templateLoader.hide', templateSaver.hide);
         },
         selectedTemplate: (e) => {
             if ($(e.target).val() == 'new') {
@@ -290,15 +314,33 @@ var UKMrapporter = function($) {
         }
     }
 
+    var generator = {
+        selector: '#reportContainer',
+        show: () => {
+            loader.hide();
+            $(generator.selector).slideDown();
+            emitter.emit('generator.show');
+        },
+        hide: () => {
+            $(generator.selector).hide();
+        },
+        bind: () => {
+            emitter.on('loader.show', generator.hide);
+            $(document).on('click', '.generateReport', generator.show);
+        }
+    }
+
     loader.bind();
     customizer.bind();
     templatePicker.bind();
     templateSelector.bind();
     templateLoader.bind();
     templateSaver.bind();
+    generator.bind();
 
     var self = {
         loader: loader,
+        generator: generator,
         customizer: customizer,
         templateLoader: templateLoader,
         init: () => {
@@ -312,26 +354,7 @@ var UKMrapporter = function($) {
 
 $(document).ready(() => {
     UKMrapporter.init();
-    UKMrapporter.customizer.saveAsTemplate();
-    UKMrapporter.templateLoader.saveTemplate();
+
+    // DEBUG
+    UKMrapporter.templateLoader.show();
 });
-
-
-/*
-function loadTemplate(e) {
-    console.log('loadTemplate');
-    var clicked = $(e.target);
-    var config = templates.get('template_' + clicked.attr('data-id'));
-
-    // Reset form
-    $('#rapportTilpasninger input[type="checkbox"]').prop("checked", false);
-    $('#rapportTilpasninger input[type="radio"]').prop("checked", false);
-
-    // Set form
-    $.each(config, function(key, value) {
-        console.log('CHECK ' + 'input[name="' + key + '"]');
-        $('input[name="' + key + '"]').prop('checked', true);
-        generateReport();
-    });
-}
-*/
