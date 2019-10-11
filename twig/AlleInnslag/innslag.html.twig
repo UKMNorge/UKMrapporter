@@ -3,7 +3,7 @@
         <tr>
             <td>
                 <b>{{ innslag.getNavn() }}</b>
-                {{ innslag.getType().getNavn()|upper }}
+                <small>{{ innslag.getType().getNavn()|upper }}</small>
             </td>
             {% if config.show('kategori_og_sjanger') %}
                 <td>{{ innslag.getKategoriOgSjanger() }}</td>

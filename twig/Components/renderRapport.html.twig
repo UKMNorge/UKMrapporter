@@ -7,23 +7,28 @@
                 {% endif %}
 
                 {% if gruppe.harInnslag() %}
-                    {% include "AlleInnslag/innslag-liste.html.twig" with {innslag: gruppe.getInnslag() } %}
+                    {% for innslag in gruppe.getInnslag() %}
+                        {% include rapport.getId()~"/innslag.html.twig" with {innslag:innslag} %}
+                    {% endfor %}
                 {% elseif gruppe.harGrupper() %}
                     {% for undergruppe in gruppe.getGrupper() %}
                         {% if undergruppe.visOverskrift() %}
                             <h3>{{ undergruppe.getOverskrift() }}</h3>
                         {% endif %}
                         {% if undergruppe.harInnslag() %}
-                            {% include "AlleInnslag/innslag-liste.html.twig" with {innslag: undergruppe.getInnslag() } %}
+                            {% for innslag in undergruppe.getInnslag() %}
+                                {% include rapport.getId()~"/innslag.html.twig" with {innslag:innslag} %}
+                            {% endfor %}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
             {% endfor %}
         {% else %}
-            HAR IKKE GRUPPER
             {% if renderData.harInnslag() %}
-                {% include "AlleInnslag/innslag-liste.html.twig" with {innslag: renderData.getInnslag() } %}
+                {% for innslag in renderData.getInnslag() %}
+                    {% include rapport.getId()~"/innslag.html.twig" with {innslag:innslag} %}
+                {% endfor %}
             {% endif %}
         {% endif %}
-    </div>
+    </div> 
 </div>

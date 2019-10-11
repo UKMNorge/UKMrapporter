@@ -28,7 +28,7 @@ UKMrapporter::addResponseData(
 UKMrapporter::addResponseData(
     'html',
     TWIG(
-        $rapport->getTemplate() . '.html.twig',
+        'Components/renderRapport.html.twig',
         UKMrapporter::getResponseData(),
         UKMrapporter::getPluginPath()
     )
