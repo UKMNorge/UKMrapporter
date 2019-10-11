@@ -1,4 +1,6 @@
-<div class="container-fluid" id="reportLoader" style="display:none;" data-id="{{rapport.getId()}}">
+<div
+    class="container-fluid" id="reportLoader" style="display:none;" data-id="{{rapport.getId()}}">
+    {# OVERSKRIFT #}
     <div class="row">
         <div class="col-12 col-sm-12">
             <h2 id="customizeHeader">
@@ -14,22 +16,74 @@
         </div>
     </div>
 
+    {# CUSTOMIZER #}
     <div id="reportCustomizer" style="display:none;">
-        {% include "reportCustomizations.html.twig" %}
+        <form>
+            {% include rapport.getId()~'/tilpass.html.twig' %}
+            <p>&nbsp;</p>
+        </form>
+        <div class="row">
+            <div class="col-12 col-sm-12">
+                <button type="button" class="btn btn-primary btn-lg generateReport">Generer rapport</button>
+                <button type="button" class="btn btn-default saveAsTemplate" style="margin-left: 2em;">lagre som mal</button>
+            </div>
+        </div>
     </div>
 
+    {# TEMPLATE-PICKER #}
     <div id="templatePicker" style="display:none;">
         <div class="row">
             <div class="col-12 col-sm-6 content"></div>
         </div>
     </div>
+
+    {# TEMPLATE-SAVER #}
     <div id="templateSaver" style="display:none;">
         {% include "templateSaver.html.twig" %}
     </div>
 </div>
 
+{# RAPPORTEN #}
 <div class="container-fluid" id="reportContainer" style="display:none;">
-    <button type="button" class="btn btn-default btn-sm showTemplatePicker">Åpne mal</button>
-    <button type="button" class="btn btn-default btn-sm showCustomizer">Vis/endre tilpasninger</button>
-    <h2>Vennligst vent, genererer rapporten...</h2>
+    <div class="row">
+        <div class="col-12 col-sm-12">
+            <div class="pull-left">
+                <h2 id="reportLoader">Vennligst vent, genererer rapporten...</h2>
+                <h2 id="reportTitle" style="display:none;">{{ rapport.getNavn() }}</h2>
+            </div>
+            <div class="pull-right" align="right">
+                <button type="button" class="btn btn-default btn-sm showTemplatePicker">Åpne annen mal</button>
+                <button type="button" class="btn btn-primary btn-sm showCustomizer">Vis/endre tilpasninger</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="reportActions" style="display:none; margin-bottom: 2em;">
+        <div class="col-12 col-sm-12">
+            <button type="button" class="btn btn-default btn-sm showCustomizer">
+                <span class="dashicons dashicons-text-page"></span>
+                Skriv ut
+            </button>
+
+            <button type="button" class="btn btn-default btn-sm showCustomizer">
+                <span class="dashicons dashicons-download"></span>
+                Last ned word-fil
+            </button>
+            <button type="button" class="btn btn-default btn-sm showCustomizer">
+                <span class="dashicons dashicons-download"></span>
+                Last ned excel-fil
+            </button>
+
+            <button type="button" class="btn btn-default btn-sm showCustomizer" style="margin-left: 8em;">
+                <span class="dashicons dashicons-smartphone"></span>
+                Send sms
+            </button>
+            <button type="button" class="btn btn-default btn-sm showCustomizer">
+                <span class="dashicons dashicons-email"></span>
+                Send e-post
+            </button>
+        </div>
+    </div>
+
+    <div id="reportContent"></div>
 </div>

@@ -15,4 +15,14 @@ class AlleInnslag extends Rapport {
     {
         $this->id = basename( str_replace('UKMNorge\Rapporter\\', '', get_class($this) ) );
     }
+
+    /**
+     * Overstyr hvilken fil som skal rendres basert på konfig
+     *
+     * @param Array $config
+     * @return String $template
+     */
+    #public function filterRenderFile( Array $config ) {
+    #    return 'NOPE'. $this->getId();
+    #}
 }

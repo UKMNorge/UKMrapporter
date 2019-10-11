@@ -78,7 +78,7 @@ var UKMrapporter = function($) {
         },
         saveAsTemplate: () => {
             templateSaver.setConfig(
-                $(customizer.selector + ' form').serialize()
+                customizer.getConfig()
             );
         },
         reset: () => {
@@ -103,6 +103,9 @@ var UKMrapporter = function($) {
                         break;
                 }
             });
+        },
+        getConfig: () => {
+            return $(customizer.selector + ' form').serialize();
         }
     }
 
@@ -352,6 +355,7 @@ var UKMrapporter = function($) {
             loader.hide();
             $(generator.selector).slideDown();
             emitter.emit('generator.show');
+            generator.loader.fire();
         },
         hide: () => {
             $(generator.selector).hide();
@@ -359,6 +363,47 @@ var UKMrapporter = function($) {
         bind: () => {
             emitter.on('loader.show', generator.hide);
             $(document).on('click', '.generateReport', generator.show);
+        },
+        actions: {
+            hide: () => {
+                $(generator.selector + ' #reportActions').hide();
+            },
+            show: () => {
+                $(generator.selector + ' #reportActions').fadeIn(300);
+            }
+        },
+        loader: {
+            hide: () => {
+                $(generator.selector + ' #reportLoader').hide();
+                $(generator.selector + ' #reportTitle').show();
+            },
+            show: () => {
+                $(generator.selector + ' #reportTitle').hide();
+                $(generator.selector + ' #reportLoader').show();
+            },
+            fire: () => {
+                generator.loader.show();
+                $.post(
+                    ajaxurl, {
+                        action: 'UKMrapporter_ajax',
+                        controller: 'getReport',
+                        format: 'html',
+                        rapport: loader.getId(),
+                        config: customizer.getConfig()
+                    },
+                    (response) => {
+                        generator.loader.hide();
+                        generator.actions.show();
+                        switch (response.POST.format) {
+                            case 'html':
+                                return generator.showHTML(response);
+                        }
+                    }
+                );
+            }
+        },
+        showHTML: (response) => {
+            $(generator.selector + ' #reportContent').html(this['twigJS_' + response.template].render(response));
         }
     }
 

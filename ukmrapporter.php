@@ -112,6 +112,14 @@ class UKMrapporter extends Modul
             }
         }
     }
+
+    public static function getAktivRapport($rapport=false) {
+        if( !$rapport ) {
+            $rapport = $_GET['rapport'];
+        }
+        $class = 'UKMNorge\Rapporter\\' . basename($rapport);
+        return new $class();
+    }
 }
 
 UKMrapporter::init(__DIR__);

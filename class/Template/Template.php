@@ -27,6 +27,18 @@ class Template {
             $this->config = json_decode( $data['config'] );
         }
     }
+
+    /**
+     * Konverter querystring til array
+     *
+     * @param String $string
+     * @return Array $config
+     */
+    public static function loadConfigFromString( $string ) {
+        parse_str( $string, $config );
+        return $config;
+    }
+
     /**
      * Hent templateID
      * 

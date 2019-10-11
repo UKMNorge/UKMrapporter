@@ -2,6 +2,7 @@
 
 use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Rapporter\Template\Samling;
+use UKMNorge\Rapporter\Template\Template;
 use UKMNorge\Rapporter\Template\Write;
 
 require_once('UKM/Autoloader.php');
@@ -15,7 +16,7 @@ if( $_POST['template_id'] == 'new' ) {
     $template = Samling::getFromId( (Int) $_POST['template_id'] );
 }
 
-parse_str( $_POST['config'], $config );
+$config = Template::loadConfigFromString( $_POST['config'] );
 $template->setConfig($config);
 $template->setBeskrivelse( $_POST['description'] );
 
