@@ -72,20 +72,37 @@ var UKMrapporter = function($) {
         },
         fill: (check) => {
             $.each(check, function(key, value) {
-                console.log(customizer.selector + ' input[name="' + key + '"]');
-                $(customizer.selector + ' input[name="' + key + '"]').prop('checked', true);
+                var input = $(customizer.selector + ' input[name="' + key + '"]');
+                switch (input.attr('type')) {
+                    case 'hidden':
+                        input.val(value);
+                        if (input.attr('data-radiobutton')) {
+                            $(customizer.selector + ' .radioButtons button[value="' + value + '"]').click();
+                        }
+                        break;
+                    case 'radio':
+                        $(customizer.selector + ' input[name="' + key + '"][value="' + value + '"]').prop('checked', true);
+                        break;
+                    default:
+                        input.prop('checked', true);
+                        break;
+                }
             });
         }
     }
 
     /**
-     * Template-håndtering, inkludert template-picker og template-saver
+     * Template-håndtering
+     * Henter fra databasen
      */
     var templates = {
         array: [],
         load: (rapport_id) => {
             if (rapport_id == undefined) {
-                console.warn('Empty rapport id');
+                rapport_id = loader.getId();
+                if (rapport_id == undefined) {
+                    return;
+                }
             }
             $.post(ajaxurl, {
                 action: 'UKMrapporter_ajax',
@@ -106,6 +123,19 @@ var UKMrapporter = function($) {
                 emitter.emit('templates.loaded');
             });
         },
+        save: (rapport, template, name, description, config) => {
+            $.post(ajaxurl, {
+                action: 'UKMrapporter_ajax',
+                controller: 'saveTemplate',
+                rapport: rapport,
+                template_id: template,
+                name: name,
+                description: description,
+                config: config,
+            }, (response) => {
+                emitter.emit('template.saved');
+            });
+        },
         add: (template) => {
             templateCollection.set('template_' + template.id, template);
         },
@@ -115,6 +145,9 @@ var UKMrapporter = function($) {
         getAll: () => {
             return templates.array;
         },
+        bind: () => {
+            emitter.on('template.saved', templates.load);
+        }
     };
 
     /**
@@ -136,7 +169,6 @@ var UKMrapporter = function($) {
             );
         },
         load: (e) => {
-            console.log('loadTemplate ' + $(e.target).attr('data-id'));
             customizer.reset();
             customizer.fill(
                 templateCollection.get(
@@ -213,17 +245,13 @@ var UKMrapporter = function($) {
             $(templateSaver.getFormSelector()).trigger('reset');
         },
         save: () => {
-            $.post(ajaxurl, {
-                action: 'UKMrapporter_ajax',
-                controller: 'saveTemplate',
-                rapport: loader.getId(),
-                template_id: templateSaver.getTemplateId(),
-                name: templateSaver.getName(),
-                description: templateSaver.getDescription(),
-                config: templateSaver.getConfig()
-            }, (response) => {
-                emitter.emit('template.saved');
-            });
+            templates.save(
+                loader.getId(),
+                templateSaver.getTemplateId(),
+                templateSaver.getName(),
+                templateSaver.getDescription(),
+                templateSaver.getConfig()
+            );
         },
         getFormSelector: () => {
             return templateSaver.selector + ' form';
@@ -331,6 +359,7 @@ var UKMrapporter = function($) {
     }
 
     loader.bind();
+    templates.bind();
     customizer.bind();
     templatePicker.bind();
     templateSelector.bind();
