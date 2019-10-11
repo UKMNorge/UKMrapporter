@@ -398,7 +398,6 @@ var UKMrapporter = function($) {
                     (response) => {
                         generator.loader.hide();
                         generator.actions.show();
-                        console.log(response);
                         switch (response.POST.format) {
                             case 'html':
                                 return generator.showHTML(response);
