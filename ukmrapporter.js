@@ -33,7 +33,18 @@ var UKMrapporter = function($) {
         bind: () => {
             $(document).on('click', '.hideReportLoader', loader.hide);
             $(document).on('click', '.showReportLoader', loader.show);
+        },
+        header: {
+            showCustomize: () => {
+                $(loader.selector + ' #templateHeader').hide();
+                $(loader.selector + ' #customizeHeader').show();
+            },
+            showTemplate: () => {
+                $(loader.selector + ' #customizeHeader').hide();
+                $(loader.selector + ' #templateHeader').show();
+            }
         }
+
     }
 
     /**
@@ -60,6 +71,9 @@ var UKMrapporter = function($) {
 
             emitter.on('templateLoader.hide', customizer.show);
             emitter.on('templateLoader.show', customizer.hide);
+
+            emitter.on('templateLoader.hide', loader.header.showCustomize);
+            emitter.on('templateLoader.show', loader.header.showTemplate);
         },
         saveAsTemplate: () => {
             templateSaver.setConfig(

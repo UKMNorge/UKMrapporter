@@ -1,10 +1,15 @@
 <div class="container-fluid" id="reportLoader" style="display:none;" data-id="{{rapport.getId()}}">
     <div class="row">
         <div class="col-12 col-sm-12">
-            <h2>
+            <h2 id="customizeHeader">
                 Tilpass rapporten
                 <small>eller</small>
                 <button type="button" class="btn btn-default btn-sm showTemplateLoader">Åpne mal</button>
+            </h2>
+            <h2 id="templateHeader" style="display:none;">
+                Åpne mal
+                <small>eller</small>
+                <button type="button" class="btn btn-default btn-sm hideTemplateLoader">tilpass rapporten</button>
             </h2>
         </div>
     </div>
