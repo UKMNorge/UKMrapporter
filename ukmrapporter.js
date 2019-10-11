@@ -442,7 +442,6 @@ var UKMrapporter = function($) {
 
 
 function loadReport() {
-    console.log('Howdy!');
     UKMrapporter.templatePicker.load(33);
 }
 
