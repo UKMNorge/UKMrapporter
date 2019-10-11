@@ -429,12 +429,73 @@ var UKMrapporter = function($) {
             self.templatePicker.init()
             self.loader.show();
             self.customizer.show();
+            self.bind();
         },
         on: (event, callback) => {
             emitter.on(event, callback);
         },
         once: (event, callback) => {
             emitter.once(event, callback);
+        },
+
+        print: () => {
+            var w = window.outerWidth * 0.8;
+            var h = window.outerHeight * 0.8;
+
+            // CENTER-POSITION CREDITS: https://stackoverflow.com/a/16861050
+            var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : window.screenX;
+            var dualScreenTop = window.screenTop != undefined ? window.screenTop : window.screenY;
+            var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+            var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+            var systemZoom = width / window.screen.availWidth;
+
+            var config = {
+                location: 'yes',
+                statusbar: 'no',
+                directories: 'no',
+                menubar: 'no',
+                titlebar: 'no',
+                toolbar: 'no',
+                dependent: 'no',
+                resizable: 'yes',
+                personalbar: 'no',
+                scrollbars: 'no',
+                top: (height - h) / 2 / systemZoom + dualScreenTop,
+                left: (width - w) / 2 / systemZoom + dualScreenLeft,
+                width: w / systemZoom,
+                height: h / systemZoom,
+            }
+
+            // INCLUDE STYLESHEETS
+            var styles = [];
+            $('link').each((index, element) => {
+                if ($(element).attr('id') == undefined) {
+                    return;
+                }
+
+                if ($(element).attr('id').includes('WPbootstrap3_css') || $(element).attr('id').includes('UKMrapporter_css')) {
+                    styles.push($(element).attr('href'));
+                }
+            });
+
+            // OPEN PRINTAREA
+            var print_area = window.open("printMode", "_printMode", $.param(config).replace(/&/g, ','));
+            print_area.document.write(
+                twigJS_print.render({
+                    content: $('#reportContent').html(),
+                    styles: styles,
+                })
+            );
+            print_area.document.close();
+            print_area.focus();
+            setTimeout(() => {
+                    print_area.print();
+                },
+                1200
+            );
+        },
+        bind: () => {
+            $(document).on('click', '.printReport', self.print);
         }
     }
     return self;

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>UKM arrangørsystem</title>
+        {% for stylesheet in styles %}
+            <link rel="stylesheet" href="{{ stylesheet }}" />
+        {% endfor %}
+        {% for script in scripts %}
+            {{ script|raw }}
+        {% endfor %}
+    </head>
+
+    <body>
+        {{content}}
+    </body>
+</html>
