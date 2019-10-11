@@ -1,6 +1,7 @@
 var UKMrapporter = function($) {
     var templateCollection = new Map();
     var emitter = UKMresources.emitter('UKMrapporter');
+    //emitter.enableDebug();
 
     var preventDefault = function(e) {
         if (e !== undefined) {
@@ -81,8 +82,8 @@ var UKMrapporter = function($) {
             );
         },
         reset: () => {
-            $(customizer.selector + 'input[type="checkbox"]').prop("checked", false);
-            $(customizer.selector + 'input[type="radio"]').prop("checked", false);
+            $(customizer.selector + ' input[type="checkbox"]').prop("checked", false);
+            $(customizer.selector + ' input[type="radio"]').prop("checked", false);
         },
         fill: (check) => {
             $.each(check, function(key, value) {
@@ -231,6 +232,10 @@ var UKMrapporter = function($) {
             emitter.on('template.saved', templateSaver.status.show);
             emitter.on('template.saved', templateSaver.reset);
             emitter.on('templateLoader.hide', templateSaver.hide);
+            emitter.on('templateLoader.hide', templateSaver.status.hide);
+
+            emitter.on('templateLoader.show', templateSaver.hide);
+
         },
         selectedTemplate: (e) => {
             if ($(e.target).val() == 'new') {
@@ -249,10 +254,8 @@ var UKMrapporter = function($) {
             $(templateSaver.selector + ' form').show();
         },
         show: () => {
+            customizer.hide();
             templateSaver.showForm();
-            if (!templateLoader.visible()) {
-                templateLoader.show();
-            }
             $(templateSaver.selector).fadeIn(200);
         },
         reset: () => {
@@ -299,7 +302,7 @@ var UKMrapporter = function($) {
                 console.log('SHOW ' + templateSaver.selector + ' ' + templateSaver.status.selector);
                 templateSaver.hideForm();
                 $(templateSaver.selector + ' ' + templateSaver.status.selector).slideDown();
-                templateSaver.status.setTimer();
+                //templateSaver.status.setTimer();
             },
             hide: () => {
                 $(templateSaver.selector + ' ' + templateSaver.status.selector).slideUp();
@@ -397,7 +400,4 @@ var UKMrapporter = function($) {
 
 $(document).ready(() => {
     UKMrapporter.init();
-
-    // DEBUG
-    UKMrapporter.templateLoader.show();
 });
