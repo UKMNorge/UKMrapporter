@@ -2,10 +2,11 @@
 
 namespace UKMNorge\Rapporter;
 
-use UKMNorge\Rapporter\Framework\Meny;
+use UKMNorge\Rapporter\Framework\Gruppe;
 use UKMNorge\Rapporter\Framework\Rapport;
 
-class AlleInnslag extends Rapport {
+class AlleInnslag extends Rapport
+{
     public $kategori_id = 'personer';
     public $ikon = 'dashicons-buddicons-buddypress-logo';
     public $navn = 'Alle innslag';
@@ -13,16 +14,122 @@ class AlleInnslag extends Rapport {
 
     public function __construct()
     {
-        $this->id = basename( str_replace('UKMNorge\Rapporter\\', '', get_class($this) ) );
+        $this->id = basename(str_replace('UKMNorge\Rapporter\\', '', get_class($this)));
     }
 
     /**
-     * Overstyr hvilken fil som skal rendres basert på konfig
+     * Hent render-data for rapporten
      *
-     * @param Array $config
-     * @return String $template
+     * @return Gruppe
      */
-    #public function filterRenderFile( Array $config ) {
-    #    return 'NOPE'. $this->getId();
-    #}
+    public function getRenderData($responseData)
+    {
+        $grupper = new Gruppe('container', 'Alle innslag');
+        $grupper->setVisOverskrift(false);
+
+        switch ($responseData['config']->get('grupper')) {
+                // Gruppér alle innslag etter type
+            case 'type':
+                foreach ($this->getArrangement()->getInnslag()->getAll() as $innslag) {
+                    $type_gruppe_id = $innslag->getType()->getNavn();
+                    // Opprett gruppe om den ikke finnes
+                    if (!$grupper->harGruppe($type_gruppe_id)) {
+                        $grupper->addGruppe(
+                            new Gruppe(
+                                $type_gruppe_id,
+                                $innslag->getType()->getNavn()
+                            )
+                        );
+                    }
+                    // Legg til innslag
+                    $grupper->getGruppe($type_gruppe_id)->addInnslag($innslag);
+                }
+                break;
+
+                // Gruppér alle innslag etter type og kommune
+            case 'type_kommune':
+                $typer = [];
+                foreach ($this->getArrangement()->getInnslag()->getAll() as $innslag) {
+                    $type_gruppe_id = $innslag->getType()->getNavn();
+                    // Opprett gruppe om den ikke finnes
+                    if (!$grupper->harGruppe($type_gruppe_id)) {
+                        $grupper->addGruppe(
+                            new Gruppe(
+                                $type_gruppe_id,
+                                $innslag->getType()->getNavn()
+                            )
+                        );
+                    }
+
+                    // Har denne typen innslag fra denne kommunen?
+                    $kommune_gruppe_id = $innslag->getKommune()->getNavn() . '-' . $innslag->getKommune()->getId();
+                    if (!$grupper->getGruppe($type_gruppe_id)->harGruppe($kommune_gruppe_id)) {
+                        $grupper->getGruppe($type_gruppe_id)->addGruppe(
+                            new Gruppe(
+                                $kommune_gruppe_id,
+                                $innslag->getKommune()->getNavn()
+                            )
+                        );
+                    }
+
+                    // Legg til innslag i undergruppen
+                    $grupper->getGruppe($type_gruppe_id)->getGruppe($kommune_gruppe_id)->addInnslag($innslag);
+                }
+                break;
+            case 'kommune':
+                foreach ($this->getArrangement()->getInnslag()->getAll() as $innslag) {
+
+                    // Har denne typen innslag fra denne kommunen?
+                    $kommune_gruppe_id = $innslag->getKommune()->getNavn() . '-' . $innslag->getKommune()->getId();
+                    if (!$grupper->harGruppe($kommune_gruppe_id)) {
+                        $grupper->addGruppe(
+                            new Gruppe(
+                                $kommune_gruppe_id,
+                                $innslag->getKommune()->getNavn()
+                            )
+                        );
+                    }
+
+                    $grupper->getGruppe($kommune_gruppe_id)->addInnslag($innslag);
+                }
+                    break;
+
+            case 'kommune_type':
+                foreach ($this->getArrangement()->getInnslag()->getAll() as $innslag) {
+
+                    // Opprett kommune-gruppe om den ikke finnes
+                    $kommune_gruppe_id = $innslag->getKommune()->getNavn() . '-' . $innslag->getKommune()->getId();
+                    if (!$grupper->harGruppe($kommune_gruppe_id)) {
+                        $grupper->addGruppe(
+                            new Gruppe(
+                                $kommune_gruppe_id,
+                                $innslag->getKommune()->getNavn()
+                            )
+                        );
+                    }
+
+                    // Har denne kommunen denne typen innslag?
+                    $type_gruppe_id = $innslag->getType()->getNavn();
+                    if (!$grupper->getGruppe($kommune_gruppe_id)->harGruppe($type_gruppe_id)) {
+                        $grupper->getGruppe($kommune_gruppe_id)->addGruppe(
+                            new Gruppe(
+                                $type_gruppe_id,
+                                $innslag->getType()->getNavn()
+                            )
+                        );
+                    }
+
+                    $grupper->getGruppe($kommune_gruppe_id)->getGruppe($type_gruppe_id)->addInnslag($innslag);
+                }
+                break;
+
+                // Vis alle innslag alfabetisk
+            case 'alfabetisk':
+            default:
+                $grupper->setInnslag($this->getArrangement()->getInnslag()->getAll());
+                break;
+        }
+
+        return $grupper;
+    }
 }

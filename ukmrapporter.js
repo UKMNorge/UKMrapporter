@@ -303,7 +303,7 @@ var UKMrapporter = function($) {
         bind: () => {
             $(document).on('click', '.hideTemplatePicker', templatePicker.hide);
             $(document).on('click', '.showTemplatePicker', templatePicker.show);
-            $(document).on('click', templatePicker.selector + ' li.template', templatePicker.load);
+            $(document).on('click', templatePicker.selector + ' li.template', templatePicker.loadFromClick);
             emitter.on('templates.loaded', templatePicker.render);
         },
         init: () => {
@@ -317,14 +317,18 @@ var UKMrapporter = function($) {
                 })
             );
         },
-        load: (e) => {
+        loadFromClick: (e) => {
+            return templatePicker.load($(e.target).attr('data-id'));
+        },
+        load: (id) => {
             customizer.reset();
             customizer.fill(
                 templateCollection.get(
-                    'template_' + $(e.target).attr('data-id')
+                    'template_' + id
                 ).config
             );
             templatePicker.hide();
+            generator.show();
         }
     }
 
@@ -394,6 +398,7 @@ var UKMrapporter = function($) {
                     (response) => {
                         generator.loader.hide();
                         generator.actions.show();
+                        console.log(response);
                         switch (response.POST.format) {
                             case 'html':
                                 return generator.showHTML(response);
@@ -403,7 +408,7 @@ var UKMrapporter = function($) {
             }
         },
         showHTML: (response) => {
-            $(generator.selector + ' #reportContent').html(this['twigJS_' + response.template].render(response));
+            $(generator.selector + ' #reportContent').html(response.html);
         }
     }
 
@@ -424,11 +429,25 @@ var UKMrapporter = function($) {
             self.templatePicker.init()
             self.loader.show();
             self.customizer.show();
+        },
+        on: (event, callback) => {
+            emitter.on(event, callback);
+        },
+        once: (event, callback) => {
+            emitter.once(event, callback);
         }
     }
     return self;
 }(jQuery);
 
+
+function loadReport() {
+    console.log('Howdy!');
+    UKMrapporter.templatePicker.load(33);
+}
+
 $(document).ready(() => {
     UKMrapporter.init();
+
+    UKMrapporter.once('templates.loaded', loadReport);
 });

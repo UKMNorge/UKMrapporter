@@ -16,7 +16,7 @@ if( $_POST['template_id'] == 'new' ) {
     $template = Samling::getFromId( (Int) $_POST['template_id'] );
 }
 
-$config = Template::loadConfigFromString( $_POST['config'] );
+parse_str( $_POST['config'], $config );
 $template->setConfig($config);
 $template->setBeskrivelse( $_POST['description'] );
 

@@ -29,17 +29,6 @@ class Template {
     }
 
     /**
-     * Konverter querystring til array
-     *
-     * @param String $string
-     * @return Array $config
-     */
-    public static function loadConfigFromString( $string ) {
-        parse_str( $string, $config );
-        return $config;
-    }
-
-    /**
      * Hent templateID
      * 
      * @return Int $id;
