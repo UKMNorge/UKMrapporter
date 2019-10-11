@@ -4,12 +4,12 @@
             <h2 id="customizeHeader">
                 Tilpass rapporten
                 <small>eller</small>
-                <button type="button" class="btn btn-default btn-sm showTemplateLoader">Åpne mal</button>
+                <button type="button" class="btn btn-default btn-sm showTemplatePicker">Åpne mal</button>
             </h2>
             <h2 id="templateHeader" style="display:none;">
                 Åpne mal
                 <small>eller</small>
-                <button type="button" class="btn btn-default btn-sm hideTemplateLoader">tilpass rapporten</button>
+                <button type="button" class="btn btn-default btn-sm hideTemplatePicker">tilpass rapporten</button>
             </h2>
         </div>
     </div>
@@ -18,18 +18,18 @@
         {% include "reportCustomizations.html.twig" %}
     </div>
 
-    <div id="templateLoader" style="display:none;">
+    <div id="templatePicker" style="display:none;">
         <div class="row">
-            <div class="col-12 col-sm-6" id="templatePicker"></div>
+            <div class="col-12 col-sm-6 content"></div>
         </div>
     </div>
     <div id="templateSaver" style="display:none;">
-        {% include "templateLoader.html.twig" %}
+        {% include "templateSaver.html.twig" %}
     </div>
 </div>
 
 <div class="container-fluid" id="reportContainer" style="display:none;">
-    <button type="button" class="btn btn-default btn-sm showTemplateLoader">Åpne mal</button>
+    <button type="button" class="btn btn-default btn-sm showTemplatePicker">Åpne mal</button>
     <button type="button" class="btn btn-default btn-sm showCustomizer">Vis/endre tilpasninger</button>
     <h2>Vennligst vent, genererer rapporten...</h2>
 </div>

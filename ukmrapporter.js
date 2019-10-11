@@ -34,6 +34,9 @@ var UKMrapporter = function($) {
         bind: () => {
             $(document).on('click', '.hideReportLoader', loader.hide);
             $(document).on('click', '.showReportLoader', loader.show);
+
+            emitter.on('templatePicker.hide', loader.header.showCustomize);
+            emitter.on('templatePicker.show', loader.header.showTemplate);
         },
         header: {
             showCustomize: () => {
@@ -70,11 +73,8 @@ var UKMrapporter = function($) {
             $(document).on('click', '.showCustomizer', customizer.show);
             $(document).on('click', '.saveAsTemplate', customizer.saveAsTemplate);
 
-            emitter.on('templateLoader.hide', customizer.show);
-            emitter.on('templateLoader.show', customizer.hide);
-
-            emitter.on('templateLoader.hide', loader.header.showCustomize);
-            emitter.on('templateLoader.show', loader.header.showTemplate);
+            emitter.on('templatePicker.hide', customizer.show);
+            emitter.on('templatePicker.show', customizer.hide);
         },
         saveAsTemplate: () => {
             templateSaver.setConfig(
@@ -108,7 +108,7 @@ var UKMrapporter = function($) {
 
     /**
      * Template-håndtering
-     * Henter fra databasen
+     * Håndterer relasjoner mellom GUI og Database
      */
     var templates = {
         array: [],
@@ -148,6 +148,7 @@ var UKMrapporter = function($) {
                 description: description,
                 config: config,
             }, (response) => {
+                templates.load();
                 emitter.emit('template.saved');
             });
         },
@@ -159,59 +160,8 @@ var UKMrapporter = function($) {
         },
         getAll: () => {
             return templates.array;
-        },
-        bind: () => {
-            emitter.on('template.saved', templates.load);
         }
     };
-
-    /**
-     * Template-picker
-     * Viser alle templates, slik at brukeren kan velge disse
-     * AUTO-BIND da den kun binder seg til emitteren
-     */
-    var templatePicker = {
-        selector: '#templatePicker',
-        bind: () => {
-            emitter.on('templates.loaded', templatePicker.render);
-            $(document).on('click', templatePicker.selector + ' li.template', templatePicker.load);
-        },
-        render: () => {
-            $(templatePicker.selector).html(
-                twigJS_templatePicker.render({
-                    templates: templates.getAll()
-                })
-            );
-        },
-        load: (e) => {
-            customizer.reset();
-            customizer.fill(
-                templateCollection.get(
-                    'template_' + $(e.target).attr('data-id')
-                ).config
-            );
-            templateLoader.hide();
-        }
-    };
-
-    /**
-     * Template-selector
-     * Viser alle templates i select-liste
-     * AUTO-BIND da den kun binder seg til emitteren
-     */
-    var templateSelector = {
-        selector: '.templateSelector',
-        render: () => {
-            $(templateSelector.selector).html(
-                twigJS_templateSelector.render({
-                    templates: templates.getAll()
-                })
-            );
-        },
-        bind: () => {
-            emitter.on('templates.loaded', templateSelector.render);
-        },
-    }
 
     /**
      * Template-saver
@@ -231,10 +181,10 @@ var UKMrapporter = function($) {
             $(document).on('click', templateSaver.selector + ' .saveTemplate', templateSaver.save);
             emitter.on('template.saved', templateSaver.status.show);
             emitter.on('template.saved', templateSaver.reset);
-            emitter.on('templateLoader.hide', templateSaver.hide);
-            emitter.on('templateLoader.hide', templateSaver.status.hide);
+            emitter.on('templatePicker.hide', templateSaver.hide);
+            emitter.on('templatePicker.hide', templateSaver.status.hide);
 
-            emitter.on('templateLoader.show', templateSaver.hide);
+            emitter.on('templatePicker.show', templateSaver.hide);
 
         },
         selectedTemplate: (e) => {
@@ -324,41 +274,78 @@ var UKMrapporter = function($) {
     }
 
     /**
-     * Template-loaderen
-     * Henter templates fra database, og lager en klikkbar liste
+     * Template-picker
+     * Viser alle templates, slik at brukeren kan velge disse
      */
-    var templateLoader = {
-        selector: '#templateLoader',
+    var templatePicker = {
+        selector: '#templatePicker',
         visible: () => {
-            return $(templateLoader.selector).is(':visible')
+            return $(templatePicker.selector).is(':visible')
         },
         show: (e) => {
             preventDefault(e);
             loader.show();
             customizer.hide();
-            $(templateLoader.selector).slideDown();
-            emitter.emit('templateLoader.show');
+            $(templatePicker.selector).slideDown();
+            emitter.emit('templatePicker.show');
         },
         hide: (e) => {
             preventDefault(e);
-            $(templateLoader.selector).hide();
-            emitter.emit('templateLoader.hide');
+            $(templatePicker.selector).hide();
+            emitter.emit('templatePicker.hide');
         },
         loadFromDB: () => {
             templates.load(loader.getId());
         },
         bind: () => {
-            $(document).on('click', '.hideTemplateLoader', templateLoader.hide);
-            $(document).on('click', '.showTemplateLoader', templateLoader.show);
+            $(document).on('click', '.hideTemplatePicker', templatePicker.hide);
+            $(document).on('click', '.showTemplatePicker', templatePicker.show);
+            $(document).on('click', templatePicker.selector + ' li.template', templatePicker.load);
+            emitter.on('templates.loaded', templatePicker.render);
         },
         init: () => {
-            templateLoader.loadFromDB();
+            templatePicker.loadFromDB();
         },
-        saveTemplate: () => {
-            templateSaver.save();
+
+        render: () => {
+            $(templatePicker.selector).html(
+                twigJS_templatePicker.render({
+                    templates: templates.getAll()
+                })
+            );
+        },
+        load: (e) => {
+            customizer.reset();
+            customizer.fill(
+                templateCollection.get(
+                    'template_' + $(e.target).attr('data-id')
+                ).config
+            );
+            templatePicker.hide();
         }
     }
 
+    /**
+     * Template-selector
+     * Viser alle templates i select-liste
+     */
+    var templateSelector = {
+        selector: '.templateSelector',
+        render: () => {
+            $(templateSelector.selector).html(
+                twigJS_templateSelector.render({
+                    templates: templates.getAll()
+                })
+            );
+        },
+        bind: () => {
+            emitter.on('templates.loaded', templateSelector.render);
+        },
+    }
+
+    /**
+     * Generering av rapporter
+     */
     var generator = {
         selector: '#reportContainer',
         show: () => {
@@ -376,11 +363,10 @@ var UKMrapporter = function($) {
     }
 
     loader.bind();
-    templates.bind();
     customizer.bind();
     templatePicker.bind();
     templateSelector.bind();
-    templateLoader.bind();
+    templatePicker.bind();
     templateSaver.bind();
     generator.bind();
 
@@ -388,9 +374,9 @@ var UKMrapporter = function($) {
         loader: loader,
         generator: generator,
         customizer: customizer,
-        templateLoader: templateLoader,
+        templatePicker: templatePicker,
         init: () => {
-            self.templateLoader.init()
+            self.templatePicker.init()
             self.loader.show();
             self.customizer.show();
         }
