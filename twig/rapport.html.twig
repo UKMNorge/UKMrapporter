@@ -48,7 +48,7 @@
     <div class="row">
         <div class="col-12 col-sm-12">
             <div class="pull-left">
-                <h2 id="reportLoader">Vennligst vent, genererer rapporten...</h2>
+                <h2 id="reportLoading"></h2>
                 <h2 id="reportTitle" style="display:none;">{{ rapport.getNavn() }}</h2>
             </div>
             <div class="pull-right" align="right">
@@ -86,4 +86,26 @@
     </div>
 
     <div id="reportContent"></div>
+    <div id="reportGenerating">
+        <div class="center">   
+            <img src="/wp-admin/images/spinner-2x.gif" />
+            <h3>Vennligst vent, lager rapporten</h3>
+        </div>
+    </div>
+    <div id="reportDownloadLoading" style="display:none;">
+        <div class="center">   
+            <img src="/wp-admin/images/spinner-2x.gif" />
+            <h3>Vennligst vent, lager fil..</h3>
+        </div>
+    </div>
+    <div id="reportDownload" style="display:none;">
+        {#<h3><span class="dashicons dashicons-download"></span></h3>#}
+        <h3>Nedlastingen er klar!</h3>
+        <p>
+            <a href="#" class="btn btn-success" id="downloadLink" target="_blank">
+                <span class="dashicons dashicons-download"></span>
+                Last ned filen
+            </a>
+        </p>
+    </div>
 </div>

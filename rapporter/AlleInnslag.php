@@ -22,12 +22,12 @@ class AlleInnslag extends Rapport
      *
      * @return Gruppe
      */
-    public function getRenderData($responseData)
+    public function getRenderData()
     {
         $grupper = new Gruppe('container', 'Alle innslag');
         $grupper->setVisOverskrift(false);
 
-        switch ($responseData['config']->get('grupper')) {
+        switch ($this->getConfig()->get('grupper')) {
                 // Gruppér alle innslag etter type
             case 'type':
                 foreach ($this->getArrangement()->getInnslag()->getAll() as $innslag) {
@@ -48,7 +48,6 @@ class AlleInnslag extends Rapport
 
                 // Gruppér alle innslag etter type og kommune
             case 'type_kommune':
-                $typer = [];
                 foreach ($this->getArrangement()->getInnslag()->getAll() as $innslag) {
                     $type_gruppe_id = $innslag->getType()->getNavn();
                     // Opprett gruppe om den ikke finnes

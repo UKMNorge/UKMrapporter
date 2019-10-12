@@ -354,44 +354,78 @@ var UKMrapporter = function($) {
      * Generering av rapporter
      */
     var generator = {
-        selector: '#reportContainer',
-        show: () => {
+        selector: {
+            container: '#reportContainer',
+            content: '#reportContent',
+            loading: {
+                download: '#reportDownloadLoading',
+                html: '#reportGenerating',
+                title: '#reportLoading',
+            },
+            title: '#reportTitle',
+            download: {
+                gui: '#reportDownload',
+                link: '#downloadLink'
+            },
+            actions: '#reportActions'
+        },
+        show: (format = 'html') => {
             loader.hide();
-            $(generator.selector).slideDown();
+            $(generator.selector.container).slideDown();
             emitter.emit('generator.show');
-            generator.loader.fire();
+            generator.loader.fire(format);
+        },
+        /* Eksisterer for at js ikke skal få panikk ved klikk på .generateReport */
+        loadAndShowHtml: () => {
+            generator.show('html');
         },
         hide: () => {
-            $(generator.selector).hide();
+            $(generator.selector.container).hide();
+            generator.loader.hide();
         },
         bind: () => {
             emitter.on('loader.show', generator.hide);
-            $(document).on('click', '.generateReport', generator.show);
+            $(document).on('click', '.generateReport', generator.loadAndShowHtml);
         },
         actions: {
             hide: () => {
-                $(generator.selector + ' #reportActions').hide();
+                $(generator.selector.actions).hide();
             },
             show: () => {
-                $(generator.selector + ' #reportActions').fadeIn(300);
+                $(generator.selector.actions).fadeIn(300);
             }
         },
         loader: {
             hide: () => {
-                $(generator.selector + ' #reportLoader').hide();
-                $(generator.selector + ' #reportTitle').show();
+                $(generator.selector.title).show();
+                $(generator.selector.loading.html).hide();
+                $(generator.selector.loading.title).hide();
+                $(generator.selector.loading.download).hide();
+                $(generator.selector.download.gui).hide();
             },
-            show: () => {
-                $(generator.selector + ' #reportTitle').hide();
-                $(generator.selector + ' #reportLoader').show();
+            show: (format) => {
+                switch (format) {
+                    case 'html':
+                        $(generator.selector.title).hide();
+                        $(generator.selector.loading.title).show();
+                        $(generator.selector.loading.html).show();
+                        break;
+                    case 'excel':
+                        $(generator.selector.loading.download).show();
+                        break;
+                }
             },
-            fire: () => {
-                generator.loader.show();
+            fire: (format) => {
+                if (format == 'html') {
+                    $(generator.selector.content).html('');
+                }
+                $(generator.selector.content).hide();
+                generator.loader.show(format);
                 $.post(
                     ajaxurl, {
                         action: 'UKMrapporter_ajax',
                         controller: 'getReport',
-                        format: 'html',
+                        format: format,
                         rapport: loader.getId(),
                         config: customizer.getConfig()
                     },
@@ -400,15 +434,32 @@ var UKMrapporter = function($) {
                         generator.actions.show();
                         switch (response.POST.format) {
                             case 'html':
-                                return generator.showHTML(response);
+                                generator.showHTML(response);
+                                break;
+                            case 'excel':
+                                generator.showExcel(response);
+                                break;
                         }
+                        emitter.emit('report.loaded');
                     }
                 );
             }
         },
         showHTML: (response) => {
-            $(generator.selector + ' #reportContent').html(response.html);
+            $(generator.selector.content).html(response.html);
+            $(generator.selector.content).show();
+        },
+        downloadExcel: () => {
+            $(generator.selector.download.gui).slideUp();
+            $(generator.selector.content).hide()
+            $(generator.selector.loading.download).slideDown();
+            generator.show('excel');
+        },
+        showExcel: (response) => {
+            $(generator.selector.download.link).attr('href', response.link);
+            $(generator.selector.download.gui).slideDown();
         }
+
     }
 
     loader.bind();
@@ -493,8 +544,12 @@ var UKMrapporter = function($) {
                 1200
             );
         },
+        downloadExcel: () => {
+            generator.downloadExcel();
+        },
         bind: () => {
             $(document).on('click', '.printReport', self.print);
+            $(document).on('click', '.downloadExcel', self.downloadExcel);
         }
     }
     return self;
@@ -509,4 +564,5 @@ $(document).ready(() => {
     UKMrapporter.init();
 
     UKMrapporter.once('templates.loaded', loadReport);
+    UKMrapporter.once('report.loaded', UKMrapporter.downloadExcel);
 });

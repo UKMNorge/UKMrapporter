@@ -1,8 +1,6 @@
 <?php
 
 use UKMNorge\Arrangement\Arrangement;
-use UKMNorge\Rapporter\Template\Samling;
-use UKMNorge\Rapporter\Template\Template;
 
 require_once('UKM/Autoloader.php');
 require_once('UKM/inc/twig-admin.inc.php');
@@ -14,22 +12,31 @@ UKMrapporter::addResponseData(
     [
         'config' => $rapport->getConfig(),
         'rapport' => $rapport,
-        'arrangement' => new Arrangement((Int)get_option('pl_id'))
+        'arrangement' => new Arrangement((int) get_option('pl_id')),
+        'renderData' => $rapport->getRenderData()
     ]
 );
 
-// Bruker allerede angitt respons-data
-UKMrapporter::addResponseData(
-    'renderData',
-    $rapport->getRenderData( UKMrapporter::getResponseData())
-);
+#sleep(1);
 
-// Bruker allerede angitt respons-data (inkludert renderData fra ovenfor)
-UKMrapporter::addResponseData(
-    'html',
-    TWIG(
-        'Components/renderRapport.html.twig',
-        UKMrapporter::getResponseData(),
-        UKMrapporter::getPluginPath()
-    )
-);
+
+// BRUKER SØKER HTML-UTGAVEN
+if ($_POST['format'] == 'html') {
+    // Bruker allerede angitt respons-data (inkludert renderData fra ovenfor)
+    UKMrapporter::addResponseData(
+        'html',
+        TWIG(
+            'Components/renderRapport.html.twig',
+            UKMrapporter::getResponseData(),
+            UKMrapporter::getPluginPath()
+        )
+    );
+}
+
+// BRUKER SØKER EXCEL-UTGAVEN
+if ($_POST['format'] == 'excel') {
+    UKMrapporter::addResponseData(
+        'link',
+        $rapport->getExcelFile()
+    );
+}

@@ -6,6 +6,9 @@ use UKMNorge\Collection;
 
 class Config extends Collection {
 
+    public function vis($id) {
+        return $this->show($id);
+    }
     public function show($id) {
         return $this->har('vis_'.$id);
     }

@@ -16,6 +16,7 @@ abstract class Rapport
     public $ikon;
     public $config;
     public $arrangement;
+    private $excel;
 
     /**
      * Hent rapport-ID
@@ -111,14 +112,68 @@ abstract class Rapport
         return $this->config;
     }
 
-    public function getRenderData( $responseData ) {
-        return $responseData;
+    /**
+     * Henter render-data som brukes for å lage rapporten i 
+     * html, excel eller word-format
+     *
+     * @return Array $responseData
+     */
+    public function getRenderData() {
+        return [];
     }
 
+    /**
+     * Hent hvilket arrangement rapporten jobber med
+     *
+     * @return Arrangement $arrangement
+     */
     public function getArrangement() {
         if( null == $this->arrangement ) {
             $this->arrangement = new Arrangement( get_option('pl_id') );
         }
         return $this->arrangement;
+    }
+
+    /**
+     * Hent renderData 
+     * 
+     * @param Array $data
+     * @return 
+     */
+    public function getExcelFile() {
+        $excel = new Excel( 
+            $this->getNavn(),
+            $this->getRenderDataInnslag(),
+            $this->getConfig()
+        );
+        return $excel->writeToFile();
+    }
+
+
+    private function getRenderDataInnslag() {
+        $renderData = $this->getRenderData();
+        $this->_collected = [];
+        if( $renderData->harGrupper() ) {
+            foreach( $renderData->getGrupper() as $gruppe ) {
+                if( $gruppe->harGrupper() ) {
+                    foreach( $gruppe->getGrupper() as $undergruppe ) {
+                        $this->_collectInnslag( $undergruppe );
+                    }
+                } else {
+                    $this->_collectInnslag( $undergruppe );
+                }
+            }
+        } else {
+            $this->_collectInnslag( $undergruppe );
+        }
+
+        return $this->_collected;
+
+    }
+    
+    private function _collectInnslag( Gruppe $gruppe ) {
+        foreach( $gruppe->getInnslag() as $innslag ) {
+            $this->_collected[ $innslag->getId() ] = $innslag;
+        }
     }
 }
