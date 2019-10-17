@@ -116,10 +116,10 @@ abstract class Rapport
      * Henter render-data som brukes for å lage rapporten i 
      * html, excel eller word-format
      *
-     * @return Array $responseData
+     * @return Gruppe $renderData
      */
     public function getRenderData() {
-        return [];
+        new Gruppe('container', 'Alle innslag');
     }
 
     /**
@@ -135,10 +135,9 @@ abstract class Rapport
     }
 
     /**
-     * Hent renderData 
+     * Lag og returner excel-filens URL
      * 
-     * @param Array $data
-     * @return 
+     * @return String url
      */
     public function getExcelFile() {
         $excel = new Excel( 
@@ -160,11 +159,11 @@ abstract class Rapport
                         $this->_collectInnslag( $undergruppe );
                     }
                 } else {
-                    $this->_collectInnslag( $undergruppe );
+                    $this->_collectInnslag( $gruppe );
                 }
             }
         } else {
-            $this->_collectInnslag( $undergruppe );
+            $this->_collectInnslag( $renderData );
         }
 
         return $this->_collected;
