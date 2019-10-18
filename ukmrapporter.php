@@ -17,7 +17,7 @@ spl_autoload_register(['UKMrapporter','autoload']);
 
 class UKMrapporter extends Modul
 {
-    public static $action = 'snart';
+    public static $action = 'rapporter';
     public static $path_plugin = null;
 
     public static function hook()
@@ -65,7 +65,7 @@ class UKMrapporter extends Modul
     {
         $page = add_menu_page(
             'Rapporter',
-            'Rapporter V2',
+            'Rapporter',
             'superadmin',
             'UKMrapporter',
             ['UKMrapporter', 'renderAdmin'],
