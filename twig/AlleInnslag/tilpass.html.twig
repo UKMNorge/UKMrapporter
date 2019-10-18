@@ -1,4 +1,3 @@
-<h3 class="mt-4">Velg informasjon som skal vises</h3>
 <div class="row">
     <div class="col-12 col-sm-6 col-md-4">
         <ol class="list-group">
@@ -67,7 +66,7 @@
         {% embed "preview/list.html.twig" with {id: 'grupper', title: 'Hvordan skal det sorteres?' } %}
             {% block options %}
                 {% include "preview/option.html.twig" with {id: 'grupper', val: 'alfabetisk', title: 'Alfabetisk sortert', selected:true} %}
-                {% include "preview/option.html.twig" with {id: 'grupper', val: 'type', title: 'Gruppert etter type innslag', desc: 'deretter sortert alfabetisk'} %}
+                {% include "preview/option.html.twig" with {id: 'grupper', val: 'type', title: 'Gruppert etter type innslag', desc: 'Deretter sortert alfabetisk'} %}
                 {% include "preview/option.html.twig" with {id: 'grupper', val: 'type_kommune', title: 'Gruppert etter type innslag og kommune', desc: 'Grupperes først i typer innslag, og deretter per kommune, før innslagene vises alfabetisk sortert'} %}
                 {% include "preview/option.html.twig" with {id: 'grupper', val: 'kommune', title: 'Gruppert etter kommune', desc: 'Grupperes per kommune, før innslagene vises alfabetisk sortert'} %}
                 {% include "preview/option.html.twig" with {id: 'grupper', val: 'kommune_type', title: 'Gruppert etter kommune og type innslag', desc: 'Grupperes per kommune, før innslagene vises alfabetisk sortert'} %}

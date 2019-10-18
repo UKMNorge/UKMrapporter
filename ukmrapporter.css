@@ -86,3 +86,11 @@
         background: #0073aa;
         color: #fff;
     }
+    
+    .description {
+        font-size: .88em;
+    }
+    
+    label {
+        font-weight: normal;
+    }
