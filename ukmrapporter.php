@@ -46,8 +46,8 @@ class UKMrapporter extends Modul
     public static function meny()
     {
         $page = add_menu_page(
-            'Rapporter V2',
-            'Rapporter V2',
+            'Rapporter',
+            'Rapporter',
             'ukm_rapporter',
             'UKMrapporter',
             ['UKMrapporter', 'renderAdmin'],
