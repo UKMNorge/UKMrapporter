@@ -8,10 +8,10 @@ for($i=2010; $i<=$TWIG['season']; $i++) {
 	$TWIG['seasons'][] = $i;
 }
 
-$TWIG['home'] = get_option('site_type');
+$TWIG['home'] = get_option('pl_eier_type');
 
-if( (get_option('site_type') == 'fylke' && !isset( $_GET['fylke'] ) ) || 
-	(get_option('site_type') == 'fylke' && isset( $_GET['fylke'] ) && $_GET['fylke'] == 'false' ) ){
+if( (get_option('pl_eier_type') == 'fylke' && !isset( $_GET['fylke'] ) ) || 
+	(get_option('pl_eier_type') == 'fylke' && isset( $_GET['fylke'] ) && $_GET['fylke'] == 'false' ) ){
 	$pl = new monstring( get_option('pl_id') );
 	$_GET['fylke'] = $pl->g('fylke_id');
 }

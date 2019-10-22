@@ -217,7 +217,7 @@ class valgt_rapport extends rapport {
 			}
 			if( $this->show('er_deltaker') ) {
 				// Fylke og land
-				if( get_option('site_type') != 'kommune' ) {
+				if( get_option('pl_eier_type') != 'kommune' ) {
 					foreach( $innslag->getPersoner()->getAllVideresendt( get_option('pl_id') ) as $person ) {
 						$renderData[] = new renderData( $innslag, $person, $this->getMonstring()->getType() );
 					}

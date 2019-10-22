@@ -12,7 +12,7 @@ define('PLUGIN_DIR_UKMRAPPORTER', dirname( __FILE__ ).'/' );
 
 if(is_admin()) {
 
-	if( in_array( get_option('site_type'), array('kommune','fylke','land')) ) {
+	if( get_option('pl_id') ) {
 		add_action('admin_menu', 'UKMrapport_menu');
 		add_action('UKMWPDASH_shortcuts', 'UKMMrapport_dash_shortcut', 50);
 	}
