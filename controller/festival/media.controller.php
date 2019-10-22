@@ -1,10 +1,12 @@
 <?php
-require_once('UKM/monstring.class.php');
-require_once('UKM/forestilling.class.php');
+
+use UKMNorge\Arrangement\Arrangement;
+
+require_once('UKM/Autoloader.php');
 
 $TWIG['c_id'] = $_GET['c_id'];
 
-$m = new monstring( get_option('pl_id') );
+$m = new Arrangement( get_option('pl_id') );
 
 if( isset( $_GET['c_id'] ) || isset( $_GET['kunstnere'] ) ) {
 	require_once('media_download.controller.php');

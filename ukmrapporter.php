@@ -12,8 +12,8 @@ define('PLUGIN_DIR_UKMRAPPORTER', dirname( __FILE__ ).'/' );
 
 if(is_admin()) {
 
-	if( in_array( get_option('site_type'), array('kommune','fylke','land')) ) {
-		add_action('UKM_admin_menu', 'UKMrapport_menu');
+	if( get_option('pl_id') ) {
+		add_action('admin_menu', 'UKMrapport_menu');
 		add_action('UKMWPDASH_shortcuts', 'UKMMrapport_dash_shortcut', 50);
 	}
 	require_once('UKM/inc/toolkit.inc.php');
@@ -27,7 +27,15 @@ add_action('network_admin_menu', 'UKMrapport_network_menu');
 
 
 function UKMrapport_network_menu() {
-	$page = add_menu_page('Rapporter', 'Rapporter', 'superadmin', 'UKMrapport_admin','UKMrapport_admin', '//ico.ukm.no/graph-menu.png',2101);
+	$page = add_menu_page(
+		'Rapporter',
+		'Rapporter',
+		'superadmin',
+		'UKMrapport_admin',
+		'UKMrapport_admin',
+		'dashicons-analytics',#'//ico.ukm.no/graph-menu.png',
+		2101
+	);
 	add_action( 'admin_print_styles-' . $page, 'UKMrapport_scriptsandstyles' );
 }
 function UKMrapport_countPrint(){
@@ -41,10 +49,26 @@ function UKMrapport_countPrint(){
 
 ## CREATE A MENU
 function UKMrapport_menu() {
-	UKM_add_menu_page('monstring','Rapporter', 'Rapporter', 'ukm_rapporter', 'UKMrapport_admin', 'UKMrapport_admin', '//ico.ukm.no/graph-menu.png',15);    
-	UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_scriptsandstyles' );
+	$page = add_menu_page(
+		'Rapporter',
+		'Rapporter',
+		'ukm_rapporter',
+		'UKMrapport_admin',
+		'UKMrapport_admin',
+		'dashicons-analytics',#'//ico.ukm.no/graph-menu.png',
+		80
+	);
+
+	add_action(
+		'admin_print_styles-' . $page,
+		'UKMrapport_scriptsandstyles'
+	);
+
 	if(isset($_GET['stat'])||isset($_GET['fylkestimeplan'])||isset($_GET['festival'])) {
-		UKM_add_scripts_and_styles( 'UKMrapport_admin', 'UKMrapport_statistikk_scripts_and_styles' );
+		add_action(
+			'admin_print_styles-' . $page,
+			'UKMrapport_statistikk_scripts_and_styles'
+		);
 	}
 }
 function UKMMrapport_dash_shortcut( $shortcuts ) {	
