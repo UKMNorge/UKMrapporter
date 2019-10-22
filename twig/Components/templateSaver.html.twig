@@ -1,0 +1,34 @@
+<div class="row">
+    <div class="col-12 col-sm-6">
+        <form>
+            <h4>Lagre mal</h4>
+            <div class="form-group templateSelector">
+                {% include "js/templateSelector.html.twig" %}
+            </div>
+
+            <div class="form-group" id="templateName">
+                <label>Navn på mal</label>
+                <input type="text" name="navn" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label>Beskrivelse
+                    <span class="text-muted">(frivillig)</span>
+                </label>
+                <textarea name="beskrivelse" class="form-control"></textarea>
+            </div>
+
+            <input type="text" name="config" id="templateConfig"/>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-success saveTemplate">Lagre</button>
+                <button type="button" class="btn btn-default hideTemplatePicker" style="margin-left: 1.5em;">Lukk</button>
+            </div>
+        </form>
+
+        <div class="status alert alert-success" style="display:none;">
+            Mal lagret!
+            <a href="#" class="generateReport">Vis rapport</a>
+        </div>
+    </div>
+</div>

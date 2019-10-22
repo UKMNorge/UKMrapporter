@@ -1,0 +1,111 @@
+<div
+    class="container-fluid" id="reportLoader" style="display:none;" data-id="{{rapport.getId()}}">
+    {# OVERSKRIFT #}
+    <div class="row">
+        <div class="col-12 col-sm-12">
+            <h2 id="customizeHeader">
+                Tilpass rapporten
+                <small>eller</small>
+                <button type="button" class="btn btn-default btn-sm showTemplatePicker">Åpne mal</button>
+            </h2>
+            <h2 id="templateHeader" style="display:none;">
+                Åpne mal
+                <small>eller</small>
+                <button type="button" class="btn btn-default btn-sm hideTemplatePicker">tilpass rapporten</button>
+            </h2>
+        </div>
+    </div>
+
+    {# CUSTOMIZER #}
+    <div id="reportCustomizer" style="display:none;">
+        <form>
+            {% include rapport.getId()~'/tilpass.html.twig' %}
+            <p>&nbsp;</p>
+        </form>
+        <div class="row">
+            <div class="col-12 col-sm-12">
+                <button type="button" class="btn btn-primary btn-lg generateReport">Generer rapport</button>
+                <button type="button" class="btn btn-default saveAsTemplate" style="margin-left: 2em;">lagre som mal</button>
+            </div>
+        </div>
+    </div>
+
+    {# TEMPLATE-PICKER #}
+    <div id="templatePicker" style="display:none;">
+        <div class="row">
+            <div class="col-12 col-sm-6 content"></div>
+        </div>
+    </div>
+
+    {# TEMPLATE-SAVER #}
+    <div id="templateSaver" style="display:none;">
+        {% include "templateSaver.html.twig" %}
+    </div>
+</div>
+
+{# RAPPORTEN #}
+<div class="container-fluid" id="reportContainer" style="display:none;">
+    <div class="row">
+        <div class="col-12 col-sm-12">
+            <div class="pull-left">
+                <h2 id="reportLoading"></h2>
+                <h2 id="reportTitle" style="display:none;">{{ rapport.getNavn() }}</h2>
+            </div>
+            <div class="pull-right" align="right">
+                <button type="button" class="btn btn-default btn-sm showTemplatePicker">Åpne annen mal</button>
+                <button type="button" class="btn btn-primary btn-sm showCustomizer">Vis/endre tilpasninger</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="reportActions" style="display:none; margin-bottom: 2em;">
+        <div class="col-12 col-sm-12">
+            <button type="button" class="btn btn-default btn-sm printReport">
+                <span class="dashicons dashicons-text-page"></span>
+                Skriv ut
+            </button>
+
+            <button type="button" class="btn btn-default btn-sm downloadWord">
+                <span class="dashicons dashicons-download"></span>
+                Last ned word-fil
+            </button>
+            <button type="button" class="btn btn-default btn-sm downloadExcel">
+                <span class="dashicons dashicons-download"></span>
+                Last ned excel-fil
+            </button>
+
+            <button type="button" class="btn btn-default btn-sm sendSMS" style="margin-left: 8em;">
+                <span class="dashicons dashicons-smartphone"></span>
+                Send sms
+            </button>
+            <button type="button" class="btn btn-default btn-sm sendEmail">
+                <span class="dashicons dashicons-email"></span>
+                Send e-post
+            </button>
+        </div>
+    </div>
+
+    <div id="reportContent"></div>
+    <div id="reportGenerating">
+        <div class="center">   
+            <img src="/wp-admin/images/spinner-2x.gif" />
+            <h3>Vennligst vent, lager rapporten</h3>
+        </div>
+    </div>
+    <div id="reportDownloadLoading" style="display:none;">
+        <div class="center">   
+            <img src="/wp-admin/images/spinner-2x.gif" />
+            <h3>Vennligst vent, lager fil..</h3>
+        </div>
+    </div>
+    <div id="reportDownload" style="display:none;">
+        {#<h3><span class="dashicons dashicons-download"></span></h3>#}
+        <h3>Nedlastingen er klar!</h3>
+        <p>
+            <a href="#" class="btn btn-success" id="downloadLink" target="_blank">
+                <span class="dashicons dashicons-download"></span>
+                Last ned filen
+            </a>
+        </p>
+    </div>
+</div>

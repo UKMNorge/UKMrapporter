@@ -1,0 +1,34 @@
+<div class="row">
+    <div class="col-12 col-sm-12">
+        {% if renderData.harGrupper() %}
+            {% for gruppe in renderData.getGrupper() %}
+                {% if gruppe.visOverskrift() %}
+                    <h2>{{gruppe.getOverskrift()}}</h2>
+                {% endif %}
+
+                {% if gruppe.harInnslag() %}
+                    {% for innslag in gruppe.getInnslag() %}
+                        {% include rapport.getId()~"/innslag.html.twig" with {innslag:innslag} %}
+                    {% endfor %}
+                {% elseif gruppe.harGrupper() %}
+                    {% for undergruppe in gruppe.getGrupper() %}
+                        {% if undergruppe.visOverskrift() %}
+                            <h3>{{ undergruppe.getOverskrift() }}</h3>
+                        {% endif %}
+                        {% if undergruppe.harInnslag() %}
+                            {% for innslag in undergruppe.getInnslag() %}
+                                {% include rapport.getId()~"/innslag.html.twig" with {innslag:innslag} %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            {% if renderData.harInnslag() %}
+                {% for innslag in renderData.getInnslag() %}
+                    {% include rapport.getId()~"/innslag.html.twig" with {innslag:innslag} %}
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+    </div> 
+</div>

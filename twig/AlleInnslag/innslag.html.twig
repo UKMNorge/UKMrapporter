@@ -1,0 +1,35 @@
+<li class="list-group-item">
+    <table class="table">
+        <tr>
+            <td>
+                <b>{{ innslag.getNavn() }}</b>
+                <small>{{ innslag.getType().getNavn()|upper }}</small>
+            </td>
+            {% if config.show('kategori_og_sjanger') %}
+                <td>{{ innslag.getKategoriOgSjanger() }}</td>
+            {% endif %}
+            {% if config.show('fylke') or config.show('kommune') %}
+                <td>
+                    {{ config.show('fylke') ? innslag.getFylke().getNavn() }}
+                    {{ config.show('fylke') and config.show('kommune') ? ' - ' }}
+                    {{ config.show('kommune') ? innslag.getKommune().getNavn() }}
+                </td>
+            {% endif %}
+        </tr>
+    </table>
+    {% if config.show('beskrivelse') %}
+        <p class="mt-0">{{ innslag.getBeskrivelse() }}</p>
+    {% endif %}
+    {% if config.show('tekniske_behov') and innslag.getType().harTekniskeBehov() %}
+        <p class="mt-0">{{ innslag.getTekniskeBehov() }}</p>
+    {% endif %}
+    {% if config.show('mediefiler') %}
+        <p>MEDIEFILER</p>
+    {% endif %}
+    {% if config.show('ukmtv') %}
+        <p>UKM-TV</p>
+    {% endif %}
+    {% if config.show('kunstverk') %}
+        <p>BILDER</p>
+    {% endif %}
+</li>

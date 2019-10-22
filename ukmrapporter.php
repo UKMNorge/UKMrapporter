@@ -1,149 +1,126 @@
-<?php  
+<?php
 /* 
-Plugin Name: UKM Rapporter
+Plugin Name: UKM Rapporter V2
 Plugin URI: http://www.ukm-norge.no
 Description: UKM Norge admin
 Author: UKM Norge / M Mandal 
-Version: 1.0 
+Version: 2.0 
 Author URI: http://www.ukm-norge.no
 */
+
+use UKMNorge\Wordpress\Modul;
+
 ini_set('display_errors', true);
-define('PLUGIN_DIR_UKMRAPPORTER', dirname( __FILE__ ).'/' );
 
-if(is_admin()) {
+require_once('UKM/Autoloader.php');
+spl_autoload_register(['UKMrapporter','autoload']);
 
-	if( get_option('pl_id') ) {
-		add_action('admin_menu', 'UKMrapport_menu');
-		add_action('UKMWPDASH_shortcuts', 'UKMMrapport_dash_shortcut', 50);
-	}
-	require_once('UKM/inc/toolkit.inc.php');
-	require_once('rapporter.ajax.php');
-	
-	add_action('wp_ajax_UKMrapport_ajax', 'UKMrapport_ajax');
-	
-	add_action('wp_ajax_UKMrapport_countPrint', 'UKMrapport_countPrint');
-}
-add_action('network_admin_menu', 'UKMrapport_network_menu');
+class UKMrapporter extends Modul
+{
+    public static $action = 'snart';
+    public static $path_plugin = null;
 
+    public static function hook()
+    {
 
-function UKMrapport_network_menu() {
-	$page = add_menu_page(
-		'Rapporter',
-		'Rapporter',
-		'superadmin',
-		'UKMrapport_admin',
-		'UKMrapport_admin',
-		'dashicons-analytics',#'//ico.ukm.no/graph-menu.png',
-		2101
-	);
-	add_action( 'admin_print_styles-' . $page, 'UKMrapport_scriptsandstyles' );
-}
-function UKMrapport_countPrint(){
-	$qry = new SQLins('log_rapporter_format');
-	$qry->add('f_type', $_POST['log']);
-	$qry->add('f_rapport', $_POST['get']);
-	$qry->add('f_pl_id', get_option('pl_id'));
-	$qry->add('f_season', $_POST['season']);
-	$qry->run();
-}
+        add_action(
+            'wp_ajax_UKMrapporter_ajax',
+            ['UKMrapporter', 'ajax']
+        );
 
-## CREATE A MENU
-function UKMrapport_menu() {
-	$page = add_menu_page(
-		'Rapporter',
-		'Rapporter',
-		'ukm_rapporter',
-		'UKMrapport_admin',
-		'UKMrapport_admin',
-		'dashicons-analytics',#'//ico.ukm.no/graph-menu.png',
-		80
-	);
+        if (get_option('pl_id')) {
+            add_action(
+                'admin_menu',
+                ['UKMrapporter', 'meny']
+            );
+        }
 
-	add_action(
-		'admin_print_styles-' . $page,
-		'UKMrapport_scriptsandstyles'
-	);
+        if (function_exists('is_network_admin') && is_network_admin()) {
+            add_action(
+                'network_admin_menu',
+                ['UKMrapporter', 'nettverkMeny']
+            );
+        }
+    }
 
-	if(isset($_GET['stat'])||isset($_GET['fylkestimeplan'])||isset($_GET['festival'])) {
-		add_action(
-			'admin_print_styles-' . $page,
-			'UKMrapport_statistikk_scripts_and_styles'
-		);
-	}
-}
-function UKMMrapport_dash_shortcut( $shortcuts ) {	
-	$shortcut = new stdClass();
-	$shortcut->url = 'admin.php?page=UKMrapport_admin';
-	$shortcut->title = 'Rapporter';
-	$shortcut->icon = '//ico.ukm.no/graph-menu.png';
-	$shortcuts[] = $shortcut;
-	
-	return $shortcuts;
-}
+    public static function meny()
+    {
+        $page = add_menu_page(
+            'Rapporter V2',
+            'Rapporter V2',
+            'ukm_rapporter',
+            'UKMrapporter',
+            ['UKMrapporter', 'renderAdmin'],
+            'dashicons-analytics',
+            81
+        );
 
+        add_action(
+            'admin_print_styles-' . $page,
+            ['UKMrapporter', 'scripts_and_styles']
+        );
+    }
 
-function UKMrapport_scriptsandstyles() {
-	wp_enqueue_script('WPbootstrap3_js');
-	wp_enqueue_style('WPbootstrap3_css');
+    public static function nettverkMeny()
+    {
+        $page = add_menu_page(
+            'Rapporter',
+            'Rapporter V2',
+            'superadmin',
+            'UKMrapporter',
+            ['UKMrapporter', 'renderAdmin'],
+            'dashicons-analytics'
+        );
+        add_action(
+            'admin_print_styles-' . $page,
+            ['UKMrapporter', 'scripts_and_styles']
+        );
+    }
 
-	wp_enqueue_style( 'jquery-ui-style', WP_PLUGIN_URL .'/UKMNorge/js/css/jquery-ui-1.7.3.custom.css');
-	wp_enqueue_style( 'UKMrapporter_style', WP_PLUGIN_URL .'/UKMrapporter/rapporter.style.css');
+    public static function scripts_and_styles()
+    {
+        wp_enqueue_script('WPbootstrap3_js');
+        wp_enqueue_style('WPbootstrap3_css');
+        wp_enqueue_script('TwigJS');
 
-	wp_enqueue_script('GOOGLEchart', 'https://www.google.com/jsapi');
+        wp_enqueue_style('UKMrapporter_css', self::getPluginUrl() . 'ukmrapporter.css');
+        wp_enqueue_script('UKMrapporter_js', self::getPluginUrl() . 'ukmrapporter.js');
 
-	wp_enqueue_script('jquery');
-	wp_enqueue_script('jqueryGoogleUI', '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js');
+        wp_enqueue_style('jquery-ui-style', self::getPluginUrl() . 'UKMNorge/js/css/jquery-ui-1.7.3.custom.css');
+        wp_enqueue_script('GOOGLEchart', 'https://www.google.com/jsapi');
 
-	wp_enqueue_script('UKMprintarea', WP_PLUGIN_URL . '/UKMrapporter/printarea.script.js' );
-	wp_enqueue_script('UKMrapport_script', WP_PLUGIN_URL . '/UKMrapporter/rapport.script.js' );
-	
-}
+        wp_enqueue_script('jquery');
+        wp_enqueue_script('jqueryGoogleUI', '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js');
+    }
 
-## SHOW STATS OF PLACES
-function UKMrapport_admin() {
-	define('PLUGIN_DIR', dirname( __FILE__ ).'/' );
+    public static function autoload($class_name)
+    {
+        if (strpos($class_name, 'UKMNorge\Rapporter\\') === 0) {
+            if( strpos( $class_name, 'UKMNorge\Rapporter\Template\\') === 0 ) {
+                $path = static::getPath().'class/';
+            } else {
+                $path = static::getPath().'rapporter/';
+            }
+            $file = $path . str_replace(
+                ['\\', 'UKMNorge/Rapporter/'],
+                ['/', ''],
+                $class_name
+            ) . '.php';
 
-	$TWIG = array();
-	if(isset($_GET['stat'])) {
-		$VIEW = $_GET['stat'];
-		require_once('statistikk/controller.php');
+            if (file_exists($file)) {
+                require_once( $file );
+            }
+        }
+    }
 
-		echo TWIG( $VIEW.'.twig.html', $TWIG, dirname(__FILE__), true);
-		echo HANDLEBARS( dirname(__FILE__) );
-	} elseif( isset( $_GET['festival'] )) {
-		$VIEW = $_GET['festival'];
-		require_once('controller/festival/'. $VIEW .'.controller.php');
-		echo TWIG('festival/'. $VIEW .'.html.twig', $TWIG, dirname(__FILE__), true);		
-	} elseif( isset( $_GET['fylkestimeplan'] )) {
-		$VIEW = 'fylkestimeplan';
-		require_once('fylkestimeplan/controller.php');
-		echo TWIG( 'fylkestimeplan/generate.twig.html', $TWIG, dirname(__FILE__), true);
-	} elseif(isset($_GET['rapport'])&&$_GET['rapport']!=='undefined'&&isset($_GET['kat'])) {
-		require_once('class.rapport.php');
-		require_once('rapport/'.$_GET['kat'].'/'.$_GET['rapport'].'.report.php');
-		require_once('gui.rapport.php');
-	} elseif( isset( $_GET['network'] ) ) {
-		$VIEW = $_GET['network'];
-		require_once('controller/network/'. $_GET['network'] .'.controller.php');
-		echo TWIG( 'network/'. $VIEW . '.html.twig', $TWIG, dirname( __FILE__ ), true );
-	} elseif( is_network_admin() ) {
-		require_once('controller/dashboard_network.controller.php');
-		echo TWIG('dashboard.html.twig', $TWIG, dirname(__FILE__), true);
-	} else {
-		require_once('clean_order_concerts.inc.php');
-		require_once('controller/dashboard.controller.php');
-		echo TWIG('dashboard.html.twig', $TWIG, dirname(__FILE__), true);
-	}
+    public static function getAktivRapport($rapport=false) {
+        if( !$rapport ) {
+            $rapport = $_GET['rapport'];
+        }
+        $class = 'UKMNorge\Rapporter\\' . basename($rapport);
+        return new $class();
+    }
 }
 
-function UKMrapport_statistikk_scripts_and_styles(){
-	wp_enqueue_script('handlebars_js');
-	wp_enqueue_script('WPbootstrap3_js');
-	wp_enqueue_style('WPbootstrap3_css');
-	wp_enqueue_style('UKMresources_tabs');
-
-	wp_enqueue_script('UKMrapport_statistikk_script', WP_PLUGIN_URL . '/UKMrapporter/statistikk.rapporter.js' );
-	wp_enqueue_style('UKMrapport_statistikk_style', WP_PLUGIN_URL . '/UKMrapporter/statistikk.rapporter.css' );
-
-}
-?>
+UKMrapporter::init(__DIR__);
+UKMrapporter::hook();

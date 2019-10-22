@@ -1,0 +1,31 @@
+<div class="toggleContainer">
+    <ol class="list-group">
+        <li class="list-group-item list-group-title">
+            <h4 class="pull-left">{{ title }}</h4>
+            <div class="btn-group pull-right radioButtons" data-name="{{ id }}" id="radioButton_{{id}}">
+                <button type="button" class="btn btn-default {{ start is defined and start == 'yes' ? 'selected' }}" value="yes">
+                    &nbsp; Ja &nbsp;</button>
+                <button type="button" class="btn btn-default {{ (start is defined and start == 'no') or start is not defined ? 'selected' }}" value="no">
+                    &nbsp; Nei &nbsp;</button>
+            </div>
+            <div class="clearfix"></div>
+        </li>
+        <div class="yes" {{ start is defined and start == 'no' ? 'style="display:none;"'}}>
+                {% block yes %}{% endblock %}</div>
+        <div class="no" {{ (start is defined and start == 'yes') or start is not defined ? 'style="display:none;"'}}>{% block no %}{% endblock %}</div>
+    </ol>
+</div>
+
+<script>
+    $(document).on('change', '#radioButtonValue_{{ id }}', (e) => {
+        var question = $('#radioButton_{{id}}').parents('.toggleContainer');
+
+        if ($(e.target).val() == 'yes') {
+            question.find('.yes').slideDown();
+            question.find('.no').slideUp();
+        } else {
+            question.find('.no').slideDown();
+            question.find('.yes').slideUp();
+        }
+    });
+</script>
