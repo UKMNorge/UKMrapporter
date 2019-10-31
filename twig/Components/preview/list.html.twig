@@ -18,15 +18,15 @@
 </div>
 
 <script>
-    $(document).on('click', '#previewList_{{ id }} .option', (e) => {
+    $(document).on('click', '#previewList_{{ id }} .option', function(e) {
         $(e.target).find('input').click();
     });
 
-    $(document).on('click', '#previewList_{{ id }} .option label', (e) => {
+    $(document).on('click', '#previewList_{{ id }} .option label', function(e) {
         $(e.target).parents('li.option').find('input').click();
     });
 
-    $(document).on('change', '#previewList_{{ id }} input', (e) => {
+    $(document).on('change', '#previewList_{{ id }} input', function(e) {
         $('#previewList_{{ id }}').find('.preview .option').hide();
         $('#previewList_{{ id }}').find('#preview_' + $(e.target).val()).fadeIn();
     });
