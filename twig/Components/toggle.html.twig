@@ -17,7 +17,7 @@
 </div>
 
 <script>
-    $(document).on('change', '#radioButtonValue_{{ id }}', (e) => {
+    $(document).on('change', '#radioButtonValue_{{ id }}', function(e) {
         var question = $('#radioButton_{{id}}').parents('.toggleContainer');
 
         if ($(e.target).val() == 'yes') {
