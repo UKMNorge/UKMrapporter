@@ -564,5 +564,5 @@ $(document).ready(() => {
     UKMrapporter.init();
 
     UKMrapporter.once('templates.loaded', loadReport);
-    UKMrapporter.once('report.loaded', UKMrapporter.downloadExcel);
+    //UKMrapporter.once('report.loaded', UKMrapporter.downloadExcel);
 });
