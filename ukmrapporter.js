@@ -563,6 +563,6 @@ function loadReport() {
 $(document).ready(() => {
     UKMrapporter.init();
 
-    UKMrapporter.once('templates.loaded', loadReport);
+    //UKMrapporter.once('templates.loaded', loadReport);
     //UKMrapporter.once('report.loaded', UKMrapporter.downloadExcel);
 });
