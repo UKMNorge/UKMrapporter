@@ -1,0 +1,35 @@
+{% if innslag.getTitler().getAntall() == 0 %}
+    <p class="text-danger {{ config.get('titler_visning') == 'tabell' ? 'rapport-padding-fix' }}">
+        OBS: "{{ innslag.getNavn() }}" har ingen titler påmeldt dette arrangementet
+    </p>
+{% elseif config.get('titler_visning') == 'kompakt' %}
+    {% for tittel in innslag.getTitler().getAll() %}
+        {{tittel.getTittel|capitalize()}}{% if config.show('tittel_varighet') and innslag.getType().harTid() %}
+        ({{tittel.getVarighet()}}){% endif %}{% if config.show('tittel_detaljer') and tittel.getParentes() is not empty %}
+        - <i>{{tittel.getParentes()}}</i>{% endif %}{{ not loop.last ? ', '}}
+    {% endfor %}
+{% else %}
+    <table class="table table-borderless table-condensed" style="max-width: 45em;">
+        {% for tittel in innslag.getTitler().getAll() %}
+            <tr>
+                <td width="*%">
+                    {{tittel.getTittel()|capitalize}}
+                </td>
+                {% if config.show('tittel_detaljer') %}
+                    <td width="30%">
+                        {{ tittel.getParentes() }}
+                    </td>
+                {% endif %}
+                {% if config.show('tittel_varighet') %}
+                    <td width="30%">
+                        {% if innslag.getType().harTid() %}
+                            {{ tittel.getVarighet().getHumanShort() }}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}

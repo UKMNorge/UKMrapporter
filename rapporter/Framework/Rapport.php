@@ -93,6 +93,7 @@ abstract class Rapport
      * @return Array $config
      */
     public function setConfigFromString( $string ) {
+        $configData = [];
         parse_str( $string, $configData );
 
         $this->config = new Config();

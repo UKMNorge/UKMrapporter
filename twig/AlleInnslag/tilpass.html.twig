@@ -14,14 +14,13 @@
             {% include "checkbox.html.twig" with {id: 'tekniske_behov', title: 'Tekniske behov'} %}
             {% include "checkbox.html.twig" with {id: 'mediefiler', title: 'Mediefiler'} %}
             {% include "checkbox.html.twig" with {id: 'ukmtv', title: 'Filmer fra UKM-TV', label: 'Kun tilgjengelig på skjerm'} %}
-            {% include "checkbox.html.twig" with {id: 'kunstverk', title: 'Bilde av kunstverk'} %}
         </ol>
     </div>
 
     <div class="col-12 col-sm-6 col-md-4">
         {% embed "toggle.html.twig" with {id: 'vis_deltakere', title: 'Vis deltakere?', start: 'yes' } %}
             {% block yes %}
-                {% include "checkbox.html.twig" with {id: 'deltakere_kategori_og_sjanger', title: 'Alder'} %}
+                {% include "checkbox.html.twig" with {id: 'deltakere_alder', title: 'Alder'} %}
                 {% include "checkbox.html.twig" with {id: 'deltakere_mobil', title: 'Mobilnummer'} %}
                 {% include "checkbox.html.twig" with {id: 'deltakere_rolle', title: 'Rolle / instrument / funksjon'} %}
                 {% include "options.html.twig" with {id: 'deltakere_visning', title: 'Velg visning', start: 'kompakt', options: [{id: 'kompakt', title: 'Kompakt'},{id: 'tabell', title: 'Tabell'}]} %}
@@ -34,7 +33,7 @@
             {% block yes %}
                 {% include "checkbox.html.twig" with {id: 'tittel_varighet', title: 'Varighet'} %}
                 {% include "checkbox.html.twig" with {id: 'tittel_detaljer', title: 'Detaljer'} %}
-                {% include "options.html.twig" with {id: 'tittel_visning', title: 'Velg visning', start: 'kompakt', options: [{id: 'kompakt', title: 'Kompakt'},{id: 'tabell', title: 'Tabell'}]} %}
+                {% include "options.html.twig" with {id: 'titler_visning', title: 'Velg visning', start: 'kompakt', options: [{id: 'kompakt', title: 'Kompakt'},{id: 'tabell', title: 'Tabell'}]} %}
             {% endblock %}
         {% endembed %}
     </div>
@@ -43,7 +42,7 @@
     <div class="col-12 col-sm-6 col-md-4">
         {% embed "toggle.html.twig" with {id: 'vis_kontaktperson', title: 'Vis kontaktperson?', start: 'no' } %}
             {% block yes %}
-                {% include "checkbox.html.twig" with {id: 'kontakt_kategori_og_sjanger', title: 'Alder'} %}
+                {% include "checkbox.html.twig" with {id: 'kontakt_alder', title: 'Alder'} %}
                 {% include "checkbox.html.twig" with {id: 'kontakt_mobil', title: 'Mobilnummer'} %}
                 {% include "checkbox.html.twig" with {id: 'kontakt_epost', title: 'E-post'} %}
             {% endblock %}

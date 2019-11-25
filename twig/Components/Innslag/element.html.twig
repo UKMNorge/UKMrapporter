@@ -1,0 +1,68 @@
+{% set maxCol = 1 + (config.show('kategori_og_sjanger') ? 1 : 0) + (config.show('fylke') or config.show('kommune') ? 1 : 0) + (config.show('varighet') ? 1 : 0) %}
+<li class="list-group-item" style="page-break-inside: avoid;">
+	<table class="table table-borderless table-condensed">
+		<tr>
+			<td width="*%">
+				<h4 class="mt-0">{{ innslag.getNavn() }}</h4>
+			</td>
+			{% if config.show('kategori_og_sjanger') %}
+				<td width="30%">{{ innslag.getType().getNavn() }}{{ not innslag.getSjanger() is empty ? ' - '~innslag.getSjanger() }}</td>
+			{% endif %}
+			{% if config.show('fylke') or config.show('kommune') %}
+				<td width="30%">
+					{{ config.show('fylke') ? innslag.getFylke().getNavn() }}
+					{{ config.show('fylke') and config.show('kommune') ? ' - ' }}
+					{{ config.show('kommune') ? innslag.getKommune().getNavn() }}
+				</td>
+			{% endif %}
+			{% if config.show('varighet') %}
+				<td width="70" style="text-align:right;">
+					{% if innslag.getType().harTid() %}
+						{{ innslag.getVarighet().getHumanShort() }}
+					{% else %}
+						&nbsp;
+					{% endif %}
+				</td>
+			{% endif %}
+		</tr>
+
+		{% block beskrivelse %}
+			{% if config.show('beskrivelse') and innslag.getType().harBeskrivelse() %}
+				<tr>
+					<td colspan="{{maxCol}}">{{ innslag.getBeskrivelse() }}
+						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+					</td>
+				</tr>
+			{% endif %}
+		{% endblock %}
+
+		{% block titler %}
+			{% if config.show('titler') and innslag.getType().harTitler() %}
+                <tr>
+                    <td colspan="{{maxCol}}" class="internalHeader">TITLER</td>
+                </tr>
+				<tr>
+					<td colspan="{{maxCol}}" {{ config.get('titler_visning') == 'tabell' ? 'style="padding-left:0;padding-right:0;"' }}>
+						{% include "Components/Innslag/Titler/liste.html.twig" %}
+					</td>
+				</tr>
+			{% endif %}
+		{% endblock %}
+
+		{% block personer %}
+			{% if config.show('deltakere') %}
+                <tr>
+                    <td colspan="{{maxCol}}" class="internalHeader">PERSONER</td>
+                </tr>
+				<tr>
+					<td colspan="{{maxCol}}" {{ config.get('deltakere_visning') == 'tabell' ? 'style="padding-left:0;padding-right:0;"' }}>
+						{% include "Components/Innslag/Personer/liste.html.twig" %}
+					</td>
+				</tr>
+			{% endif %}
+		{% endblock %}
+
+		{% block data %}{% endblock %}
+
+	</table>
+</li>
