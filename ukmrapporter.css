@@ -103,13 +103,14 @@ label {
 }
 
 .dashicons.dashicons-inline {
-    margin-top: .05em;
+    padding-top: .05em;
     margin-right: -0.1em;
     font-size: 1.2em;
 }
 
 .dashicons-inline.dashicons-email {
-    margin-top: .2em;
+    padding-top: .05em;
+    font-size: 1.3em;
 }
 
 a>.dashicons.dashicons-inline,
