@@ -536,10 +536,10 @@ var UKMrapporter = function($) {
                     styles: styles,
                 })
             );
-            print_area.document.close();
             print_area.focus();
             setTimeout(() => {
                     print_area.print();
+                    print_area.document.close();
                 },
                 1200
             );
