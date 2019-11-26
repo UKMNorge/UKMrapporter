@@ -1,7 +1,7 @@
 var UKMrapporter = function($) {
     var templateCollection = new Map();
     var emitter = UKMresources.emitter('UKMrapporter');
-    //emitter.enableDebug();
+    emitter.enableDebug();
 
     var preventDefault = function(e) {
         if (e !== undefined) {
@@ -367,7 +367,8 @@ var UKMrapporter = function($) {
                 gui: '#reportDownload',
                 link: '#downloadLink'
             },
-            actions: '#reportActions'
+            actions: '#reportActions',
+            email: '#reportEmail'
         },
         show: (format = 'html') => {
             loader.hide();
@@ -381,6 +382,7 @@ var UKMrapporter = function($) {
         },
         hide: () => {
             $(generator.selector.container).hide();
+            $(generator.selector.email).hide();
             generator.loader.hide();
         },
         bind: () => {
@@ -402,6 +404,7 @@ var UKMrapporter = function($) {
                 $(generator.selector.loading.title).hide();
                 $(generator.selector.loading.download).hide();
                 $(generator.selector.download.gui).hide();
+                $(generator.selector.email).hide();
             },
             show: (format) => {
                 switch (format) {
@@ -459,7 +462,6 @@ var UKMrapporter = function($) {
             $(generator.selector.download.link).attr('href', response.link);
             $(generator.selector.download.gui).slideDown();
         }
-
     }
 
     loader.bind();
@@ -547,9 +549,28 @@ var UKMrapporter = function($) {
         downloadExcel: () => {
             generator.downloadExcel();
         },
+        showEmail: () => {
+            var emails = [];
+            $(generator.selector.content).find('a[href^="mailto:"]').each(function() {
+                var email = $(this).attr('href').replace('mailto:', '');
+                if (email && !emails.includes(email)) {
+                    emails.push(email);
+                }
+            });
+            $(generator.selector.content).hide();
+            $(generator.selector.email).html(
+                twigJS_email.render({ emails: emails })
+            ).slideDown();
+        },
+        hideEmail: () => {
+            $(generator.selector.email).hide();
+            $(generator.selector.content).slideDown();
+        },
         bind: () => {
             $(document).on('click', '.printReport', self.print);
             $(document).on('click', '.downloadExcel', self.downloadExcel);
+            $(document).on('click', '.sendEmail', self.showEmail);
+            $(document).on('click', '.hideEmail', self.hideEmail);
         }
     }
     return self;

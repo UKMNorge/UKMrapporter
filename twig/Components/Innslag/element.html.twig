@@ -77,7 +77,7 @@
                 <tr>
                     <td>
                         {% if config.show('deltakere_mobil') or (config.show('kontaktperson') and config.show('kontakt_mobil') ) %}
-                            {% include "Components/mobil.html.twig" with {mobil: innslag.getPersoner().getSingle().getMobil()} %}
+                            {% include "Components/mobil.html.twig" with {mobil: innslag.getPersoner().getSingle().getMobil(), navn: innslag.getPersoner().getSingle().getNavn()} %}
                         {% endif %}
                         {% if config.show('kontaktperson') and config.show('kontakt_epost') %}
                             - {% include "Components/epost.html.twig" with {epost: innslag.getPersoner().getSingle().getEpost() } %}

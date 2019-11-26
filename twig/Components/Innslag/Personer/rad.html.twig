@@ -7,7 +7,7 @@
     {% if config.show('deltakere_mobil') or ( config.show('kontaktperson') and config.show('kontakt_mobil') ) %}
         <td width="90">
             {% if config.show(selector~'_mobil') %}
-                {% include "Components/mobil.html.twig" with {mobil: person.getMobil()} %}
+                {% include "Components/mobil.html.twig" with {mobil: person.getMobil(), navn:person.getNavn()} %}
                 {% if erKontakt and config.show('kontakt_epost') %}
                     {% include "Components/epost.html.twig" with {epost: person.getEpost() } %}
                 {% endif %}
