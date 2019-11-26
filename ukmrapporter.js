@@ -1,7 +1,7 @@
 var UKMrapporter = function($) {
     var templateCollection = new Map();
     var emitter = UKMresources.emitter('UKMrapporter');
-    emitter.enableDebug();
+    //emitter.enableDebug();
 
     var preventDefault = function(e) {
         if (e !== undefined) {
