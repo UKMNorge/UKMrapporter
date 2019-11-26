@@ -15,23 +15,23 @@ var UKMrapporter = function($) {
      */
     var loader = {
         selector: '#reportLoader',
-        getId: () => {
+        getId: function() {
             return $(loader.selector).attr('data-id');
         },
-        visible: () => {
+        visible: function() {
             $(loader.selector).is(':visible');
         },
-        show: (e) => {
+        show: function(e) {
             preventDefault(e);
             $(loader.selector).show();
             emitter.emit('loader.show');
         },
-        hide: (e) => {
+        hide: function(e) {
             preventDefault(e);
             $(loader.selector).hide();
             emitter.emit('loader.hide');
         },
-        bind: () => {
+        bind: function() {
             $(document).on('click', '.hideReportLoader', loader.hide);
             $(document).on('click', '.showReportLoader', loader.show);
 
@@ -39,11 +39,11 @@ var UKMrapporter = function($) {
             emitter.on('templatePicker.show', loader.header.showTemplate);
         },
         header: {
-            showCustomize: () => {
+            showCustomize: function() {
                 $(loader.selector + ' #templateHeader').hide();
                 $(loader.selector + ' #customizeHeader').show();
             },
-            showTemplate: () => {
+            showTemplate: function() {
                 $(loader.selector + ' #customizeHeader').hide();
                 $(loader.selector + ' #templateHeader').show();
             }
@@ -64,11 +64,11 @@ var UKMrapporter = function($) {
                 loader.show();
             }
         },
-        hide: (e) => {
+        hide: function(e) {
             preventDefault(e);
             $(customizer.selector).hide();
         },
-        bind: () => {
+        bind: function() {
             $(document).on('click', '.hideCustomizer', customizer.hide);
             $(document).on('click', '.showCustomizer', customizer.show);
             $(document).on('click', '.saveAsTemplate', customizer.saveAsTemplate);
@@ -76,16 +76,16 @@ var UKMrapporter = function($) {
             emitter.on('templatePicker.hide', customizer.show);
             emitter.on('templatePicker.show', customizer.hide);
         },
-        saveAsTemplate: () => {
+        saveAsTemplate: function() {
             templateSaver.setConfig(
                 customizer.getConfig()
             );
         },
-        reset: () => {
+        reset: function() {
             $(customizer.selector + ' input[type="checkbox"]').prop("checked", false);
             $(customizer.selector + ' input[type="radio"]').prop("checked", false);
         },
-        fill: (check) => {
+        fill: function(check) {
             $.each(check, function(key, value) {
                 var input = $(customizer.selector + ' input[name="' + key + '"]');
                 switch (input.attr('type')) {
@@ -104,7 +104,7 @@ var UKMrapporter = function($) {
                 }
             });
         },
-        getConfig: () => {
+        getConfig: function() {
             return $(customizer.selector + ' form').serialize();
         }
     }
@@ -115,7 +115,7 @@ var UKMrapporter = function($) {
      */
     var templates = {
         array: [],
-        load: (rapport_id) => {
+        load: function(rapport_id) {
             if (rapport_id == undefined) {
                 rapport_id = loader.getId();
                 if (rapport_id == undefined) {
@@ -126,7 +126,7 @@ var UKMrapporter = function($) {
                 action: 'UKMrapporter_ajax',
                 controller: 'listTemplates',
                 rapport: rapport_id
-            }, (response) => {
+            }, function(response) {
                 if (response.templates.length > 0) {
                     for (var i = 0; i < response.templates.length; i++) {
                         templates.add(response.templates[i]);
@@ -134,14 +134,14 @@ var UKMrapporter = function($) {
                 }
                 // Lag lokal kopi for iterering
                 templates.array = [];
-                templateCollection.forEach((value, key) => {
+                templateCollection.forEach(function(value, key) {
                     templates.array.push(value);
                 });
 
                 emitter.emit('templates.loaded');
             });
         },
-        save: (rapport, template, name, description, config) => {
+        save: function(rapport, template, name, description, config) {
             $.post(ajaxurl, {
                 action: 'UKMrapporter_ajax',
                 controller: 'saveTemplate',
@@ -150,18 +150,18 @@ var UKMrapporter = function($) {
                 name: name,
                 description: description,
                 config: config,
-            }, (response) => {
+            }, function(response) {
                 templates.load();
                 emitter.emit('template.saved');
             });
         },
-        add: (template) => {
+        add: function(template) {
             templateCollection.set('template_' + template.id, template);
         },
-        get: (template_id) => {
+        get: function(template_id) {
             return templateCollection.get(template_id);
         },
-        getAll: () => {
+        getAll: function() {
             return templates.array;
         }
     };
@@ -173,7 +173,7 @@ var UKMrapporter = function($) {
     var templateSaver = {
         selector: '#templateSaver',
         // SKJEMAET
-        bind: () => {
+        bind: function() {
             $(document).on(
                 'change',
                 templateSaver.selector + ' ' + templateSelector.selector,
@@ -190,31 +190,31 @@ var UKMrapporter = function($) {
             emitter.on('templatePicker.show', templateSaver.hide);
 
         },
-        selectedTemplate: (e) => {
+        selectedTemplate: function(e) {
             if ($(e.target).val() == 'new') {
                 templateSaver.name.show();
             } else {
                 templateSaver.name.hide();
             }
         },
-        hide: () => {
+        hide: function() {
             $(templateSaver.selector).hide();
         },
-        hideForm: () => {
+        hideForm: function() {
             $(templateSaver.selector + ' form').slideUp(300);
         },
-        showForm: () => {
+        showForm: function() {
             $(templateSaver.selector + ' form').show();
         },
-        show: () => {
+        show: function() {
             customizer.hide();
             templateSaver.showForm();
             $(templateSaver.selector).fadeIn(200);
         },
-        reset: () => {
+        reset: function() {
             $(templateSaver.getFormSelector()).trigger('reset');
         },
-        save: () => {
+        save: function() {
             templates.save(
                 loader.getId(),
                 templateSaver.getTemplateId(),
@@ -223,45 +223,45 @@ var UKMrapporter = function($) {
                 templateSaver.getConfig()
             );
         },
-        getFormSelector: () => {
+        getFormSelector: function() {
             return templateSaver.selector + ' form';
         },
-        getTemplateId: () => {
+        getTemplateId: function() {
             return $(templateSaver.getFormSelector() + ' .templateSelector select').val();
         },
-        getName: () => {
+        getName: function() {
             return $(templateSaver.getFormSelector() + ' input[name="navn"]').val();
         },
-        getDescription: () => {
+        getDescription: function() {
             return $(templateSaver.getFormSelector() + ' textarea[name="beskrivelse"]').val();
         },
-        getConfig: () => {
+        getConfig: function() {
             return $(templateSaver.getFormSelector() + ' input[name="config"]').val();
         },
         // NAVNE-FELTET
         name: {
             selector: '#templateName',
-            show: () => {
+            show: function() {
                 $(templateSaver.selector + ' ' + templateSaver.name.selector).slideDown();
             },
-            hide: () => {
+            hide: function() {
                 $(templateSaver.selector + ' ' + templateSaver.name.selector).slideUp();
             },
         },
         // STATUS-BOKSEN
         status: {
             selector: '.status',
-            show: () => {
+            show: function() {
                 console.log('SHOW ' + templateSaver.selector + ' ' + templateSaver.status.selector);
                 templateSaver.hideForm();
                 $(templateSaver.selector + ' ' + templateSaver.status.selector).slideDown();
                 //templateSaver.status.setTimer();
             },
-            hide: () => {
+            hide: function() {
                 $(templateSaver.selector + ' ' + templateSaver.status.selector).slideUp();
             },
-            setTimer: () => {
-                setTimeout(() => {
+            setTimer: function() {
+                setTimeout(function() {
                         $(templateSaver.selector).fadeOut(200);
                         templateSaver.status.hide();
                         templateSaver
@@ -270,7 +270,7 @@ var UKMrapporter = function($) {
                 );
             }
         },
-        setConfig: (config) => {
+        setConfig: function(config) {
             $(templateSaver.getFormSelector() + ' input[name="config"]').val(config);
             templateSaver.show();
         }
@@ -282,45 +282,45 @@ var UKMrapporter = function($) {
      */
     var templatePicker = {
         selector: '#templatePicker',
-        visible: () => {
+        visible: function() {
             return $(templatePicker.selector).is(':visible')
         },
-        show: (e) => {
+        show: function(e) {
             preventDefault(e);
             loader.show();
             customizer.hide();
             $(templatePicker.selector).slideDown();
             emitter.emit('templatePicker.show');
         },
-        hide: (e) => {
+        hide: function(e) {
             preventDefault(e);
             $(templatePicker.selector).hide();
             emitter.emit('templatePicker.hide');
         },
-        loadFromDB: () => {
+        loadFromDB: function() {
             templates.load(loader.getId());
         },
-        bind: () => {
+        bind: function() {
             $(document).on('click', '.hideTemplatePicker', templatePicker.hide);
             $(document).on('click', '.showTemplatePicker', templatePicker.show);
             $(document).on('click', templatePicker.selector + ' li.template', templatePicker.loadFromClick);
             emitter.on('templates.loaded', templatePicker.render);
         },
-        init: () => {
+        init: function() {
             templatePicker.loadFromDB();
         },
 
-        render: () => {
+        render: function() {
             $(templatePicker.selector).html(
                 twigJS_templatePicker.render({
                     templates: templates.getAll()
                 })
             );
         },
-        loadFromClick: (e) => {
+        loadFromClick: function(e) {
             return templatePicker.load($(e.target).attr('data-id'));
         },
-        load: (id) => {
+        load: function(id) {
             customizer.reset();
             customizer.fill(
                 templateCollection.get(
@@ -338,14 +338,14 @@ var UKMrapporter = function($) {
      */
     var templateSelector = {
         selector: '.templateSelector',
-        render: () => {
+        render: function() {
             $(templateSelector.selector).html(
                 twigJS_templateSelector.render({
                     templates: templates.getAll()
                 })
             );
         },
-        bind: () => {
+        bind: function() {
             emitter.on('templates.loaded', templateSelector.render);
         },
     }
@@ -370,35 +370,35 @@ var UKMrapporter = function($) {
             actions: '#reportActions',
             email: '#reportEmail'
         },
-        show: (format = 'html') => {
+        show: function(format = 'html') {
             loader.hide();
             $(generator.selector.container).slideDown();
             emitter.emit('generator.show');
             generator.loader.fire(format);
         },
         /* Eksisterer for at js ikke skal få panikk ved klikk på .generateReport */
-        loadAndShowHtml: () => {
+        loadAndShowHtml: function() {
             generator.show('html');
         },
-        hide: () => {
+        hide: function() {
             $(generator.selector.container).hide();
             $(generator.selector.email).hide();
             generator.loader.hide();
         },
-        bind: () => {
+        bind: function() {
             emitter.on('loader.show', generator.hide);
             $(document).on('click', '.generateReport', generator.loadAndShowHtml);
         },
         actions: {
-            hide: () => {
+            hide: function() {
                 $(generator.selector.actions).hide();
             },
-            show: () => {
+            show: function() {
                 $(generator.selector.actions).fadeIn(300);
             }
         },
         loader: {
-            hide: () => {
+            hide: function() {
                 $(generator.selector.title).show();
                 $(generator.selector.loading.html).hide();
                 $(generator.selector.loading.title).hide();
@@ -406,7 +406,7 @@ var UKMrapporter = function($) {
                 $(generator.selector.download.gui).hide();
                 $(generator.selector.email).hide();
             },
-            show: (format) => {
+            show: function(format) {
                 switch (format) {
                     case 'html':
                         $(generator.selector.title).hide();
@@ -418,7 +418,7 @@ var UKMrapporter = function($) {
                         break;
                 }
             },
-            fire: (format) => {
+            fire: function(format) {
                 if (format == 'html') {
                     $(generator.selector.content).html('');
                 }
@@ -432,7 +432,7 @@ var UKMrapporter = function($) {
                         rapport: loader.getId(),
                         config: customizer.getConfig()
                     },
-                    (response) => {
+                    function(response) {
                         generator.loader.hide();
                         generator.actions.show();
                         switch (response.POST.format) {
@@ -448,17 +448,17 @@ var UKMrapporter = function($) {
                 );
             }
         },
-        showHTML: (response) => {
+        showHTML: function(response) {
             $(generator.selector.content).html(response.html);
             $(generator.selector.content).show();
         },
-        downloadExcel: () => {
+        downloadExcel: function() {
             $(generator.selector.download.gui).slideUp();
             $(generator.selector.content).hide()
             $(generator.selector.loading.download).slideDown();
             generator.show('excel');
         },
-        showExcel: (response) => {
+        showExcel: function(response) {
             $(generator.selector.download.link).attr('href', response.link);
             $(generator.selector.download.gui).slideDown();
         }
@@ -477,20 +477,20 @@ var UKMrapporter = function($) {
         generator: generator,
         customizer: customizer,
         templatePicker: templatePicker,
-        init: () => {
+        init: function() {
             self.templatePicker.init()
             self.loader.show();
             self.customizer.show();
             self.bind();
         },
-        on: (event, callback) => {
+        on: function(event, callback) {
             emitter.on(event, callback);
         },
-        once: (event, callback) => {
+        once: function(event, callback) {
             emitter.once(event, callback);
         },
 
-        print: () => {
+        print: function() {
             var w = window.outerWidth * 0.8;
             var h = window.outerHeight * 0.8;
 
@@ -520,7 +520,7 @@ var UKMrapporter = function($) {
 
             // INCLUDE STYLESHEETS
             var styles = [];
-            $('link').each((index, element) => {
+            $('link').each(function(index, element) {
                 if ($(element).attr('id') == undefined) {
                     return;
                 }
@@ -539,17 +539,20 @@ var UKMrapporter = function($) {
                 })
             );
             print_area.focus();
-            setTimeout(() => {
+            setTimeout(function() {
                     print_area.print();
                     print_area.document.close();
                 },
                 1200
             );
         },
-        downloadExcel: () => {
+        downloadExcel: function() {
             generator.downloadExcel();
         },
-        showEmail: () => {
+        downloadWord: function() {
+            alert('Beklager, word-nedlasting er ikke støttet enda, men kommer snart. Kontakt support@ukm.no hvis det haster.');
+        },
+        showEmail: function() {
             var emails = [];
             $(generator.selector.content).find('a[href^="mailto:"]').each(function() {
                 var email = $(this).attr('href').replace('mailto:', '');
@@ -562,13 +565,14 @@ var UKMrapporter = function($) {
                 twigJS_email.render({ emails: emails })
             ).slideDown();
         },
-        hideEmail: () => {
+        hideEmail: function() {
             $(generator.selector.email).hide();
             $(generator.selector.content).slideDown();
         },
-        bind: () => {
+        bind: function() {
             $(document).on('click', '.printReport', self.print);
             $(document).on('click', '.downloadExcel', self.downloadExcel);
+            $(document).on('click', '.downloadWord', self.downloadWord);
             $(document).on('click', '.sendEmail', self.showEmail);
             $(document).on('click', '.hideEmail', self.hideEmail);
         }
@@ -581,7 +585,7 @@ function loadReport() {
     UKMrapporter.templatePicker.load(33);
 }
 
-$(document).ready(() => {
+$(document).ready(function() {
     UKMrapporter.init();
 
     //UKMrapporter.once('templates.loaded', loadReport);
