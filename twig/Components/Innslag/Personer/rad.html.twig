@@ -1,0 +1,35 @@
+{% set selector = kontaktperson is defined ? 'kontakt' : 'deltakere' %}
+{% set erKontakt = kontaktperson is defined and kontaktperson %}
+<tr>
+    <{{ erKontakt ? 'th' : 'td'}} width="*%">
+        {{person.getNavn() }}
+    </{{ erKontakt ? 'th' : 'td'}}>
+    {% if config.show('deltakere_mobil') or ( config.show('kontaktperson') and config.show('kontakt_mobil') ) %}
+        <td width="90">
+            {% if config.show(selector~'_mobil') %}
+                {% include "Components/mobil.html.twig" with {mobil: person.getMobil(), navn:person.getNavn()} %}
+                {% if erKontakt and config.show('kontakt_epost') %}
+                    {% include "Components/epost.html.twig" with {epost: person.getEpost() } %}
+                {% endif %}
+            {% else %}
+                &nbsp;
+            {% endif %}
+        </td>
+    {% endif %}
+    {% if config.show('deltakere_alder') or ( config.show('kontaktperson') and config.show('kontakt_alder') ) %}
+        <td width="60">
+            {% if config.show(selector~'_alder') %}
+                {{person.getAlder()}}
+            {% endif %}
+        </td>
+    {% endif %}
+    {% if config.show('deltakere_rolle') or config.show('kontaktperson') %}
+        <{{ erKontakt ? 'th' : 'td'}} width="{{ config.show('deltakere_alder') or config.show('deltakere_mobil') or config.show('kontakt_alder') or config.show('kontakt_mobil') ? 30 : 60}}%">
+            {% if erKontakt %}
+                Kontaktperson
+            {% else %}
+                {{ person.getRolle() }}
+            {% endif %}
+        </{{ erKontakt ? 'th' : 'td'}}>
+    {% endif %}
+</tr>

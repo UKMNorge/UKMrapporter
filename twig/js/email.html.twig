@@ -1,0 +1,23 @@
+<h2>Send e-post til alle i rapporten</h2>
+
+<p>
+    {{ emails|length }} e-postadresser er synlig i rapporten. 
+    Klikk på en av lenkene nedenfor for å sende e-post til de.
+</p>
+
+
+<p>
+    <b>For deg som har mac:</b>
+    <br />
+    <a href="mailto:{{emails|join(',')}}">{{emails|join(',')}}</a>
+</p>
+
+<p>
+    <b>For deg som bruker windows eller outlook:</b>
+    <br />
+    <a href="mailto:{{emails|join(';')}}">{{emails|join(';')}}</a>
+</p>
+
+<p>
+    <button type="button" class="hideEmail btn btn-default btn-sm">Avbryt, vis rapporten</button>
+</p>

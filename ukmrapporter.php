@@ -15,11 +15,9 @@ ini_set('display_errors', true);
 require_once('UKM/Autoloader.php');
 spl_autoload_register(['UKMrapporter','autoload']);
 
-define('UKMRAPPORTER_START', isset($_GET['debug'] ) ? 'rapporter' : 'snart');
-
 class UKMrapporter extends Modul
 {
-    public static $action = UKMRAPPORTER_START;
+    public static $action = 'rapporter';
     public static $path_plugin = null;
 
     public static function hook()

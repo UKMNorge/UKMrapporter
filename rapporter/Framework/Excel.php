@@ -11,6 +11,7 @@ class Excel {
         $this->config = $config;
         $this->excel = new ExcelDok( $navn );
 
+        /** HEADERS */
         $this->excel->setArk('innslag', 'Innslag');
         $this->rad();
         $this->celle('A', 'Innslag');
@@ -33,7 +34,36 @@ class Excel {
             $kolonne = $this->celleHvis('deltakere_mobil', 'Mobil', $kolonne);
             $kolonne = $this->celleHvis('deltakere_alder', 'Alder', $kolonne);
             $kolonne = $this->celleHvis('deltakere_rolle', 'Rolle', $kolonne);
+            
+            $kolonne = $this->celle($kolonne, 'Kategori');
+            $kolonne = $this->celleHvis('kategori_og_sjanger', 'Sjanger', $kolonne);
+            $kolonne = $this->celleHvis('varighet', 'Varighet (sekunder)', $kolonne);
+            $kolonne = $this->celleHvis('fylke', 'Fylke', $kolonne);
+            $kolonne = $this->celleHvis('kommune', 'Kommune', $kolonne);
+            $kolonne = $this->celleHvis('beskrivelse', 'Beskrivelse', $kolonne);
+            $kolonne = $this->celleHvis('tekniske_behov', 'Tekniske behov', $kolonne);
+            
         }
+        if( $config->vis('kontaktperson') ) {
+            $this->setArk('kontakt','Kontaktpersoner');
+            $this->rad();
+            $this->celle('A','Innslag');
+            $this->celle('B', 'Fornavn');
+            $kolonne = $this->celle('C', 'Etternavn');
+            $kolonne = $this->celleHvis('kontakt_mobil', 'Mobil', $kolonne);
+            $kolonne = $this->celleHvis('kontakt_alder', 'Alder', $kolonne);
+            $kolonne = $this->celleHvis('kontakt_epost', 'E-post', $kolonne);
+            
+            $kolonne = $this->celle($kolonne, 'Kategori');
+            $kolonne = $this->celleHvis('kategori_og_sjanger', 'Sjanger', $kolonne);
+            $kolonne = $this->celleHvis('varighet', 'Varighet (sekunder)', $kolonne);
+            $kolonne = $this->celleHvis('fylke', 'Fylke', $kolonne);
+            $kolonne = $this->celleHvis('kommune', 'Kommune', $kolonne);
+            $kolonne = $this->celleHvis('beskrivelse', 'Beskrivelse', $kolonne);
+            $kolonne = $this->celleHvis('tekniske_behov', 'Tekniske behov', $kolonne);    
+        }
+
+        /** DATA */
         foreach( $alle_innslag as $innslag ) {
             if( $innslag->getType()->harTitler() ) {
                 $varighet = $innslag->getVarighet()->getSekunder();
@@ -43,12 +73,17 @@ class Excel {
             if( is_object( $innslag->getKategori() ) ) {
                 $kategori = $innslag->getKategori()->getNavn();
             } else {
-                $kategori = $innslag->getKategori();
+                $kategori = ucfirst($innslag->getKategori());
+            }
+            // Overraskende ofte er kategorien innslag-typen
+            if( empty($kategori) ) {
+                $kategori = $innslag->getType()->getNavn();
             }
             $this->setArk('innslag');
             $this->rad();
+
             $kolonne = $this->celle('A', $innslag->getNavn());
-            $kolonne = $this->celle('B', $kategori, $kolonne);
+            $kolonne = $this->celle($kolonne, $kategori);
             $kolonne = $this->celleHvis('kategori_og_sjanger', $innslag->getSjanger(), $kolonne);
             $kolonne = $this->celleHvis('varighet', $varighet, $kolonne);
             $kolonne = $this->celleHvis('fylke', $innslag->getFylke()->getNavn(), $kolonne);
@@ -67,7 +102,34 @@ class Excel {
                     $kolonne = $this->celleHvis('deltakere_mobil', $person->getMobil(), $kolonne);
                     $kolonne = $this->celleHvis('deltakere_alder', $person->getAlder(''), $kolonne);
                     $kolonne = $this->celleHvis('deltakere_rolle', $person->getRolle(), $kolonne);
+
+                    $kolonne = $this->celle($kolonne, $kategori);
+                    $kolonne = $this->celleHvis('kategori_og_sjanger', $innslag->getSjanger(), $kolonne);
+                    $kolonne = $this->celleHvis('varighet', $varighet, $kolonne);
+                    $kolonne = $this->celleHvis('fylke', $innslag->getFylke()->getNavn(), $kolonne);
+                    $kolonne = $this->celleHvis('kommune', $innslag->getKommune()->getNavn(), $kolonne);
+                    $kolonne = $this->celleHvis('beskrivelse', $innslag->getBeskrivelse(), $kolonne);
+                    $kolonne = $this->celleHvis('tekniske_behov', $innslag->getTekniskeBehov(), $kolonne);
                 }
+            }
+
+            if( $config->vis('kontaktperson') ) {
+                $this->setArk('kontakt');
+                $this->rad();
+                $this->celle('A',$innslag->getNavn());
+                $this->celle('B', $innslag->getKontaktperson()->getFornavn());
+                $kolonne = $this->celle('C', $innslag->getKontaktperson()->getEtternavn());
+                $kolonne = $this->celleHvis('kontakt_mobil', $innslag->getKontaktperson()->getMobil(), $kolonne);
+                $kolonne = $this->celleHvis('kontakt_alder', $innslag->getKontaktperson()->getAlder(), $kolonne);
+                $kolonne = $this->celleHvis('kontakt_epost', $innslag->getKontaktperson()->getEpost(), $kolonne);
+
+                $kolonne = $this->celle($kolonne, $kategori);
+                $kolonne = $this->celleHvis('kategori_og_sjanger', $innslag->getSjanger(), $kolonne);
+                $kolonne = $this->celleHvis('varighet', $varighet, $kolonne);
+                $kolonne = $this->celleHvis('fylke', $innslag->getFylke()->getNavn(), $kolonne);
+                $kolonne = $this->celleHvis('kommune', $innslag->getKommune()->getNavn(), $kolonne);
+                $kolonne = $this->celleHvis('beskrivelse', $innslag->getBeskrivelse(), $kolonne);
+                $kolonne = $this->celleHvis('tekniske_behov', $innslag->getTekniskeBehov(), $kolonne);
             }
         }
     }
