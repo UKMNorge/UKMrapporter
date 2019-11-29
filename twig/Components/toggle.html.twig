@@ -17,10 +17,10 @@
 </div>
 
 <script>
-    $(document).on('change', '#radioButtonValue_{{ id }}', function(e) {
-        var question = $('#radioButton_{{id}}').parents('.toggleContainer');
+    jQuery(document).on('change', '#radioButtonValue_{{ id }}', function(e) {
+        var question = jQuery('#radioButton_{{id}}').parents('.toggleContainer');
 
-        if ($(e.target).val() == 'yes') {
+        if (jQuery(e.target).val() == 'yes') {
             question.find('.yes').slideDown();
             question.find('.no').slideUp();
         } else {

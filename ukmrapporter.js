@@ -1,4 +1,4 @@
-var UKMrapporter = function($) {
+var UKMrapporter = function(jQuery) {
     var templateCollection = new Map();
     var emitter = UKMresources.emitter('UKMrapporter');
     //emitter.enableDebug();
@@ -16,36 +16,36 @@ var UKMrapporter = function($) {
     var loader = {
         selector: '#reportLoader',
         getId: function() {
-            return $(loader.selector).attr('data-id');
+            return jQuery(loader.selector).attr('data-id');
         },
         visible: function() {
-            $(loader.selector).is(':visible');
+            jQuery(loader.selector).is(':visible');
         },
         show: function(e) {
             preventDefault(e);
-            $(loader.selector).show();
+            jQuery(loader.selector).show();
             emitter.emit('loader.show');
         },
         hide: function(e) {
             preventDefault(e);
-            $(loader.selector).hide();
+            jQuery(loader.selector).hide();
             emitter.emit('loader.hide');
         },
         bind: function() {
-            $(document).on('click', '.hideReportLoader', loader.hide);
-            $(document).on('click', '.showReportLoader', loader.show);
+            jQuery(document).on('click', '.hideReportLoader', loader.hide);
+            jQuery(document).on('click', '.showReportLoader', loader.show);
 
             emitter.on('templatePicker.hide', loader.header.showCustomize);
             emitter.on('templatePicker.show', loader.header.showTemplate);
         },
         header: {
             showCustomize: function() {
-                $(loader.selector + ' #templateHeader').hide();
-                $(loader.selector + ' #customizeHeader').show();
+                jQuery(loader.selector + ' #templateHeader').hide();
+                jQuery(loader.selector + ' #customizeHeader').show();
             },
             showTemplate: function() {
-                $(loader.selector + ' #customizeHeader').hide();
-                $(loader.selector + ' #templateHeader').show();
+                jQuery(loader.selector + ' #customizeHeader').hide();
+                jQuery(loader.selector + ' #templateHeader').show();
             }
         }
 
@@ -59,19 +59,19 @@ var UKMrapporter = function($) {
         selector: '#reportCustomizer',
         show: function(e) {
             preventDefault(e);
-            $(customizer.selector).slideDown();
+            jQuery(customizer.selector).slideDown();
             if (!loader.visible()) {
                 loader.show();
             }
         },
         hide: function(e) {
             preventDefault(e);
-            $(customizer.selector).hide();
+            jQuery(customizer.selector).hide();
         },
         bind: function() {
-            $(document).on('click', '.hideCustomizer', customizer.hide);
-            $(document).on('click', '.showCustomizer', customizer.show);
-            $(document).on('click', '.saveAsTemplate', customizer.saveAsTemplate);
+            jQuery(document).on('click', '.hideCustomizer', customizer.hide);
+            jQuery(document).on('click', '.showCustomizer', customizer.show);
+            jQuery(document).on('click', '.saveAsTemplate', customizer.saveAsTemplate);
 
             emitter.on('templatePicker.hide', customizer.show);
             emitter.on('templatePicker.show', customizer.hide);
@@ -82,21 +82,21 @@ var UKMrapporter = function($) {
             );
         },
         reset: function() {
-            $(customizer.selector + ' input[type="checkbox"]').prop("checked", false);
-            $(customizer.selector + ' input[type="radio"]').prop("checked", false);
+            jQuery(customizer.selector + ' input[type="checkbox"]').prop("checked", false);
+            jQuery(customizer.selector + ' input[type="radio"]').prop("checked", false);
         },
         fill: function(check) {
-            $.each(check, function(key, value) {
-                var input = $(customizer.selector + ' input[name="' + key + '"]');
+            jQuery.each(check, function(key, value) {
+                var input = jQuery(customizer.selector + ' input[name="' + key + '"]');
                 switch (input.attr('type')) {
                     case 'hidden':
                         input.val(value);
                         if (input.attr('data-radiobutton')) {
-                            $(customizer.selector + ' .radioButtons button[value="' + value + '"]').click();
+                            jQuery(customizer.selector + ' .radioButtons button[value="' + value + '"]').click();
                         }
                         break;
                     case 'radio':
-                        $(customizer.selector + ' input[name="' + key + '"][value="' + value + '"]').prop('checked', true);
+                        jQuery(customizer.selector + ' input[name="' + key + '"][value="' + value + '"]').prop('checked', true);
                         break;
                     default:
                         input.prop('checked', true);
@@ -105,7 +105,7 @@ var UKMrapporter = function($) {
             });
         },
         getConfig: function() {
-            return $(customizer.selector + ' form').serialize();
+            return jQuery(customizer.selector + ' form').serialize();
         }
     }
 
@@ -122,7 +122,7 @@ var UKMrapporter = function($) {
                     return;
                 }
             }
-            $.post(ajaxurl, {
+            jQuery.post(ajaxurl, {
                 action: 'UKMrapporter_ajax',
                 controller: 'listTemplates',
                 rapport: rapport_id
@@ -142,7 +142,7 @@ var UKMrapporter = function($) {
             });
         },
         save: function(rapport, template, name, description, config) {
-            $.post(ajaxurl, {
+            jQuery.post(ajaxurl, {
                 action: 'UKMrapporter_ajax',
                 controller: 'saveTemplate',
                 rapport: rapport,
@@ -174,14 +174,14 @@ var UKMrapporter = function($) {
         selector: '#templateSaver',
         // SKJEMAET
         bind: function() {
-            $(document).on(
+            jQuery(document).on(
                 'change',
                 templateSaver.selector + ' ' + templateSelector.selector,
                 templateSaver.selectedTemplate
             );
-            $(document).on('click', '.hideTemplateSaver', templateSaver.hide);
-            $(document).on('click', '.showTemplateSaver', templateSaver.show);
-            $(document).on('click', templateSaver.selector + ' .saveTemplate', templateSaver.save);
+            jQuery(document).on('click', '.hideTemplateSaver', templateSaver.hide);
+            jQuery(document).on('click', '.showTemplateSaver', templateSaver.show);
+            jQuery(document).on('click', templateSaver.selector + ' .saveTemplate', templateSaver.save);
             emitter.on('template.saved', templateSaver.status.show);
             emitter.on('template.saved', templateSaver.reset);
             emitter.on('templatePicker.hide', templateSaver.hide);
@@ -191,28 +191,28 @@ var UKMrapporter = function($) {
 
         },
         selectedTemplate: function(e) {
-            if ($(e.target).val() == 'new') {
+            if (jQuery(e.target).val() == 'new') {
                 templateSaver.name.show();
             } else {
                 templateSaver.name.hide();
             }
         },
         hide: function() {
-            $(templateSaver.selector).hide();
+            jQuery(templateSaver.selector).hide();
         },
         hideForm: function() {
-            $(templateSaver.selector + ' form').slideUp(300);
+            jQuery(templateSaver.selector + ' form').slideUp(300);
         },
         showForm: function() {
-            $(templateSaver.selector + ' form').show();
+            jQuery(templateSaver.selector + ' form').show();
         },
         show: function() {
             customizer.hide();
             templateSaver.showForm();
-            $(templateSaver.selector).fadeIn(200);
+            jQuery(templateSaver.selector).fadeIn(200);
         },
         reset: function() {
-            $(templateSaver.getFormSelector()).trigger('reset');
+            jQuery(templateSaver.getFormSelector()).trigger('reset');
         },
         save: function() {
             templates.save(
@@ -227,25 +227,25 @@ var UKMrapporter = function($) {
             return templateSaver.selector + ' form';
         },
         getTemplateId: function() {
-            return $(templateSaver.getFormSelector() + ' .templateSelector select').val();
+            return jQuery(templateSaver.getFormSelector() + ' .templateSelector select').val();
         },
         getName: function() {
-            return $(templateSaver.getFormSelector() + ' input[name="navn"]').val();
+            return jQuery(templateSaver.getFormSelector() + ' input[name="navn"]').val();
         },
         getDescription: function() {
-            return $(templateSaver.getFormSelector() + ' textarea[name="beskrivelse"]').val();
+            return jQuery(templateSaver.getFormSelector() + ' textarea[name="beskrivelse"]').val();
         },
         getConfig: function() {
-            return $(templateSaver.getFormSelector() + ' input[name="config"]').val();
+            return jQuery(templateSaver.getFormSelector() + ' input[name="config"]').val();
         },
         // NAVNE-FELTET
         name: {
             selector: '#templateName',
             show: function() {
-                $(templateSaver.selector + ' ' + templateSaver.name.selector).slideDown();
+                jQuery(templateSaver.selector + ' ' + templateSaver.name.selector).slideDown();
             },
             hide: function() {
-                $(templateSaver.selector + ' ' + templateSaver.name.selector).slideUp();
+                jQuery(templateSaver.selector + ' ' + templateSaver.name.selector).slideUp();
             },
         },
         // STATUS-BOKSEN
@@ -254,15 +254,15 @@ var UKMrapporter = function($) {
             show: function() {
                 console.log('SHOW ' + templateSaver.selector + ' ' + templateSaver.status.selector);
                 templateSaver.hideForm();
-                $(templateSaver.selector + ' ' + templateSaver.status.selector).slideDown();
+                jQuery(templateSaver.selector + ' ' + templateSaver.status.selector).slideDown();
                 //templateSaver.status.setTimer();
             },
             hide: function() {
-                $(templateSaver.selector + ' ' + templateSaver.status.selector).slideUp();
+                jQuery(templateSaver.selector + ' ' + templateSaver.status.selector).slideUp();
             },
             setTimer: function() {
                 setTimeout(function() {
-                        $(templateSaver.selector).fadeOut(200);
+                        jQuery(templateSaver.selector).fadeOut(200);
                         templateSaver.status.hide();
                         templateSaver
                     },
@@ -271,7 +271,7 @@ var UKMrapporter = function($) {
             }
         },
         setConfig: function(config) {
-            $(templateSaver.getFormSelector() + ' input[name="config"]').val(config);
+            jQuery(templateSaver.getFormSelector() + ' input[name="config"]').val(config);
             templateSaver.show();
         }
     }
@@ -283,27 +283,27 @@ var UKMrapporter = function($) {
     var templatePicker = {
         selector: '#templatePicker',
         visible: function() {
-            return $(templatePicker.selector).is(':visible')
+            return jQuery(templatePicker.selector).is(':visible')
         },
         show: function(e) {
             preventDefault(e);
             loader.show();
             customizer.hide();
-            $(templatePicker.selector).slideDown();
+            jQuery(templatePicker.selector).slideDown();
             emitter.emit('templatePicker.show');
         },
         hide: function(e) {
             preventDefault(e);
-            $(templatePicker.selector).hide();
+            jQuery(templatePicker.selector).hide();
             emitter.emit('templatePicker.hide');
         },
         loadFromDB: function() {
             templates.load(loader.getId());
         },
         bind: function() {
-            $(document).on('click', '.hideTemplatePicker', templatePicker.hide);
-            $(document).on('click', '.showTemplatePicker', templatePicker.show);
-            $(document).on('click', templatePicker.selector + ' li.template', templatePicker.loadFromClick);
+            jQuery(document).on('click', '.hideTemplatePicker', templatePicker.hide);
+            jQuery(document).on('click', '.showTemplatePicker', templatePicker.show);
+            jQuery(document).on('click', templatePicker.selector + ' li.template', templatePicker.loadFromClick);
             emitter.on('templates.loaded', templatePicker.render);
         },
         init: function() {
@@ -311,14 +311,14 @@ var UKMrapporter = function($) {
         },
 
         render: function() {
-            $(templatePicker.selector).html(
+            jQuery(templatePicker.selector).html(
                 twigJS_templatePicker.render({
                     templates: templates.getAll()
                 })
             );
         },
         loadFromClick: function(e) {
-            return templatePicker.load($(e.target).attr('data-id'));
+            return templatePicker.load(jQuery(e.target).attr('data-id'));
         },
         load: function(id) {
             customizer.reset();
@@ -339,7 +339,7 @@ var UKMrapporter = function($) {
     var templateSelector = {
         selector: '.templateSelector',
         render: function() {
-            $(templateSelector.selector).html(
+            jQuery(templateSelector.selector).html(
                 twigJS_templateSelector.render({
                     templates: templates.getAll()
                 })
@@ -372,7 +372,7 @@ var UKMrapporter = function($) {
         },
         show: function(format = 'html') {
             loader.hide();
-            $(generator.selector.container).slideDown();
+            jQuery(generator.selector.container).slideDown();
             emitter.emit('generator.show');
             generator.loader.fire(format);
         },
@@ -381,50 +381,50 @@ var UKMrapporter = function($) {
             generator.show('html');
         },
         hide: function() {
-            $(generator.selector.container).hide();
-            $(generator.selector.email).hide();
+            jQuery(generator.selector.container).hide();
+            jQuery(generator.selector.email).hide();
             generator.loader.hide();
         },
         bind: function() {
             emitter.on('loader.show', generator.hide);
-            $(document).on('click', '.generateReport', generator.loadAndShowHtml);
+            jQuery(document).on('click', '.generateReport', generator.loadAndShowHtml);
         },
         actions: {
             hide: function() {
-                $(generator.selector.actions).hide();
+                jQuery(generator.selector.actions).hide();
             },
             show: function() {
-                $(generator.selector.actions).fadeIn(300);
+                jQuery(generator.selector.actions).fadeIn(300);
             }
         },
         loader: {
             hide: function() {
-                $(generator.selector.title).show();
-                $(generator.selector.loading.html).hide();
-                $(generator.selector.loading.title).hide();
-                $(generator.selector.loading.download).hide();
-                $(generator.selector.download.gui).hide();
-                $(generator.selector.email).hide();
+                jQuery(generator.selector.title).show();
+                jQuery(generator.selector.loading.html).hide();
+                jQuery(generator.selector.loading.title).hide();
+                jQuery(generator.selector.loading.download).hide();
+                jQuery(generator.selector.download.gui).hide();
+                jQuery(generator.selector.email).hide();
             },
             show: function(format) {
                 switch (format) {
                     case 'html':
-                        $(generator.selector.title).hide();
-                        $(generator.selector.loading.title).show();
-                        $(generator.selector.loading.html).show();
+                        jQuery(generator.selector.title).hide();
+                        jQuery(generator.selector.loading.title).show();
+                        jQuery(generator.selector.loading.html).show();
                         break;
                     case 'excel':
-                        $(generator.selector.loading.download).show();
+                        jQuery(generator.selector.loading.download).show();
                         break;
                 }
             },
             fire: function(format) {
                 if (format == 'html') {
-                    $(generator.selector.content).html('');
+                    jQuery(generator.selector.content).html('');
                 }
-                $(generator.selector.content).hide();
+                jQuery(generator.selector.content).hide();
                 generator.loader.show(format);
-                $.post(
+                jQuery.post(
                     ajaxurl, {
                         action: 'UKMrapporter_ajax',
                         controller: 'getReport',
@@ -449,18 +449,18 @@ var UKMrapporter = function($) {
             }
         },
         showHTML: function(response) {
-            $(generator.selector.content).html(response.html);
-            $(generator.selector.content).show();
+            jQuery(generator.selector.content).html(response.html);
+            jQuery(generator.selector.content).show();
         },
         downloadExcel: function() {
-            $(generator.selector.download.gui).slideUp();
-            $(generator.selector.content).hide()
-            $(generator.selector.loading.download).slideDown();
+            jQuery(generator.selector.download.gui).slideUp();
+            jQuery(generator.selector.content).hide()
+            jQuery(generator.selector.loading.download).slideDown();
             generator.show('excel');
         },
         showExcel: function(response) {
-            $(generator.selector.download.link).attr('href', response.link);
-            $(generator.selector.download.gui).slideDown();
+            jQuery(generator.selector.download.link).attr('href', response.link);
+            jQuery(generator.selector.download.gui).slideDown();
         }
     }
 
@@ -520,21 +520,21 @@ var UKMrapporter = function($) {
 
             // INCLUDE STYLESHEETS
             var styles = [];
-            $('link').each(function(index, element) {
-                if ($(element).attr('id') == undefined) {
+            jQuery('link').each(function(index, element) {
+                if (jQuery(element).attr('id') == undefined) {
                     return;
                 }
 
-                if ($(element).attr('id').includes('WPbootstrap3_css') || $(element).attr('id').includes('UKMrapporter_css')) {
-                    styles.push($(element).attr('href'));
+                if (jQuery(element).attr('id').includes('WPbootstrap3_css') || jQuery(element).attr('id').includes('UKMrapporter_css')) {
+                    styles.push(jQuery(element).attr('href'));
                 }
             });
 
             // OPEN PRINTAREA
-            var print_area = window.open("printMode", "_printMode", $.param(config).replace(/&/g, ','));
+            var print_area = window.open("printMode", "_printMode", jQuery.param(config).replace(/&/g, ','));
             print_area.document.write(
                 twigJS_print.render({
-                    content: $('#reportContent').html(),
+                    content: jQuery('#reportContent').html(),
                     styles: styles,
                 })
             );
@@ -554,27 +554,27 @@ var UKMrapporter = function($) {
         },
         showEmail: function() {
             var emails = [];
-            $(generator.selector.content).find('a[href^="mailto:"]').each(function() {
-                var email = $(this).attr('href').replace('mailto:', '');
+            jQuery(generator.selector.content).find('a[href^="mailto:"]').each(function() {
+                var email = jQuery(this).attr('href').replace('mailto:', '');
                 if (email && !emails.includes(email)) {
                     emails.push(email);
                 }
             });
-            $(generator.selector.content).hide();
-            $(generator.selector.email).html(
+            jQuery(generator.selector.content).hide();
+            jQuery(generator.selector.email).html(
                 twigJS_email.render({ emails: emails })
             ).slideDown();
         },
         hideEmail: function() {
-            $(generator.selector.email).hide();
-            $(generator.selector.content).slideDown();
+            jQuery(generator.selector.email).hide();
+            jQuery(generator.selector.content).slideDown();
         },
         bind: function() {
-            $(document).on('click', '.printReport', self.print);
-            $(document).on('click', '.downloadExcel', self.downloadExcel);
-            $(document).on('click', '.downloadWord', self.downloadWord);
-            $(document).on('click', '.sendEmail', self.showEmail);
-            $(document).on('click', '.hideEmail', self.hideEmail);
+            jQuery(document).on('click', '.printReport', self.print);
+            jQuery(document).on('click', '.downloadExcel', self.downloadExcel);
+            jQuery(document).on('click', '.downloadWord', self.downloadWord);
+            jQuery(document).on('click', '.sendEmail', self.showEmail);
+            jQuery(document).on('click', '.hideEmail', self.hideEmail);
         }
     }
     return self;
@@ -585,7 +585,7 @@ function loadReport() {
     UKMrapporter.templatePicker.load(33);
 }
 
-$(document).ready(function() {
+jQuery(document).ready(function() {
     UKMrapporter.init();
 
     //UKMrapporter.once('templates.loaded', loadReport);

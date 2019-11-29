@@ -18,16 +18,16 @@
 </div>
 
 <script>
-    $(document).on('click', '#previewList_{{ id }} .option', function(e) {
-        $(e.target).find('input').click();
+    jQuery(document).on('click', '#previewList_{{ id }} .option', function(e) {
+        jQuery(e.target).find('input').click();
     });
 
-    $(document).on('click', '#previewList_{{ id }} .option label', function(e) {
-        $(e.target).parents('li.option').find('input').click();
+    jQuery(document).on('click', '#previewList_{{ id }} .option label', function(e) {
+        jQuery(e.target).parents('li.option').find('input').click();
     });
 
-    $(document).on('change', '#previewList_{{ id }} input', function(e) {
-        $('#previewList_{{ id }}').find('.preview .option').hide();
-        $('#previewList_{{ id }}').find('#preview_' + $(e.target).val()).fadeIn();
+    jQuery(document).on('change', '#previewList_{{ id }} input', function(e) {
+        jQuery('#previewList_{{ id }}').find('.preview .option').hide();
+        jQuery('#previewList_{{ id }}').find('#preview_' + jQuery(e.target).val()).fadeIn();
     });
 </script>
