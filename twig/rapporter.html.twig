@@ -1,7 +1,7 @@
 <h1>Rapporter</h1>
 
 
-{% for kategori in kategorier if kategori.harRapporter() %}
+{% for kategori in kategorier|filter( kategori => kategori.harRapporter() )%}
     <h1>{{ kategori.getNavn() }}</h1>
 
     {% for rapport in kategori.getRapporter() %}
