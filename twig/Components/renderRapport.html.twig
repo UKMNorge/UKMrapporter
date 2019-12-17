@@ -21,6 +21,10 @@
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
+                {% else %}
+                    <li class="list-group-item" style="page-break-inside: avoid;">
+                        Ingen innslag i {{ gruppe.getOverskrift() }}
+                    </li>
                 {% endif %}
             {% endfor %}
         {% else %}
