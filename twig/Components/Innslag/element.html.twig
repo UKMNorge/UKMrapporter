@@ -73,7 +73,7 @@
 						{% include "Components/Innslag/Personer/liste.html.twig" %}
 					</td>
 				</tr>
-            {% elseif config.show('deltakere') %}
+            {% elseif config.show('deltakere') %}{# implisitt: and innslag.getType().erEnkeltperson() #}
                 <tr>
                     <td>
                         {% if config.show('deltakere_mobil') or (config.show('kontaktperson') and config.show('kontakt_mobil') ) %}
@@ -82,6 +82,12 @@
                         {% if config.show('kontaktperson') and config.show('kontakt_epost') %}
                             - {% include "Components/epost.html.twig" with {epost: innslag.getPersoner().getSingle().getEpost() } %}
                         {% endif %}
+                    </td>
+                </tr>
+            {% elseif config.show('kontaktperson') %}
+				<tr>
+                    <td>
+                        {% include "Components/Innslag/Personer/kompakt.html.twig" with {person: innslag.getKontaktperson(), kontaktperson: true } %}
                     </td>
                 </tr>
 			{% endif %}

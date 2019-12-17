@@ -10,6 +10,6 @@ class Config extends Collection {
         return $this->show($id);
     }
     public function show($id) {
-        return $this->har('vis_'.$id);
+        return $this->har('vis_'.$id) && in_array( $this->get('vis_'.$id)->getValue(), ['yes','true']);
     }
 }
