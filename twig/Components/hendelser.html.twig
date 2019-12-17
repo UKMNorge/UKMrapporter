@@ -1,0 +1,9 @@
+<ol class="list-group">
+    <li class="list-group-item list-group-title">
+        <h4>Hvilke hendelser skal inkluderes?</h4>
+    </li>
+
+    {% for hendelse in arrangement.getProgram().getAbsoluteAll() %}
+        {% include "checkbox.html.twig" with {id: 'hendelse_'~ hendelse.getId() , title: hendelse.getNavn()} %}
+    {% endfor %}
+</ol>
