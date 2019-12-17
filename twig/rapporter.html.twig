@@ -6,7 +6,7 @@
 
     {% for rapport in kategori.getRapporter() %}
         <a href="?page={{GET('page')}}&action=rapport&rapport={{ rapport.getId() }}">
-            <div class="optionCard card" data-group="type" data-value="monstring">
+            <div class="optionCard card" data-group="type" data-value="{{ rapport.getId() }}">
                 <div class="dashicons {{ rapport.getIkon() }}"></div>
                 <div class="header">{{ rapport.getNavn() }}</div>
                 <p>{{ rapport.getBeskrivelse() }}</p>

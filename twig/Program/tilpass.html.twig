@@ -1,0 +1,54 @@
+{% if arrangement.getProgram().getAbsoluteAll()|length == 0 %}
+    <div class="row">
+        <div class="col-12 col-sm-12 col-lg-6">
+            <div class="alert alert-danger">
+                Du må opprette minst én hendelse før du kan hente ut programmet. 
+                Dette gjør du fra <a href="?page=UKMprogram">program</a> i menyen
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="row">
+        {% if arrangement.getProgram().getAbsoluteAll()|length > 1 %}
+            <div class="col-12 col-sm-6 col-md-4 pull-left float-left">
+                {% include "hendelser.html.twig" %}
+            </div>
+        {% else %}
+            <input type="hidden" name="vis_hendelse_{{ (arrangement.getProgram().getAbsoluteAll()|first).getId() }}" value="true" />
+        {% endif %}
+        <div class="col-12 col-sm-6 col-md-4">
+            <ol class="list-group">
+                <li class="list-group-item list-group-title">
+                    <h4>Om innslaget</h4>
+                </li>
+
+                {#<li class="list-group-item panel-title panel-primary">Innslaget</li>#}
+                {% include "checkbox.html.twig" with {id: 'kategori_og_sjanger', title: 'Kategori og sjanger'} %}
+                {% include "checkbox.html.twig" with {id: 'varighet', title: 'Varighet'} %}
+                {% include "checkbox.html.twig" with {id: 'fylke', title: 'Fylke'} %}
+                {% include "checkbox.html.twig" with {id: 'kommune', title: 'Kommune'} %}
+                {% include "checkbox.html.twig" with {id: 'beskrivelse', title: 'Beskrivelse'} %}
+            </ol>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            {% embed "toggle.html.twig" with {id: 'vis_deltakere', title: 'Vis deltakere?', start: 'yes' } %}
+                {% block yes %}
+                    {% include "checkbox.html.twig" with {id: 'deltakere_alder', title: 'Alder'} %}
+                    {% include "checkbox.html.twig" with {id: 'deltakere_rolle', title: 'Rolle / instrument / funksjon'} %}
+                    {% include "options.html.twig" with {id: 'deltakere_visning', title: 'Velg visning', start: 'kompakt', options: [{id: 'kompakt', title: 'Kompakt'},{id: 'tabell', title: 'Tabell'}]} %}
+                {% endblock %}
+            {% endembed %}
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+            {% embed "toggle.html.twig" with {id: 'vis_titler', title: 'Vis titler?', start: 'yes' } %}
+                {% block yes %}
+                    {% include "checkbox.html.twig" with {id: 'tittel_varighet', title: 'Varighet'} %}
+                    {% include "checkbox.html.twig" with {id: 'tittel_detaljer', title: 'Detaljer'} %}
+                    {% include "options.html.twig" with {id: 'titler_visning', title: 'Velg visning', start: 'kompakt', options: [{id: 'kompakt', title: 'Kompakt'},{id: 'tabell', title: 'Tabell'}]} %}
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
+{% endif %}

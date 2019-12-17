@@ -3,13 +3,7 @@
         OBS: Ingen personer fra "{{ innslag.getNavn() }}" er påmeldt dette arrangementet
     </p>
 {% elseif config.get('deltakere_visning') == 'kompakt' %}
-    {% for person in innslag.getPersoner().getAll() %}
-        {{person.getNavn() }}{% if config.show(selector~'_alder') %}
-        {% include "Components/mobil.html.twig" with {mobil: person.getMobil(),navn: person.getNavn()} %}
-        {% endif %}{% if config.show(selector~'_alder') %}
-        ({{person.getAlder()}}){% endif %}{% if config.show('deltakere_rolle') %}
-        - <i>{{ person.getRolle() }}</i>{% endif %}{{ not loop.last ? ', '}}
-    {% endfor %}
+    {% for person in innslag.getPersoner().getAll() %}{% include "Components/Innslag/Personer/kompakt.html.twig" with {person: person } %}{% endfor %}{% if config.show('kontaktperson') %}, {% include "Components/Innslag/Personer/kompakt.html.twig" with {person: innslag.getKontaktperson(), kontaktperson: true } %}{% endif %}
 {% else %}
     <table class="table table-borderless table-condensed" style="max-width: 45em;">
         {% if config.show('kontaktperson') %}

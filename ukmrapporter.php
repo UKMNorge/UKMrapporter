@@ -96,7 +96,7 @@ class UKMrapporter extends Modul
     public static function autoload($class_name)
     {
         if (strpos($class_name, 'UKMNorge\Rapporter\\') === 0) {
-            if( strpos( $class_name, 'UKMNorge\Rapporter\Template\\') === 0 ) {
+            if( strpos( $class_name, 'UKMNorge\Rapporter\Template\\') === 0 || strpos( $class_name, 'UKMNorge\Rapporter\Framework\\') === 0) {
                 $path = static::getPath().'class/';
             } else {
                 $path = static::getPath().'rapporter/';
