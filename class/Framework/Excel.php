@@ -14,9 +14,8 @@ class Excel {
         /** HEADERS */
         $this->excel->setArk('innslag', 'Innslag');
         $this->rad();
-        $this->celle('A', 'Innslag');
-        $kolonne = $this->celle('B','Kategori');
-
+        $kolonne = $this->celle('A', 'Innslag');
+        $kolonne = $this->celle($kolonne,'Kategori');
         $kolonne = $this->celleHvis('kategori_og_sjanger', 'Sjanger', $kolonne);
         $kolonne = $this->celleHvis('varighet', 'Varighet (sekunder)', $kolonne);
         $kolonne = $this->celleHvis('fylke', 'Fylke', $kolonne);
