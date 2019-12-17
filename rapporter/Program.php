@@ -12,4 +12,34 @@ class Program extends Rapport
     public $navn = 'Program';
     public $beskrivelse = 'Program for dine hendelser';
 
+
+    /**
+     * Hent render-data for rapporten
+     *
+     * @return Gruppe
+     */
+    public function getRenderData()
+    {
+        $grupper = new Gruppe('container', 'Alle innslag');
+        $grupper->setVisOverskrift(false);
+
+        foreach( $this->getArrangement()->getProgram()->getAbsoluteAll() as $hendelse ) {
+            if( !$this->getConfig()->vis('hendelse_'. $hendelse->getId()) ) {
+                continue;
+            }
+
+            $gruppe_id = $hendelse->getNavn() . '-' . $hendelse->getId();
+            if( !$grupper->harGruppe( $gruppe_id ) ) {
+                $grupper->addGruppe(
+                    new Gruppe(
+                        $gruppe_id,
+                        $hendelse->getNavn()
+                    )
+                );
+            }
+            
+            $grupper->getGruppe( $gruppe_id )->setInnslag( $hendelse->getInnslag()->getAll());
+        }
+        return $grupper;
+    }
 }
