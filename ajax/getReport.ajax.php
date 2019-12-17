@@ -13,7 +13,8 @@ UKMrapporter::addResponseData(
         'config' => $rapport->getConfig(),
         'rapport' => $rapport,
         'arrangement' => new Arrangement((int) get_option('pl_id')),
-        'renderData' => $rapport->getRenderData()
+        'renderData' => $rapport->getRenderData(),
+        'kreverHendelse' => $rapport->kreverHendelse()
     ]
 );
 

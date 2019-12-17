@@ -16,6 +16,7 @@ abstract class Rapport
     public $ikon;
     public $config;
     public $arrangement;
+    public $krever_hendelse = false;
     private $excel;
 
     /**
@@ -180,5 +181,13 @@ abstract class Rapport
         foreach( $gruppe->getInnslag() as $innslag ) {
             $this->_collected[ $innslag->getId() ] = $innslag;
         }
+    }
+
+    /**
+     * Get the value of krever_hendelse
+     */ 
+    public function kreverHendelse()
+    {
+        return $this->krever_hendelse;
     }
 }

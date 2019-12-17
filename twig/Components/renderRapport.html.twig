@@ -32,6 +32,11 @@
                 {% for innslag in renderData.getInnslag() %}
                     {% include rapport.getId()~"/innslag.html.twig" with {innslag:innslag} %}
                 {% endfor %}
+            {% elseif kreverHendelse %}
+                <div class="alert alert-danger">
+                    Denne rapporten krever at du velger en hendelse.
+                    <button type="button" class="btn btn-default btn-xs showCustomizer">tilbake</button>
+                </div>
             {% endif %}
         {% endif %}
     </div> 

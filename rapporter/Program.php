@@ -11,7 +11,7 @@ class Program extends Rapport
     public $ikon = 'dashicons-editor-ol';
     public $navn = 'Program';
     public $beskrivelse = 'Program for dine hendelser';
-
+    public $krever_hendelse = true;
 
     /**
      * Hent render-data for rapporten
