@@ -28,6 +28,11 @@ abstract class Rapport
         return $this->id;
     }
 
+    public function __construct()
+    {
+        $this->id = basename(str_replace('UKMNorge\Rapporter\\', '', get_class($this)));
+    }
+
     /**
      * Hent rapport-navn
      * 

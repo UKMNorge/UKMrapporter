@@ -12,11 +12,6 @@ class AlleInnslag extends Rapport
     public $navn = 'Alle innslag';
     public $beskrivelse = 'Informasjon om alle som er påmeldt arrangementet.';
 
-    public function __construct()
-    {
-        $this->id = basename(str_replace('UKMNorge\Rapporter\\', '', get_class($this)));
-    }
-
     /**
      * Hent render-data for rapporten
      *
