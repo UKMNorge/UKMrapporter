@@ -30,4 +30,9 @@
         jQuery('#previewList_{{ id }}').find('.preview .option').hide();
         jQuery('#previewList_{{ id }}').find('#preview_' + jQuery(e.target).val()).fadeIn();
     });
+
+    jQuery(document).ready(function() {
+        var selectedItem = jQuery('#previewList_{{ id }}').find('.radioContainer input[type=radio]:checked');
+        jQuery('#previewList_{{ id }}').find('#preview_' + selectedItem.val()).fadeIn();
+    });
 </script>
