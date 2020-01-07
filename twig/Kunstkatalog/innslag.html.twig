@@ -1,8 +1,7 @@
 {% if innslag.getType().harTitler() %}
     {% for tittel in innslag.getTitler().getAll() %}
-        {% include "Kunstkatalog/tittel.html.twig" %}
+        {% include "Kunstkatalog/tittel.html.twig" with { 'tittel': tittel} %}
     {% endfor %}
 {% else %}
-    {# Innslag uten titler rendres med standard-element #}
-    {% include "Components/Innslag/element.html.twig" %}
+    {% include "Kunstkatalog/tittel.html.twig" %}
 {% endif %}
