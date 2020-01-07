@@ -111,7 +111,13 @@
                         {% endif %}
                     </td>
                 </tr>
-                
+            {% elseif config.show('notatfelt_jury') %}
+                <tr>
+                    <td>
+                        {% include "Components/notes.html.twig" with {'title': "Tilbakemeldinger"} %}
+                    </td>
+                    <p style="page-break-before: always;">&nbsp;</p>
+                </tr>
             {% endif %}
         {% endblock %}
 
