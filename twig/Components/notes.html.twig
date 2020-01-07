@@ -1,0 +1,12 @@
+{% if title is defined %}
+    <h5 class="card-title">{{ title }}</h5>
+{% endif %}
+<div class="card">
+    <div class="card-body">
+        {% if config.get('notatfelt_visning') == "liten" %}
+            <br />&nbsp;
+        {% elseif config.get('notatfelt_visning') == "stor" %}
+            <br /><br /><br /><br /><br /><br /><br />&nbsp;
+        {% endif %}
+    </div>
+</div>

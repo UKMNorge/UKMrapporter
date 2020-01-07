@@ -94,7 +94,26 @@
 			{% endif %}
 		{% endblock %}
 
-		{% block data %}{% endblock %}
+        {% block data %}{% endblock %}
+        
+        {% block notatfelt %}
+            {% if config.show('notatfelt') %}
+                <tr>
+                    <td>
+                        {% if config.show('notatfelt_lydteknisk') %}
+                            {% include "Components/notes.html.twig" with {'title': "Lysteknisk"} %}
+                        {% endif %}
+                        {% if config.show('notatfelt_lysteknisk') %}
+                            {% include "Components/notes.html.twig" with {'title': "Lydteknisk"} %}
+                        {% endif %}
+                        {% if config.show('notatfelt_generell') %}
+                            {% include "Components/notes.html.twig" with {'title': "Generelle notater"} %}
+                        {% endif %}
+                    </td>
+                </tr>
+                
+            {% endif %}
+        {% endblock %}
 
 	</table>
 </li>

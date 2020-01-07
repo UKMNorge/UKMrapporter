@@ -6,4 +6,5 @@
     {% for hendelse in arrangement.getProgram().getAbsoluteAll() %}
         {% include "checkbox.html.twig" with {id: 'hendelse_'~ hendelse.getId() , title: hendelse.getNavn()} %}
     {% endfor %}
+    
 </ol>
