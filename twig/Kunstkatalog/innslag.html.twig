@@ -1,0 +1,7 @@
+{% if innslag.getType().harTitler() %}
+    {% for tittel in innslag.getTitler().getAll() %}
+        {% include "Kunstkatalog/tittel.html.twig" with { 'tittel': tittel} %}
+    {% endfor %}
+{% else %}
+    {% include "Kunstkatalog/tittel.html.twig" %}
+{% endif %}

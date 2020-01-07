@@ -1,6 +1,7 @@
 <?php
 
 use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Rapporter\Framework\Counter;
 
 require_once('UKM/Autoloader.php');
 require_once('UKM/inc/twig-admin.inc.php');
@@ -14,7 +15,8 @@ UKMrapporter::addResponseData(
         'rapport' => $rapport,
         'arrangement' => new Arrangement((int) get_option('pl_id')),
         'renderData' => $rapport->getRenderData(),
-        'kreverHendelse' => $rapport->kreverHendelse()
+        'kreverHendelse' => $rapport->kreverHendelse(),
+        'fancyCounter' => new Counter("tittelCounter")
     ]
 );
 

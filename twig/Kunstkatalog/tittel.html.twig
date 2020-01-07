@@ -1,0 +1,2 @@
+{% extends "Components/Innslag/element.html.twig" %}
+{% block pre_name %}{{ fancyCounter.next() }}. {{ tittel.getNavn() ? tittel.getNavn()~" - " : "" }}{% endblock %}
