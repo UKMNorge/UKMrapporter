@@ -4,7 +4,8 @@
 	<table class="table table-borderless table-condensed">
 		<tr>
 			<td width="*%">
-				<h4 class="mt-0">{% block pre_name %}{% endblock %}{{ innslag.getNavn() }}</h4>
+                <h4 class="mt-0">{% block pre_name %}{% endblock %}{{ tittel.getNavn() }}</h4>
+                <h5 class="mt-0">{{ innslag.getNavn() }}</h5>
 			</td>
 			{% if config.show('kategori_og_sjanger') %}
 				<td width="30%">{{ innslag.getType().getNavn() }}{{ not innslag.getSjanger() is empty ? ' - '~innslag.getSjanger() }}</td>
@@ -49,19 +50,6 @@
                 </tr>
             {% endif %}
             
-		{% endblock %}
-
-		{% block titler %}
-			{% if config.show('titler') and innslag.getType().harTitler() %}
-                <tr>
-                    <td colspan="{{maxCol}}" class="internalHeader">TITLER</td>
-                </tr>
-				<tr>
-					<td colspan="{{maxCol}}" {{ config.get('titler_visning') == 'tabell' ? 'style="padding-left:0;padding-right:0;"' }}>
-						{% include "Components/Innslag/Titler/liste.html.twig" %}
-					</td>
-				</tr>
-			{% endif %}
 		{% endblock %}
 
 		{% block personer %}

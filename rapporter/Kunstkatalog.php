@@ -4,6 +4,7 @@ namespace UKMNorge\Rapporter;
 
 use UKMNorge\Rapporter\Framework\Gruppe;
 use UKMNorge\Rapporter\Framework\Rapport;
+use UKMNorge\Rapporter\Framework\ConfigValue;
 use UKMNorge\Rapporter\Program;
 
 class Kunstkatalog extends Program
@@ -21,26 +22,9 @@ class Kunstkatalog extends Program
      */
     public function getRenderData()
     {
-        $grupper = new Gruppe('container', 'Alle innslag');
-        $grupper->setVisOverskrift(false);
-
-        foreach( $this->getArrangement()->getProgram()->getAbsoluteAll() as $hendelse ) {
-            if( !$this->getConfig()->vis('hendelse_'. $hendelse->getId()) ) {
-                continue;
-            }
-
-            $gruppe_id = $hendelse->getNavn() . '-' . $hendelse->getId();
-            if( !$grupper->harGruppe( $gruppe_id ) ) {
-                $grupper->addGruppe(
-                    new Gruppe(
-                        $gruppe_id,
-                        $hendelse->getNavn()
-                    )
-                );
-            }
-            
-            $grupper->getGruppe( $gruppe_id )->setInnslag( $hendelse->getInnslag()->getAll());
-        }
-        return $grupper;
+        $this->getConfig()->add( new ConfigValue("vis_titler", "true") );
+        $this->getConfig()->add( new ConfigValue("vis_kategori_og_sjanger", "true") );
+        
+        return parent::getRenderData();
     }
 }
