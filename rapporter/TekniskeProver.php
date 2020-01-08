@@ -9,7 +9,7 @@ use UKMNorge\Rapporter\Program;
 class TekniskeProver extends Program
 {
     public $kategori_id = 'program';
-    public $ikon = 'dashicons-editor-ol';
+    public $ikon = 'dashicons-admin-settings';
     public $navn = 'Tekniske Prøver';
     public $beskrivelse = 'Kjøreplan for tekniske prøver';
     public $krever_hendelse = true;

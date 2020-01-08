@@ -136,3 +136,25 @@ td.internalHeader {
     color: #999999 !important;
     padding-bottom: 0 !important;
 }
+
+
+/* 
+Css til siden man velger hva salgs rapport man vil generer 
+*/
+
+	
+.rapport-knapper-ikoner {
+    float: left !important;
+    font-size: 4rem !important;
+    margin-left: -1rem !important;
+    color: #418bca !important;
+}
+
+.rapport-knapper-innhold {
+    margin-left: 4.5rem;
+    word-break: break-word;
+}
+.rapport-knapper-innhold p {
+    margin: 0;
+    color: #5b5b5b !important;
+}

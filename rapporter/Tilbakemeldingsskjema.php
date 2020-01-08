@@ -11,7 +11,7 @@ use UKMNorge\Rapporter\Program;
 class Tilbakemeldingsskjema extends Program
 {
     public $kategori_id = 'program';
-    public $ikon = 'dashicons-editor-ol';
+    public $ikon = 'dashicons-welcome-write-blog';
     public $navn = 'Tilbakemeldingsskjema';
     public $beskrivelse = 'Noteringsskjema for fagpanelet';
     public $krever_hendelse = true;

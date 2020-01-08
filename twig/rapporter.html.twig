@@ -1,22 +1,33 @@
 <h1>Rapporter</h1>
 
 
-{% for kategori in kategorier|filter( kategori => kategori.harRapporter() )%}
-    <h1>{{ kategori.getNavn() }}</h1>
+<div class="container-fluid">
 
-    {% for rapport in kategori.getRapporter() %}
-        <a href="?page={{GET('page')}}&action=rapport&rapport={{ rapport.getId() }}">
-            <div class="optionCard card" data-group="type" data-value="{{ rapport.getId() }}">
-                <div class="dashicons {{ rapport.getIkon() }}"></div>
-                <div class="header">{{ rapport.getNavn() }}</div>
-                <p>{{ rapport.getBeskrivelse() }}</p>
-            </div>
-        </a>
-    {% else %}
-        <p>Ingen rapporter i
-            {{ kategori.getNavn() }}</p>
-    {% endfor %}
-
-{% else %}
-    <p>Beklager, du har ikke tilgang til noen rapporter.</p>
-{% endfor %}
+	{% for kategori in kategorier|filter( kategori => kategori.harRapporter() )%}
+		<div class="row">
+			<div class="col-xs-12 col-md-12 col-lg-12 col-xl-12 ">
+				<h2>{{ kategori.getNavn() }}</h2>
+			</div>
+			{% for rapport in kategori.getRapporter() %}
+				<div class="col-xs-12 col-md-6 col-lg-4 col-xl-3">
+					<a href="?page={{GET('page')}}&action=rapport&rapport={{ rapport.getId() }}">
+						<div class="optionCard card" data-group="type" data-value="{{ rapport.getId() }}">
+							<div class="rapport-knapper-ikoner dashicons {{ rapport.getIkon() }}"></div>
+							<div class="cal-xs-10 rapport-knapper-innhold">
+								<div class="header">{{ rapport.getNavn() }}</div>
+								<p>{{ rapport.getBeskrivelse() }}</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			{% else %}
+				<div class="col-xs-12">
+					<p>Ingen rapporter i
+						{{ kategori.getNavn() }}</p>
+				</div>
+			{% endfor %}
+		</div>
+	{% else %}
+		<p>Beklager, du har ikke tilgang til noen rapporter.</p>
+	{% endfor %}
+</div>

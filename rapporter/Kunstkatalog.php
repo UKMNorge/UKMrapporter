@@ -10,7 +10,7 @@ use UKMNorge\Rapporter\Program;
 class Kunstkatalog extends Program
 {
     public $kategori_id = 'program';
-    public $ikon = 'dashicons-editor-ol';
+    public $ikon = 'dashicons-admin-customizer';
     public $navn = 'Kunstkatalog';
     public $beskrivelse = 'Alle innslag i utstillingen';
     public $krever_hendelse = true;
