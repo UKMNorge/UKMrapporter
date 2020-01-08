@@ -1,0 +1,49 @@
+{% extends "Components/Innslag/element.html.twig" %}
+
+{% block data %}
+    {# Personer i innslaget med ja/nei #}
+    <tr>
+        <th>
+            <h5>Detaljer</h5>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Person</th><th>Samtykke</th><th>Foresatts samtykke (under 15)</th>
+                </tr>
+                {% for person in innslag.getSamtykke().getAll() %}
+                {# Fargelegg rød dersom enten person ikke har godkjent eller foresatt ikke har godkjent #}
+                    <tr class="{{ person.getStatus().getId() != 'ikke_godkjent' ? '' : 'danger' }} {{ person.getForesatt().getStatus().getId() != 'ikke_godkjent' ? '' : 'danger' }}">
+                        <td>
+                            {{ person.getNavn() }} 
+                            {% if person.getKategori().getId() == 'u15' %}
+                                <br />Foresatt: {{ person.getForesatt().getNavn() }}, tlf {{ person.getForesatt().getMobil() }}
+                            {% endif %}    
+                        </td>
+                        <td>{{ person.getStatus().getId() != "ikke_godkjent" ? "OK" : "Ikke godkjent samtykke"}}</td>
+                        <td>
+                            {% if person.getKategori().getId() == 'u15' %}
+                                {{ person.getForesatt().getStatus().getId() != "ikke_godkjent" ? "OK" : "Ikke godkjent samtykke" }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </td>
+    </tr>
+    {# Hendelser innslaget er med i #}
+    {% if not config.show("gruppert_for_hendelse") %}
+        <tr>
+            <td>
+                {% if innslag.getProgram().getAbsoluteAll()|length > 0 %}
+                    <h5>Deltar i følgende hendelser:</h5>
+                    <ul>
+                    {% for hendelse in innslag.getProgram().getAbsoluteAll() %}
+                        <li>{{ hendelse.getNavn() }}{{ hendelse.erSynligRammeprogram() ? "" : " <i>(skjult hendelse)</i> " }}</li>    
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <h5>Deltar ikke i noen hendelser.</h5>
+            </td>
+        </tr>
+        {% endif %}        
+    {% endif %}
+{% endblock %}

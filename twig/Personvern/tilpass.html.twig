@@ -1,0 +1,34 @@
+
+<div class="row">
+    {% if arrangement.getProgram().getAbsoluteAll()|length > 1 %}
+        <div class="col-12 col-sm-6 col-md-4 float-left">
+            {% embed "toggle.html.twig" with {id: 'vis_gruppert_for_hendelse', title: 'Grupper etter hendelse?', start: 'no' } %}
+                {% block yes %}
+                    {% include "hendelser.html.twig" %}
+                {% endblock %}
+            {% endembed %}
+        </div>
+    {% else %}
+        <input type="hidden" name="vis_hendelse_{{ (arrangement.getProgram().getAbsoluteAll()|first).getId() }}" value="true" />
+    {% endif %}
+
+    <div class="col-12 col-sm-6 col-md-4">
+        {% embed "toggle.html.twig" with {id: 'vis_deltakere', title: 'Vis deltakere?', start: 'yes' } %}
+            {% block yes %}
+                {% include "checkbox.html.twig" with {id: 'deltakere_alder', title: 'Alder'} %}
+                {% include "checkbox.html.twig" with {id: 'deltakere_rolle', title: 'Rolle / instrument / funksjon'} %}
+                {% include "checkbox.html.twig" with {id: 'vis_kontaktperson', title: 'Vis kontaktperson'} %}
+                {% include "options.html.twig" with {id: 'deltakere_visning', title: 'Velg visning', start: 'kompakt', options: [{id: 'kompakt', title: 'Kompakt'},{id: 'tabell', title: 'Tabell'}]} %}
+            {% endblock %}
+        {% endembed %}
+    </div>
+    
+    <div class="col-12 col-sm-6 col-md-4">
+        {% embed "toggle.html.twig" with {id: 'vis_titler', title: 'Vis titler?', start: 'yes' } %}
+            {% block yes %}
+                {% include "checkbox.html.twig" with {id: 'tittel_detaljer', title: 'Detaljer'} %}
+                {% include "options.html.twig" with {id: 'titler_visning', title: 'Velg visning', start: 'kompakt', options: [{id: 'kompakt', title: 'Kompakt'},{id: 'tabell', title: 'Tabell'}]} %}
+            {% endblock %}
+        {% endembed %}
+    </div>
+</div>
