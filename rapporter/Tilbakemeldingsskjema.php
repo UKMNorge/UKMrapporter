@@ -25,7 +25,8 @@ class Tilbakemeldingsskjema extends Program
     {
         $this->getConfig()->add( new ConfigValue("vis_titler", "true") );
         $this->getConfig()->add( new ConfigValue("vis_notatfelt_jury", "true") );
-        $this->getConfig()->add( new ConfigValue("notatfelt_visning", "gigantisk") );
+        $this->getConfig()->add( new ConfigValue("notatfelt_visning", "stor") );
+        $this->getConfig()->add( new ConfigValue("vis_vurderingsfelt", "true") );
         
         return parent::getRenderData();
     }

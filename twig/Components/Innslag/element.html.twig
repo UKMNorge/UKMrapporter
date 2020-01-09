@@ -101,24 +101,31 @@
                 <tr>
                     <td>
                         {% if config.show('notatfelt_lydteknisk') %}
-                            {% include "Components/notes.html.twig" with {'title': "Lysteknisk"} %}
+                            {% include "Components/notes.html.twig" with {'title': "Lydteknisk"} %}
                         {% endif %}
                         {% if config.show('notatfelt_lysteknisk') %}
-                            {% include "Components/notes.html.twig" with {'title': "Lydteknisk"} %}
+                            {% include "Components/notes.html.twig" with {'title': "Lysteknisk"} %}
                         {% endif %}
                         {% if config.show('notatfelt_generell') %}
                             {% include "Components/notes.html.twig" with {'title': "Generelle notater"} %}
                         {% endif %}
                     </td>
                 </tr>
-            {% elseif config.show('notatfelt_jury') %}
-                <tr>
-                    <td>
-                        {% include "Components/notes.html.twig" with {'title': "Tilbakemeldinger"} %}
-                    </td>
-                    <p style="page-break-before: always;">&nbsp;</p>
-                </tr>
             {% endif %}
+        {% endblock %}
+
+        {% block tilbakemeldingsfelt %}
+                {% if config.show('vurderingsfelt') %}
+                    <tr>
+                        <td style="width:100%;">
+                            <h3>Tilbakemeldinger</h3>
+                            {% include "Components/split_box.html.twig" with {'title_1': "Originalitet", 'title_2': "Kreativitet"} %}
+                            {% include "Components/split_box.html.twig" with {'title_1': "Publikumskontakt / formidling", 'title_2': "Tekniske ferdigheter"} %}
+                            {% include "Components/split_box.html.twig" with {'title_1': "Scenefremtreden / fremføring", 'title_2': "Kvalitet i forhold til forutsetninger"} %}
+                            {% include "Components/notes.html.twig" with {'title': "Basert på ovenstående vurderinger gjør jeg følgende midlertidige vurdering:"} %}
+                        </td>
+                    </tr>
+                {% endif %}
         {% endblock %}
 
 	</table>
