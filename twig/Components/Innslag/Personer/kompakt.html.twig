@@ -1,6 +1,7 @@
 {% set selector = kontaktperson is defined ? 'kontakt' : 'deltakere' %}
 {{person.getNavn() }}{% if config.show(selector~'_mobil') %}
 {% include "Components/mobil.html.twig" with {mobil: person.getMobil(),navn: person.getNavn()} %}
+{% endif %}{% if config.show(selector~'_epost') %} - {% include "Components/epost.html.twig" with {epost: person.getEpost() } %}
 {% endif %}{% if config.show(selector~'_alder') and selector == 'deltakere' %}
  ({{person.getAlder()}}){% endif %}{% if selector == 'kontakt' %} <i>(kontaktperson)</i>{% endif %}
 {% if config.show('deltakere_rolle') and selector == 'deltakere' %} - <i>{{ person.getRolle() }}</i>{% endif %}{{ not loop.last and selector == 'deltakere' ? ', '}}

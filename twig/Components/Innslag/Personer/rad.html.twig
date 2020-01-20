@@ -8,7 +8,7 @@
         <td width="90">
             {% if config.show(selector~'_mobil') %}
                 {% include "Components/mobil.html.twig" with {mobil: person.getMobil(), navn:person.getNavn()} %}
-                {% if erKontakt and config.show('kontakt_epost') %}
+                {% if config.show(selector~'_epost') %}
                     {% include "Components/epost.html.twig" with {epost: person.getEpost() } %}
                 {% endif %}
             {% else %}
