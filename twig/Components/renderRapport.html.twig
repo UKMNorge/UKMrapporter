@@ -1,5 +1,12 @@
 <div class="row">
     <div class="col-12 col-sm-12">
+        {% if config.show('deltakere_epost') %}
+            <div class="alert alert-warning">
+                De færreste deltakere har registrert e-post, 
+                da dette kun er et felt vi etterspør hos kontaktpersoner. 
+                I listen nedenfor viser vi e-postikonet for alle som har oppgitt en e-postadresse.
+            </div>
+        {% endif %}
         {% if renderData.harGrupper() %}
             {% for gruppe in renderData.getGrupper() %}
                 {% if gruppe.visOverskrift() %}

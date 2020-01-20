@@ -36,6 +36,7 @@
                 {% block yes %}
                     {% include "checkbox.html.twig" with {id: 'deltakere_alder', title: 'Alder'} %}
                     {% include "checkbox.html.twig" with {id: 'deltakere_mobil', title: 'Mobilnummer'} %}
+                    {% include "checkbox.html.twig" with {id: 'deltakere_epost', title: 'E-post'} %}
                     {% include "checkbox.html.twig" with {id: 'deltakere_rolle', title: 'Rolle / instrument / funksjon'} %}
                     {% include "options.html.twig" with {id: 'deltakere_visning', title: 'Velg visning', start: 'kompakt', options: [{id: 'kompakt', title: 'Kompakt'},{id: 'tabell', title: 'Tabell'}]} %}
                 {% endblock %}
