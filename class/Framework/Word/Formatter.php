@@ -164,14 +164,14 @@ class Formatter extends ConfigAware implements FormatterInterface
                 $row = $table->addRow();
 
                 $word->tekst(
-                    ' d',
+                    $innslag->getPersoner()->getSingle()->getRolle(),
                     $word->celle(
                         $table->findFirstDefinedCellWidths()[0],
                         $row
                     )
                 );
                 $word->tekst(
-                    ' a',
+                    $innslag->getBeskrivelse(),
                     $word->celle(
                         ($word::pcToTwips(100) - $table->findFirstDefinedCellWidths()[0]),
                         $row,
@@ -186,7 +186,7 @@ class Formatter extends ConfigAware implements FormatterInterface
                 }
                 $row = $table->addRow();
                 $word->tekst(
-                    ' b',
+                    $innslag->getBeskrivelse(),
                     $word->celle(
                         $word::pcToTwips(100),
                         $row,
@@ -200,7 +200,7 @@ class Formatter extends ConfigAware implements FormatterInterface
             $row = $table->addRow();
 
             $word->tekst(
-                ' c',
+                $innslag->getPersoner()->getSingle()->getRolle(),
                 $word->celle(
                     $word::pcToTwips(100),
                     $row,
