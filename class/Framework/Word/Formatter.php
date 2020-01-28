@@ -155,16 +155,6 @@ class Formatter extends ConfigAware implements FormatterInterface
                     ]
                 )
             );
-        } else {
-            $word->tekst(
-                'TEST',
-                $row->addCell(
-                    $word::pcToTwips(100),
-                    [
-                        'gridSpan' => $table->countColumns()
-                    ]
-                )
-            );
         }
     }
 
