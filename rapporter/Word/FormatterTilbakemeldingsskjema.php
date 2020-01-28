@@ -46,6 +46,72 @@ class FormatterTilbakemeldingsskjema extends Formatter
     public static function innslag(Word $word, Innslag $innslag, Int $loop_index = null)
     {
         parent::innslag($word, $innslag, $loop_index);
+        static::leggTilVurderingsskjema( $word );
         $word->sideskift();
+    }
+
+    public static function leggTilVurderingsskjema( Word $word ) {
+        
+        $half = $word::pcToTwips(50);
+        $height = $word::mmToTwips(28);
+        $word->h2('Tilbakemeldinger');
+        $tabell = $word->tabell();
+
+        // RAD 1
+        $row = $tabell->addRow($height);
+        $word->tekstFet(
+            'Originalitet',
+            $row->addCell($half)
+        );
+        $word->tekstFet(
+            'Kreativitet',
+            $row->addCell($half)
+        );
+
+        // RAD 2
+        $row = $tabell->addRow($height);
+        $word->tekstFet(
+            'Publikumskontakt / formidling',
+            $row->addCell($half)
+        );
+        $word->tekstFet(
+            'Tekniske ferdigheter',
+            $row->addCell($half)
+        );
+
+        // RAD 3
+        $row = $tabell->addRow($height);
+        $word->tekstFet(
+            'Originalitet',
+            $row->addCell($half)
+        );
+        $word->tekstFet(
+            'Kreativitet',
+            $row->addCell($half)
+        );
+
+        // RAD 4
+        $row = $tabell->addRow($height);
+        $word->tekstFet(
+            'Scenefremtreden / fremføring',
+            $row->addCell($half)
+        );
+        $word->tekstFet(
+            'Kvalitet i forhold til forutsetninger',
+            $row->addCell($half)
+        );
+
+        // RAD 5
+        $row = $tabell->addRow();
+        $word->tekstFet(
+            'Basert på ovenstående vurderinger gjør jeg følgende midlertidige vurdering',
+            $row->addCell(
+                $half,
+                [
+                    'vGrid' => 2
+                ]
+            )
+        );
+        
     }
 }
