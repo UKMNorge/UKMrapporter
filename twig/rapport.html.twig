@@ -71,19 +71,26 @@
                     Last ned word-fil
                 </button>
             {% endif %}
-            <button type="button" class="btn btn-default btn-sm downloadExcel">
-                <span class="dashicons dashicons-download"></span>
-                Last ned excel-fil
-            </button>
+            {% if rapport.harExcel() %}
+                <button type="button" class="btn btn-default btn-sm downloadExcel">
+                    <span class="dashicons dashicons-download"></span>
+                    Last ned excel-fil
+                </button>
+            {% endif %}
 
-            <button type="button" class="btn btn-default btn-sm UKMSMSsendToAll" style="margin-left: 8em;">
-                <span class="dashicons dashicons-smartphone"></span>
-                Send sms
-            </button>
-            <button type="button" class="btn btn-default btn-sm sendEmail">
-                <span class="dashicons dashicons-email"></span>
-                Send e-post
-            </button>
+            {% if rapport.harSms() %}
+                <button type="button" class="btn btn-default btn-sm UKMSMSsendToAll" style="margin-left: 8em;">
+                    <span class="dashicons dashicons-smartphone"></span>
+                    Send sms
+                </button>
+            {% endif %}
+            
+            {% if rapport.harEpost() %}
+                <button type="button" class="btn btn-default btn-sm sendEmail">
+                    <span class="dashicons dashicons-email"></span>
+                    Send e-post
+                </button>
+            {% endif %}
         </div>
     </div>
 

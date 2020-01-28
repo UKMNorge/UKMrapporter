@@ -1,0 +1,47 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-12 col-sm-8 col-md-7 col-lg-5 col-xl-4">
+			<h2>
+				Nøkkeltall for
+				{{ arrangement.getNavn() }}
+			</h2>
+
+			<table class="table table-striped col">
+				<tr>
+					<th>Kategori</th>
+					<th>Innslag</th>
+					<th>Personer</th>
+				</tr>
+				{% for gruppe in renderData.getGrupper() %}
+					<tr>
+						<td>{{gruppe.getOverskrift()}}</td>
+						<td>{{ gruppe.getAttr('innslag_count')}}</td>
+						<td>{{gruppe.getAttr('personer_count')}}</td>
+					</tr>
+				{% endfor %}
+
+				<tr>
+					<th>Totalt</th>
+					<th>{{ renderData.getAttr('innslag_count')}}</th>
+					<th>{{ renderData.getAttr('personer_count')}}</th>
+				</tr>
+				<tr>
+					<th colspan="2" style="text-align:right !important;">hvorav unike personer:</th>
+					<th>{{ renderData.getAttr('personer_unike')}}</th>
+				</tr>
+
+				<tr>
+					<th>
+						Sceneinnslag
+						<br/>
+						<small style="font-weight: normal;">
+							({{renderData.getAttr('scene_typer')|join(', ')}})
+						</small>
+					</th>
+					<th>{{ renderData.getAttr('scene_innslag_count')}}</th>
+					<th>{{ renderData.getAttr('scene_personer_count')}}</th>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

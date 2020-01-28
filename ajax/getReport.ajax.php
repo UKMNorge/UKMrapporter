@@ -29,7 +29,7 @@ if ($_POST['format'] == 'html') {
     UKMrapporter::addResponseData(
         'html',
         TWIG(
-            'Components/renderRapport.html.twig',
+            $rapport->getTemplate(),
             UKMrapporter::getResponseData(),
             UKMrapporter::getPluginPath()
         )

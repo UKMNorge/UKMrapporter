@@ -19,6 +19,9 @@ abstract class Rapport
     public $arrangement;
     public $krever_hendelse = false;
     public $har_word = false;
+    public $har_excel = true;
+    public $har_sms = false;
+    public $har_epost = false;
 
     /**
      * Hent rapport-ID
@@ -97,13 +100,67 @@ abstract class Rapport
     }
 
     /**
+     * Støtter rapporten excel-utgave?
+     *
+     * @return Bool
+     */
+    public function harExcel() {
+        return $this->supportExcel();
+    }
+
+    /**
+     * Støtter rapporten excel-utgave?
+     *
+     * @return Bool
+     */
+    public function supportExcel() {
+        return $this->har_excel;
+    }
+
+    /**
+     * Kan rapporten inneholde mobilnummer?
+     *
+     * @return Bool
+     */
+    public function harSms() {
+        return $this->har_sms;
+    }
+
+    /**
+     * Kan rapporten inneholde mobilnummer?
+     *
+     * @return Bool
+     */
+    public function supportSms() {
+        return $this->har_sms;
+    }
+
+    /**
+     * Kan rapporten inneholde e-postadresser?
+     *
+     * @return Bool
+     */
+    public function harEpost() {
+        return $this->har_epost;
+    }
+
+    /**
+     * Kan rapporten inneholde e-postadresser?
+     *
+     * @return Bool
+     */
+    public function supportEpost() {
+        return $this->har_epost;
+    }
+
+    /**
      * Hent hvilken template som skal benyttes
      *
      * @return String $template_id
      */
     public function getTemplate()
     {
-        return $this->getId() . '/rapport';
+        return 'Components/renderRapport.html.twig';
     }
 
     /**

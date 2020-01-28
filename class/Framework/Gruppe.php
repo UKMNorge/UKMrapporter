@@ -1,6 +1,7 @@
 <?php
 
 namespace UKMNorge\Rapporter\Framework;
+
 use UKMNorge\Innslag\Innslag;
 
 class Gruppe
@@ -13,7 +14,8 @@ class Gruppe
     var $grupper = [];
     var $sorted_grupper = false;
     var $sorted_innslag = false;
-
+    var $attributes = [];
+    
     /**
      * Opprett en ny gruppe
      * Hvis gruppen er en undergruppe av en annen, er det 
@@ -23,7 +25,7 @@ class Gruppe
      * @param String $id
      * @param String $overskrift
      */
-    public function __construct( String $id, String $overskrift)
+    public function __construct(String $id, String $overskrift)
     {
         $this->id = $id;
         $this->overskrift = $overskrift;
@@ -161,9 +163,35 @@ class Gruppe
 
     /**
      * Hent gruppens ID
-     */ 
+     */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Sett attributt
+     *
+     * @param string $key
+     * @param $value
+     *
+     * @return innslag
+     **/
+    public function setAttr($key, $value)
+    {
+        $this->attributes[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * Hent attributt
+     *
+     * @param string $key
+     *
+     * @return value
+     **/
+    public function getAttr($key)
+    {
+        return isset($this->attributes[$key]) ? $this->attributes[$key] : false;
     }
 }
