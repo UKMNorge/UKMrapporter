@@ -167,7 +167,7 @@ abstract class Rapport
     public function getExcelFile()
     {
         $excel = new Excel(
-            $this->getNavn(),
+            $this->getNavn() . ' oppdatert ' . date('d-m-Y') . ' kl '. date('Hi') . ' - ' . $this->getArrangement()->getNavn(),
             $this->getRenderDataInnslag(),
             $this->getConfig()
         );
@@ -182,7 +182,7 @@ abstract class Rapport
     public function getWordFile()
     {
         $word = new Word(
-            $this->getNavn(),
+            $this->getNavn() . ' oppdatert ' . date('d-m-Y') . ' kl '. date('Hi') . ' - ' . $this->getArrangement()->getNavn(),
             $this->getRenderData(),
             $this->getConfig(),
             $this->getWordFormatter()
@@ -197,8 +197,9 @@ abstract class Rapport
      * 
      * @return Formatter
      */
-    public function getWordFormatter() {
-        return new Formatter( $this->getConfig() );
+    public function getWordFormatter()
+    {
+        return new Formatter($this->getConfig());
     }
 
 
