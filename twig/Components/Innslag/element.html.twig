@@ -89,6 +89,9 @@
                 </tr>
             {% elseif config.show('kontaktperson') %}
 				<tr>
+                    <td class="internalHeader">KONTAKTPERSON</td>
+                </tr>
+                <tr>
                     <td>
                         {% include "Components/Innslag/Personer/kompakt.html.twig" with {person: innslag.getKontaktperson(), kontaktperson: true } %}
                     </td>

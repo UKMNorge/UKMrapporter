@@ -74,6 +74,7 @@ class Formatter extends ConfigAware implements FormatterInterface
         static::innslagBasisInfo($word, $table, $innslag, $navn);
         static::innslagBeskrivelse($word, $table, $innslag);
         static::getWordFormatterTitler()::render($word, $innslag);
+        static::getWordFormatterPersoner()::render($word, $innslag);
     }
 
     /**
@@ -110,7 +111,7 @@ class Formatter extends ConfigAware implements FormatterInterface
      */
     public static function innslagBeskrivelse(WordDok $word, Table $table, Innslag $innslag)
     {
-        if (!static::getConfig()->show('beskrivelse')) {
+        if (!static::show('beskrivelse')) {
             return;
         }
 
@@ -183,13 +184,13 @@ class Formatter extends ConfigAware implements FormatterInterface
         $width_kategori_og_sjanger = 14;
         $width_fylke_or_kommune = 20;
         $width_varighet = 12;
-        if (static::getConfig()->show('kategori_og_sjanger')) {
+        if (static::show('kategori_og_sjanger')) {
             $width_navn -= $width_kategori_og_sjanger;
         }
-        if (static::getConfig()->show('fylke') || static::getConfig()->show('kommune')) {
+        if (static::show('fylke') || static::show('kommune')) {
             $width_navn -= $width_fylke_or_kommune;
         }
-        if (static::getConfig()->show('varighet')) {
+        if (static::show('varighet')) {
             $width_navn -= $width_varighet;
         }
 
@@ -202,7 +203,7 @@ class Formatter extends ConfigAware implements FormatterInterface
             $row->addCell(WordDok::pcToTwips($width_navn))
         );
 
-        if (static::getConfig()->show('kategori_og_sjanger')) {
+        if (static::show('kategori_og_sjanger')) {
             $word->tekst(
                 $innslag->getType()->getNavn() . (!empty($innslag->getSjanger()) ? ' - ' . $innslag->getSjanger() : ''),
                 $row->addCell(
@@ -211,22 +212,22 @@ class Formatter extends ConfigAware implements FormatterInterface
             );
         }
 
-        if (static::getConfig()->show('fylke') || static::getConfig()->show('kommune')) {
+        if (static::show('fylke') || static::show('kommune')) {
             $word->tekst(
-                (static::getConfig()->show('fylke') ? $innslag->getFylke()->getNavn() : '') . (static::getConfig()->show('fylke') && static::getConfig()->show('kommune') ? ' - ' : '') . (static::getConfig()->show('kommune') ?  $innslag->getKommune()->getNavn() : ''),
+                (static::show('fylke') ? $innslag->getFylke()->getNavn() : '') . (static::show('fylke') && static::show('kommune') ? ' - ' : '') . (static::show('kommune') ?  $innslag->getKommune()->getNavn() : ''),
                 $row->addCell(
                     WordDok::pcToTwips($width_fylke_or_kommune)
                 )
             );
         }
 
-        if (static::getConfig()->show('varighet')) {
+        if (static::show('varighet')) {
             if ($innslag->getType()->harTid()) {
                 $varighet = $innslag->getVarighet()->getHumanShort();
             } elseif (
                 $innslag->getType()->erEnkeltPerson() &&
-                static::getConfig()->show('kontaktperson') &&
-                static::getConfig()->show('kontakt_alder')
+                static::show('kontaktperson') &&
+                static::show('kontakt_alder')
             ) {
                 $varighet = $innslag->getPersoner()->getSingle()->getAlder();
             } else {
