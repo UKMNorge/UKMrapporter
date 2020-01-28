@@ -1,0 +1,10 @@
+<li class="list-group-item">
+    {% if label is defined %}
+        <div class="pull-right float-right label label-info small">{{ label }}</div>
+    {% endif %}
+    <label>
+        <input type="radio" class="form-group" name="vis_{{ id }}" id="vis_{{ id }}" value="{{value}}"/>
+        {{ title }}
+    </label>
+    <div class="clearfix"></div>
+</li>

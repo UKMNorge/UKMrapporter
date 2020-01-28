@@ -248,6 +248,13 @@ class Formatter extends ConfigAware implements FormatterInterface
                 WordDok::pcToTwips($width_navn),
                 $row
             )
+            /*
+             * En vakker dag kommer denne også kanskje ☀️
+            ,
+            [
+                'spaceBefore' => $word::getH3Height() * 0.5
+            ]
+            **/
         );
 
         if (static::show('kategori_og_sjanger')) {

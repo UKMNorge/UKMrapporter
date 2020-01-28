@@ -28,6 +28,9 @@ class Tilbakemeldingsskjema extends Program
         $this->getConfig()->add( new ConfigValue("notatfelt_visning", "stor") );
         $this->getConfig()->add( new ConfigValue("vis_vurderingsfelt", "true") );
         
+        if( empty($this->getConfig()->get('vis_deltakere_innenfor') ) ) {
+            $this->getConfig()->add( new ConfigValue('vis_deltakere_innenfor', '13-20'));
+        }
         return parent::getRenderData();
     }
 

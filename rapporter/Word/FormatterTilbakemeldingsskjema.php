@@ -31,7 +31,7 @@ class FormatterTilbakemeldingsskjema extends Formatter
      */
     public function gruppeOverskrift(Word $word, String $overskrift, Int $indent)
     {
-        parent::gruppeOverskrift($word,$overskrift,$indent);
+        parent::gruppeOverskrift($word, $overskrift, $indent);
         $word->sideskift();
     }
 
@@ -45,13 +45,55 @@ class FormatterTilbakemeldingsskjema extends Formatter
      */
     public static function innslag(Word $word, Innslag $innslag, Int $loop_index = null)
     {
+        static::visVideresending($word, $innslag);
         parent::innslag($word, $innslag, $loop_index);
-        static::leggTilVurderingsskjema( $word );
+        static::leggTilVurderingsskjema($word);
         $word->sideskift();
     }
 
-    public static function leggTilVurderingsskjema( Word $word ) {
-        
+    public static function visVideresending(Word $word, Innslag $innslag)
+    {
+        if (!static::getConfig()->show('videresendes')) {
+            return;
+        }
+
+        $tabell = $word->tabell();
+        $row = $tabell->addRow();
+
+        $span = explode('-', static::getConfig()->get('vis_deltakere_innenfor'));
+
+        $start = $span[0];
+        $stop = $span[1];
+
+        $innenfor = $innslag->getPersoner()->getProsentInnenforAlder($start, $stop);
+        $word->tekstLiten(
+            $innenfor . '% av deltakerne er mellom ' . $start . ' og ' . $stop . ' år',
+            $word->celle(
+                $word::pcToTwips(50),
+                $row,
+                [
+                    'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::RIGHT
+                ]
+            )
+        );
+
+        if ($innenfor < 50) {
+            $word->tekstFare(
+                'Innslaget kan ikke videresendes',
+                $word->celle(
+                    $word::pcToTwips(50),
+                    $row,
+                    [
+                        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::RIGHT
+                    ]
+                )
+            );
+        }
+    }
+
+    public static function leggTilVurderingsskjema(Word $word)
+    {
+
         $half = $word::pcToTwips(50);
         $height = $word::mmToTwips(28);
         $word->h2('Tilbakemeldinger');
@@ -112,6 +154,5 @@ class FormatterTilbakemeldingsskjema extends Formatter
                 ]
             )
         );
-        
     }
 }
