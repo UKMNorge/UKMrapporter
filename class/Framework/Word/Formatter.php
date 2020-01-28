@@ -41,7 +41,7 @@ class Formatter extends ConfigAware implements FormatterInterface
             static::ingen($word, $gruppe->getOverskrift());
         }
         
-        if( $indent == 0 ) {
+        if( $indent < 2 ) {
             $word->sideskift();
         }
     }
