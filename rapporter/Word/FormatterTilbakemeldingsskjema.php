@@ -51,6 +51,15 @@ class FormatterTilbakemeldingsskjema extends Formatter
         $word->sideskift();
     }
 
+    /**
+     * Ikke sett inn linjeskift etter innslag
+     *
+     * @param WordDok $word
+     * @return void
+     */
+    public static function innslagLinjeskiftEtter( WordDok $word ) {
+    }
+
     public static function visVideresending(Word $word, Innslag $innslag)
     {
         if (!static::getConfig()->show('videresendes')) {

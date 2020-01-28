@@ -81,6 +81,16 @@ class Formatter extends ConfigAware implements FormatterInterface
         static::innslagMediefiler($word, $innslag);
         static::getWordFormatterTitler()::render($word, $innslag);
         static::getWordFormatterPersoner()::render($word, $innslag);
+        static::innslagLinjeskiftEtter($word);
+    }
+
+    /**
+     * Sett inn linjeskift etter innslag
+     *
+     * @param WordDok $word
+     * @return void
+     */
+    public static function innslagLinjeskiftEtter( WordDok $word ) {
         $word->linjeSkift();
         $word->linjeSkift();
         $word->linjeSkift();
