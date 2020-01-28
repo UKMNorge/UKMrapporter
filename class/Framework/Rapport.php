@@ -3,6 +3,7 @@
 namespace UKMNorge\Rapporter\Framework;
 
 use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Rapporter\Framework\Word\WordFormatter;
 
 require_once('UKM/Autoloader.php');
 
@@ -17,7 +18,7 @@ abstract class Rapport
     public $config;
     public $arrangement;
     public $krever_hendelse = false;
-    private $excel;
+    public $har_word = false;
 
     /**
      * Hent rapport-ID
@@ -74,13 +75,25 @@ abstract class Rapport
         return $this->ikon;
     }
 
-    public function supportExcel()
+    /**
+     * Støtter rapporten word-utgave?
+     *
+     * @return Bool
+     */
+    public function harWord()
     {
-        return method_exists($this, 'renderExcel');
+        return $this->supportWord();
     }
+
+    /**
+     * Støtter rapporten word-utgave?
+     *
+     * @see harWord()
+     * @return Bool
+     */
     public function supportWord()
     {
-        return method_exists($this, 'renderWord');
+        return $this->har_word;
     }
 
     /**
@@ -88,8 +101,9 @@ abstract class Rapport
      *
      * @return String $template_id
      */
-    public function getTemplate() {
-        return $this->getId().'/rapport';
+    public function getTemplate()
+    {
+        return $this->getId() . '/rapport';
     }
 
     /**
@@ -98,15 +112,16 @@ abstract class Rapport
      * @param String $string
      * @return Array $config
      */
-    public function setConfigFromString( $string ) {
+    public function setConfigFromString($string)
+    {
         $configData = [];
-        parse_str( $string, $configData );
+        parse_str($string, $configData);
 
         $this->config = new Config();
         $count = 0;
-        foreach( $configData as $key => $val ) {
+        foreach ($configData as $key => $val) {
             $count++;
-            $this->config->add( new ConfigValue($key, $val) );
+            $this->config->add(new ConfigValue($key, $val));
         }
     }
 
@@ -115,7 +130,8 @@ abstract class Rapport
      *
      * @return Config
      */
-    public function getConfig() {
+    public function getConfig()
+    {
         return $this->config;
     }
 
@@ -125,7 +141,8 @@ abstract class Rapport
      *
      * @return Gruppe $renderData
      */
-    public function getRenderData() {
+    public function getRenderData()
+    {
         new Gruppe('container', 'Alle innslag');
     }
 
@@ -134,9 +151,10 @@ abstract class Rapport
      *
      * @return Arrangement $arrangement
      */
-    public function getArrangement() {
-        if( null == $this->arrangement ) {
-            $this->arrangement = new Arrangement( get_option('pl_id') );
+    public function getArrangement()
+    {
+        if (null == $this->arrangement) {
+            $this->arrangement = new Arrangement(get_option('pl_id'));
         }
         return $this->arrangement;
     }
@@ -146,8 +164,9 @@ abstract class Rapport
      * 
      * @return String url
      */
-    public function getExcelFile() {
-        $excel = new Excel( 
+    public function getExcelFile()
+    {
+        $excel = new Excel(
             $this->getNavn(),
             $this->getRenderDataInnslag(),
             $this->getConfig()
@@ -155,37 +174,65 @@ abstract class Rapport
         return $excel->writeToFile();
     }
 
+    /**
+     * Lag og returner word-filens URL
+     * 
+     * @return String url
+     */
+    public function getWordFile()
+    {
+        $word = new Word(
+            $this->getNavn(),
+            $this->getRenderData(),
+            $this->getConfig(),
+            $this->getWordFormatter()
+        );
+        return $word->writeToFile();
+    }
 
-    private function getRenderDataInnslag() {
+    /**
+     * Hent standard wordFormatter
+     *
+     * Overskriv denne hvis rapporten krever egen wordFormatter 
+     * 
+     * @return WordFormatter
+     */
+    public function getWordFormatter() {
+        return new WordFormatter();
+    }
+
+
+    private function getRenderDataInnslag()
+    {
         $renderData = $this->getRenderData();
         $this->_collected = [];
-        if( $renderData->harGrupper() ) {
-            foreach( $renderData->getGrupper() as $gruppe ) {
-                if( $gruppe->harGrupper() ) {
-                    foreach( $gruppe->getGrupper() as $undergruppe ) {
-                        $this->_collectInnslag( $undergruppe );
+        if ($renderData->harGrupper()) {
+            foreach ($renderData->getGrupper() as $gruppe) {
+                if ($gruppe->harGrupper()) {
+                    foreach ($gruppe->getGrupper() as $undergruppe) {
+                        $this->_collectInnslag($undergruppe);
                     }
                 } else {
-                    $this->_collectInnslag( $gruppe );
+                    $this->_collectInnslag($gruppe);
                 }
             }
         } else {
-            $this->_collectInnslag( $renderData );
+            $this->_collectInnslag($renderData);
         }
 
         return $this->_collected;
-
     }
-    
-    private function _collectInnslag( Gruppe $gruppe ) {
-        foreach( $gruppe->getInnslag() as $innslag ) {
-            $this->_collected[ $innslag->getId() ] = $innslag;
+
+    private function _collectInnslag(Gruppe $gruppe)
+    {
+        foreach ($gruppe->getInnslag() as $innslag) {
+            $this->_collected[$innslag->getId()] = $innslag;
         }
     }
 
     /**
      * Get the value of krever_hendelse
-     */ 
+     */
     public function kreverHendelse()
     {
         return $this->krever_hendelse;

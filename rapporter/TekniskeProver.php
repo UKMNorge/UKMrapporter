@@ -13,5 +13,4 @@ class TekniskeProver extends Program
     public $navn = 'Tekniske Prøver';
     public $beskrivelse = 'Kjøreplan for tekniske prøver';
     public $krever_hendelse = true;
-
 }

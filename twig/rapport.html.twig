@@ -65,10 +65,12 @@
                 Skriv ut
             </button>
 
-            <button type="button" class="btn btn-default btn-sm downloadWord">
-                <span class="dashicons dashicons-download"></span>
-                Last ned word-fil
-            </button>
+            {% if rapport.harWord() %}
+                <button type="button" class="btn btn-default btn-sm downloadWord">
+                    <span class="dashicons dashicons-download"></span>
+                    Last ned word-fil
+                </button>
+            {% endif %}
             <button type="button" class="btn btn-default btn-sm downloadExcel">
                 <span class="dashicons dashicons-download"></span>
                 Last ned excel-fil

@@ -3,10 +3,9 @@
 namespace UKMNorge\Rapporter;
 
 use UKMNorge\Rapporter\Framework\Gruppe;
-use UKMNorge\Rapporter\Framework\Rapport;
 use UKMNorge\Rapporter\Framework\ConfigValue;
 use UKMNorge\Rapporter\Program;
-
+use UKMNorge\Rapporter\Word\WordFormatterTilbakemeldingsskjema;
 
 class Tilbakemeldingsskjema extends Program
 {
@@ -15,6 +14,7 @@ class Tilbakemeldingsskjema extends Program
     public $navn = 'Tilbakemeldingsskjema';
     public $beskrivelse = 'Noteringsskjema for fagpanelet';
     public $krever_hendelse = true;
+    public $har_word = true;
 
     /**
      * Hent render-data for rapporten
@@ -29,5 +29,14 @@ class Tilbakemeldingsskjema extends Program
         $this->getConfig()->add( new ConfigValue("vis_vurderingsfelt", "true") );
         
         return parent::getRenderData();
+    }
+
+    /**
+     * Hent spesifikk wordFormatter
+     * 
+     * @return WordFormatter
+     */
+    public function getWordFormatter() {
+        return new WordFormatterTilbakemeldingsskjema();
     }
 }
