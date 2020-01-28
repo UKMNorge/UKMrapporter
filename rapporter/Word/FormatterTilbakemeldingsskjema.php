@@ -54,10 +54,10 @@ class FormatterTilbakemeldingsskjema extends Formatter
     /**
      * Ikke sett inn linjeskift etter innslag
      *
-     * @param WordDok $word
+     * @param Word $word
      * @return void
      */
-    public static function innslagLinjeskiftEtter( WordDok $word ) {
+    public static function innslagLinjeskiftEtter( Word $word ) {
     }
 
     public static function visVideresending(Word $word, Innslag $innslag)
