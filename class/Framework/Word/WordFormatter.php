@@ -20,10 +20,7 @@ class WordFormatter implements WordFormatterInterface
     public function gruppe(WordDok $word, Gruppe $gruppe, Int $indent = 0)
     {
         if ($gruppe->visOverskrift()) {
-            $word->overskrift(
-                $gruppe->getOverskrift(),
-                $indent
-            );
+            static::gruppeOverskrift($word, $gruppe->getOverskrift(), $indent);
         }
 
         if ($gruppe->harGrupper()) {
@@ -42,6 +39,19 @@ class WordFormatter implements WordFormatterInterface
     }
 
     /**
+     * Legg til en gruppe-overskrift
+     *
+     * @param WordDok $word
+     * @param String $overskrift
+     * @param Int $indent
+     * @return void
+     */
+    public function gruppeOverskrift(WordDok $word, String $overskrift, Int $indent)
+    {
+        $word->overskrift($overskrift, $indent);
+    }
+
+    /**
      * Rendre informasjonen om et innslag
      *
      * @param WordDok $word
@@ -50,8 +60,8 @@ class WordFormatter implements WordFormatterInterface
      */
     public static function innslag(WordDok $word, Innslag $innslag, Int $loop_index = null)
     {
-        if( method_exists(static::class, 'preNavn' ) ) {
-            $navn = static::preNavn( $innslag, $loop_index );
+        if (method_exists(static::class, 'preNavn')) {
+            $navn = static::preNavn($innslag, $loop_index);
         } else {
             $navn = $innslag->getNavn();
         }
