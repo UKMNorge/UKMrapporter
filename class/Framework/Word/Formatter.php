@@ -38,8 +38,9 @@ class Formatter extends ConfigAware implements FormatterInterface
                 static::innslag($word, $innslag, $loop_index);
             }
         } else {
-            static::ingen($word, $gruppe->getNavn());
+            static::ingen($word, $gruppe->getOverskrift());
         }
+        $word->sideskift();
     }
 
     /**

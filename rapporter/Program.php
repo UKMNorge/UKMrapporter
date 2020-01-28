@@ -12,7 +12,7 @@ class Program extends Rapport
     public $navn = 'Program';
     public $beskrivelse = 'Program for dine hendelser';
     public $krever_hendelse = true;
-
+    public $har_word = true;
     /**
      * Hent render-data for rapporten
      *
