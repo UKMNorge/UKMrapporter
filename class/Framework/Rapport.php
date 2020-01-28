@@ -198,7 +198,7 @@ abstract class Rapport
      * @return WordFormatter
      */
     public function getWordFormatter() {
-        return new WordFormatter();
+        return new WordFormatter( $this->getConfig() );
     }
 
 

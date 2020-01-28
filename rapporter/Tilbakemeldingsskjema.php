@@ -37,6 +37,6 @@ class Tilbakemeldingsskjema extends Program
      * @return WordFormatter
      */
     public function getWordFormatter() {
-        return new WordFormatterTilbakemeldingsskjema();
+        return new WordFormatterTilbakemeldingsskjema( $this->getConfig() );
     }
 }

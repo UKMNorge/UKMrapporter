@@ -32,7 +32,7 @@ class WordFormatterTilbakemeldingsskjema extends WordFormatter
     public function gruppeOverskrift(Word $word, String $overskrift, Int $indent)
     {
         parent::gruppeOverskrift($word,$overskrift,$indent);
-        $word->addPageBreak();
+        $word->sideskift();
     }
 
     /**
@@ -46,6 +46,6 @@ class WordFormatterTilbakemeldingsskjema extends WordFormatter
     public static function innslag(Word $word, Innslag $innslag, Int $loop_index = null)
     {
         parent::innslag($word, $innslag, $loop_index);
-        $word->addPageBreak();
+        $word->sideskift();
     }
 }

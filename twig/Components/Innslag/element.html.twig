@@ -32,19 +32,21 @@
 		{% block beskrivelse %}
             {% if config.show('beskrivelse') %}
                 <tr>
-                    {% if innslag.getType().harBeskrivelse() and innslag.getType().erEnkeltperson() and innslag.getType().harFunksjoner() %}
-                        <td>
-                            {{ innslag.getPersoner().getSingle().getRolle() }}
-                        </td>
-                        <td colspan="{{maxCol - 1}}">
-                            {{ innslag.getBeskrivelse() }}
-                        </td>
+                    {% if innslag.getType().harBeskrivelse() %}
+                        {% if innslag.getType().erEnkeltperson() and innslag.getType().harFunksjoner() %}
+                            <td>
+                                {{ innslag.getPersoner().getSingle().getRolle() }}
+                            </td>
+                            <td colspan="{{maxCol - 1}}">
+                                {{ innslag.getBeskrivelse() }}
+                            </td>
+                        {% else %}
+                            <td colspan="{{maxCol}}">{{ innslag.getBeskrivelse() }}</td>
+                        {% endif %}
                     {% elseif innslag.getType().erEnkeltperson() and innslag.getType().harFunksjoner() %}
                         <td>
                             {{ innslag.getPersoner().getSingle().getRolle() }}
-                        </td>
-                    {% elseif innslag.getType().harBeskrivelse() %}
-                        <td colspan="{{maxCol}}">{{ innslag.getBeskrivelse() }}</td>
+                        </td>                        
                     {% endif %}
                 </tr>
             {% endif %}
