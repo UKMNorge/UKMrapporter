@@ -4,10 +4,10 @@ namespace UKMNorge\Rapporter\Word;
 
 use UKMNorge\File\Word;
 use UKMNorge\Innslag\Innslag;
-use UKMNorge\Rapporter\Framework\Word\WordFormatter;
+use UKMNorge\Rapporter\Framework\Word\Formatter;
 
 
-class WordFormatterTilbakemeldingsskjema extends WordFormatter
+class FormatterTilbakemeldingsskjema extends Formatter
 {
     /**
      * Prefix innslagets navn med rekkefølgen

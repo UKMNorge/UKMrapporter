@@ -5,7 +5,7 @@ namespace UKMNorge\Rapporter;
 use UKMNorge\Rapporter\Framework\Gruppe;
 use UKMNorge\Rapporter\Framework\ConfigValue;
 use UKMNorge\Rapporter\Program;
-use UKMNorge\Rapporter\Word\WordFormatterTilbakemeldingsskjema;
+use UKMNorge\Rapporter\Word\FormatterTilbakemeldingsskjema;
 
 class Tilbakemeldingsskjema extends Program
 {
@@ -37,6 +37,6 @@ class Tilbakemeldingsskjema extends Program
      * @return WordFormatter
      */
     public function getWordFormatter() {
-        return new WordFormatterTilbakemeldingsskjema( $this->getConfig() );
+        return new FormatterTilbakemeldingsskjema( $this->getConfig() );
     }
 }

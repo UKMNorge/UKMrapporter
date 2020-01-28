@@ -3,12 +3,12 @@
 namespace UKMNorge\Rapporter\Framework;
 
 use UKMNorge\File\Word as WordDok;
-use UKMNorge\Rapporter\Framework\Word\WordFormatter;
+use UKMNorge\Rapporter\Framework\Word\Formatter;
 
 class Word {
     var $grupper;
 
-    public function __construct( String $filnavn, Gruppe $grupper, Config $config, WordFormatter $wordFormatter=null ) 
+    public function __construct( String $filnavn, Gruppe $grupper, Config $config, Formatter $wordFormatter=null ) 
     {
         $this->config = $config;
         $this->grupper = $grupper;

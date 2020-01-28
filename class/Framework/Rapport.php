@@ -3,7 +3,7 @@
 namespace UKMNorge\Rapporter\Framework;
 
 use UKMNorge\Arrangement\Arrangement;
-use UKMNorge\Rapporter\Framework\Word\WordFormatter;
+use UKMNorge\Rapporter\Framework\Word\Formatter;
 
 require_once('UKM/Autoloader.php');
 
@@ -195,10 +195,10 @@ abstract class Rapport
      *
      * Overskriv denne hvis rapporten krever egen wordFormatter 
      * 
-     * @return WordFormatter
+     * @return Formatter
      */
     public function getWordFormatter() {
-        return new WordFormatter( $this->getConfig() );
+        return new Formatter( $this->getConfig() );
     }
 
 

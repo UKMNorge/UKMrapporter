@@ -2,36 +2,16 @@
 
 namespace UKMNorge\Rapporter\Framework\Word;
 
-use PhpOffice\PhpWord\Element\Table;
+use \PhpOffice\PhpWord\Element\Table;
 use UKMNorge\File\Word as WordDok;
 use UKMNorge\Innslag\Innslag;
 use UKMNorge\Rapporter\Framework\Gruppe;
-use UKMNorge\Rapporter\Framework\Config;
 
-class WordFormatter implements WordFormatterInterface
+class Formatter extends ConfigAware implements FormatterInterface
 {
 
-    static $config;
-
-    /**
-     * Opprett en wordFormatter
-     *
-     * @param Config $config
-     */
-    public function __construct(Config $config)
-    {
-        static::$config = $config;
-    }
-
-    /**
-     * Hent config for rapport-rendring
-     *
-     * @return Config
-     */
-    public static function getConfig()
-    {
-        return static::$config;
-    }
+    static $wordFormatterTitler;
+    static $wordFormatterPersoner;
 
     /**
      * Rendre innholdet i en gruppe (rekursiv funksjon)
@@ -93,85 +73,31 @@ class WordFormatter implements WordFormatterInterface
         $table = $word->tabell();
         static::innslagBasisInfo($word, $table, $innslag, $navn);
         static::innslagBeskrivelse($word, $table, $innslag);
-        static::innslagTitler($word, $innslag);
+        static::getWordFormatterTitler()::render($word, $innslag);
     }
 
-    public static function innslagTitler(WordDok $word, Innslag $innslag)
-    {
-        if (!static::$config->show('titler') || !$innslag->getType()->harTitler()) {
-            return;
+    /**
+     * Hent formateringsklasse for titler
+     *
+     * @return FormatterTitler
+     */
+    public static function getWordFormatterTitler() {
+        if( is_null( static::$wordFormatterTitler ) ) {
+            static::$wordFormatterTitler = new FormatterTitler( static::getConfig() );
         }
-
-        $word->tekstMuted('TITLER');
-        if ($innslag->getTitler()->getAntall() == 0) {
-            $word->tekstFare('OBS: ' . $innslag->getNavn() . ' har ingen titler påmeldt dette arrangementet');
-        }
-        #elseif( static::$config->get('deltakere_visning') == 'tabell' ) {
-        static::innslagTitlerTabell($word, $innslag);
-        #} else {
-        static::innslagTitlerKompakt($word, $innslag);
-        #}
+        return static::$wordFormatterTitler;
     }
 
-    public static function innslagTitlerTabell(WordDok $word, Innslag $innslag)
-    {
-        $table = $word->tabell();
-
-        // Beregn bredder
-        $width_tittel = $word::pcToTwips(70);
-        $width_detaljer = $word::pcToTwips(30);
-        $width_varighet = $word::pcToTwips(12);
-        if (static::$config->show('tittel_detaljer')) {
-            $width_tittel -= $width_detaljer;
+    /**
+     * Hent formateringsklasse for personer
+     *
+     * @return FormatterPersoner
+     */
+    public static function getWordFormatterPersoner() {
+        if( is_null(static::$wordFormatterPersoner)){
+            static::$wordFormatterPersoner = new FormatterPersoner( static::getConfig());
         }
-        if (static::$config->show('tittel_varighet')) {
-            $width_tittel -= $width_varighet;
-        }
-
-        // List ut titler
-        foreach ($innslag->getTitler()->getAll() as $tittel) {
-            $row = $table->addRow();
-
-            $word->tekst(
-                ucfirst($tittel->getTittel()),
-                $row->addCell($width_tittel)
-            );
-
-            if (static::$config->show('tittel_detaljer')) {
-                $word->tekst(
-                    $tittel->getParentes(),
-                    $row->addCell($width_detaljer)
-                );
-            }
-
-            if(static::$config->show('tittel_varighet')){
-                $word->tekst(
-                    ( $innslag->getType()->harTitler() ? $tittel->getVarighet()->getHumanShort() : '' ),
-                    $row->addCell($width_varighet)
-                );
-            }
-        }
-    }
-
-    public static function innslagTitlerKompakt(WordDok $word, Innslag $innslag ) {
-        $count = 0;
-        foreach( $innslag->getTitler()->getAll() as $tittel ) {
-            $count++;
-            $word->tekst(
-                ucfirst($tittel->getTittel()) .
-                (
-                    static::$config->show('tittel_varighet') && $innslag->getType()->harTid() ? 
-                        $tittel->getVarighet()->getHumanShort : ''
-                ).
-                (
-                    static::$config->show('tittel_detaljer') && !empty( $tittel->getParentes() ) ?
-                        ' - ' . $tittel->getParentes() : ''
-                ).
-                ( 
-                    $count < $innslag->getTitler()->getAll() ? ', ' : ''
-                )
-            );
-        }
+        return static::$wordFormatterPersoner;
     }
 
     /**
