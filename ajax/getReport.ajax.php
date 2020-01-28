@@ -43,3 +43,10 @@ if ($_POST['format'] == 'excel') {
         $rapport->getExcelFile()
     );
 }
+// BRUKER SØKER WORD-UTGAVEN
+elseif ($_POST['format'] == 'word') {
+    UKMrapporter::addResponseData(
+        'link',
+        $rapport->getWordFile()
+    );
+}

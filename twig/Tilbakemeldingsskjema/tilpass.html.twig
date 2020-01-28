@@ -1,44 +1,60 @@
 {% if arrangement.getProgram().getAbsoluteAll()|length == 0 %}
-    <div class="row">
-        <div class="col-12 col-sm-12 col-lg-6">
-            <div class="alert alert-danger">
-                Du må opprette minst én hendelse før du kan hente ut rapport for tekniske prøver. 
-                Dette gjør du fra <a href="?page=UKMprogram">program</a> i menyen
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-12 col-sm-12 col-lg-6">
+			<div class="alert alert-danger">
+				Du må opprette minst én hendelse før du kan hente ut rapport for tekniske prøver. 
+				                Dette gjør du fra
+				<a href="?page=UKMprogram">program</a>
+				i menyen
+			</div>
+		</div>
+	</div>
 {% else %}
-    <div class="row">
-        {% if arrangement.getProgram().getAbsoluteAll()|length > 1 %}
-            <div class="col-12 col-sm-6 col-md-4 float-left">
-                {% include "hendelser.html.twig" %}
-            </div>
-        {% else %}
-            <input type="hidden" name="vis_hendelse_{{ (arrangement.getProgram().getAbsoluteAll()|first).getId() }}" value="true" />
-        {% endif %}
-        <div class="col-12 col-sm-6 col-md-4">
-            <ol class="list-group">
-                <li class="list-group-item list-group-title">
-                    <h4>Om innslaget</h4>
-                </li>
+	<div class="row">
+		{% if arrangement.getProgram().getAbsoluteAll()|length > 1 %}
+			<div class="col-12 col-sm-6 col-md-4 float-left">
+				{% include "hendelser.html.twig" %}
+			</div>
+		{% else %}
+			<input type="hidden" name="vis_hendelse_{{ (arrangement.getProgram().getAbsoluteAll()|first).getId() }}" value="true"/>
+		{% endif %}
+		<div class="col-12 col-sm-6 col-md-4">
+			<ol class="list-group">
+				<li class="list-group-item list-group-title">
+					<h4>Om innslaget</h4>
+				</li>
 
-                {#<li class="list-group-item panel-title panel-primary">Innslaget</li>#}
-                {% include "checkbox.html.twig" with {id: 'kategori_og_sjanger', title: 'Kategori og sjanger'} %}
-                {% include "checkbox.html.twig" with {id: 'varighet', title: 'Varighet'} %}
-                {% include "checkbox.html.twig" with {id: 'fylke', title: 'Fylke'} %}
-                {% include "checkbox.html.twig" with {id: 'kommune', title: 'Kommune'} %}
-                {% include "checkbox.html.twig" with {id: 'beskrivelse', title: 'Beskrivelse'} %}
-            </ol>
-        </div>
+				{#<li class="list-group-item panel-title panel-primary">Innslaget</li>#}
+				{% include "checkbox.html.twig" with {id: 'kategori_og_sjanger', title: 'Kategori og sjanger'} %}
+				{% include "checkbox.html.twig" with {id: 'varighet', title: 'Varighet'} %}
+				{% include "checkbox.html.twig" with {id: 'fylke', title: 'Fylke'} %}
+				{% include "checkbox.html.twig" with {id: 'kommune', title: 'Kommune'} %}
+				{% include "checkbox.html.twig" with {id: 'beskrivelse', title: 'Beskrivelse'} %}
+			</ol>
+		</div>
 
-        <div class="col-12 col-sm-6 col-md-4">
-            {% embed "toggle.html.twig" with {id: 'vis_deltakere', title: 'Vis deltakere?', start: 'yes' } %}
-                {% block yes %}
-                    {% include "checkbox.html.twig" with {id: 'deltakere_alder', title: 'Alder'} %}
-                    {% include "checkbox.html.twig" with {id: 'deltakere_rolle', title: 'Rolle / instrument / funksjon'} %}
-                    {% include "options.html.twig" with {id: 'deltakere_visning', title: 'Velg visning', start: 'kompakt', options: [{id: 'kompakt', title: 'Kompakt'},{id: 'tabell', title: 'Tabell'}]} %}
-                {% endblock %}
-            {% endembed %}
-        </div>
-    </div>
+		<div class="col-12 col-sm-6 col-md-4">
+			{% embed "toggle.html.twig" with {id: 'vis_deltakere', title: 'Vis deltakere?', start: 'yes' } %}
+				{% block yes %}
+					{% include "checkbox.html.twig" with {id: 'deltakere_alder', title: 'Alder'} %}
+					{% include "checkbox.html.twig" with {id: 'deltakere_rolle', title: 'Rolle / instrument / funksjon'} %}
+					{% include "options.html.twig" with {id: 'deltakere_visning', title: 'Velg visning', start: 'kompakt', options: [{id: 'kompakt', title: 'Kompakt'},{id: 'tabell', title: 'Tabell'}]} %}
+				{% endblock %}
+			{% endembed %}
+		</div>
+
+		<div class="col-12 col-sm-6 col-md-4">
+			{% embed "toggle.html.twig" with {id: 'vis_videresendes', title: 'Vis om kan videresendes?', start: 'no' } %}
+				{% block yes %}
+                    <li class="list-group-item small">
+                        Kriterier for videresending varierer fra sted til sted.
+                        Felles for de fleste er at minst 50% av deltakerne må være innenfor et gitt aldersspenn.
+                        Her kan du krysse av for å markere dette i rapporten.
+                    </li>
+					{% include "radio.html.twig" with {id: 'deltakere_innenfor', value: '10-20', title: '10-20 år'} %}
+					{% include "radio.html.twig" with {id: 'deltakere_innenfor', value: '13-20', title: '13-20 år'} %}
+				{% endblock %}
+			{% endembed %}
+		</div>
+	</div>
 {% endif %}

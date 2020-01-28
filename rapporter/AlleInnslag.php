@@ -11,6 +11,7 @@ class AlleInnslag extends Rapport
     public $ikon = 'dashicons-buddicons-buddypress-logo';
     public $navn = 'Alle innslag';
     public $beskrivelse = 'Informasjon om alle som er påmeldt arrangementet.';
+    public $har_word = true;
 
     /**
      * Hent render-data for rapporten

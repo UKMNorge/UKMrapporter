@@ -14,6 +14,8 @@ class Kunstkatalog extends Program
     public $navn = 'Kunstkatalog';
     public $beskrivelse = 'Alle innslag i utstillingen';
     public $krever_hendelse = true;
+    public $har_word = false;
+
 
     /**
      * Hent render-data for rapporten

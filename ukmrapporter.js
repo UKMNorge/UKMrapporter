@@ -440,7 +440,8 @@ var UKMrapporter = function(jQuery) {
                                 generator.showHTML(response);
                                 break;
                             case 'excel':
-                                generator.showExcel(response);
+                            case 'word':
+                                generator.showDownload(response);
                                 break;
                         }
                         emitter.emit('report.loaded');
@@ -452,15 +453,22 @@ var UKMrapporter = function(jQuery) {
             jQuery(generator.selector.content).html(response.html);
             jQuery(generator.selector.content).show();
         },
-        downloadExcel: function() {
+        hideHTML: function() {
             jQuery(generator.selector.download.gui).slideUp();
             jQuery(generator.selector.content).hide()
             jQuery(generator.selector.loading.download).slideDown();
+        },
+        downloadExcel: function() {
+            generator.hideHTML();
             generator.show('excel');
         },
-        showExcel: function(response) {
+        showDownload: function(response) {
             jQuery(generator.selector.download.link).attr('href', response.link);
             jQuery(generator.selector.download.gui).slideDown();
+        },
+        downloadWord: function() {
+            generator.hideHTML();
+            generator.show('word');
         }
     }
 
@@ -550,7 +558,7 @@ var UKMrapporter = function(jQuery) {
             generator.downloadExcel();
         },
         downloadWord: function() {
-            alert('Beklager, word-nedlasting er ikke støttet enda, men kommer snart. Kontakt support@ukm.no hvis det haster.');
+            generator.downloadWord();
         },
         showEmail: function() {
             var emails = [];

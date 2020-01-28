@@ -1,3 +1,22 @@
 {% extends "Components/Innslag/element.html.twig" %}
 
-{% block pre_name %}{{ loop.index }}. {% endblock %}
+{% block pre_table %}
+	{% if config.show('videresendes') %}
+		<div class="pull-right" align="right">
+            {% set start = config.get('vis_deltakere_innenfor')|split('-')[0] %}
+            {% set stop = config.get('vis_deltakere_innenfor')|split('-')[1] %}
+
+            {% set innenfor = innslag.getPersoner().getProsentInnenforAlder(start, stop) %}
+            <span class="text-muted">{{ innenfor }}% av deltakerne er mellom {{start}} og {{stop}} år</span>
+            {% if innenfor < 50 %}
+                <span class="label label-danger">
+                    Innslaget kan ikke videresendes.
+                </span>
+            {% endif %}
+		</div>
+	{% endif %}
+{% endblock %}
+
+{% block pre_name %}
+	{{ loop.index }}.
+{% endblock %}

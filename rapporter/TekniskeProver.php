@@ -2,9 +2,8 @@
 
 namespace UKMNorge\Rapporter;
 
-use UKMNorge\Rapporter\Framework\Gruppe;
-use UKMNorge\Rapporter\Framework\Rapport;
 use UKMNorge\Rapporter\Program;
+use UKMNorge\Rapporter\Word\FormatterTekniskeProver;
 
 class TekniskeProver extends Program
 {
@@ -14,4 +13,13 @@ class TekniskeProver extends Program
     public $beskrivelse = 'Kjøreplan for tekniske prøver';
     public $krever_hendelse = true;
 
+    /**
+     * Hent spesifikk wordFormatter
+     * 
+     * @return FormatterTekniskeProver
+     */
+    public function getWordFormatter()
+    {
+        return new FormatterTekniskeProver($this->getConfig());
+    }
 }
