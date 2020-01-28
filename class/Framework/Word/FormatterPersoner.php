@@ -92,7 +92,7 @@ class FormatterPersoner extends ConfigAware
         $selector = $erKontakt ? 'kontakt' : 'deltakere';
 
         // Beregner bredder
-        $width_navn = $word::pcToTwips(70);
+        $width_navn = $word::pcToTwips(100);
         $width_mobil = $word::mmToTwips(25);
         $width_alder = $word::mmToTwips(18);
         $width_rolle = $word::pcToTwips(20);
@@ -110,7 +110,7 @@ class FormatterPersoner extends ConfigAware
         // Legger til informasjon
         $row = $table->addRow($word::getParagraphHeight() * 1.5);
 
-        $navnCelle = $row->addCell($width_navn);
+        $navnCelle = $word->celle($width_navn, $row);
         $word->$tekst(
             $person->getNavn(),
             $navnCelle
@@ -126,14 +126,15 @@ class FormatterPersoner extends ConfigAware
         if (static::show($selector . '_mobil')) {
             $word->tekst(
                 strval($person->getMobil()),
-                $row->addCell(
-                    $width_mobil
+                $word->celle(
+                    $width_mobil,
+                    $row
                 )
             );
         }
 
         if (static::show('deltakere_alder') || (static::show('kontaktperson') && static::show('kontakt_alder'))) {
-            $alderCelle = $row->addCell($width_alder);
+            $alderCelle = $word->celle($width_alder, $row);
             if (static::show($selector . '_alder')) {
                 $word->tekst(
                     $person->getAlder(),
@@ -145,7 +146,7 @@ class FormatterPersoner extends ConfigAware
         if (static::show('deltakere_rolle') || static::show('kontaktperson')) {
             $word->tekst(
                 $erKontakt ? 'Kontaktperson' : $person->getRolle(),
-                $row->addCell($width_rolle)
+                $word->celle($width_rolle, $row)
             );
         }
     }

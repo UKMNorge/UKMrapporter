@@ -82,9 +82,10 @@ class Formatter extends ConfigAware implements FormatterInterface
      *
      * @return FormatterTitler
      */
-    public static function getWordFormatterTitler() {
-        if( is_null( static::$wordFormatterTitler ) ) {
-            static::$wordFormatterTitler = new FormatterTitler( static::getConfig() );
+    public static function getWordFormatterTitler()
+    {
+        if (is_null(static::$wordFormatterTitler)) {
+            static::$wordFormatterTitler = new FormatterTitler(static::getConfig());
         }
         return static::$wordFormatterTitler;
     }
@@ -94,9 +95,10 @@ class Formatter extends ConfigAware implements FormatterInterface
      *
      * @return FormatterPersoner
      */
-    public static function getWordFormatterPersoner() {
-        if( is_null(static::$wordFormatterPersoner)){
-            static::$wordFormatterPersoner = new FormatterPersoner( static::getConfig());
+    public static function getWordFormatterPersoner()
+    {
+        if (is_null(static::$wordFormatterPersoner)) {
+            static::$wordFormatterPersoner = new FormatterPersoner(static::getConfig());
         }
         return static::$wordFormatterPersoner;
     }
@@ -116,29 +118,36 @@ class Formatter extends ConfigAware implements FormatterInterface
         }
 
         if ($innslag->getType()->harBeskrivelse()) {
-            $row = $table->addRow();
-
             if ($innslag->getType()->erEnkeltPerson() && $innslag->getType()->harFunksjoner()) {
+                $row = $table->addRow();
+
                 $word->tekst(
                     $innslag->getPersoner()->getSingle()->getRolle(),
-                    $row->addCell(
-                        $table->findFirstDefinedCellWidths()[0]
+                    $word->celle(
+                        $table->findFirstDefinedCellWidths()[0],
+                        $row
                     )
                 );
                 $word->tekst(
                     $innslag->getBeskrivelse(),
-                    $row->addCell(
+                    $word->celle(
                         ($word::pcToTwips(100) - $table->findFirstDefinedCellWidths()[0]),
+                        $row,
                         [
                             'gridSpan' => $table->countColumns() - 1
                         ]
                     )
                 );
             } else {
+                if( empty($innslag->getBeskrivelse()) ) {
+                    return;
+                }
+                $row = $table->addRow();
                 $word->tekst(
                     $innslag->getBeskrivelse(),
-                    $row->addCell(
+                    $word->celle(
                         $word::pcToTwips(100),
+                        $row,
                         [
                             'gridSpan' => $table->countColumns()
                         ]
@@ -146,10 +155,13 @@ class Formatter extends ConfigAware implements FormatterInterface
                 );
             }
         } elseif ($innslag->getType()->erEnkeltPerson() && $innslag->getType()->harFunksjoner()) {
+            $row = $table->addRow();
+
             $word->tekst(
                 $innslag->getPersoner()->getSingle()->getRolle(),
-                $row->addCell(
+                $word->celle(
                     $word::pcToTwips(100),
+                    $row,
                     [
                         'gridSpan' => $table->countColumns()
                     ]
@@ -190,14 +202,18 @@ class Formatter extends ConfigAware implements FormatterInterface
 
         $word->h3(
             $innslag_navn,
-            $row->addCell(WordDok::pcToTwips($width_navn))
+            $word->celle(
+                WordDok::pcToTwips($width_navn),
+                $row
+            )
         );
 
         if (static::show('kategori_og_sjanger')) {
             $word->tekst(
                 $innslag->getType()->getNavn() . (!empty($innslag->getSjanger()) ? ' - ' . $innslag->getSjanger() : ''),
-                $row->addCell(
-                    WordDok::pcToTwips($width_kategori_og_sjanger)
+                $word->celle(
+                    WordDok::pcToTwips($width_kategori_og_sjanger),
+                    $row
                 )
             );
         }
@@ -205,8 +221,9 @@ class Formatter extends ConfigAware implements FormatterInterface
         if (static::show('fylke') || static::show('kommune')) {
             $word->tekst(
                 (static::show('fylke') ? $innslag->getFylke()->getNavn() : '') . (static::show('fylke') && static::show('kommune') ? ' - ' : '') . (static::show('kommune') ?  $innslag->getKommune()->getNavn() : ''),
-                $row->addCell(
-                    WordDok::pcToTwips($width_fylke_or_kommune)
+                $word->celle(
+                    WordDok::pcToTwips($width_fylke_or_kommune),
+                    $row
                 )
             );
         }
@@ -225,8 +242,9 @@ class Formatter extends ConfigAware implements FormatterInterface
             }
             $word->tekst(
                 $varighet,
-                $row->addCell(
-                    WordDok::pcToTwips($width_varighet)
+                $word->celle(
+                    WordDok::pcToTwips($width_varighet),
+                    $row
                 )
             );
         }

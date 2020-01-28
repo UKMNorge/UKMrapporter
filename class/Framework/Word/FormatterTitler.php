@@ -43,7 +43,7 @@ class FormatterTitler extends ConfigAware
         $table = $word->tabell();
 
         // Beregn bredder
-        $width_tittel = $word::pcToTwips(70);
+        $width_tittel = $word::pcToTwips(100);
         $width_detaljer = $word::pcToTwips(30);
         $width_varighet = $word::pcToTwips(12);
         if (static::show('tittel_detaljer')) {
@@ -59,20 +59,20 @@ class FormatterTitler extends ConfigAware
 
             $word->tekst(
                 ucfirst($tittel->getTittel()),
-                $row->addCell($width_tittel)
+                $word->celle($width_tittel, $row)
             );
 
             if (static::show('tittel_detaljer')) {
                 $word->tekst(
                     $tittel->getParentes(),
-                    $row->addCell($width_detaljer)
+                    $word->celle($width_detaljer, $row)
                 );
             }
 
             if (static::show('tittel_varighet')) {
                 $word->tekst(
                     ($innslag->getType()->harTitler() ? $tittel->getVarighet()->getHumanShort() : ''),
-                    $row->addCell($width_varighet)
+                    $word->celle($width_varighet, $row)
                 );
             }
         }
