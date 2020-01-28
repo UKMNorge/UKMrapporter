@@ -12,6 +12,13 @@ use \PhpOffice\PhpWord\Element\Table;
 class FormatterPersoner extends ConfigAware
 {
 
+    /**
+     * Legg til personer i rapporten
+     *
+     * @param WordDok $word
+     * @param Innslag $innslag
+     * @return void
+     */
     public static function render(WordDok $word, Innslag $innslag)
     {
         if (!static::show('deltakere') || !$innslag->getType()->erGruppe()) {
@@ -29,24 +36,35 @@ class FormatterPersoner extends ConfigAware
             // Gruppe-innslag
             elseif ($innslag->getType()->erGruppe()) {
                 $word->tekstMuted('PERSONER');
-                #if (static::getConfig()->get('deltakere_visning') == 'tabell') {
-                static::tabell($word, $innslag);
-                #} else {
-                static::liste($word, $innslag);
-                #}
+                if (static::getConfig()->get('deltakere_visning') == 'tabell') {
+                    static::tabell($word, $innslag);
+                } else {
+                    static::liste($word, $innslag);
+                }
             }
             // Enkeltperson-innslag
             else {
-                static::listePerson($word, $innslag, $innslag->getPersoner()->getSingle());
+                $word->tekst(
+                    static::listePerson($word, $innslag, $innslag->getPersoner()->getSingle())
+                );
             }
         }
         // Personer skal ikke vises, men kontaktpersonen skal
         elseif (static::show('kontaktperson')) {
             $word->tekstMuted('KONTAKTPERSON');
-            static::listePerson($word, $innslag, $innslag->getKontaktperson());
+            $word->tekst(
+                static::listePerson($word, $innslag, $innslag->getKontaktperson())
+            );
         }
     }
 
+    /**
+     * Legg til en tabell med personer (og kontaktperson)
+     *
+     * @param WordDok $word
+     * @param Innslag $innslag
+     * @return void
+     */
     public static function tabell(WordDok $word, Innslag $innslag)
     {
         $table = $word->tabell();
@@ -58,6 +76,16 @@ class FormatterPersoner extends ConfigAware
         }
     }
 
+    /**
+     * Legg til en rad for én person
+     *
+     * @param WordDok $word
+     * @param Table $table
+     * @param Innslag $innslag
+     * @param Person $person
+     * @param Bool $erKontakt
+     * @return void
+     */
     public static function rad(WordDok $word, Table $table, Innslag $innslag, Person $person, Bool $erKontakt = false)
     {
         $tekst = $erKontakt ? 'tekstFet' : 'tekst';
@@ -80,7 +108,7 @@ class FormatterPersoner extends ConfigAware
         }
 
         // Legger til informasjon
-        $row = $table->addRow( $word::getParagraphHeight()*1.5 );
+        $row = $table->addRow($word::getParagraphHeight() * 1.5);
 
         $navnCelle = $row->addCell($width_navn);
         $word->$tekst(
@@ -122,48 +150,49 @@ class FormatterPersoner extends ConfigAware
         }
     }
 
+    /**
+     * Legg til liste med personer
+     *
+     * @param WordDok $word
+     * @param Innslag $innslag
+     * @return void
+     */
     public static function liste(WordDok $word, Innslag $innslag)
-    { 
+    {
         $tekst = '';
-        foreach( $innslag->getPersoner()->getAll() as $person ) {
-            $tekst .= static::listePerson($word, $innslag, $person) .', ';
+        foreach ($innslag->getPersoner()->getAll() as $person) {
+            $tekst .= static::listePerson($word, $innslag, $person) . ', ';
         }
-        if( static::show('kontaktperson') ) {
+        if (static::show('kontaktperson')) {
             $tekst .= static::listePerson($word, $innslag, $innslag->getKontaktperson(), true);
         }
 
-        $tekst = rtrim( $tekst, ', ');
+        $tekst = rtrim($tekst, ', ');
 
         $word->tekst(
             $tekst
         );
     }
 
+    /**
+     * Lag en liste-element for en person
+     *
+     * @param WordDok $word
+     * @param Innslag $innslag
+     * @param Person $person
+     * @param Bool $erKontakt
+     * @return String $liste
+     */
     public static function listePerson(WordDok $word, Innslag $innslag, Person $person, Bool $erKontakt = false)
-    { 
+    {
         $selector = $erKontakt ? 'kontakt' : 'deltakere';
 
-        $tekst = $person->getNavn() .
-            (
-                static::show($selector.'_mobil') ? 
-                    ' '. $person->getMobil() : ''
-            ).
-            (
-                static::show($selector.'_epost') && !empty($person->getEpost()) ?
-                    ' - ' . $person->getEpost() : ''
-            ).
-            (
-                static::show($selector.'_alder') && !$erKontakt ?
-                    ' '. $person->getAlder() : ''
-            ).
-            (
-                $erKontakt ?
-                    ' (kontaktperson)' : ''
-            ).
-            (
-                static::show('deltakere_rolle') && !$erKontakt ?
-                    ' - '.  $person->getRolle() : ''
-            );
+        $tekst = $person->getNavn() . (static::show($selector . '_mobil') ?
+                ' ' . $person->getMobil() : '') . (static::show($selector . '_epost') && !empty($person->getEpost()) ?
+                ' - ' . $person->getEpost() : '') . (static::show($selector . '_alder') && !$erKontakt ?
+                ' ' . $person->getAlder() : '') . ($erKontakt ?
+                ' (kontaktperson)' : '') . (static::show('deltakere_rolle') && !$erKontakt ?
+                ' - ' .  $person->getRolle() : '');
         return $tekst;
     }
 }
