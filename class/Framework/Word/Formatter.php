@@ -73,8 +73,49 @@ class Formatter extends ConfigAware implements FormatterInterface
         $table = $word->tabell();
         static::innslagBasisInfo($word, $table, $innslag, $navn);
         static::innslagBeskrivelse($word, $table, $innslag);
+        static::innslagTekniskeBehov($word, $innslag);
+        static::innslagMediefiler($word, $innslag);
         static::getWordFormatterTitler()::render($word, $innslag);
         static::getWordFormatterPersoner()::render($word, $innslag);
+        $word->linjeSkift();
+        $word->linjeSkift();
+        $word->linjeSkift();
+    }
+
+    /**
+     * List ut tekniske behov
+     *
+     * @param WordDok $word
+     * @param Innslag $innslag
+     * @return void
+     */
+    public static function innslagTekniskeBehov( WordDok $word, Innslag $innslag ) {
+        if( !static::show('tekniske_behov') || !$innslag->getType()->harTekniskeBehov()) {
+            return;
+        }
+
+        if( !empty($innslag->getTekniskeBehov())) {
+            $word->linjeSkift();
+            $word->tekstMuted('TEKNISKE BEHOV:');
+            $word->tekst( $innslag->getTekniskeBehov());
+        }
+    }
+
+    /**
+     * List ut mediefiler for innslaget
+     *
+     * @param WordDok $word
+     * @param Innslag $innslag
+     * @return void
+     */
+    public static function innslagMediefiler( WordDok $word, Innslag $innslag ) {
+        if( !static::show('mediefiler')) {
+            return;
+        }
+
+        $word->linjeSkift();
+        $word->tekstMuted('MEDIEFILER:');
+        $word->tekst('Beklager, rapporten støtter ikke visning av mediefiler enda');
     }
 
     /**
