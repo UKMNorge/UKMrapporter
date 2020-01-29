@@ -1,3 +1,18 @@
 {% extends "Components/Innslag/element.html.twig" %}
 
-{% block pre_name %}{{ loop.index }}. {% endblock %}
+{% block pre_name %}
+	{{ loop.index }}.
+{% endblock %}
+
+{% block data %}
+	{% if config.show('tekniske_behov') and innslag.getType().harTekniskeBehov() %}
+		<tr>
+			<td colspan="{{maxCol}}" class="internalHeader">TEKNISKE BEHOV</td>
+		</tr>
+		<tr>
+			<td colspan="{{maxCol}}">
+				{{ innslag.getTekniskeBehov() }}
+			</td>
+		</tr>
+	{% endif %}
+{% endblock %}
