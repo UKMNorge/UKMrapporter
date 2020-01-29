@@ -4,7 +4,7 @@
 	<table class="table table-borderless table-condensed">
 		<tr>
 			<td width="*%">
-				<h4 class="mt-0">{% block pre_name %}{% endblock %}{{ innslag.getNavn() }}</h4>
+				<h4 class="mt-0">{% block pre_name %}{% endblock %}{% block name %}{{ innslag.getNavn() }}{% endblock %}</h4>
 			</td>
 			{% if config.show('kategori_og_sjanger') %}
 				<td width="30%">{{ innslag.getType().getNavn() }}{{ not innslag.getSjanger() is empty ? ' - '~innslag.getSjanger() }}</td>
@@ -68,9 +68,11 @@
 
 		{% block personer %}
 			{% if config.show('deltakere') and innslag.getType().erGruppe() %}
-                <tr>
-                    <td colspan="{{maxCol}}" class="internalHeader">PERSONER</td>
-                </tr>
+                {% if not config.skjul('label_personer') %}
+                    <tr>
+                        <td colspan="{{maxCol}}" class="internalHeader">PERSONER</td>
+                    </tr>
+                {% endif %}
 				<tr>
 					<td colspan="{{maxCol}}" {{ config.get('deltakere_visning') == 'tabell' ? 'style="padding-left:0;padding-right:0;"' }}>
 						{% include "Components/Innslag/Personer/liste.html.twig" %}

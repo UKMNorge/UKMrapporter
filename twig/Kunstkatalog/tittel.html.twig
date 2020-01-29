@@ -1,2 +1,12 @@
 {% extends "Components/Innslag/element.html.twig" %}
-{% block pre_name %}{{ fancyCounter.next() }}. {{ tittel.getNavn() ? tittel.getNavn()~" - " : "" }}{% endblock %}
+{% block name %}
+	{{ fancyCounter.next() }}.
+	{% if innslag.getType().harTitler() %}
+        {{ tittel.getNavn() }}
+    {% else %}
+        {{ innslag.getNavn() }}
+    {% endif %}
+	{% if config.get('tittel_visning') == 'tittel_og_navn' %}
+		-  {{ innslag.getNavn() }}
+	{% endif %}
+{% endblock %}

@@ -25,8 +25,16 @@ class Kunstkatalog extends Program
     public function getRenderData()
     {
         $this->getConfig()->add( new ConfigValue("vis_titler", "false") );
-        $this->getConfig()->add( new ConfigValue("vis_kategori_og_sjanger", "true") );
+        #$this->getConfig()->add( new ConfigValue("vis_kategori_og_sjanger", "true") );
+        $this->getConfig()->add( new ConfigValue("skjul_label_personer", "true"));
         
         return parent::getRenderData();
     }
 }
+
+
+/**
+ * TODO
+ * - Hvis krysset av for "vis personer", skjul innslagstittel fra navnet
+ * - Skjul label "personer" i kunstkatalog
+ */
