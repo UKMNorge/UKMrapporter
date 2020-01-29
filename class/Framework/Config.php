@@ -12,4 +12,8 @@ class Config extends Collection {
     public function show($id) {
         return $this->har('vis_'.$id) && in_array( $this->get('vis_'.$id)->getValue(), ['yes','true']);
     }
+
+    public function skjul($id) {
+        return $this->har('skjul_'.$id) && in_array( $this->get('skjul_'. $id)->getValue(), ['yes','true']);
+    }
 }
