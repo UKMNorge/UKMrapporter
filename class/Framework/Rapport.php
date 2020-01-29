@@ -20,8 +20,8 @@ abstract class Rapport
     public $krever_hendelse = false;
     public $har_word = false;
     public $har_excel = true;
-    public $har_sms = false;
-    public $har_epost = false;
+    public $har_sms = true;
+    public $har_epost = true;
 
     /**
      * Hent rapport-ID
