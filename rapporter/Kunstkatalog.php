@@ -24,7 +24,7 @@ class Kunstkatalog extends Program
      */
     public function getRenderData()
     {
-        $this->getConfig()->add( new ConfigValue("vis_titler", "true") );
+        $this->getConfig()->add( new ConfigValue("vis_titler", "false") );
         $this->getConfig()->add( new ConfigValue("vis_kategori_og_sjanger", "true") );
         
         return parent::getRenderData();
