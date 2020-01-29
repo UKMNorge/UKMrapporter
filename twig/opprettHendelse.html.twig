@@ -1,0 +1,19 @@
+<div class="row">
+	<div class="col-12 col-sm-12 col-lg-6">
+		<h2 id="customizeHeader">
+			{{ rapport.getNavn() }}
+			krever at du har opprettet minst én hendelse.
+		</h2>
+
+		<p class="lead">
+			Dette gjør du fra
+			<a href="?page=UKMprogram">program</a>
+			i menyen.
+		</p>
+		<p class="mt-5">
+        	<a href="?page=UKMprogram" class="btn btn-ukm btn-success btn-sm">Gå til program</a>
+            &nbsp; &nbsp; eller &nbsp; &nbsp; 
+			<a href="?page={{GET('page')}}" class="btn btn-ukm btn-xs">Tilbake til alle rapporter</a>
+		</p>
+	</div>
+</div>
