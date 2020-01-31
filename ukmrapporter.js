@@ -347,7 +347,7 @@ var UKMrapporter = function(jQuery) {
         },
         bind: function() {
             emitter.on('templates.loaded', templateSelector.render);
-        },
+        }
     }
 
     /**
@@ -360,7 +360,7 @@ var UKMrapporter = function(jQuery) {
             loading: {
                 download: '#reportDownloadLoading',
                 html: '#reportGenerating',
-                title: '#reportLoading',
+                title: '#reportLoading'
             },
             title: '#reportTitle',
             download: {
