@@ -370,7 +370,10 @@ var UKMrapporter = function(jQuery) {
             actions: '#reportActions',
             email: '#reportEmail'
         },
-        show: function(format = 'html') {
+        show: function(format) {
+            if (format == null || format == undefined) {
+                format = 'html';
+            }
             loader.hide();
             jQuery(generator.selector.container).slideDown();
             emitter.emit('generator.show');
