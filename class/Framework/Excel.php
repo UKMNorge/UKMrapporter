@@ -172,7 +172,7 @@ class Excel {
                 if($innslag->getType()->harTitler() ) {
                     foreach( $innslag->getTitler()->getAll() as $tittel ) {
                         $kompakt_titler .= 
-                            strtoupper( $tittel->getTittel() ) .
+                            mb_strtoupper( $tittel->getTittel() ) .
                             ($config->vis('tittel_detaljer') ? $tittel->getParentes() : '') .
                             ($config->vis('tittel_varighet') && $innslag->getType()->harTid() ? ' ('. $tittel->getVarighet()->getHumanShort() .')' : '') .
                             ', ';
