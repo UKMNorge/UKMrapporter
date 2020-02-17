@@ -41,7 +41,7 @@
 </div>
 <div class="row">
     <div class="col-12 col-sm-6 col-md-4">
-        {% embed "toggle.html.twig" with {id: 'vis_kontaktperson', title: 'Vis kontaktperson?', start: 'no' } %}
+        {% embed "toggle.html.twig" with {id: 'vis_kontaktperson', title: 'Vis kontaktperson?', start: 'yes' } %}
             {% block yes %}
                 {% include "checkbox.html.twig" with {id: 'kontakt_alder', title: 'Alder'} %}
                 {% include "checkbox.html.twig" with {id: 'kontakt_mobil', title: 'Mobilnummer'} %}
