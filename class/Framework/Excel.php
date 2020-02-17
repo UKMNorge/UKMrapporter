@@ -113,7 +113,7 @@ class Excel {
                 foreach( $innslag->getPersoner()->getAll() as $person ) {
                     $kompakt_personer .= 
                         mb_strtoupper( $person->getNavn() ) .
-                        ($config->vis('deltakere_mobil') ? $person->getMobil() : '') .
+                        #($config->vis('deltakere_mobil') ? ' '. $person->getMobil() : '') .
                         ($config->vis('deltakere_alder') ? ' ('. $person->getAlder() .')' : '') .
                         ($config->vis('deltakere_rolle') ? ' - '. $person->getRolle() : '') .
                         ', '
@@ -161,7 +161,7 @@ class Excel {
                 $kolonne = $this->celle( 
                     $kolonne,
                     mb_strtoupper( $innslag->getKontaktperson()->getNavn() ) .
-                        ($config->vis('kontakt_mobil') ? $innslag->getKontaktperson()->getMobil() : '') .
+                        #($config->vis('kontakt_mobil') ? ' '. $innslag->getKontaktperson()->getMobil() : '') .
                         ($config->vis('kontakt_alder') ? ' ('. $innslag->getKontaktperson()->getAlder() .')' : '') .
                         ($config->vis('kontakt_epost') ? ' - '. $innslag->getKontaktperson()->getMobil() : '')
                 );
