@@ -112,7 +112,7 @@ class Excel {
                 $kompakt_personer = '';
                 foreach( $innslag->getPersoner()->getAll() as $person ) {
                     $kompakt_personer .= 
-                        strtoupper( $person->getNavn() ) .
+                        mb_strtoupper( $person->getNavn() ) .
                         ($config->vis('deltakere_mobil') ? $person->getMobil() : '') .
                         ($config->vis('deltakere_alder') ? ' ('. $person->getAlder() .')' : '') .
                         ($config->vis('deltakere_rolle') ? ' - '. $person->getRolle() : '') .
@@ -160,7 +160,7 @@ class Excel {
                 $this->setArk('innslag');
                 $kolonne = $this->celle( 
                     $kolonne,
-                    strtoupper( $innslag->getKontaktperson()->getNavn() ) .
+                    mb_strtoupper( $innslag->getKontaktperson()->getNavn() ) .
                         ($config->vis('kontakt_mobil') ? $innslag->getKontaktperson()->getMobil() : '') .
                         ($config->vis('kontakt_alder') ? ' ('. $innslag->getKontaktperson()->getAlder() .')' : '') .
                         ($config->vis('kontakt_epost') ? ' - '. $innslag->getKontaktperson()->getMobil() : '')
