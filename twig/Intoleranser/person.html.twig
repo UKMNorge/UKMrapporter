@@ -1,0 +1,11 @@
+{% extends "Components/Person/element.html.twig" %}
+
+{% block content %}
+    <b>{{ person.getNavn() }} </b>
+    -
+    {{person.getSensitivt().getIntoleranse().getListeHuman(true)}}
+    {% if person.getSensitivt().getIntoleranse().getTekst() is not empty %}
+        <br />
+        {{person.getSensitivt().getIntoleranse().getTekst()}}
+    {% endif %}
+{% endblock %}
