@@ -22,6 +22,8 @@ abstract class Rapport
     public $har_excel = true;
     public $har_sms = true;
     public $har_epost = true;
+    public $_collected_personer;
+    public $_collected;
 
     /**
      * Hent rapport-ID
@@ -260,7 +262,12 @@ abstract class Rapport
     }
 
 
-    private function getRenderDataInnslag()
+    /**
+     * Hent info om innslagene
+     *
+     * @return Array<Innslag>
+     */
+    public function getRenderDataInnslag()
     {
         $renderData = $this->getRenderData();
         $this->_collected = [];
@@ -281,10 +288,55 @@ abstract class Rapport
         return $this->_collected;
     }
 
+    /**
+     * Hent alle innslag fra en gruppe
+     *
+     * @param Gruppe $gruppe
+     * @return void
+     */
     private function _collectInnslag(Gruppe $gruppe)
     {
         foreach ($gruppe->getInnslag() as $innslag) {
             $this->_collected[$innslag->getId()] = $innslag;
+        }
+    }
+
+    /**
+     * Hent info om personene
+     *
+     * @return Array<Person>
+     */
+    public function getRenderDataPersoner()
+    {
+        $renderData = $this->getRenderData();
+        $this->_collected_personer = [];
+        if ($renderData->harGrupper()) {
+            foreach ($renderData->getGrupper() as $gruppe) {
+                if ($gruppe->harGrupper()) {
+                    foreach ($gruppe->getGrupper() as $undergruppe) {
+                        $this->_collectPersoner($undergruppe);
+                    }
+                } else {
+                    $this->_collectPersoner($gruppe);
+                }
+            }
+        } else {
+            $this->_collectPersoner($renderData);
+        }
+
+        return $this->_collected_personer;
+    }
+
+    /**
+     * Hent alle personer fra en gruppe
+     *
+     * @param Gruppe $gruppe
+     * @return void
+     */
+    private function _collectPersoner(Gruppe $gruppe)
+    {
+        foreach ($gruppe->getPersoner() as $person) {
+            $this->_collected_personer[$person->getId()] = $person;
         }
     }
 

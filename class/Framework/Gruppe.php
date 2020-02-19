@@ -3,6 +3,7 @@
 namespace UKMNorge\Rapporter\Framework;
 
 use UKMNorge\Innslag\Innslag;
+use UKMNorge\Innslag\Personer\Person;
 
 class Gruppe
 {
@@ -10,10 +11,12 @@ class Gruppe
     var $id;
     var $overskrift;
     var $vis_overskrift = true;
-    var $innslag = [];
     var $grupper = [];
+    var $innslag = [];
+    var $personer = [];
     var $sorted_grupper = false;
     var $sorted_innslag = false;
+    var $sorted_personer = false;
     var $attributes = [];
     
     /**
@@ -21,6 +24,9 @@ class Gruppe
      * Hvis gruppen er en undergruppe av en annen, er det 
      * spesielt viktig å angi en helt unik ID, som også 
      * kan brukes av ksort(). Anbefalt ID er Navn + ID.
+     * 
+     * harInnslag() brukes før harPersoner(), som vil si at hvis både
+     * personer og innslag er lagt til, vil gruppen ved visning kun rendre ut innslagene
      * 
      * @param String $id
      * @param String $overskrift
@@ -76,6 +82,56 @@ class Gruppe
     {
         $this->sorted_innslag = false;
         $this->innslag[$innslag->getNavn() . '-' . $innslag->getId()] = $innslag;
+        return $this;
+    }
+
+    /**
+     * Hvorvidt denne gruppen skal ha, og har, personer
+     *
+     * @return Bool $har_innslag
+     */
+    public function harPersoner()
+    {
+        return !$this->harGrupper() && sizeof($this->personer) > 0;
+    }
+
+    /**
+     * Hent alle personer (key-sorted)
+     * @return Array<Person>
+     */
+    public function getPersoner()
+    {
+        if (!$this->sorted_personer) {
+            ksort($this->personer);
+        }
+        return $this->personer;
+    }
+
+    /**
+     * Sett personer som skal være med til view
+     * 
+     * OBS: Overskriver personer lagt til tidligere
+     *
+     * @param Array<Person>
+     * @return self
+     */
+    public function setPersoner(array $personer)
+    {
+        $this->personer = $personer;
+
+        return $this;
+    }
+
+    /**
+     * Legg til en person som skal være med til view
+     *
+     * @param Person $person
+     * @return self
+     */
+    public function addPerson(Person $person)
+    {
+        $this->sorted_innslag = false;
+        $this->personer[$person->getNavn() . '-' . $person->getId()] = $person;
         return $this;
     }
 

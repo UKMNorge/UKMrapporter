@@ -199,26 +199,26 @@ class Excel {
         return $this->excel->writeToFile();
     }
 
-    private function ark( String $id ) {
+    public function ark( String $id ) {
         return $this->excel->ark($id);
     }
 
-    private function setArk( String $id, String$navn=null ) {
+    public function setArk( String $id, String$navn=null ) {
         return $this->excel->setArk( $id, $navn );
     }
 
-    private function celleHvis($hvis, $verdi, $kolonne ) {
+    public function celleHvis($hvis, $verdi, $kolonne ) {
         if( !$this->config->vis( $hvis ) ) {
             return $kolonne;
         }
         $this->celle($kolonne, $verdi);
         return ++$kolonne;
     }
-    private function celle($kolonne, $verdi) {
+    public function celle($kolonne, $verdi) {
         $this->excel->celle($kolonne, $verdi);
         return ++$kolonne;
     }
-    private function rad() {
+    public function rad() {
         $this->excel->rad();
     }
 }

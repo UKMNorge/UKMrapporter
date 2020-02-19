@@ -17,6 +17,10 @@
                     {% for innslag in gruppe.getInnslag() %}
                         {% include rapport.getId()~"/innslag.html.twig" with {innslag:innslag} %}
                     {% endfor %}
+                {% elseif gruppe.harPersoner() %}
+                    {% for person in gruppe.getPersoner() %}
+                        {% include rapport.getId()~"/person.html.twig" with {person:person} %}
+                    {% endfor %}
                 {% elseif gruppe.harGrupper() %}
                     {% for undergruppe in gruppe.getGrupper() %}
                         {% if undergruppe.visOverskrift() %}
@@ -25,6 +29,10 @@
                         {% if undergruppe.harInnslag() %}
                             {% for innslag in undergruppe.getInnslag() %}
                                 {% include rapport.getId()~"/innslag.html.twig" with {innslag:innslag} %}
+                            {% endfor %}
+                        {% elseif undergruppe.harPersoner() %}
+                            {% for person in undergruppe.getPersoner() %}
+                                {% include rapport.getId()~"/person.html.twig" with {person:person} %}
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
@@ -35,9 +43,16 @@
                 {% endif %}
             {% endfor %}
         {% else %}
+            {% if renderData.visOverskrift() %}
+                    <h2>{{renderData.getOverskrift()}}</h2>
+            {% endif %}
             {% if renderData.harInnslag() %}
                 {% for innslag in renderData.getInnslag() %}
                     {% include rapport.getId()~"/innslag.html.twig" with {innslag:innslag} %}
+                {% endfor %}
+            {% elseif renderData.harPersoner() %}
+                {% for person in renderData.getPersoner() %}
+                    {% include rapport.getId()~"/person.html.twig" with {person:person} %}
                 {% endfor %}
             {% elseif kreverHendelse %}
                 <div class="alert alert-danger">
