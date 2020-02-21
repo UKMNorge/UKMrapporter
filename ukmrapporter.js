@@ -92,7 +92,7 @@ var UKMrapporter = function(jQuery) {
                     case 'hidden':
                         input.val(value);
                         if (input.attr('data-radiobutton')) {
-                            jQuery(customizer.selector + ' .radioButtons button[value="' + value + '"]').click();
+                            jQuery(customizer.selector + ' .radioButtons[data-name="' + key + '"] button[value="' + value + '"]').click();
                         }
                         break;
                     case 'radio':
