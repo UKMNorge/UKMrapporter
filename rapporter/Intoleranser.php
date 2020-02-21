@@ -12,8 +12,8 @@ class Intoleranser extends Rapport
 {
     public $kategori_id = 'personer';
     public $ikon = 'dashicons-carrot';
-    public $navn = 'Allergier og intoleranser';
-    public $beskrivelse = 'OBS: Gjelder kun videresendte innslag! Lister ut allergier og intoleranser til deltakerne.';
+    public $navn = 'Allergi / intoleranse';
+    public $beskrivelse = 'Deltakernes allergier og intoleranser.';
     public $krever_hendelse = false;
 
     public function getRenderData()
