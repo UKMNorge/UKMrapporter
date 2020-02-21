@@ -1,0 +1,19 @@
+{% if type == 'kontakt' %}
+	{{ svar.navn }}
+	<br/>
+	<small>
+		{% if svar.mobil is not empty %}
+			{{svar.mobil}}
+		{% endif %}
+		{{ svar.mobil and svar.epost is not empty ? '|' }}
+		{% if svar.epost is not empty %}
+			<a href="mailto:{{svar.epost}}">Send e-post</a>
+		{% endif %}
+	</small>
+{% elseif type == 'janei' %}
+	{{ svar == 'true' ? 'Ja' : 'Nei' }}
+{% elseif type == 'langtekst' %}
+	{{ svar|nl2br }}
+{% else %}
+	{{ svar }}
+{% endif %}

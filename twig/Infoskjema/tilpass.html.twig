@@ -1,0 +1,54 @@
+{% if not arrangement.harSkjema() %}
+	<p class="lead mt-4">
+		Du må
+		<a href="index.php">lage et spørreskjema</a>
+		som de som videresender til deg skal fylle ut for å få noe utav denne rapporten.
+	</p>
+
+	<script>
+		jQuery(document).ready(function () {
+jQuery('#generateButtonContainer').hide();
+});
+	</script>
+{% else %}
+
+	<div class="row">
+		<div class="col-12 col-sm-12">
+			<div class="alert alert-info">
+				<p>
+					<b>TIPS:</b>
+					{% if arrangement.getSkjema().getAntallOverskrifter() < 2 %}
+						Rapporten viser deg svarene gruppert per overskrift. 
+                         Det kan være en fordel å legge til flere overskrifter i
+						<a href="index.php">skjemaet ditt</a>.
+                        </p>
+                        <p>
+				    {% endif %}
+				Ofte er det nyttig å lage mange forskjellige rapporter fra spørreskjemaet. 
+                Velg ut overskriften du vil ha svarene på, og lagre dette som mal.
+		        Neste gang du skal ha samme rapport, trykker du "Åpne mal". 
+                Sånn kan du enkelt hente ut alle svar, f.eks fra overskriften 
+                "{{ arrangement.getSkjema().getAntallOverskrifter() > 0 ? random(arrangement.getSkjema().getOverskrifter()).getTittel() : 'Reise'}}"
+                som en egen rapport.
+			</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for gruppe in arrangement.getSkjema().getSporsmalGruppertPerOverskrift() %}
+            <div class="col-12 col-sm-6 col-md-4">
+                {% embed "toggle.html.twig" with {id: 'vis_gruppe_'~gruppe.getId(), title: gruppe.getOverskrift(), start: 'yes' } %}
+                    {% block yes %}
+                        {% for sporsmal in gruppe.getAll() %}
+                            {% include "checkbox.html.twig" with {id: 'sporsmal_'~sporsmal.getId(), title: sporsmal.getTittel()} %}
+                        {% else %}
+                            <li>Det er ingen spørsmål under denne overskriften</li>
+                        {% endfor %}
+                        {% include "options.html.twig" with {id: 'gruppe_'~gruppe.getId()~'_visning', title: 'Velg visning', start: 'tabell', options: [{id: 'liste', title: 'Liste'},{id: 'tabell', title: 'Tabell'}]} %}
+                    {% endblock %}
+                {% endembed %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

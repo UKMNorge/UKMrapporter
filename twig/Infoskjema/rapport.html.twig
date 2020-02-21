@@ -1,0 +1,57 @@
+<h2>Svar på spørreskjema</h2>
+
+{% for gruppe in arrangement.getSkjema().getSporsmalGruppertPerOverskrift()|filter(gruppe => config.show('gruppe_'~gruppe.getId())) %}
+    <h3 class="mb-0 mt-4">{{gruppe.getOverskrift()}}</h3>
+
+        {# VISNING: TABELL #}
+        {% if config.get('gruppe_'~gruppe.getId()~'_visning') == 'tabell' %}
+            <table class="table table-striped">
+                <tr>
+                    <th>Spørsmål</th>
+                    {% for avsender in arrangement.getVideresending().getAvsendere() %}
+                        <th>{{ avsender.getArrangement().getNavn() }}</th>
+                    {% endfor %}
+                </tr>
+                {% for sporsmal in gruppe.getAll()|filter(sporsmal => config.show('sporsmal_'~sporsmal.getId())) %}
+                    <tr>
+                        <th>{{sporsmal.getTittel()}}</th>
+                        {% for avsender in arrangement.getVideresending().getAvsendere() %}
+                            <td>
+                                {% include "Infoskjema/svar.html.twig" with { type: sporsmal.getType(), svar: arrangement.getSkjema().getSvarSettFor( avsender.getId() ).getSvar( sporsmal.getId() ).getValue() } %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="{{(arrangement.getVideresending().getAvsendere()|length)+1}}" class="text-muted">
+                            Du har ikke valgt noen spørsmål fra denne overskriften.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {# VISNING: LISTE #}
+        {% else %}
+            {% for sporsmal in gruppe.getAll()|filter(sporsmal => config.show('sporsmal_'~sporsmal.getId())) %}
+                <h5 class="mb-0 mt-4">{{sporsmal.getTittel()}}</h5>
+                <table class="table table-striped">
+                    <tr>
+                        <th>Avsender</th>
+                        <th>Svar</th>
+                    </tr>
+                    {% for avsender in arrangement.getVideresending().getAvsendere() %}
+                        <tr>
+                            <th>{{ avsender.getArrangement().getNavn() }}</th>
+                            <td>
+                                {% include "Infoskjema/svar.html.twig" with { type: sporsmal.getType(), svar: arrangement.getSkjema().getSvarSettFor( avsender.getId() ).getSvar( sporsmal.getId() ).getValue() } %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p class="text-muted">
+                    Du har ikke valgt noen spørsmål fra {{ gruppe.getOverskrift() }}.
+                </td>
+            {% endfor %}
+        {% endif %}
+    </table>
+{% endfor %}
