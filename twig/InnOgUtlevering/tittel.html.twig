@@ -1,0 +1,12 @@
+{% extends "Components/Innslag/element.html.twig" %}
+{% block name %}
+    <div class="pull-right">
+        <div class="pull-right" style="width: 2em; height: 2em; border: 2px solid #000; padding-top: .3em; text-align: center;">
+            <span class="small bold" style="opacity: .5">UT</span>
+        </div>
+        <div class="pull-right" style="width: 2em; height: 2em; border: 2px solid #000; padding-top: .3em; text-align: center; margin-right:.4em;">
+            <span class="small bold" style="opacity: .5">INN</span>
+        </div>
+    </div>
+    {{ innslag.getNavn() }}: {{ tittel.getNavn() }}
+{% endblock %}

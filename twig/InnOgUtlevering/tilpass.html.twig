@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-4">
+        <ol class="list-group">
+            <li class="list-group-item list-group-title">
+                <h4>Hva skal med i listen?</h4>
+            </li>
+            
+            {% include "checkbox.html.twig" with {id: 'type_utstilling', title: 'Kunstverk'} %}
+            {% include "checkbox.html.twig" with {id: 'type_video', title: 'Filmer'} %}
+        </ol>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4">
+		{% include "AlleInnslag/Tilpass/kontaktperson.html.twig" %}
+	</div>
+	<div class="col-12 col-sm-6 col-md-4">
+		{% include "AlleInnslag/Tilpass/deltakere.html.twig" %}
+	</div>
+
+</div>
