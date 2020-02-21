@@ -43,7 +43,7 @@ jQuery('#generateButtonContainer').hide();
                         {% for sporsmal in gruppe.getAll() %}
                             {% include "checkbox.html.twig" with {id: 'sporsmal_'~sporsmal.getId(), title: sporsmal.getTittel()} %}
                         {% else %}
-                            <li>Det er ingen spørsmål under denne overskriften</li>
+                            <li class="list-group-item">Det er ingen spørsmål under denne overskriften</li>
                         {% endfor %}
                         {% include "options.html.twig" with {id: 'gruppe_'~gruppe.getId()~'_visning', title: 'Velg visning', start: 'tabell', options: [{id: 'liste', title: 'Liste'},{id: 'tabell', title: 'Tabell'}]} %}
                     {% endblock %}
