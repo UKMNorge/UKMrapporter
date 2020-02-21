@@ -45,7 +45,9 @@ jQuery('#generateButtonContainer').hide();
                         {% else %}
                             <li class="list-group-item">Det er ingen spørsmål under denne overskriften</li>
                         {% endfor %}
-                        {% include "options.html.twig" with {id: 'gruppe_'~gruppe.getId()~'_visning', title: 'Velg visning', start: 'tabell', options: [{id: 'liste', title: 'Liste'},{id: 'tabell', title: 'Tabell'}]} %}
+                        {% if gruppe.getAll()|length > 0 %}
+                            {% include "options.html.twig" with {id: 'gruppe_'~gruppe.getId()~'_visning', title: 'Velg visning', start: 'tabell', options: [{id: 'liste', title: 'Liste'},{id: 'tabell', title: 'Tabell'}]} %}
+                        {% endif %}
                     {% endblock %}
                 {% endembed %}
             </div>
