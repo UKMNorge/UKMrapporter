@@ -68,7 +68,7 @@ class Gruppe
     public function setInnslag(array $innslag)
     {
         $this->innslag = $innslag;
-
+        $this->sorted_innslag = false;
         return $this;
     }
 
@@ -188,12 +188,21 @@ class Gruppe
         return isset($this->grupper[$gruppe_overskrift]);
     }
 
+    /**
+     * Hent en gruppe fra overskrift
+     *
+     * @param String $gruppe_overskrift
+     * @return Gruppe
+     */
     public function getGruppe(String $gruppe_overskrift)
     {
         return $this->grupper[$gruppe_overskrift];
     }
+
     /**
      * Hent undergrupper av denne gruppen
+     * 
+     * @return Array<Gruppe>
      */
     public function getGrupper()
     {
@@ -207,7 +216,8 @@ class Gruppe
     /**
      * Legg til en undergruppe av denne gruppen
      *
-     * @return  self
+     * @param Gruppe $gruppe
+     * @return self
      */
     public function addGruppe(Gruppe $gruppe)
     {
@@ -219,6 +229,8 @@ class Gruppe
 
     /**
      * Hent gruppens ID
+     * 
+     * @return Int id
      */
     public function getId()
     {
@@ -228,12 +240,12 @@ class Gruppe
     /**
      * Sett attributt
      *
-     * @param string $key
-     * @param $value
+     * @param String $key
+     * @param mixed $value
      *
-     * @return innslag
+     * @return self
      **/
-    public function setAttr($key, $value)
+    public function setAttr(String $key, $value)
     {
         $this->attributes[$key] = $value;
         return $this;
@@ -242,11 +254,11 @@ class Gruppe
     /**
      * Hent attributt
      *
-     * @param string $key
+     * @param String $key
      *
-     * @return value
+     * @return mixed
      **/
-    public function getAttr($key)
+    public function getAttr(String $key)
     {
         return isset($this->attributes[$key]) ? $this->attributes[$key] : false;
     }
