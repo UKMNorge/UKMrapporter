@@ -7,6 +7,10 @@
         {{ innslag.getNavn() }}
     {% endif %}
 	{% if config.get('tittel_visning') == 'tittel_og_navn' %}
-		-  {{ innslag.getNavn() }}
+        {% if innslag.getType().harTitler() %}
+            - {{ innslag.getNavn() }}
+        {% else %}
+            <small>{{ innslag.getType().getNavn() }}</small>
+        {% endif %}
 	{% endif %}
 {% endblock %}

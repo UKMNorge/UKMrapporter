@@ -1,0 +1,9 @@
+<ol class="list-group">
+	<li class="list-group-item list-group-title">
+		<h4>Type innslag</h4>
+	</li>
+
+	{% for type in arrangement.getInnslagTyper().getAll() %}
+		{% include "checkbox.html.twig" with {id: 'type_'~type.getKey(), title: type.getNavn() } %}
+	{% endfor %}
+</ol>
