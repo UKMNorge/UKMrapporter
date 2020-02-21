@@ -33,4 +33,15 @@ class ConfigValue {
     {
         return $this->value;
     }
+
+    /**
+     * Update the value
+     *
+     * @param mixed $value
+     * @return self
+     */
+    public function setValue( $value ) {
+        $this->value = $value;
+        return $this;
+    }
 }
