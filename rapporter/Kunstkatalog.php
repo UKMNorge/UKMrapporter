@@ -30,11 +30,15 @@ class Kunstkatalog extends Program
         
         return parent::getRenderData();
     }
+
+    /**
+     * Hent excel-fil (og få med arket titler)
+     *
+     * @inheritdoc
+     */
+    public function getExcelFile()
+    {
+        $this->getConfig()->get('vis_titler')->setValue(true);
+        return parent::getExcelFile();
+    }
 }
-
-
-/**
- * TODO
- * - Hvis krysset av for "vis personer", skjul innslagstittel fra navnet
- * - Skjul label "personer" i kunstkatalog
- */
