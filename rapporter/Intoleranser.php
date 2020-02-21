@@ -12,7 +12,7 @@ class Intoleranser extends Rapport
 {
     public $kategori_id = 'personer';
     public $ikon = 'dashicons-carrot';
-    public $navn = 'Allergi / intoleranse';
+    public $navn = 'Intoleranse / allergi';
     public $beskrivelse = 'Deltakernes allergier og intoleranser.';
     public $krever_hendelse = false;
 

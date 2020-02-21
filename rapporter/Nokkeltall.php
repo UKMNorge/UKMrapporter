@@ -8,7 +8,7 @@ use UKMNorge\Rapporter\Framework\Rapport;
 
 class Nokkeltall extends Rapport
 {
-    public $kategori_id = 'personer';
+    public $kategori_id = 'statistikk';
     public $ikon = 'dashicons-chart-pie';
     public $navn = 'Nøkkeltall';
     public $beskrivelse = 'Hvor mange påmeldte er det i hver kategori?';

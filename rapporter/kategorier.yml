@@ -7,3 +7,6 @@ program:
 videresending:
   navn: Videresending
   ikon: ""
+statistikk:
+  navn: Statistikk
+  ikon: ""

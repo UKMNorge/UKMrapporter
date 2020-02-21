@@ -8,7 +8,7 @@ use UKMNorge\Rapporter\Framework\Rapport;
 class Personvern extends Program
 {
     public $kategori_id = 'personer';
-    public $ikon = 'dashicons-editor-ol';
+    public $ikon = 'dashicons-welcome-view-site';
     public $navn = 'Personvern';
     public $beskrivelse = 'Alle deltakere som ikke vil bli filmet eller tatt bilde av';
     public $krever_hendelse = false;
