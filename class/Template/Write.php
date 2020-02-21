@@ -24,6 +24,7 @@ class Write {
         $template_id = $query->run();
 
         if( !$template_id ) {
+            echo $query->debug();
             throw new Exception(
                 'Kunne ikke opprette mal',
                 500001001
