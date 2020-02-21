@@ -1,0 +1,7 @@
+{% embed "toggle.html.twig" with {id: 'vis_titler', title: 'Vis titler?', start: 'yes' } %}
+	{% block yes %}
+		{% include "checkbox.html.twig" with {id: 'tittel_varighet', title: 'Varighet'} %}
+		{% include "checkbox.html.twig" with {id: 'tittel_detaljer', title: 'Detaljer'} %}
+		{% include "options.html.twig" with {id: 'titler_visning', title: 'Velg visning', start: 'kompakt', options: [{id: 'kompakt', title: 'Kompakt'},{id: 'tabell', title: 'Tabell'}]} %}
+	{% endblock %}
+{% endembed %}

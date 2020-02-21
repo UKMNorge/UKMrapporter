@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col-12 col-sm-6 col-md-4 col-xl-3">
+		<ol class="list-group">
+			<li class="list-group-item list-group-title">
+				<h4>Type innslag</h4>
+			</li>
+
+			{% for type in arrangement.getInnslagTyper().getAll() %}
+				{% include "checkbox.html.twig" with {id: 'type_'~type.getKey(), title: type.getNavn() } %}
+			{% endfor %}
+		</ol>
+	</div>
+	<div class="col-12 col-sm-6 col-md-8 col-xl-9">
+		<div class="row">
+			<div class="col-12 col-md-6 col-xl-4">
+				{% include "AlleInnslag/Tilpass/innslag.html.twig" %}
+			</div>
+			<div class="col-12 col-md-6 col-xl-4">
+				{% include "AlleInnslag/Tilpass/deltakere.html.twig" %}
+			</div>
+			<div class="col-12 col-md-6 col-xl-4">
+				{% include "AlleInnslag/Tilpass/titler.html.twig" %}
+			</div>
+			<div class="col-12 col-md-6 col-xl-4">
+				{% include "AlleInnslag/Tilpass/kontaktperson.html.twig" %}
+			</div>
+		</div>
+	</div>
+</div>

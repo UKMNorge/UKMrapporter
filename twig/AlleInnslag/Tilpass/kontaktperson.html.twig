@@ -1,0 +1,7 @@
+{% embed "toggle.html.twig" with {id: 'vis_kontaktperson', title: 'Vis kontaktperson?', start: 'yes' } %}
+	{% block yes %}
+		{% include "checkbox.html.twig" with {id: 'kontakt_alder', title: 'Alder'} %}
+		{% include "checkbox.html.twig" with {id: 'kontakt_mobil', title: 'Mobilnummer'} %}
+		{% include "checkbox.html.twig" with {id: 'kontakt_epost', title: 'E-post'} %}
+	{% endblock %}
+{% endembed %}
