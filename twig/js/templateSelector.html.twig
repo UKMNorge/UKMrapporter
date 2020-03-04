@@ -1,9 +1,10 @@
-<select class="form-control">
+<select class="form-control" id="saveTemplateSelector">
     <option value="new" selected>Opprett som ny mal</option>
     {% if templates|length > 0 %}
         <optgroup label="eller overskriv">
         {% for template in templates %}
-            <option value="{{template.id}}">{{template.name}}</option>
+            <option value="{{template.id}}" data-beskrivelse="{{ template.beskrivelse }}">{{template.name}}</option>
+        	}
         {% endfor %}
         </optgroup>
     {% endif %}

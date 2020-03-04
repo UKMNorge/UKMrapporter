@@ -189,12 +189,17 @@ var UKMrapporter = function(jQuery) {
 
             emitter.on('templatePicker.show', templateSaver.hide);
 
+            jQuery("#saveTemplateSelector").change(function(event) {
+                
+            });
         },
         selectedTemplate: function(e) {
             if (jQuery(e.target).val() == 'new') {
                 templateSaver.name.show();
+                jQuery("#saveTemplateBeskrivelse").html("");
             } else {
                 templateSaver.name.hide();
+                jQuery("#saveTemplateBeskrivelse").html(jQuery(event.target.selectedOptions[0]).data("beskrivelse"));
             }
         },
         hide: function() {
