@@ -124,6 +124,9 @@ class Gruppe
 
     /**
      * Legg til en person som skal være med til view
+     * 
+     * Funksjonen passer automatisk på at én unik person blir med i rapporten
+     * maks én gang.
      *
      * @param Person $person
      * @return self
