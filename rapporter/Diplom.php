@@ -13,7 +13,7 @@ class Diplom extends Rapport
     public $kategori_id = 'personer';
     public $ikon = 'dashicons-welcome-learn-more';
     public $navn = 'Diplomer';
-    public $beskrivelse = 'Last ned ferdig wordfil.';
+    public $beskrivelse = 'Last ned ferdig wordfil klar for utskrift.';
     public $krever_hendelse = false;
     public $har_word = true;
 
