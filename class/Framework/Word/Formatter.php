@@ -5,6 +5,7 @@ namespace UKMNorge\Rapporter\Framework\Word;
 use \PhpOffice\PhpWord\Element\Table;
 use UKMNorge\File\Word as WordDok;
 use UKMNorge\Innslag\Innslag;
+use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Rapporter\Framework\Gruppe;
 
 class Formatter extends ConfigAware implements FormatterInterface
@@ -37,11 +38,17 @@ class Formatter extends ConfigAware implements FormatterInterface
                 $loop_index++;
                 static::innslag($word, $innslag, $loop_index);
             }
+        } elseif ($gruppe->harPersoner()) {
+            $loop_index = 0;
+            foreach ($gruppe->getPersoner() as $person) {
+                $loop_index++;
+                static::person($word, $person, $loop_index);
+            }
         } else {
             static::ingen($word, $gruppe->getOverskrift());
         }
-        
-        if( $indent < 2 ) {
+
+        if ($indent < 2) {
             $word->sideskift();
         }
     }
@@ -85,12 +92,28 @@ class Formatter extends ConfigAware implements FormatterInterface
     }
 
     /**
+     * Rendre informasjonen om et innslag
+     *
+     * @param WordDok $word
+     * @param Innslag $innslag
+     * @return void
+     */
+    public static function person(WordDok $word, Person $person, Int $loop_index = null)
+    {
+        // Opprett tabell
+        $table = $word->tabell();
+        static::personBasisInfo($word, $table, $person);
+        $word->linjeSkift();
+    }
+
+    /**
      * Sett inn linjeskift etter innslag
      *
      * @param WordDok $word
      * @return void
      */
-    public static function innslagLinjeskiftEtter( WordDok $word ) {
+    public static function innslagLinjeskiftEtter(WordDok $word)
+    {
         $word->linjeSkift();
         $word->linjeSkift();
         $word->linjeSkift();
@@ -103,15 +126,16 @@ class Formatter extends ConfigAware implements FormatterInterface
      * @param Innslag $innslag
      * @return void
      */
-    public static function innslagTekniskeBehov( WordDok $word, Innslag $innslag ) {
-        if( !static::show('tekniske_behov') || !$innslag->getType()->harTekniskeBehov()) {
+    public static function innslagTekniskeBehov(WordDok $word, Innslag $innslag)
+    {
+        if (!static::show('tekniske_behov') || !$innslag->getType()->harTekniskeBehov()) {
             return;
         }
 
-        if( !empty($innslag->getTekniskeBehov())) {
+        if (!empty($innslag->getTekniskeBehov())) {
             $word->linjeSkift();
             $word->tekstMuted('TEKNISKE BEHOV:');
-            $word->tekst( $innslag->getTekniskeBehov());
+            $word->tekst($innslag->getTekniskeBehov());
         }
     }
 
@@ -122,8 +146,9 @@ class Formatter extends ConfigAware implements FormatterInterface
      * @param Innslag $innslag
      * @return void
      */
-    public static function innslagMediefiler( WordDok $word, Innslag $innslag ) {
-        if( !static::show('mediefiler')) {
+    public static function innslagMediefiler(WordDok $word, Innslag $innslag)
+    {
+        if (!static::show('mediefiler')) {
             return;
         }
 
@@ -194,7 +219,7 @@ class Formatter extends ConfigAware implements FormatterInterface
                     )
                 );
             } else {
-                if( empty($innslag->getBeskrivelse()) ) {
+                if (empty($innslag->getBeskrivelse())) {
                     return;
                 }
                 $row = $table->addRow();
@@ -322,5 +347,32 @@ class Formatter extends ConfigAware implements FormatterInterface
     public static function ingen(WordDok $word, String $gruppe_navn)
     {
         $word->tekst('Ingen innslag i ' . $gruppe_navn);
+    }
+
+
+
+    /**
+     * Basisinfo om en gitt person (hvis vi bruker personer, ikke innslag) (rad 1)
+     *
+     * @param WordDok $word
+     * @param Table $table
+     * @param Person $person
+     * @return void
+     */
+    public static function personBasisInfo(WordDok $word, Table $table, Person $person)
+    {
+        // Beregn bredder
+        $width_navn = 100;
+
+        // Rad 1: basic infos
+        $row = $table->addRow(WordDok::ptToTwips(0));
+
+        $word->h3(
+            $person->getNavn(),
+            $word->celle(
+                WordDok::pcToTwips($width_navn),
+                $row
+            )
+        );
     }
 }
