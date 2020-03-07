@@ -16,9 +16,13 @@ class Diplom extends Rapport
     public $beskrivelse = 'Last ned ferdig wordfil klar for utskrift.';
     public $krever_hendelse = false;
     public $har_word = true;
+    public $har_excel = false;
+    public $har_sms = false;
+    public $har_epost = false;
 
     public function getRenderData()
     {
+        $this->getConfig()->add(new ConfigValue("vis_deltakere", "true"));
         $gruppe = new Gruppe('container', '');
         $gruppe->setVisOverskrift(false);
 
@@ -35,29 +39,15 @@ class Diplom extends Rapport
      * 
      * @return WordFormatter
      */
-    public function getWordFormatter() {
+    public function getWordFormatter()
+    {
         $this->getConfig()->add(
             new ConfigValue(
                 'arrangement_navn',
                 $this->getArrangement()->getNavn()
-            )    
+            )
         );
 
-        return new FormatterDiplom( $this->getConfig() );
-    }
-
-    /**
-     * Lag og returner excel-filens URL
-     * 
-     * @return String url
-     */
-    public function getExcelFile()
-    {
-        $excel = new ExcelIntoleranser(
-            $this->getNavn() . ' oppdatert ' . date('d-m-Y') . ' kl ' . date('Hi') . ' - ' . $this->getArrangement()->getNavn(),
-            $this->getRenderDataPersoner(),
-            $this->getConfig()
-        );
-        return $excel->writeToFile();
+        return new FormatterDiplom($this->getConfig());
     }
 }

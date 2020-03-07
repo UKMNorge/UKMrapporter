@@ -18,23 +18,49 @@ class FormatterDiplom extends Formatter
      * @return void
      */
     public static function person(Word $word, Person $person, Int $loop_index = null)
-    {       
+    {
         $tabell = $word->tabell();
 
-        $row = $tabell->addRow($word::mmToTwips(28));
-        $celle = $row->addCell($word::pcToTwips(100));
+        $row = $tabell->addRow($word::mmToTwips(235));
+        $celle = $row->addCell(10000);
+
+        $word->tekst(
+            '',
+            $celle
+        );
+
+        $row = $tabell->addRow();
+        $celle = $row->addCell(11000);
 
         $word->tekstFet(
             $person->getNavn(),
-            $celle
+            $celle,
+            [
+                'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
+                'spaceAfter' => $word::ptToTwips(0.5 * $word::DEFAULT_FONT_SIZE)
+            ],
+            [
+                'size' => 16
+            ]
         );
-        $word->linjeSkift($celle);
         $word->tekst(
-            'har deltatt på UKM i '. 
+            'har deltatt på UKM i ' .
                 static::getConfig()->get('arrangement_navn')->getValue(),
-            $celle
+            $celle,
+            [
+                'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER
+            ],
+            [
+                'size' => 16
+            ]
+            // $word->celle(
+            //     $word::mmToTwips(29),
+            //     $row,
+            //     [
+            //         'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER
+            //     ]
+            // )
         );
         $word->sideskift();
     }
-
 }
