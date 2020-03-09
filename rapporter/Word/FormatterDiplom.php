@@ -44,8 +44,7 @@ class FormatterDiplom extends Formatter
             ]
         );
         $word->tekst(
-            'har deltatt på UKM i ' .
-                static::getConfig()->get('arrangement_navn')->getValue(),
+            static::getConfig()->get('arrangement_navn')->getValue(),
             $celle,
             [
                 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER
