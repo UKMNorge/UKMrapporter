@@ -7,6 +7,7 @@ class Kategori
     var $id = null;
     var $navn;
     var $ikon;
+    var $senter;
     var $rapporter = [];
 
     /**
@@ -20,6 +21,15 @@ class Kategori
         foreach ($data as $key => $value) {
             $this->$key = $value;
         }
+    }
+
+    /**
+     * Hvilket rapportsenter skal denne rapporten inn i?
+     *
+     * @return String senter
+     */
+    public function getSenter() {
+        return $this->senter;
     }
 
     /**
