@@ -3,12 +3,11 @@
 namespace UKMNorge\Rapporter;
 
 use UKMnettverket;
-use UKMNorge\Innslag\Samling;
 use UKMNorge\Rapporter\CustomItems\Administrator;
 use UKMNorge\Rapporter\Framework\Gruppe;
-use UKMNorge\Rapporter\Framework\Rapport;
+use UKMNorge\Rapporter\Framework\UserRapport;
 
-class Lokalkontakter extends Rapport
+class Lokalkontakter extends UserRapport
 {
     public $kategori_id = 'user_kontakt';
     public $ikon = 'dashicons-universal-access';
@@ -48,10 +47,12 @@ class Lokalkontakter extends Rapport
                     continue;
                 }
 
-                if($data->harGruppe('kommune_'. $kommune->getId())) {
-                    $kommuneGruppe = $data->getGruppe('kommune_'. $kommune->getId());
+                $kommune_key = $kommune->getNavn() .'_'. $kommune->getId();
+
+                if($data->harGruppe($kommune_key)) {
+                    $kommuneGruppe = $data->getGruppe($kommune_key);
                 } else {
-                    $kommuneGruppe = new Gruppe('kommune_'. $kommune->getId(), $kommune->getNavn());
+                    $kommuneGruppe = new Gruppe($kommune_key, $kommune->getNavn());
                     $data->addGruppe($kommuneGruppe);
                 }
                 
