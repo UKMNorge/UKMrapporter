@@ -12,7 +12,11 @@ class Excel {
         $this->excel = new ExcelDok( $navn );
 
         /** HEADERS */
-        $this->excel->setArk('innslag', 'Innslag');
+        if( $config->vis('deltakere') ) {
+            $this->excel->setArk('innslag', 'Oppsummering');
+        } else {
+            $this->excel->setArk('innslag', 'Innslag');
+        }
         $this->rad();
         $kolonne = $this->celle('A', 'Innslag');
         $kolonne = $this->celle($kolonne,'Kategori');
@@ -26,7 +30,8 @@ class Excel {
         $kolonne = $this->celleHvis('kontaktperson', 'Kontaktperson', $kolonne);
         $kolonne = $this->celleHvis('titler', 'Titler', $kolonne);
         #$kolonne = $this->celleHvis('mediefiler', 'Har mediefiler', $kolonne);
-        
+        $this->fet('A'. $this->getRad() .':'. $kolonne . $this->getRad());
+
         if( $config->vis('deltakere') ) {
             $this->setArk('personer', 'Personer');
             $this->rad();
@@ -44,6 +49,8 @@ class Excel {
             $kolonne_personer = $this->celleHvis('kommune', 'Kommune', $kolonne_personer);
             $kolonne_personer = $this->celleHvis('beskrivelse', 'Beskrivelse', $kolonne_personer);
             $kolonne_personer = $this->celleHvis('tekniske_behov', 'Tekniske behov', $kolonne_personer);
+            $this->fet('A'. $this->getRad() .':'. $kolonne_personer . $this->getRad());
+
         }
         if( $config->vis('kontaktperson') ) {
             $this->setArk('kontakt','Kontaktpersoner');
@@ -62,6 +69,8 @@ class Excel {
             $kolonne_kontakt = $this->celleHvis('kommune', 'Kommune', $kolonne_kontakt);
             $kolonne_kontakt = $this->celleHvis('beskrivelse', 'Beskrivelse', $kolonne_kontakt);
             $kolonne_kontakt = $this->celleHvis('tekniske_behov', 'Tekniske behov', $kolonne_kontakt);    
+            $this->fet('A'. $this->getRad() .':'. $kolonne_kontakt . $this->getRad());
+
         }
 
         if( $config->vis('titler') ) {
@@ -77,6 +86,8 @@ class Excel {
             $kolonne_titler = $this->celleHvis('kommune', 'Kommune', $kolonne_titler);
             $kolonne_titler = $this->celleHvis('beskrivelse', 'Beskrivelse', $kolonne_titler);
             $kolonne_titler = $this->celleHvis('tekniske_behov', 'Tekniske behov', $kolonne_titler);
+            $this->fet('A'. $this->getRad() .':'. $kolonne_titler . $this->getRad());
+
         }
 
         /** DATA */
@@ -195,30 +206,88 @@ class Excel {
         }
     }
 
+    /**
+     * Skriv excel-data til fil
+     *
+     * @return String url
+     */
     public function writeToFile() {
         return $this->excel->writeToFile();
     }
 
+    /**
+     * Angi aktivt ark
+     *
+     * @inheritdoc 
+     */
     public function ark( String $id ) {
         return $this->excel->ark($id);
     }
 
+    /**
+     * Angi aktivt ark
+     *
+     * @param String $id
+     * @param String $navn
+     * @return void
+     */
     public function setArk( String $id, String$navn=null ) {
         return $this->excel->setArk( $id, $navn );
     }
 
-    public function celleHvis($hvis, $verdi, $kolonne ) {
+    /**
+     * Sett verdi for celle hvis config sier $hvis skal vises
+     *
+     * @param String $hvis
+     * @param String $verdi
+     * @param String $kolonne
+     * @return String neste kolonne (eller denne, om hvis==false)
+     */
+    public function celleHvis(String $hvis, String $verdi, String $kolonne ) {
         if( !$this->config->vis( $hvis ) ) {
             return $kolonne;
         }
         $this->celle($kolonne, $verdi);
         return ++$kolonne;
     }
+    
+    /**
+     * Sett verdi for en celle
+     *
+     * @param String $kolonne
+     * @param String $verdi
+     * @return String neste kolonne
+     */
     public function celle($kolonne, $verdi) {
         $this->excel->celle($kolonne, $verdi);
         return ++$kolonne;
     }
+
+    /**
+     * Legg til en ny rad
+     *
+     * @return void
+     */
     public function rad() {
         $this->excel->rad();
+    }
+
+    /**
+     * Hent aktiv rad ID
+     *
+     * @return Int $rad
+     */
+    public function getRad() {
+        return $this->excel->getRad();
+    }
+
+    /**
+     * Angi 
+     *
+     * @param String $cell_ref
+     * @return void
+     */
+    public function fet( String $cell_ref ) {
+        return $this->excel->fet($cell_ref);
     }
 }
