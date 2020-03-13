@@ -77,18 +77,20 @@ class UKMrapporter extends Modul
      */
     public static function userMeny()
     {
-        add_action(
-            'admin_print_styles-'. add_menu_page(
-                'Rapporter',
-                'Rapporter',
-                'ukm_rapporter',
-                'UKMrapporter',
-                ['UKMrapporter', 'renderAdmin'],
-                'dashicons-analytics',
-                81
-            ),
-            ['UKMrapporter', 'scripts_and_styles']
-        );
+        if (UKMnettverket::erCurrentAdminFylkeAdmin()) {
+            add_action(
+                'admin_print_styles-'. add_menu_page(
+                    'Rapporter',
+                    'Rapporter',
+                    'ukm_rapporter',
+                    'UKMrapporter',
+                    ['UKMrapporter', 'renderAdmin'],
+                    'dashicons-analytics',
+                    81
+                ),
+                ['UKMrapporter', 'scripts_and_styles']
+            );
+        }
     }
 
     public static function renderAdmin()
