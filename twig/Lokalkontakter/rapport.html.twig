@@ -3,46 +3,48 @@
 {% set colspan = 1 %}
 <table class="table table-striped">
 	<tr>
-        <th>Kommune / bydel</th>
+		<th>Kommune / bydel</th>
 		<th>Kontaktperson</th>
 		{% if config.vis('mobil') %}
 			<th>Mobilnummer</th>
-            {% set colspan = colspan + 1 %}
+			{% set colspan = colspan + 1 %}
 		{% endif %}
 		{% if config.vis('epost') %}
 			<th>E-post</th>
-            {% set colspan = colspan + 1 %}
+			{% set colspan = colspan + 1 %}
 		{% endif %}
 	</tr>
 
-
-	{% for omrade in rapport.getOmrader() %}
-        {% set fylke = omrade.getFylke() %}
-		{% for kommune in fylke.getKommuner().getAll()|filter( 
-            kommune => 
-                config.vis('valgte_kommuner_i_'~fylke.getId()) 
-                or (
-                    not config.vis('valgte_kommuner_i_'~fylke.getId())
-                    and config.vis('kommune_'~kommune.getId())
-                )
-            )
-        %}
-			{% for admin in kommune.getOmrade().getAdministratorer().getAll() %}
-				<tr>
-                    <td>{{kommune.getNavn() }}</td>
-					<td>{{admin.getNavn()}}</td>
-					{% if config.vis('mobil') %}
-						<td>{{admin.getUser().getMobil()}}</td>
-					{% endif %}
-					{% if config.vis('epost') %}
-						<td>{{admin.getUser().getEpost()}}</td>
-					{% endif %}
-				</tr>
-			{% else %}
-				<tr>
-                    <td>{{kommune.getNavn() }}</td>
-					<td class="text-muted" colspan="{{colspan}}">Ingen kontaktpersoner</td>
-				</tr>
-			{% endfor %}
+	{% for kommune in rapport.getRenderData().getGrupper() %}
+		{% for admin in kommune.getCustomItems() %}
+			<tr>
+				<td>{{admin.getKommune().getNavn() }}</td>
+				<td>{{admin.getNavn()}}</td>
+				{% if config.vis('mobil') %}
+					<td>
+						{% include "Components/mobil.html.twig" with {mobil: admin.getMobil(), navn:admin.getNavn()} %}
+					</td>
+				{% endif %}
+				{% if config.vis('epost') %}
+					<td>
+						{% include "Components/epost.html.twig" with {epost: admin.getEpost() } %}
+					</td>
+				{% endif %}
+			</tr>
 		{% endfor %}
 	{% endfor %}
+</table>
+
+
+<h3 class="mt-5">Kommuner / bydeler uten registrerte administratorer</h3>
+<table class="table table-striped">
+	{% for kommune in rapport.getRenderData().getGrupper()|filter(kommune => not kommune.harCustomItems()) %}
+        <tr>
+            <th>{{kommune.getOverskrift()}}</th>
+        </tr>
+    {% else %}
+        <tr>
+            <th>Alle kommuner har registrert minst én administrator</th>
+        </tr>
+    {% endfor %}
+</table>
