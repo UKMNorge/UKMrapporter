@@ -22,12 +22,12 @@
 				<td>{{admin.getNavn()}}</td>
 				{% if config.vis('mobil') %}
 					<td>
-						{% include "Components/mobil.html.twig" with {mobil: admin.getMobil(), navn:admin.getNavn()} %}
+						{{admin.getMobil()}}
 					</td>
 				{% endif %}
 				{% if config.vis('epost') %}
 					<td>
-						{% include "Components/epost.html.twig" with {epost: admin.getEpost() } %}
+						{% include "Components/epost.html.twig" with {epost: admin.getEpost(), expand: true } %}
 					</td>
 				{% endif %}
 			</tr>
