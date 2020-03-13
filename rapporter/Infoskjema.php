@@ -15,12 +15,7 @@ class Infoskjema extends Rapport
     public $har_excel = false;
     public $har_sms = false;
     public $har_epost = false;
-    
 
-    public function getRenderData() {
-        $grupper = new Gruppe('container', 'Nøkkeltall');
-
-    }
 
     /**
      * Hent hvilken template som skal benyttes
