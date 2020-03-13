@@ -1,6 +1,6 @@
 <?php
 /* 
-Plugin Name: UKM Rapporter V2
+Plugin Name: UKM Rapporter
 Plugin URI: http://www.ukm-norge.no
 Description: UKM Norge admin
 Author: UKM Norge / M Mandal 
@@ -35,12 +35,14 @@ class UKMrapporter extends Modul
             );
         }
 
+        /*
         if (function_exists('is_network_admin') && is_network_admin()) {
             add_action(
                 'network_admin_menu',
                 ['UKMrapporter', 'nettverkMeny']
             );
         }
+        */
     }
 
     public static function meny()
@@ -61,11 +63,12 @@ class UKMrapporter extends Modul
         );
     }
 
+    /*
     public static function nettverkMeny()
     {
         $page = add_menu_page(
             'Rapporter',
-            'Rapporter V2',
+            'Rapporter',
             'superadmin',
             'UKMrapporter',
             ['UKMrapporter', 'renderAdmin'],
@@ -76,6 +79,7 @@ class UKMrapporter extends Modul
             ['UKMrapporter', 'scripts_and_styles']
         );
     }
+    */
 
     public static function scripts_and_styles()
     {
