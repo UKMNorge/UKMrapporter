@@ -14,6 +14,7 @@ class Lokalkontakter extends Rapport
     public $ikon = 'dashicons-universal-access';
     public $navn = 'Lokalkontakter';
     public $beskrivelse = 'Kontaktinfo til alle dine lokalkontakter';
+    public $har_excel = false;
 
     /**
      * Hent alle fylke-områder current user kan administrere
