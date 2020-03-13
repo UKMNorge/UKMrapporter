@@ -14,11 +14,10 @@ class Gruppe
     var $grupper = [];
     var $innslag = [];
     var $personer = [];
-    var $sorted_grupper = false;
-    var $sorted_innslag = false;
-    var $sorted_personer = false;
+    var $custom_items = [];
+    var $sorted_data = false;
     var $attributes = [];
-    
+
     /**
      * Opprett en ny gruppe
      * Hvis gruppen er en undergruppe av en annen, er det 
@@ -53,7 +52,7 @@ class Gruppe
      */
     public function getInnslag()
     {
-        if (!$this->sorted_innslag) {
+        if (!$this->sorted_data) {
             ksort($this->innslag);
         }
         return $this->innslag;
@@ -68,7 +67,7 @@ class Gruppe
     public function setInnslag(array $innslag)
     {
         $this->innslag = $innslag;
-        $this->sorted_innslag = false;
+        $this->sorted_data = false;
         return $this;
     }
 
@@ -80,7 +79,7 @@ class Gruppe
      */
     public function addInnslag(Innslag $innslag)
     {
-        $this->sorted_innslag = false;
+        $this->sorted_data = false;
         $this->innslag[$innslag->getNavn() . '-' . $innslag->getId()] = $innslag;
         return $this;
     }
@@ -101,7 +100,7 @@ class Gruppe
      */
     public function getPersoner()
     {
-        if (!$this->sorted_personer) {
+        if (!$this->sorted_data) {
             ksort($this->personer);
         }
         return $this->personer;
@@ -133,8 +132,63 @@ class Gruppe
      */
     public function addPerson(Person $person)
     {
-        $this->sorted_innslag = false;
+        $this->sorted_data = false;
         $this->personer[$person->getNavn() . '-' . $person->getId()] = $person;
+        return $this;
+    }
+
+    /**
+     * Hvorvidt denne gruppen skal ha, og har, custom-items
+     *
+     * @return Bool $har_custom_item
+     */
+    public function harCustomItems()
+    {
+        return !$this->harGrupper() && sizeof($this->custom_items) > 0;
+    }
+
+    /**
+     * Hent alle items (key-sorted)
+     * @return Array<CustomItemInterface>
+     */
+    public function getCustomItems()
+    {
+        if (!$this->sorted_data) {
+            ksort($this->custom_items);
+        }
+        return $this->custom_items;
+    }
+
+    /**
+     * Sett custom items som skal være med til view
+     * 
+     * OBS: Overskriver personer lagt til tidligere
+     *
+     * @param Array<CustomItemInterface>
+     * @return self
+     */
+    public function setCustomItems(array $custom_items)
+    {
+        foreach($custom_items as $custom_item ) {
+            $this->addCustomItem($custom_item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Legg til en custom item som skal være med til view
+     * 
+     * Funksjonen passer automatisk på at et unikt objekt blir med i rapporten
+     * maks én gang.
+     *
+     * @param CustomItemInterface item
+     * @return self
+     */
+    public function addCustomItem(CustomItemInterface $custom_item)
+    {
+        $this->sorted_data = false;
+        $this->custom_items[$custom_item->getId()] = $custom_item;
         return $this;
     }
 
@@ -181,25 +235,25 @@ class Gruppe
     }
 
     /**
-     * Har gruppen en undergruppe med gitt overskrift?
+     * Har gruppen en undergruppe med gitt id?
      *
-     * @param String $gruppe_overskrift
+     * @param String $gruppe_id
      * @return Bool
      */
-    public function harGruppe(String $gruppe_overskrift)
+    public function harGruppe(String $gruppe_id)
     {
-        return isset($this->grupper[$gruppe_overskrift]);
+        return isset($this->grupper[$gruppe_id]);
     }
 
     /**
-     * Hent en gruppe fra overskrift
+     * Hent en gruppe fra id
      *
-     * @param String $gruppe_overskrift
+     * @param String $gruppe_id
      * @return Gruppe
      */
-    public function getGruppe(String $gruppe_overskrift)
+    public function getGruppe(String $gruppe_id)
     {
-        return $this->grupper[$gruppe_overskrift];
+        return $this->grupper[$gruppe_id];
     }
 
     /**
@@ -209,9 +263,9 @@ class Gruppe
      */
     public function getGrupper()
     {
-        if (!$this->sorted_grupper) {
+        if (!$this->sorted_data) {
             ksort($this->grupper);
-            $this->sorted_grupper = true;
+            $this->sorted_data = true;
         }
         return $this->grupper;
     }
@@ -224,7 +278,7 @@ class Gruppe
      */
     public function addGruppe(Gruppe $gruppe)
     {
-        $this->sorted_grupper = false;
+        $this->sorted_data = false;
         $this->grupper[$gruppe->getId()] = $gruppe;
 
         return $this;
