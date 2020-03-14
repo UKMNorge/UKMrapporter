@@ -5,6 +5,7 @@ namespace UKMNorge\Rapporter\Framework\Word;
 use \PhpOffice\PhpWord\Element\Table;
 use UKMNorge\File\Word as WordDok;
 use UKMNorge\Innslag\Innslag;
+use UKMNorge\Innslag\Media\Bilder\Bilde;
 use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Rapporter\Framework\Gruppe;
 
@@ -86,6 +87,7 @@ class Formatter extends ConfigAware implements FormatterInterface
         static::innslagBeskrivelse($word, $table, $innslag);
         static::innslagTekniskeBehov($word, $innslag);
         static::innslagMediefiler($word, $innslag);
+        static::innslagBilder($word, $innslag);
         static::getWordFormatterTitler()::render($word, $innslag);
         static::getWordFormatterPersoner()::render($word, $innslag);
         static::innslagLinjeskiftEtter($word);
@@ -154,7 +156,92 @@ class Formatter extends ConfigAware implements FormatterInterface
 
         $word->linjeSkift();
         $word->tekstMuted('MEDIEFILER:');
-        $word->tekst('Beklager, rapporten støtter ikke visning av mediefiler enda');
+        if ($innslag->getPlayback()->getAntall() > 0) {
+            foreach ($innslag->getPlayback()->getAll() as $fil) {
+                $tekstRun = $word->tekstRun();
+                $word->tekstFet($fil->getNavn(), $tekstRun);
+                if (!empty($fil->getBeskrivelse())) {
+                    $word->tekst(' - ' . $fil->getBeskrivelse(), $tekstRun);
+                }
+                $word->link($fil->getUrl(), ' Last ned: ' . $fil->getFil());
+            }
+        } else {
+            $word->tekst(
+                $innslag->getNavn() .
+                    ' har ikke opplastede mediefiler for bruk i gjennomføringen'
+            );
+        }
+    }
+
+    /**
+     * List ut alle bilder for innslaget
+     *
+     * @param WordDok $word
+     * @param Innslag $innslag
+     * @return void
+     */
+    public static function innslagBilder(WordDok $word, Innslag $innslag)
+    {
+        if (!static::show('bilder')) {
+            return;
+        }
+        $word->tekstMuted('BILDER:');
+        $tabell = $word->tabell();
+        $printed = [];
+        # UTSTILLING-INNSLAG
+        if ($innslag->getType()->getKey() == 'utstilling') {
+            foreach ($innslag->getTitler()->getAll() as $tittel) {
+                ## BILDE(R) AV KUNSTVERK
+                if ($innslag->getBilder()->harValgt($tittel->getId())) {
+                    $bilde = $innslag->getBilder()->getValgt($tittel->getId());
+                    $printed[] = $bilde->getId();
+                    static::innslagBilde($word, $tabell, $bilde, 'Valgt bilde for ' . $tittel->getId());
+                }
+
+                # BILDE AV KUNSTNER
+                if ($innslag->getBilder()->harValgt(0)) {
+                    $bilde = $innslag->getBilder()->getValgt(0);
+                    $printed[] = $bilde->getId();
+                    static::innslagBilde($word, $tabell, $bilde, 'Bilde av kunstneren');
+                }
+            }
+        }
+        # ANDRE INNSLAG
+        elseif ($innslag->getBilder()->harValgt(0)) {
+            $bilde = $innslag->getBilder()->getValgt(0);
+            $printed[] = $bilde->getId();
+            static::innslagBilde($word, $tabell, $bilde, 'Valgt bilde for innslaget');
+        }
+
+
+        # ANDRE BILDER AV INNSLAGET
+        foreach ($innslag->getBilder()->getAll() as $bilde) {
+            if (in_array($bilde->getId(), $printed)) {
+                continue;
+            }
+            static::innslagBilde($word, $tabell, $bilde);
+        }
+    }
+
+    public static function innslagBilde(WordDok $word, Table $table, Bilde $bilde, String $tekst = null)
+    {
+        $table->addRow();
+        $celle = $table->addCell(WordDok::mmToTwips(80));
+        $word->bilde(
+            $bilde->getSize('medium')->getPath(),
+            ['height' => 80], // points
+            $celle
+        );
+        if (!is_null($tekst)) {
+            $word->tekst($tekst, $celle);
+        }
+
+        $celle = $table->addCell(WordDok::mmToTwips(210 - 80));
+        $word->link(
+            $bilde->getSize('original')->getUrl(),
+            $bilde->getSize('original')->getUrl(),
+            $celle
+        );
     }
 
     /**

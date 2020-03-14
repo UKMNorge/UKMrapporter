@@ -115,19 +115,22 @@
 				</tr>
 				<tr>
 					<td colspan="{{maxCol}}">
-                        {% include "Components/Innslag/Mediefiler/filer.html.twig" %}
+						{% include "Components/Innslag/Mediefiler/filer.html.twig" %}
 					</td>
 				</tr>
-				{% if innslag.getBilder().getAntall() > 0 %}
-					<tr>
-						<td colspan="{{maxCol}}" class="internalHeader">BILDER</td>
-					</tr>
-					<tr>
-						<td colspan="{{maxCol}}">
-							{% include "Components/Innslag/Mediefiler/bilder.html.twig" %}
-						</td>
-					</tr>
-				{% endif %}
+			{% endif %}
+		{% endblock %}
+
+		{% block bilder %}
+			{% if config.show('bilder') and innslag.getBilder().getAntall() > 0 %}
+				<tr>
+					<td colspan="{{maxCol}}" class="internalHeader">BILDER</td>
+				</tr>
+				<tr>
+					<td colspan="{{maxCol}}">
+						{% include "Components/Innslag/Mediefiler/bilder.html.twig" %}
+					</td>
+				</tr>
 			{% endif %}
 		{% endblock %}
 

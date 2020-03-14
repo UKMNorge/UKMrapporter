@@ -17,13 +17,12 @@
 			{% set printed = printed|merge([bilde.getId()]) %}
 			{% include "Components/Innslag/Mediefiler/bilde.html.twig" with { text: 'Bilde av kunstneren' } %}
 		{% endif %}
-	{% else %}
-		{# BILDE AV INNSLAG (IKKE KUNST) #}
-		{% if innslag.getBilder().harValgt(0) %}
-			{% set bilde = innslag.getBilder().getValgt(0) %}
-			{% set printed = printed|merge([bilde.getId()]) %}
-			{% include "Components/Innslag/Mediefiler/bilde.html.twig" with { text: 'Valgt bilde for innslaget' } %}
-		{% endif %}
+
+    {# BILDE AV INNSLAG (IKKE KUNST) #}
+	{% elseif innslag.getBilder().harValgt(0) %}
+        {% set bilde = innslag.getBilder().getValgt(0) %}
+        {% set printed = printed|merge([bilde.getId()]) %}
+        {% include "Components/Innslag/Mediefiler/bilde.html.twig" with { text: 'Valgt bilde for innslaget' } %}
 	{% endif %}
 
 
