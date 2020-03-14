@@ -1,0 +1,16 @@
+{% if innslag.getFilmer().getAntall() > 0 %}
+	<table class="table table-striped">
+		{% for film in innslag.getFilmer().getAll() %}
+			<tr>
+				<td width="40%">
+					{{ film.getNavn() }}
+					<br/>
+					<a href="{{ film.getTvUrl() }}" target="_blank">{{ film.getTvUrl() }}</a>
+				</td>
+				<td>{{ film.getEmbedHtml(null, 'width: 100% !important; max-height: 30vh !important;')|raw }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% else %}
+	{{ innslag.getNavn() }} har ingen opplastede filmer.
+{% endif %}

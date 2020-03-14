@@ -88,6 +88,7 @@ class Formatter extends ConfigAware implements FormatterInterface
         static::innslagTekniskeBehov($word, $innslag);
         static::innslagMediefiler($word, $innslag);
         static::innslagBilder($word, $innslag);
+        static::innslagFilmer($word, $innslag);
         static::getWordFormatterTitler()::render($word, $innslag);
         static::getWordFormatterPersoner()::render($word, $innslag);
         static::innslagLinjeskiftEtter($word);
@@ -220,6 +221,25 @@ class Formatter extends ConfigAware implements FormatterInterface
                 continue;
             }
             static::innslagBilde($word, $tabell, $bilde);
+        }
+    }
+
+    public static function innslagFilmer(WordDok $word, Innslag $innslag ) {
+        if (!static::show('ukmtv') || $innslag->getFilmer()->getAntall() == 0) {
+            return;
+        }
+        $word->tekstMuted('FILMER I UKM-TV:');
+        $tabell = $word->tabell();
+        foreach ($innslag->getFilmer()->getAll() as $film) {
+            $tabell->addRow();
+            $celle = $tabell->addCell(WordDok::mmToTwips(80));
+            $word->tekst($film->getNavn(), $celle);
+            $celle = $tabell->addCell(WordDok::mmToTwips(210 - 80));
+            $word->link(
+                $film->getTvUrl(),
+                $film->getTvUrl(),
+                $celle
+            );
         }
     }
 

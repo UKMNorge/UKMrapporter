@@ -134,6 +134,19 @@
 			{% endif %}
 		{% endblock %}
 
+        {% block ukmtv %}
+			{% if config.show('ukmtv') %}
+				<tr>
+					<td colspan="{{maxCol}}" class="internalHeader">FILMER I UKM-TV</td>
+				</tr>
+				<tr>
+					<td colspan="{{maxCol}}">
+						{% include "Components/Innslag/Mediefiler/filmer.html.twig" %}
+					</td>
+				</tr>
+			{% endif %}
+		{% endblock %}
+
 		{% block notatfelt %}
 			{% if config.show('notatfelt') %}
 				<tr>
