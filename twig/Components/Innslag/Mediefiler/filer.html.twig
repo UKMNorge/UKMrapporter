@@ -1,0 +1,17 @@
+{% if innslag.getPlayback().getAntall() > 0 %}
+	<table class="table table-striped">
+		{% for fil in innslag.getPlayback().getAll() %}
+			<tr>
+				<td width="40%">
+					{{ fil.getNavn() }}
+					<br/>
+					<a href="{{ fil.getUrl() }}">{{ fil.getFil() }}</a>
+				</td>
+				<td>{{ fil.getBeskrivelse() }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% else %}
+	{{ innslag.getNavn() }}
+	har ikke opplastede mediefiler for bruk i gjennomføringen.
+{% endif %}
