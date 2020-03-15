@@ -1,0 +1,33 @@
+<div class="row">
+	{% set printed = [] %}
+
+	{% if innslag.getType().getKey() == 'utstilling' %}
+		{# BILDE AV KUNSTVERK #}
+		{% for tittel in innslag.getTitler().getAll() %}
+			{% if innslag.getBilder().harValgt( tittel.getId() ) %}
+				{% set bilde = innslag.getBilder().getValgt( tittel.getId() ) %}
+				{% set printed = printed|merge([bilde.getId()]) %}
+				{% include "Components/Innslag/Mediefiler/bilde.html.twig" with { text: 'Valgt bilde for '~ tittel.getTittel() } %}
+			{% endif %}
+		{% endfor %}
+
+		{# BILDE AV KUNSTNER #}
+		{% if innslag.getBilder().harValgt(0) %}
+			{% set bilde = innslag.getBilder().getValgt(0) %}
+			{% set printed = printed|merge([bilde.getId()]) %}
+			{% include "Components/Innslag/Mediefiler/bilde.html.twig" with { text: 'Bilde av kunstneren' } %}
+		{% endif %}
+
+    {# BILDE AV INNSLAG (IKKE KUNST) #}
+	{% elseif innslag.getBilder().harValgt(0) %}
+        {% set bilde = innslag.getBilder().getValgt(0) %}
+        {% set printed = printed|merge([bilde.getId()]) %}
+        {% include "Components/Innslag/Mediefiler/bilde.html.twig" with { text: 'Valgt bilde for innslaget' } %}
+	{% endif %}
+
+
+	{# ALLE ANDRE BILDER AV INNSLAGET #}
+	{% for bilde in innslag.getBilder().getAll()|filter( bilde => bilde.getId() not in printed) %}
+		{% include "Components/Innslag/Mediefiler/bilde.html.twig" %}
+	{% endfor %}
+</div>

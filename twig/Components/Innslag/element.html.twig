@@ -1,10 +1,13 @@
 {% set maxCol = 1 + (config.show('kategori_og_sjanger') ? 1 : 0) + (config.show('fylke') or config.show('kommune') ? 1 : 0) + (config.show('varighet') ? 1 : 0) %}
-<li class="list-group-item" style="page-break-inside: avoid;">
-    {% block pre_table %}{% endblock %}
+<li class="list-group-item" style="page-break-inside: avoid;"> {% block pre_table %}{% endblock %}
 	<table class="table table-borderless table-condensed">
 		<tr>
 			<td width="*%">
-				<h4 class="mt-0">{% block pre_name %}{% endblock %}{% block name %}{{ innslag.getNavn() }}{% endblock %}</h4>
+				<h4 class="mt-0"> {% block pre_name %}{% endblock %}
+					{% block name %}
+						{{ innslag.getNavn() }}
+					{% endblock %}
+				</h4>
 			</td>
 			{% if config.show('kategori_og_sjanger') %}
 				<td width="30%">{{ innslag.getType().getNavn() }}{{ not innslag.getSjanger() is empty ? ' - '~innslag.getSjanger() }}</td>
@@ -21,43 +24,43 @@
 					{% if innslag.getType().harTid() %}
 						{{ innslag.getVarighet().getHumanShort() }}
 					{% elseif innslag.getType().erEnkeltperson() and config.show('kontaktperson') and config.show('kontakt_alder') %}
-                        {{innslag.getPersoner().getSingle().getAlder()}}
-                    {% else %}
-                        &nbsp;
+						{{innslag.getPersoner().getSingle().getAlder()}}
+					{% else %}
+						&nbsp;
 					{% endif %}
 				</td>
 			{% endif %}
 		</tr>
 
 		{% block beskrivelse %}
-            {% if config.show('beskrivelse') %}
-                <tr>
-                    {% if innslag.getType().harBeskrivelse() %}
-                        {% if innslag.getType().erEnkeltperson() and innslag.getType().harFunksjoner() %}
-                            <td>
-                                {{ innslag.getPersoner().getSingle().getRolle() }}
-                            </td>
-                            <td colspan="{{maxCol - 1}}">
-                                {{ innslag.getBeskrivelse() }}
-                            </td>
-                        {% else %}
-                            <td colspan="{{maxCol}}">{{ innslag.getBeskrivelse() }}</td>
-                        {% endif %}
-                    {% elseif innslag.getType().erEnkeltperson() and innslag.getType().harFunksjoner() %}
-                        <td>
-                            {{ innslag.getPersoner().getSingle().getRolle() }}
-                        </td>                        
-                    {% endif %}
-                </tr>
-            {% endif %}
-            
+			{% if config.show('beskrivelse') %}
+				<tr>
+					{% if innslag.getType().harBeskrivelse() %}
+						{% if innslag.getType().erEnkeltperson() and innslag.getType().harFunksjoner() %}
+							<td>
+								{{ innslag.getPersoner().getSingle().getRolle() }}
+							</td>
+							<td colspan="{{maxCol - 1}}">
+								{{ innslag.getBeskrivelse() }}
+							</td>
+						{% else %}
+							<td colspan="{{maxCol}}">{{ innslag.getBeskrivelse() }}</td>
+						{% endif %}
+					{% elseif innslag.getType().erEnkeltperson() and innslag.getType().harFunksjoner() %}
+						<td>
+							{{ innslag.getPersoner().getSingle().getRolle() }}
+						</td>
+					{% endif %}
+				</tr>
+			{% endif %}
+
 		{% endblock %}
 
 		{% block titler %}
 			{% if config.show('titler') and innslag.getType().harTitler() %}
-                <tr>
-                    <td colspan="{{maxCol}}" class="internalHeader">TITLER</td>
-                </tr>
+				<tr>
+					<td colspan="{{maxCol}}" class="internalHeader">TITLER</td>
+				</tr>
 				<tr>
 					<td colspan="{{maxCol}}" {{ config.get('titler_visning') == 'tabell' ? 'style="padding-left:0;padding-right:0;"' }}>
 						{% include "Components/Innslag/Titler/liste.html.twig" %}
@@ -68,72 +71,113 @@
 
 		{% block personer %}
 			{% if config.show('deltakere') and innslag.getType().erGruppe() %}
-                {% if not config.skjul('label_personer') %}
-                    <tr>
-                        <td colspan="{{maxCol}}" class="internalHeader">PERSONER</td>
-                    </tr>
-                {% endif %}
+				{% if not config.skjul('label_personer') %}
+					<tr>
+						<td colspan="{{maxCol}}" class="internalHeader">PERSONER</td>
+					</tr>
+				{% endif %}
 				<tr>
 					<td colspan="{{maxCol}}" {{ config.get('deltakere_visning') == 'tabell' ? 'style="padding-left:0;padding-right:0;"' }}>
 						{% include "Components/Innslag/Personer/liste.html.twig" %}
 					</td>
 				</tr>
-            {% elseif config.show('deltakere') %}{# implisitt: and innslag.getType().erEnkeltperson() #}
-                <tr>
-                    <td>
-                        {% if config.show('deltakere_mobil') or (config.show('kontaktperson') and config.show('kontakt_mobil') ) %}
-                            {% include "Components/mobil.html.twig" with {mobil: innslag.getPersoner().getSingle().getMobil(), navn: innslag.getPersoner().getSingle().getNavn()} %}
-                        {% endif %}
-                        {% if config.show('kontaktperson') and config.show('kontakt_epost') %}
-                            - {% include "Components/epost.html.twig" with {epost: innslag.getPersoner().getSingle().getEpost() } %}
-                        {% endif %}
-                    </td>
-                </tr>
-            {% elseif config.show('kontaktperson') %}
+			{% elseif config.show('deltakere') %}
+				{# implisitt: and innslag.getType().erEnkeltperson() #}
 				<tr>
-                    <td class="internalHeader">KONTAKTPERSON</td>
-                </tr>
-                <tr>
-                    <td>
-                        {% include "Components/Innslag/Personer/kompakt.html.twig" with {person: innslag.getKontaktperson(), kontaktperson: true } %}
-                    </td>
-                </tr>
+					<td>
+						{% if config.show('deltakere_mobil') or (config.show('kontaktperson') and config.show('kontakt_mobil') ) %}
+							{% include "Components/mobil.html.twig" with {mobil: innslag.getPersoner().getSingle().getMobil(), navn: innslag.getPersoner().getSingle().getNavn()} %}
+						{% endif %}
+						{% if config.show('kontaktperson') and config.show('kontakt_epost') %}
+							-
+							{% include "Components/epost.html.twig" with {epost: innslag.getPersoner().getSingle().getEpost() } %}
+						{% endif %}
+					</td>
+				</tr>
+			{% elseif config.show('kontaktperson') %}
+				<tr>
+					<td class="internalHeader">KONTAKTPERSON</td>
+				</tr>
+				<tr>
+					<td>
+						{% include "Components/Innslag/Personer/kompakt.html.twig" with {person: innslag.getKontaktperson(), kontaktperson: true } %}
+					</td>
+				</tr>
 			{% endif %}
 		{% endblock %}
 
-        {% block data %}{% endblock %}
-        
-        {% block notatfelt %}
-            {% if config.show('notatfelt') %}
-                <tr>
-                    <td>
-                        {% if config.show('notatfelt_lydteknisk') %}
-                            {% include "Components/notes.html.twig" with {'title': "Lydteknisk"} %}
-                        {% endif %}
-                        {% if config.show('notatfelt_lysteknisk') %}
-                            {% include "Components/notes.html.twig" with {'title': "Lysteknisk"} %}
-                        {% endif %}
-                        {% if config.show('notatfelt_generell') %}
-                            {% include "Components/notes.html.twig" with {'title': "Generelle notater"} %}
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endif %}
-        {% endblock %}
+		{% block data %}{% endblock %}
 
-        {% block tilbakemeldingsfelt %}
-                {% if config.show('vurderingsfelt') %}
-                    <tr>
-                        <td style="width:100%;">
-                            <h3>Tilbakemeldinger</h3>
-                            {% include "Components/split_box.html.twig" with {'title_1': "Originalitet", 'title_2': "Kreativitet"} %}
-                            {% include "Components/split_box.html.twig" with {'title_1': "Publikumskontakt / formidling", 'title_2': "Tekniske ferdigheter"} %}
-                            {% include "Components/split_box.html.twig" with {'title_1': "Scenefremtreden / fremføring", 'title_2': "Kvalitet i forhold til forutsetninger"} %}
-                            {% include "Components/notes.html.twig" with {'title': "Basert på ovenstående vurderinger gjør jeg følgende midlertidige vurdering:"} %}
-                        </td>
-                    </tr>
-                {% endif %}
-        {% endblock %}
+		{% block mediefiler %}
+			{% if config.show('mediefiler') %}
+				<tr>
+					<td colspan="{{maxCol}}" class="internalHeader">MEDIEFILER</td>
+				</tr>
+				<tr>
+					<td colspan="{{maxCol}}">
+						{% include "Components/Innslag/Mediefiler/filer.html.twig" %}
+					</td>
+				</tr>
+			{% endif %}
+		{% endblock %}
+
+		{% block bilder %}
+			{% if config.show('bilder') and innslag.getBilder().getAntall() > 0 %}
+				<tr>
+					<td colspan="{{maxCol}}" class="internalHeader">BILDER</td>
+				</tr>
+				<tr>
+					<td colspan="{{maxCol}}">
+						{% include "Components/Innslag/Mediefiler/bilder.html.twig" %}
+					</td>
+				</tr>
+			{% endif %}
+		{% endblock %}
+
+        {% block ukmtv %}
+			{% if config.show('ukmtv') %}
+				<tr>
+					<td colspan="{{maxCol}}" class="internalHeader">FILMER I UKM-TV</td>
+				</tr>
+				<tr>
+					<td colspan="{{maxCol}}">
+						{% include "Components/Innslag/Mediefiler/filmer.html.twig" %}
+					</td>
+				</tr>
+			{% endif %}
+		{% endblock %}
+
+		{% block notatfelt %}
+			{% if config.show('notatfelt') %}
+				<tr>
+					<td>
+						{% if config.show('notatfelt_lydteknisk') %}
+							{% include "Components/notes.html.twig" with {'title': "Lydteknisk"} %}
+						{% endif %}
+						{% if config.show('notatfelt_lysteknisk') %}
+							{% include "Components/notes.html.twig" with {'title': "Lysteknisk"} %}
+						{% endif %}
+						{% if config.show('notatfelt_generell') %}
+							{% include "Components/notes.html.twig" with {'title': "Generelle notater"} %}
+						{% endif %}
+					</td>
+				</tr>
+			{% endif %}
+		{% endblock %}
+
+		{% block tilbakemeldingsfelt %}
+			{% if config.show('vurderingsfelt') %}
+				<tr>
+					<td style="width:100%;">
+						<h3>Tilbakemeldinger</h3>
+						{% include "Components/split_box.html.twig" with {'title_1': "Originalitet", 'title_2': "Kreativitet"} %}
+						{% include "Components/split_box.html.twig" with {'title_1': "Publikumskontakt / formidling", 'title_2': "Tekniske ferdigheter"} %}
+						{% include "Components/split_box.html.twig" with {'title_1': "Scenefremtreden / fremføring", 'title_2': "Kvalitet i forhold til forutsetninger"} %}
+						{% include "Components/notes.html.twig" with {'title': "Basert på ovenstående vurderinger gjør jeg følgende midlertidige vurdering:"} %}
+					</td>
+				</tr>
+			{% endif %}
+		{% endblock %}
 
 	</table>
 </li>
