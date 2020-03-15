@@ -34,6 +34,10 @@ class UKMrapporter extends Modul
                 ['UKMrapporter', 'meny']
             );
         }
+        add_action(
+            'user_admin_menu',
+            ['UKMrapporter', 'userMeny']
+        );
 
         /*
         if (function_exists('is_network_admin') && is_network_admin()) {
@@ -45,6 +49,11 @@ class UKMrapporter extends Modul
         */
     }
 
+    /**
+     * Legg til menyelement
+     *
+     * @return void
+     */
     public static function meny()
     {
         $page = add_menu_page(
@@ -61,6 +70,33 @@ class UKMrapporter extends Modul
             'admin_print_styles-' . $page,
             ['UKMrapporter', 'scripts_and_styles']
         );
+    }
+    
+    /**
+     * Legg til menyelement i user-admin
+     */
+    public static function userMeny()
+    {
+        if (UKMnettverket::erCurrentAdminFylkeAdmin()) {
+            add_action(
+                'admin_print_styles-'. add_menu_page(
+                    'Rapporter',
+                    'Rapporter',
+                    'ukm_rapporter',
+                    'UKMrapporter',
+                    ['UKMrapporter', 'renderAdmin'],
+                    'dashicons-analytics',
+                    81
+                ),
+                ['UKMrapporter', 'scripts_and_styles']
+            );
+        }
+    }
+
+    public static function renderAdmin()
+    {
+        static::addViewData('aktivt_senter', is_user_admin() ? 'bruker' : 'arrangement');
+        return parent::renderAdmin();
     }
 
     /*

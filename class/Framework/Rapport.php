@@ -20,6 +20,7 @@ abstract class Rapport
     public $krever_hendelse = false;
     public $har_word = false;
     public $har_excel = true;
+    public $use_excel_personer = false;
     public $har_sms = true;
     public $har_epost = true;
     public $_collected_personer;
@@ -225,9 +226,28 @@ abstract class Rapport
      */
     public function getExcelFile()
     {
+        if( $this->use_excel_personer ) {
+            return $this->getExcelFilePersoner();
+        }
+        
         $excel = new Excel(
             $this->getNavn() . ' oppdatert ' . date('d-m-Y') . ' kl '. date('Hi') . ' - ' . $this->getArrangement()->getNavn(),
             $this->getRenderDataInnslag(),
+            $this->getConfig()
+        );
+        return $excel->writeToFile();
+    }
+
+    /**
+     * Lag og returner excel-filens URL
+     * 
+     * @return String url
+     */
+    public function getExcelFilePersoner()
+    {
+        $excel = new ExcelPersoner(
+            $this->getNavn() . ' oppdatert ' . date('d-m-Y') . ' kl '. date('Hi') . ' - ' . $this->getArrangement()->getNavn(),
+            $this->getRenderDataPersoner(),
             $this->getConfig()
         );
         return $excel->writeToFile();

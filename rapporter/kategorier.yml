@@ -1,12 +1,23 @@
+# KATEGORIER FOR ARRANGEMENT-RAPPORTER
 personer:
   navn: Personer
   ikon: ""
+  senter: arrangement
 program:
   navn: Program
   ikon: ""
+  senter: arrangement
 videresending:
   navn: Videresending
   ikon: ""
+  senter: arrangement
 statistikk:
   navn: Statistikk
   ikon: ""
+  senter: arrangement
+
+# KATEGORIER FOR 
+user_kontakt:
+  navn: Kontakt
+  ikon: ""
+  senter: bruker

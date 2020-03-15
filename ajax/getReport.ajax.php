@@ -13,15 +13,18 @@ UKMrapporter::addResponseData(
     [
         'config' => $rapport->getConfig(),
         'rapport' => $rapport,
-        'arrangement' => new Arrangement((int) get_option('pl_id')),
         'renderData' => $rapport->getRenderData(),
-        'kreverHendelse' => $rapport->kreverHendelse(),
         'fancyCounter' => new Counter("tittelCounter")
     ]
 );
-
-#sleep(1);
-
+if (get_option('pl_id')) {
+    UKMrapporter::addViewData(
+        [
+            'arrangement' => new Arrangement((int) get_option('pl_id')),
+            'kreverHendelse' => $rapport->kreverHendelse(),
+        ]
+    );
+}
 
 // BRUKER SØKER HTML-UTGAVEN
 if ($_POST['format'] == 'html') {
