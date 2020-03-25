@@ -1,8 +1,10 @@
 <?php
 
+use UKMNorge\Geografi\Fylker;
+
 require_once('UKM/aviser.class.php');
 require_once('UKM/monstring.class.php');
-require_once('UKM/fylker.class.php');
+require_once('UKM/Autoloader.php');
 require_once(ABSPATH . 'wp-content/plugins/UKMpr/class/MobilnummerForSted.class.php');
 
 class valgt_rapport extends rapport
@@ -23,7 +25,7 @@ class valgt_rapport extends rapport
 		$adresser = [];
 
 		if (get_option('site_type') == 'land') {
-			$fylker = fylker::getAll();
+			$fylker = Fylker::getAll();
 		} else {
 			$fylker = [$this->monstring->getFylke()];
 		}
