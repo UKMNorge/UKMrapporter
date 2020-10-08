@@ -2,7 +2,9 @@
 
 namespace UKMNorge\Rapporter;
 
+use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Samling;
+use UKMNorge\Innslag\Typer\Typer;
 use UKMNorge\Rapporter\Framework\Gruppe;
 use UKMNorge\Rapporter\Framework\Rapport;
 
@@ -16,6 +18,23 @@ class Nokkeltall extends Rapport
     public $har_sms = false;
     public $har_epost = false;
     
+    /**
+     * Hent alle innslag som skal sorteres
+     *
+     * @return Array<Innslag>
+     */
+    public function getInnslag() {
+        return $this->getArrangement()->getInnslag()->getAll();
+    }
+
+    /**
+     * Hent alle innslagTyper vi skal vise
+     *
+     * @return Typer
+     */
+    public function getInnslagTyper() {
+        return $this->getArrangement()->getInnslagTyper(true);
+    }
 
     public function getRenderData() {
         $grupper = new Gruppe('container', 'Nøkkeltall');
@@ -28,8 +47,8 @@ class Nokkeltall extends Rapport
         $scene_personer = 0;
         $scene_typer = [];
 
-        foreach( $this->getArrangement()->getInnslagTyper(true)->getAll() as $innslag_type ) {
-            $alle_innslag = Samling::filterByType( $innslag_type, $this->getArrangement()->getInnslag()->getAll());
+        foreach( $this->getInnslagTyper()->getAll() as $innslag_type ) {
+            $alle_innslag = Samling::filterByType( $innslag_type, $this->getInnslag());
             
             $personer = 0;
             foreach( $alle_innslag as $innslag ) {
