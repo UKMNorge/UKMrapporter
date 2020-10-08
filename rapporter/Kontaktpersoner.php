@@ -132,7 +132,6 @@ class Kontaktpersoner extends Rapport
             case 5:
                 return ['5', '3_5'];
             case 6:
-                return ['6', '6_10'];
             case 7:
             case 8:
             case 9:
