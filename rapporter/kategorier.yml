@@ -21,3 +21,9 @@ user_kontakt:
   navn: Kontakt
   ikon: ""
   senter: bruker
+
+
+network_delta:
+  navn: Påmelding
+  ikon: ""
+  senter: "network"

@@ -39,14 +39,12 @@ class UKMrapporter extends Modul
             ['UKMrapporter', 'userMeny']
         );
 
-        /*
         if (function_exists('is_network_admin') && is_network_admin()) {
             add_action(
                 'network_admin_menu',
                 ['UKMrapporter', 'nettverkMeny']
             );
         }
-        */
     }
 
     /**
@@ -95,11 +93,10 @@ class UKMrapporter extends Modul
 
     public static function renderAdmin()
     {
-        static::addViewData('aktivt_senter', is_user_admin() ? 'bruker' : 'arrangement');
+        static::addViewData('aktivt_senter', is_user_admin() ? 'bruker' : (is_network_admin() ? 'network':'arrangement'));
         return parent::renderAdmin();
     }
 
-    /*
     public static function nettverkMeny()
     {
         $page = add_menu_page(
@@ -115,7 +112,6 @@ class UKMrapporter extends Modul
             ['UKMrapporter', 'scripts_and_styles']
         );
     }
-    */
 
     public static function scripts_and_styles()
     {

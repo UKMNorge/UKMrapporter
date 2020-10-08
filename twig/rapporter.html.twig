@@ -23,7 +23,9 @@
                     {% endif %}
                     og deretter trykk deg inn på arrangementet for å finne disse.
                 </p>
-			{% else %}
+			{% elseif aktivt_senter == 'network' %}
+                <h1>Nasjonale rapporter</h1>
+            {% else %}
                 <h1>Rapporter</h1>
 			{% endif %}
 		</div>
