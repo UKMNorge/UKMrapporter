@@ -15,7 +15,7 @@ class Kategorier {
      * @param String $id
      * @return Kategori
      */
-    public function getById( String $id) {
+    public static function getById( String $id) {
         static::getAll();
         if( !isset( static::$data[ $id ] ) ) {
             throw new Exception('UKMrapporter støtter ikke kategori '. $id );
@@ -41,7 +41,7 @@ class Kategorier {
      *
      * @return Array<Kategori>
      */
-    public function getAll() {
+    public static function getAll() {
         if( static::$data == null ) {
             static::_load();
         }
