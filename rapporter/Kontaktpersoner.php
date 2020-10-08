@@ -45,6 +45,7 @@ class Kontaktpersoner extends Rapport
         $pameldt = true;
 
         $this->main_group = new Gruppe('container', 'Antall innslag');
+        $this->main_group->setAttr('sesong', (int) $this->getConfig()->get('vis_sesong')->getValue());
 
         $keys = [
             '1' => '1 innslag',
@@ -106,7 +107,7 @@ class Kontaktpersoner extends Rapport
         foreach( $keys as $key ) {
             $gruppe = $this->main_group->getGruppe($key);
             $attr_key = (!$pameldt ? 'ikke_' : '') . 'pameldt';
-            
+
             if( is_null($gruppe->getAttr( $attr_key))) {
                 $gruppe->setAttr( $attr_key, $antall_tilfeller );
             } else {
