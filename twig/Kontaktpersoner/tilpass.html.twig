@@ -4,7 +4,7 @@
 			<h4>Velg sesong</h4>
 		</li>
 
-        {% for sesong in 2019..now|date('Y') %}
+        {% for sesong in 2012..now|date('Y') %}
 		    {% include "radio.html.twig" with {id: 'sesong', value: sesong, title: sesong} %}
         {% endfor %}
 	</ol>
