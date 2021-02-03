@@ -1,23 +1,22 @@
 <h2>Svar på spørreskjema</h2>
 
-{% for gruppe in arrangement.getSkjema().getSporsmalGruppertPerOverskrift()|filter(gruppe => config.show('gruppe_'~gruppe.getId())) %}
+{% for gruppe in skjema.getSporsmalPerOverskrift()|filter(gruppe => config.show('gruppe_'~gruppe.getId())) %}
     <h3 class="mb-0 mt-4">{{gruppe.getOverskrift()}}</h3>
-
         {# VISNING: TABELL #}
         {% if config.get('gruppe_'~gruppe.getId()~'_visning') == 'tabell' %}
             <table class="table table-striped">
                 <tr>
                     <th>Spørsmål</th>
-                    {% for avsender in arrangement.getVideresending().getAvsendere() %}
-                        <th>{{ avsender.getArrangement().getNavn() }}</th>
+                    {% for respondent in skjema.getRespondenter().getAll() %}
+                        <th>{{ respondent.getNavn() }}</th>
                     {% endfor %}
                 </tr>
                 {% for sporsmal in gruppe.getAll()|filter(sporsmal => config.show('sporsmal_'~sporsmal.getId())) %}
                     <tr>
                         <th>{{sporsmal.getTittel()}}</th>
-                        {% for avsender in arrangement.getVideresending().getAvsendere() %}
+                        {% for respondent in skjema.getRespondenter().getAll() %}
                             <td>
-                                {% include "Infoskjema/svar.html.twig" with { type: sporsmal.getType(), svar: arrangement.getSkjema().getSvarSettFor( avsender.getId() ).getSvar( sporsmal.getId() ).getValue() } %}
+                                {% include "Skjema/svar.html.twig" with { type: sporsmal.getType(), svar: respondent.getSvar().get( sporsmal.getId() ).getValue() } %}
                             </td>
                         {% endfor %}
                     </tr>
@@ -38,11 +37,11 @@
                         <th>Avsender</th>
                         <th>Svar</th>
                     </tr>
-                    {% for avsender in arrangement.getVideresending().getAvsendere() %}
+                    {% for respondent in skjema.getRespondenter().getAll() %}
                         <tr>
-                            <th>{{ avsender.getArrangement().getNavn() }}</th>
+                            <th>{{ respondent.getNavn() }}</th>
                             <td>
-                                {% include "Infoskjema/svar.html.twig" with { type: sporsmal.getType(), svar: arrangement.getSkjema().getSvarSettFor( avsender.getId() ).getSvar( sporsmal.getId() ).getValue() } %}
+                                {% include "Skjema/svar.html.twig" with { type: sporsmal.getType(), svar: respondent.getSvar().get( sporsmal.getId() ).getValue() } %}
                             </td>
                         </tr>
                     {% endfor %}

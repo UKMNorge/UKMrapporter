@@ -1,0 +1,15 @@
+{% if not arrangement.harDeltakerskjema() %}
+	<p class="lead mt-4">
+		Du må
+		<a href="index.php">lage et skjema med ekstra spørsmål til deltakerne</a>
+		for å få noe utav denne rapporten.
+	</p>
+
+	<script>
+		jQuery(document).ready(function () {
+            jQuery('#generateButtonContainer').hide();
+        });
+	</script>
+{% else %}
+	{% include "Skjema/tilpass.html.twig" %}
+{% endif %}

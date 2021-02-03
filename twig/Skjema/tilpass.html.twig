@@ -1,0 +1,19 @@
+{# INKLUDERES AV F.EKS: Infoskjema/tilpass.html.twig eller Deltakerskjema/tilpass.html.twig #}
+<div class="row">
+	{% for gruppe in skjema.getSporsmalPerOverskrift() %}
+		<div class="col-12 col-sm-6 col-md-4">
+			{% embed "toggle.html.twig" with {id: 'vis_gruppe_'~gruppe.getId(), title: gruppe.getOverskrift(), start: 'yes' } %}
+				{% block yes %}
+					{% for sporsmal in gruppe.getAll() %}
+						{% include "checkbox.html.twig" with {id: 'sporsmal_'~sporsmal.getId(), title: sporsmal.getTittel()} %}
+					{% else %}
+						<li class="list-group-item">Det er ingen spørsmål under denne overskriften</li>
+					{% endfor %}
+					{% if gruppe.getAll()|length > 0 %}
+						{% include "options.html.twig" with {id: 'gruppe_'~gruppe.getId()~'_visning', title: 'Velg visning', start: 'tabell', options: [{id: 'liste', title: 'Liste'},{id: 'tabell', title: 'Tabell'}]} %}
+					{% endif %}
+				{% endblock %}
+			{% endembed %}
+		</div>
+	{% endfor %}
+</div>

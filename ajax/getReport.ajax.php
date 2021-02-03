@@ -17,6 +17,7 @@ UKMrapporter::addResponseData(
         'fancyCounter' => new Counter("tittelCounter")
     ]
 );
+
 if (get_option('pl_id')) {
     UKMrapporter::addViewData(
         [
@@ -33,7 +34,7 @@ if ($_POST['format'] == 'html') {
         'html',
         TWIG(
             $rapport->getTemplate(),
-            UKMrapporter::getResponseData(),
+            array_merge(UKMrapporter::getResponseData(), UKMrapporter::getViewData()),
             UKMrapporter::getPluginPath()
         )
     );
