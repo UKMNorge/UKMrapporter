@@ -31,7 +31,8 @@
         {# VISNING: LISTE #}
         {% else %}
             {% for sporsmal in gruppe.getAll()|filter(sporsmal => config.show('sporsmal_'~sporsmal.getId())) %}
-                <h5 class="mb-0 mt-4">{{sporsmal.getTittel()}}</h5>
+                <div class="clearfix"></div>
+                <h5 class="mb-0 mt-5">{{sporsmal.getTittel()}}</h5>
                 <table class="table table-striped">
                     <tr>
                         <th width="30%">Avsender</th>
