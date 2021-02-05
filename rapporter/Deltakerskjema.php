@@ -6,28 +6,26 @@ use Exception;
 use UKMNorge\Rapporter\Framework\Rapport;
 use UKMrapporter;
 
-class Infoskjema extends Rapport
+class Deltakerskjema extends Rapport
 {
-    public $kategori_id = 'videresending';
-    public $ikon = 'dashicons-forms';
-    public $navn = 'Spørreskjema';
-    public $beskrivelse = 'Svar på spørreskjema til de som videresender';
+    public $kategori_id = 'personer';
+    public $ikon = 'dashicons-universal-access';
+    public $navn = 'Skjema fra deltakere';
+    public $beskrivelse = 'Svar på de ekstra spørsmålene du la inn på arrangementssiden';
     public $har_excel = false;
     public $har_sms = false;
     public $har_epost = false;
-
 
     /**
      * Data til "tilpass rapporten"
      * 
      * @return Array
      */
-    public function getCustomizerData()
-    {
+    public function getCustomizerData() {
         try {
-            return ['skjema' => $this->getArrangement()->getSkjema()];
-        } catch (Exception $e) {
-            if ($e->getCode() != 151002) {
+            return ['skjema' => $this->getArrangement()->getDeltakerSkjema()];
+        } catch( Exception $e ) {
+            if( $e->getCode() != 151002 ) {
                 throw $e;
             }
         }
@@ -41,7 +39,7 @@ class Infoskjema extends Rapport
      */
     public function getTemplate()
     {
-        UKMrapporter::addViewData('skjema', $this->getArrangement()->getSkjema());
+        UKMrapporter::addViewData('skjema', $this->getArrangement()->getDeltakerSkjema());
         return 'Skjema/rapport.html.twig';
     }
 }
