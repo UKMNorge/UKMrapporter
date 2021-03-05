@@ -441,7 +441,6 @@ var UKMrapporter = function(jQuery) {
                         config: customizer.getConfig()
                     },
                     function(response) {
-                        console.log(response);
                         generator.loader.hide();
                         generator.actions.show();
                         switch (response.POST.format) {
