@@ -441,9 +441,7 @@ var UKMrapporter = function(jQuery) {
                         config: customizer.getConfig()
                     },
                     function(response) {
-                        if(response.link && response.link[4] != 's') {
-                            response.link = response.link.slice(0, 4) + 's' + response.link.slice(4);
-                        }
+                        console.log(response);
                         generator.loader.hide();
                         generator.actions.show();
                         switch (response.POST.format) {
