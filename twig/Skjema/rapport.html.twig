@@ -7,14 +7,14 @@
             <table class="table table-striped">
                 <tr>
                     <th>Spørsmål</th>
-                    {% for respondent in skjema.getRespondenter().getAll() %}
+                    {% for respondent in respondenter %}
                         <th>{{ respondent.getNavn() }}</th>
                     {% endfor %}
                 </tr>
                 {% for sporsmal in gruppe.getAll()|filter(sporsmal => config.show('sporsmal_'~sporsmal.getId())) %}
                     <tr>
                         <th>{{sporsmal.getTittel()}}</th>
-                        {% for respondent in skjema.getRespondenter().getAll() %}
+                        {% for respondent in respondenter %}
                             <td>
                                 {% include "Skjema/svar.html.twig" with { type: sporsmal.getType(), svar: respondent.getSvar().get( sporsmal.getId() ).getValue() } %}
                             </td>
@@ -38,7 +38,7 @@
                         <th width="30%">Avsender</th>
                         <th>Svar</th>
                     </tr>
-                    {% for respondent in skjema.getRespondenter().getAll() %}
+                    {% for respondent in respondenter %}
                         <tr>
                             <th>{{ respondent.getNavn() }}</th>
                             <td>
