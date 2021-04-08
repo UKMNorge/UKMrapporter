@@ -122,7 +122,7 @@ class UKMrapporter extends Modul
         wp_enqueue_style('UKMrapporter_css', static::getPluginUrl() . 'ukmrapporter.css');
         wp_enqueue_script('UKMrapporter_js', static::getPluginUrl() . 'ukmrapporter.js');
 
-        wp_enqueue_style('jquery-ui-style', static::getPluginUrl() . 'UKMNorge/js/css/jquery-ui-1.7.3.custom.css');
+        wp_enqueue_style('jquery-ui-style');
         wp_enqueue_script('GOOGLEchart', 'https://www.google.com/jsapi');
 
         wp_enqueue_script('jquery');
