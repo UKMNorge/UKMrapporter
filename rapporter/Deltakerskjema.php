@@ -3,9 +3,7 @@
 namespace UKMNorge\Rapporter;
 
 use Exception;
-use UKMNorge\Innslag\Typer\Typer;
 use UKMNorge\Rapporter\Framework\Rapport;
-
 use UKMrapporter;
 
 class Deltakerskjema extends Rapport
@@ -41,15 +39,7 @@ class Deltakerskjema extends Rapport
      */
     public function getTemplate()
     {
-        $skjema = $this->getArrangement()->getDeltakerSkjema();
-        $respondenter = $skjema->getRespondenter()->getAll();
-
-        $respondenter = array_filter($respondenter, function ($resp) {
-            return $resp->getPerson()->harInnslagFor(Typer::getByKey('enkeltperson'), $this->getArrangement());
-        });
-
-        UKMrapporter::addViewData('skjema', $skjema);
-        UKMrapporter::addViewData('respondenter', $respondenter);
+        UKMrapporter::addViewData('skjema', $this->getArrangement()->getDeltakerSkjema());
         return 'Skjema/rapport.html.twig';
     }
 }
