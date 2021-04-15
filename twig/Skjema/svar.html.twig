@@ -3,11 +3,11 @@
 	<br/>
 	<small>
 		{% if svar.mobil is not empty %}
-			{{svar.mobil}}
+			{% include "Components/mobil.html.twig" with {epost: svar.mobil } %}
 		{% endif %}
 		{{ svar.mobil and svar.epost is not empty ? '|' }}
 		{% if svar.epost is not empty %}
-			<a href="mailto:{{svar.epost}}">Send e-post</a>
+			{% include "Components/epost.html.twig" with {epost: svar.epost, expand: true } %}
 		{% endif %}
 	</small>
 {% elseif type == 'janei' %}
