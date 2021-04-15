@@ -3,7 +3,7 @@
 	<br/>
 	<small>
 		{% if svar.mobil is not empty %}
-			{% include "Components/mobil.html.twig" with {epost: svar.mobil } %}
+			{% include "Components/mobil.html.twig" with {mobil: svar.mobil } %}
 		{% endif %}
 		{{ svar.mobil and svar.epost is not empty ? '|' }}
 		{% if svar.epost is not empty %}
