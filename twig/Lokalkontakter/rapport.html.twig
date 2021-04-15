@@ -22,7 +22,7 @@
 				<td>{{admin.getNavn()}}</td>
 				{% if config.vis('mobil') %}
 					<td>
-						{% include "Components/mobil.html.twig" with {mobil: admin.getMobil()} %}
+						{{admin.getMobil()}}
 					</td>
 				{% endif %}
 				{% if config.vis('epost') %}
