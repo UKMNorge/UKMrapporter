@@ -14,6 +14,8 @@ class Lokalkontakter extends UserRapport
     public $navn = 'Lokalkontakter';
     public $beskrivelse = 'Kontaktinfo til alle dine lokalkontakter';
     public $har_excel = false;
+    public $har_sms = true;
+    public $har_epost = true;
 
     /**
      * Hent alle fylke-områder current user kan administrere
