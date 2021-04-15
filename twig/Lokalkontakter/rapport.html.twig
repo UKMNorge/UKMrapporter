@@ -39,12 +39,12 @@
 <h3 class="mt-5">Kommuner / bydeler uten registrerte administratorer</h3>
 <table class="table table-striped">
 	{% for kommune in rapport.getRenderData().getGrupper()|filter(kommune => not kommune.harCustomItems()) %}
-        <tr>
-            <th>{{kommune.getOverskrift()}}</th>
-        </tr>
-    {% else %}
-        <tr>
-            <th>Alle kommuner har registrert minst én administrator</th>
-        </tr>
-    {% endfor %}
+		<tr>
+			<th>{{kommune.getOverskrift()}}</th>
+		</tr>
+	{% else %}
+		<tr>
+			<th>Alle kommuner har registrert minst én administrator</th>
+		</tr>
+	{% endfor %}
 </table>
