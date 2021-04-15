@@ -13,8 +13,8 @@ class Deltakerskjema extends Rapport
     public $navn = 'Skjema fra deltakere';
     public $beskrivelse = 'Svar på de ekstra spørsmålene du la inn på arrangementssiden';
     public $har_excel = false;
-    public $har_sms = false;
-    public $har_epost = false;
+    public $har_true = false;
+    public $har_epost = true;
 
     /**
      * Data til "tilpass rapporten"
