@@ -1,0 +1,26 @@
+<div class="row">
+	<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+		<ol class="list-group">
+			<li class="list-group-item list-group-title">
+				<h4>Velg kolonner</h4>
+			</li>
+			{% include "checkbox.html.twig" with {id: 'kommune', title: 'Kommune'} %}
+			{% include "checkbox.html.twig" with {id: 'start', title: 'Start'} %}
+			{% include "checkbox.html.twig" with {id: 'arrangement', title: 'Arrangement'} %}
+			{% include "checkbox.html.twig" with {id: 'sted', title: 'Sted'} %}
+			{% include "checkbox.html.twig" with {id: 'paameldte', title: 'Påmeldte personer'} %}
+		</ol>
+	</div>
+
+	{% for fylke in rapport.getOmrader() %}
+		<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+			{% embed "toggle.html.twig" with {id: 'vis_valgte_kommuner_i_'~fylke.getId(), title: 'Vis alle kommuner i '~ fylke.getNavn(), start: 'yes' } %}
+				{% block no %}
+					{% for kommune in fylke.getKommuner().getAll() %}
+						{% include "checkbox.html.twig" with {id: 'kommune_'~ kommune.getId(), title: kommune.getNavn()} %}
+					{% endfor %}
+				{% endblock %}
+			{% endembed %}
+		</div>
+	{% endfor %}
+</div>

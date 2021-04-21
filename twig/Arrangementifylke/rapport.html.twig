@@ -1,0 +1,77 @@
+{% if not config.vis('kommune') and not config.vis('start') and not config.vis('arrangement') and not config.vis('sted') and not config.vis('paameldte') %}
+<span>Ingen kolonner ble valgt!</span>
+{% endif %}
+
+{% set colspan = 1 %}
+<table class="table table-striped">
+	<tr>
+		{% if config.vis('kommune') %}
+		<th>Kommune</th>
+		{% endif %}
+
+		{% if config.vis('start') %}
+		<th>Start</th>
+		{% endif %}
+
+		{% if config.vis('arrangement') %}
+		<th>Arrangement</th>
+		{% endif %}
+
+		{% if config.vis('sted') %}
+		<th>Sted</th>
+		{% endif %}
+
+		{% if config.vis('paameldte') %}
+		<th>Påmeldte personer</th>
+		{% endif %}
+	</tr>
+
+	
+	{% for kommune in kommuner %}
+		{% for arr in kommune['arrangementer'] %}
+		<tr>
+			{% if config.vis('kommune') %}
+			<td>{{kommune['kommune'].getNavn() }}</td>
+			{% endif %}
+
+			{% if config.vis('start') %}
+			<td>{{ arr.getStart()|date("d/m/y") }}</td>
+			{% endif %}
+
+			{% if config.vis('arrangement') %}
+			<td>{{ arr.getNavn() }}</td>
+			{% endif %}
+
+			{% if config.vis('sted') %}
+			<td>{{ arr.getSted() }}</td>
+			{% endif %}
+			
+			{% if config.vis('paameldte') %}
+				{% if arr.getStart()|date("y") > 2019 %}
+				<td>{{ arr.getInnslag().getAntallPersonerSimple() }}</td>
+				{% else %}
+				<td>-</td>
+				{% endif %}
+			{% endif %}
+		</tr>
+		{% endfor %}
+	{% endfor %}
+</table>
+
+
+<h3 id="utenArrTitle" class="mt-5">Kommuner uten arrangementer</h3>
+<table class="table table-striped">
+{% set utenArrangmenet = false %}
+{% for kommune in kommuner %}
+	{% if kommune['arrangementer']|length < 1 %}
+	{% set utenArrangmenet = true %}
+	<tr>
+		<th>{{ kommune['kommune'] }}</th>
+	</tr>
+	{% endif %}
+{% endfor %}
+</table>
+
+{% if utenArrangmenet == false %}
+<script>jQuery('#utenArrTitle').detach()</script>
+{% endif %}
