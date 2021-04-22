@@ -71,13 +71,9 @@ class Arrangementifylke extends Rapport
 
     public function getArrangementer(Kommune $kommune) {
         $arrangementer = [];
-
-        $omrade = $kommune->getOmrade();
         
-        foreach( $omrade->getArrangementer()->getAll() as $arrangement) {
-            foreach($arrangement->getKommuner() as $km) {
-                $arrangementer[] = $arrangement;
-            }
+        foreach( $kommune->getOmrade()->getArrangementer()->getAll() as $arrangement) {
+            $arrangementer[] = $arrangement;
         }
 
         return $arrangementer;
