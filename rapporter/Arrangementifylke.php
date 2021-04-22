@@ -81,20 +81,4 @@ class Arrangementifylke extends Rapport
 
         return $arrangementer;
     }
-
-    public function getRenderData() {
-        $data = new Gruppe('arrangementifylke', 'Arrangementifylke');        
-        return $data;
-    }
-
-    /**
-     * Hent excel-fil (og få med arket titler)
-     *
-     * @inheritdoc
-     */
-    public function getExcelFile()
-    {
-        $this->getConfig()->get('vis_titler')->setValue(true);
-        return parent::getExcelFile();
-    }
 }
