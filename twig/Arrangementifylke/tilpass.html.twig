@@ -6,6 +6,7 @@
 			</li>
 			{% include "checkbox.html.twig" with {id: 'kommune', title: 'Kommune'} %}
 			{% include "checkbox.html.twig" with {id: 'start', title: 'Start'} %}
+			{% include "checkbox.html.twig" with {id: 'ferdig', title: 'Ferdig'} %}
 			{% include "checkbox.html.twig" with {id: 'arrangement', title: 'Arrangement'} %}
 			{% include "checkbox.html.twig" with {id: 'sted', title: 'Sted'} %}
 			{% include "checkbox.html.twig" with {id: 'paameldte', title: 'Påmeldte personer'} %}
@@ -23,4 +24,40 @@
 			{% endembed %}
 		</div>
 	{% endfor %}
+</div>
+
+<div class="row mt-5">
+	<div class="col-xs-12">
+		{% embed "preview/list.html.twig" with {id: 'sortering', title: 'Hvordan skal det sorteres?' } %}
+			{% block options %}
+				{% include "preview/option.html.twig" with {id: 'sortering', val: 'alfabetisk', title: 'Alfabetisk sortert', selected:true} %}
+				{% include "preview/option.html.twig" with {id: 'sortering', val: 'start_dato', title: 'Sorter arrangement etter start dato'} %}
+			{% endblock %}
+
+			{% block previews %}
+				{% embed "preview/preview.html.twig" with {id: 'alfabetisk'} %}
+					{% block content %}
+						Kommune A<br/>
+						Kommune B<br/>
+						Kommune C<br/>
+						Kommune D<br/>
+						Kommune E<br/>
+						Kommune F
+					{% endblock %}
+				{% endembed %}
+
+				{% embed "preview/preview.html.twig" with {id: 'start_dato'} %}
+					{% block content %}
+						Kommune A:<br>
+						&nbsp;&nbsp;&nbsp;Arrangement   -  <b>10. feb 2020</b><br/>
+						&nbsp;&nbsp;&nbsp;Arrangement   -  <b>11. feb 2021</b><br/>
+						&nbsp;&nbsp;&nbsp;Arrangement   -  <b>12. feb 2022</b><br/>
+						Kommune B:<br>
+						&nbsp;&nbsp;&nbsp;Arrangement   -  <b>13. feb 2020</b><br/>
+						&nbsp;&nbsp;&nbsp;Arrangement   -  <b>14. feb 2021</b>
+					{% endblock %}
+				{% endembed %}
+			{% endblock %}
+		{% endembed %}
+	</div>
 </div>

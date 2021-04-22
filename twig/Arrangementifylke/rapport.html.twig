@@ -10,7 +10,11 @@
 		{% endif %}
 
 		{% if config.vis('start') %}
-		<th style="text-align:right;">Start</th>
+		<th style="text-align:right;">Starter</th>
+		{% endif %}
+
+		{% if config.vis('ferdig') %}
+		<th>Ferdig</th>
 		{% endif %}
 
 		{% if config.vis('arrangement') %}
@@ -36,6 +40,10 @@
 
 			{% if config.vis('start') %}
 			<td style="text-align:right;">{{ arrangement.getStart()|dato("D j. M Y") }}</td>
+			{% endif %}
+
+			{% if config.vis('ferdig') %}
+			<td style="text-align:right;">{{ arrangement.getStop()|dato("D j. M Y") }}</td>
 			{% endif %}
 
 			{% if config.vis('arrangement') %}
