@@ -3,6 +3,7 @@
 namespace UKMNorge\Rapporter;
 
 use Exception;
+use UKMrapporter;
 use UKMNorge\Geografi\Kommune;
 use UKMNorge\Nettverk\Administrator as NetverkAdministrator;
 use UKMNorge\Nettverk\Omrade;
