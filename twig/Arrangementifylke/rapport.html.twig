@@ -10,7 +10,7 @@
 		{% endif %}
 
 		{% if config.vis('start') %}
-		<th>Start</th>
+		<th style="text-align:right;">Start</th>
 		{% endif %}
 
 		{% if config.vis('arrangement') %}
@@ -28,29 +28,29 @@
 
 	
 	{% for kommune in kommuner %}
-		{% for arr in kommune['arrangementer'] %}
+		{% for arrangement in kommune['arrangementer'] %}
 		<tr>
 			{% if config.vis('kommune') %}
 			<td>{{kommune['kommune'].getNavn() }}</td>
 			{% endif %}
 
 			{% if config.vis('start') %}
-			<td>{{ arr.getStart()|date("d/m/y") }}</td>
+			<td style="text-align:right;">{{ arrangement.getStart()|dato("D j. M Y") }}</td>
 			{% endif %}
 
 			{% if config.vis('arrangement') %}
-			<td>{{ arr.getNavn() }}</td>
+			<td><a href="{{arrangement.getLink()}}" target="_blank">{{ arrangement.getNavn() }}</a></td>
 			{% endif %}
 
 			{% if config.vis('sted') %}
-			<td>{{ arr.getSted() }}</td>
+			<td>{{ arrangement.getSted() }}</td>
 			{% endif %}
 			
 			{% if config.vis('paameldte') %}
-				{% if arr.getStart()|date("y") > 2019 %}
-				<td>{{ arr.getInnslag().getAntallPersonerSimple() }}</td>
+				{% if arrangement.getSesong() > 2019 %}
+					<td>{{ arrangement.getInnslag().getAntallPersonerSimple() }}</td>
 				{% else %}
-				<td>-</td>
+					<td>-</td>
 				{% endif %}
 			{% endif %}
 		</tr>
