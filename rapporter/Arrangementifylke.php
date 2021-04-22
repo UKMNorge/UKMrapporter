@@ -15,7 +15,7 @@ class Arrangementifylke extends Rapport
     public $navn = 'Arrangement i fylket';
     public $beskrivelse = 'Arrangement i fylket';
     public $har_excel = false;
-    public $har_epost = true;
+    public $har_epost = false;
     public $arrangementer = [];
 
     /**
