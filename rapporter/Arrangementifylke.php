@@ -4,13 +4,9 @@ namespace UKMNorge\Rapporter;
 
 use Exception;
 use UKMNorge\Geografi\Kommune;
-use UKMNorge\Rapporter\Framework\Gruppe;
 use UKMNorge\Nettverk\Administrator as NetverkAdministrator;
 use UKMNorge\Nettverk\Omrade;
 use UKMNorge\Rapporter\Framework\Rapport;
-
-use UKMrapporter;
-
 
 class Arrangementifylke extends Rapport
 {
@@ -41,8 +37,6 @@ class Arrangementifylke extends Rapport
         }
 
         return $fylker;
-
-        // return UKMnettverket::getCurrentAdmin()->getOmrader('fylke');
     }
 
     /**
