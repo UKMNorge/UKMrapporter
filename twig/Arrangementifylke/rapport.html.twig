@@ -61,12 +61,19 @@
 
 <h3 id="utenArrTitle" class="mt-5">Kommuner uten arrangementer</h3>
 <table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Kommune</th>
+			<th>Fylke</th>
+		</tr>
+	</thead>
 {% set utenArrangmenet = false %}
 {% for kommune in kommuner %}
 	{% if kommune['arrangementer']|length < 1 %}
 	{% set utenArrangmenet = true %}
 	<tr>
-		<th>{{ kommune['kommune'] }}</th>
+		<td>{{ kommune['kommune'] }}</td>
+		<td>{{ kommune['kommune'].getFylke().getNavn() }}</td>
 	</tr>
 	{% endif %}
 {% endfor %}
