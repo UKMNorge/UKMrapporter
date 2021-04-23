@@ -1,6 +1,10 @@
 <tr>
     {% if config.vis('kommune') %}
-    <td>{{kommune['kommune'].getNavn() }}</td>
+        <td>
+        {% for kom in kommuner %}
+            <span>{{ kom }}</span>
+        {% endfor %}
+        </td>
     {% endif %}
 
     {% if config.vis('start') %}

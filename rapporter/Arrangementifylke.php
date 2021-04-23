@@ -43,7 +43,7 @@ class Arrangementifylke extends Rapport
     /**
      * Hent sessonger fra $fra til og med dette året
      *
-     * @return Array<int>
+     * @return Array<Int>
      */
     public function getSessongArr(int $fra) {
         $sessonger = [];      
@@ -64,7 +64,9 @@ class Arrangementifylke extends Rapport
     public function getTemplate() {
         $admin = new NetverkAdministrator(get_current_user_id());
         $kommuner = [];
+        $arrangementer = [];
 
+        // OBS: forsiktig her, O(n^3) notasjon. Dette kan føre til ytelsesreduksjon spesielt med store mendgder av data. 
         foreach( $admin->getOmrader() as $omrade ) {
             $fylke = $omrade->getFylke();
             foreach( $fylke->getKommuner()->getAll() as $kommune ) {
@@ -73,14 +75,28 @@ class Arrangementifylke extends Rapport
                     continue;
                 }
 
+                $kommuneArrangementer = $this->getArrangementer($kommune);
+
                 $kommuner[] = [
                     'kommune' => $kommune,
-                    'arrangementer' => $this->getArrangementer($kommune)
+                    'arrangementer' => $kommuneArrangementer
                 ];
+
+                $arrangementer[] = $kommuneArrangementer;
             }
         }
-        
+
+        // Konvert til 1-dimensjonal liste
+        $arrangementer = $this->flatten($arrangementer);
+
+        // Sorter arrangemeter når sortering er 'start_dato' 
+        if($this->getConfig()->get('sortering') == 'start_dato') {
+            // Sort ved hjelp av usort og callback funksjon. For å endre fra ASC til DESC bare bytt $a med $b i funksjonens attributer
+            usort($arrangementer, function($a, $b) { return $a->start > $b->start ? 1 : ($b->start < $a->start ? -1 : 0); });
+        }
+
         UKMrapporter::addViewData('kommuner', $kommuner);
+        UKMrapporter::addViewData('arrangementer', $arrangementer);
         UKMrapporter::addViewData('tidNaa', strtotime(Date("Y-m-d H:i:s")));
 
         return 'Arrangementifylke/rapport.html.twig';
@@ -93,47 +109,13 @@ class Arrangementifylke extends Rapport
             $arrangementer[] = $arrangement;
         }
 
-        // Sorter arrangemeter når sortering er 'start_dato' 
-        if($this->getConfig()->get('sortering') == 'start_dato') {
-            $arrangementer = $this->array_sort($arrangementer, 'start');
-        }
-
         return $arrangementer;
     }
 
-    // Hentet fra https://www.php.net/manual/en/function.sort.php
-    private function array_sort($array, $on, $order=SORT_ASC)
-    {
-        $new_array = array();
-        $sortable_array = array();
-    
-        if (count($array) > 0) {
-            foreach ($array as $k => $v) {
-                if (is_array($v)) {
-                    foreach ($v as $k2 => $v2) {
-                        if ($k2 == $on) {
-                            $sortable_array[$k] = $v2;
-                        }
-                    }
-                } else {
-                    $sortable_array[$k] = $v;
-                }
-            }
-
-            switch ($order) {
-                case SORT_ASC:
-                    asort($sortable_array);
-                break;
-                case SORT_DESC:
-                    arsort($sortable_array);
-                break;
-            }
-    
-            foreach ($sortable_array as $k => $v) {
-                $new_array[$k] = $array[$k];
-            }
-        }
-    
-        return $new_array;
+    // Flatten array. Altså fra multidimensjonal til 1-dimensjonal array
+    private function flatten(array $array) {
+        $return = array();
+        array_walk_recursive($array, function($arr) use (&$return) { $return[] = $arr; });
+        return $return;
     }
 }

@@ -31,23 +31,21 @@
 	</tr>
 
 	
-	{% for kommune in kommuner %}
-		{% for arrangement in kommune['arrangementer'] %}
-			
-			{% if (config.vis('kunn_kommende_arrangement'))  %} 
-				{% if arrangement.start > tidNaa %}
-					{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommune': kommune, 'config': config} %}
-				{% endif %}
-			{% else %}
-				{% if config.vis('vis_kommende') and arrangement.start > tidNaa %}
-					{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommune': kommune, 'config': config} %}
-				
-				{% elseif config.vis("vis_sessong#{arrangement.getSesong()}") %}
-					{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommune': kommune, 'config': config} %}
-				{% endif %}
+	{% for arrangement in arrangementer %}
+		
+		{% if (config.vis('kunn_kommende_arrangement'))  %} 
+			{% if arrangement.start > tidNaa %}
+				{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
 			{% endif %}
+		{% else %}
+			{% if config.vis('vis_kommende') and arrangement.start > tidNaa %}
+				{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
+			
+			{% elseif config.vis("vis_sessong#{arrangement.getSesong()}") %}
+				{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
+			{% endif %}
+		{% endif %}
 
-		{% endfor %}
 	{% endfor %}
 </table>
 
