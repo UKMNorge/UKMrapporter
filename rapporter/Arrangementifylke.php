@@ -41,6 +41,22 @@ class Arrangementifylke extends Rapport
     }
 
     /**
+     * Hent sessonger fra $fra til og med dette året
+     *
+     * @return Array<int>
+     */
+    public function getSessongArr(int $fra) {
+        $sessonger = [];      
+        $aar = (int)Date('Y');
+        while($aar > $fra) {
+            $sessonger[] = $aar;
+            $aar--;
+        }
+
+        return $sessonger;
+    }
+
+    /**
      * Hent hvilken template som skal benyttes
      *
      * @return String $template_id
@@ -65,6 +81,8 @@ class Arrangementifylke extends Rapport
         }
         
         UKMrapporter::addViewData('kommuner', $kommuner);
+        UKMrapporter::addViewData('tidNaa', strtotime(Date("Y-m-d H:i:s")));
+
         return 'Arrangementifylke/rapport.html.twig';
     }
 

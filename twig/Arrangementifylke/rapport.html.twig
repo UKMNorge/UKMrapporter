@@ -33,35 +33,20 @@
 	
 	{% for kommune in kommuner %}
 		{% for arrangement in kommune['arrangementer'] %}
-		<tr>
-			{% if config.vis('kommune') %}
-			<td>{{kommune['kommune'].getNavn() }}</td>
-			{% endif %}
-
-			{% if config.vis('start') %}
-			<td style="text-align:right;">{{ arrangement.getStart()|dato("D j. M Y") }}</td>
-			{% endif %}
-
-			{% if config.vis('ferdig') %}
-			<td style="text-align:right;">{{ arrangement.getStop()|dato("D j. M Y") }}</td>
-			{% endif %}
-
-			{% if config.vis('arrangement') %}
-			<td><a href="{{arrangement.getLink()}}" target="_blank">{{ arrangement.getNavn() }}</a></td>
-			{% endif %}
-
-			{% if config.vis('sted') %}
-			<td>{{ arrangement.getSted() }}</td>
-			{% endif %}
 			
-			{% if config.vis('paameldte') %}
-				{% if arrangement.getSesong() > 2019 %}
-					<td>{{ arrangement.getInnslag().getAntallPersonerSimple() }}</td>
-				{% else %}
-					<td>-</td>
+			{% if (config.vis('kunn_kommende_arrangement'))  %} 
+				{% if arrangement.start > tidNaa %}
+					{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommune': kommune, 'config': config} %}
+				{% endif %}
+			{% else %}
+				{% if config.vis('vis_kommende') and arrangement.start > tidNaa %}
+					{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommune': kommune, 'config': config} %}
+				
+				{% elseif config.vis("vis_sessong#{arrangement.getSesong()}") %}
+					{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommune': kommune, 'config': config} %}
 				{% endif %}
 			{% endif %}
-		</tr>
+
 		{% endfor %}
 	{% endfor %}
 </table>

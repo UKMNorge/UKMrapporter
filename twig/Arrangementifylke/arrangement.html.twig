@@ -1,0 +1,29 @@
+<tr>
+    {% if config.vis('kommune') %}
+    <td>{{kommune['kommune'].getNavn() }}</td>
+    {% endif %}
+
+    {% if config.vis('start') %}
+    <td style="text-align:right;">{{ arrangement.getStart()|dato("D j. M Y") }}</td>
+    {% endif %}
+
+    {% if config.vis('ferdig') %}
+    <td style="text-align:right;">{{ arrangement.getStop()|dato("D j. M Y") }}</td>
+    {% endif %}
+
+    {% if config.vis('arrangement') %}
+    <td><a href="{{arrangement.getLink()}}" target="_blank">{{ arrangement.getNavn() }}</a></td>
+    {% endif %}
+
+    {% if config.vis('sted') %}
+    <td>{{ arrangement.getSted() }}</td>
+    {% endif %}
+    
+    {% if config.vis('paameldte') %}
+        {% if arrangement.getSesong() > 2019 %}
+            <td>{{ arrangement.getInnslag().getAntallPersonerSimple() }}</td>
+        {% else %}
+            <td>-</td>
+        {% endif %}
+    {% endif %}
+</tr>
