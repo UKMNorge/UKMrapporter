@@ -75,22 +75,34 @@ class Arrangementifylke extends Rapport
                     continue;
                 }
 
-                $kommuneArrangementer = $this->getArrangementer($kommune);
-
-                $kommuner[] = [
-                    'kommune' => $kommune,
-                    'arrangementer' => $kommuneArrangementer
-                ];
-
-                $arrangementer[] = $kommuneArrangementer;
+                // Hvis det er alfabetisk eller sortering av arrangementer i kommune
+                if($this->getConfig()->get('sortering') == 'alfabetisk' || $this->getConfig()->get('sortering') == 'dato_innad_kommune') {
+                    $arrangementerIKommune = $this->getArrangementer($kommune);
+                    // Sorter arrangementer innad kommune
+                    if($this->getConfig()->get('sortering') == 'dato_innad_kommune') {
+                        usort($arrangementerIKommune, function($a, $b) { return $a->start > $b->start ? 1 : ($b->start < $a->start ? -1 : 0); });
+                    }
+                    
+                    $kommuner[] = [
+                        'kommune' => $kommune,
+                        'arrangementer' => $arrangementerIKommune
+                    ];
+                } 
+                else {
+                // Legg til arrangementer i listen hvis det er start_dato
+               
+                    $kommuneArrangementer = $this->getArrangementer($kommune);
+                    $arrangementer[] = $kommuneArrangementer;
+                }
             }
         }
 
-        // Konvert til 1-dimensjonal liste
-        $arrangementer = $this->flatten($arrangementer);
+        
 
         // Sorter arrangemeter når sortering er 'start_dato' 
         if($this->getConfig()->get('sortering') == 'start_dato') {
+            // Konvert til 1-dimensjonal liste
+            $arrangementer = $this->flatten($arrangementer);
             // Sort ved hjelp av usort og callback funksjon. For å endre fra ASC til DESC bare bytt $a med $b i funksjonens attributer
             usort($arrangementer, function($a, $b) { return $a->start > $b->start ? 1 : ($b->start < $a->start ? -1 : 0); });
         }
