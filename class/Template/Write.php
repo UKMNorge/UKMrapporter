@@ -5,6 +5,7 @@ namespace UKMNorge\Rapporter\Template;
 use Exception;
 use UKMNorge\Database\SQL\Insert;
 use UKMNorge\Database\SQL\Update;
+use UKMNorge\Arrangement\Arrangement;
 
 class Write {
     /**
@@ -16,11 +17,18 @@ class Write {
      * @return Template $template
      */
     public static function create( Int $userID, Int $arrangementID, String $rapportID, String $name ) {
+        $arrangement = new Arrangement($arrangementID);
+
+        $omradeId = $arrangement->getEierOmrade()->getForeignId();
+        $omradeType = $arrangement->getEierOmrade()->getType();
+
         $query = new Insert('ukm_rapport_template');
         $query->add('user_id', $userID);
         $query->add('pl_id', $arrangementID);
         $query->add('name', $name);
         $query->add('report_id', $rapportID);
+        $query->add('omrade_id', $omradeId);
+        $query->add('omrade_type', $omradeType);
         $template_id = $query->run();
 
         if( !$template_id ) {
@@ -37,6 +45,8 @@ class Write {
                 'report_id' => $rapportID,
                 'user_id' => (Int) $userID,
                 'pl_id' => (Int) $arrangementID,
+                'omrade_id' => $omradeId,
+                'omrade_type' => $omradeType,
                 'name' => $name
             ]
         );
@@ -65,6 +75,8 @@ class Write {
             ['RapportId', 'report_id'],
             ['BrukerId', 'user_id'],
             ['ArrangementId', 'pl_id'],
+            ['OmradeId', 'omrade_id'],
+            ['OmradeType', 'omrade_type'],
             ['Beskrivelse','description'],
             ['ConfigString','config']
         ];
