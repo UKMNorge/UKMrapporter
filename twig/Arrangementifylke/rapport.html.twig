@@ -75,8 +75,8 @@
 </table>
 
 
-<h3 id="utenArrTitle" class="mt-5">Kommuner uten arrangementer</h3>
-<table class="table table-striped">
+<h3 id="utenArrTitle" class="mt-5 kommuner-uten-skjul-om-null">Kommuner uten arrangementer</h3>
+<table class="table table-striped kommuner-uten-skjul-om-null">
 	<thead>
 		<tr>
 			<th>Kommune</th>
@@ -86,17 +86,17 @@
 {% set utenArrangmenet = false %}
 {% for kommune in kommuner %}
 	{% if kommune['arrangementer']|length < 1 %}
-	{% set utenArrangmenet = true %}
-	<tr>
-		<td>{{ kommune['kommune'] }}</td>
-		<td>{{ kommune['kommune'].getFylke().getNavn() }}</td>
-	</tr>
+		{% set utenArrangmenet = true %}
+		<tr>
+			<td>{{ kommune['kommune'] }}</td>
+			<td>{{ kommune['kommune'].getFylke().getNavn() }}</td>
+		</tr>
 	{% endif %}
 {% endfor %}
 </table>
 
 {% if utenArrangmenet == false %}
-<script>jQuery('#utenArrTitle').detach()</script>
+<script>jQuery('.kommuner-uten-skjul-om-null').detach()</script>
 {% endif %}
 
 

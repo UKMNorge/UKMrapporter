@@ -4,7 +4,7 @@
 		{% embed "toggle.html.twig" with {id: 'vis_kunn_kommende_arrangement', title: 'Vis kun kommende arrangement', start: 'yes' } %}
 			{% block no %}
 				{% include "checkbox.html.twig" with {id: 'vis_kommende', title: 'Kommende'} %}
-				{% for sessong in rapport.getSessongArr(2002) %}
+				{% for sessong in rapport.getSessongArr(2019) %}
 					{% include "checkbox.html.twig" with {id: 'vis_sessong'~ sessong, title: sessong} %}
 				{% endfor %}
 			{% endblock %}
@@ -19,7 +19,7 @@
 			{% include "checkbox.html.twig" with {id: 'kommune', title: 'Kommune'} %}
 			{% include "checkbox.html.twig" with {id: 'start', title: 'Start'} %}
 			{% include "checkbox.html.twig" with {id: 'ferdig', title: 'Ferdig'} %}
-			{% include "checkbox.html.twig" with {id: 'arrangement', title: 'Arrangement'} %}
+			{% include "checkbox.html.twig" with {id: 'arrangement', title: 'Arrangement', valgt: 'true'} %}
 			{% include "checkbox.html.twig" with {id: 'sted', title: 'Sted'} %}
 			{% include "checkbox.html.twig" with {id: 'paameldte', title: 'Påmeldte personer'} %}
 		</ol>
@@ -44,7 +44,7 @@
 		{% embed "preview/list.html.twig" with {id: 'sortering', title: 'Hvordan skal det sorteres?' } %}
 			{% block options %}
 				{% include "preview/option.html.twig" with {id: 'sortering', val: 'alfabetisk', title: 'Alfabetisk sortert'} %}
-				{% include "preview/option.html.twig" with {id: 'sortering', val: 'start_dato', title: 'Sorter arrangement etter start dato', selected:true} %}
+				{% include "preview/option.html.twig" with {id: 'sortering', val: 'start_dato', title: 'Sorter arrangement etter startdato', selected:true} %}
 				{% include "preview/option.html.twig" with {id: 'sortering', val: 'dato_innad_kommune', title: 'Sortert på dato, innad i kommunen'} %}
 			{% endblock %}
 

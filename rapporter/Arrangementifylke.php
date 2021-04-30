@@ -17,6 +17,7 @@ class Arrangementifylke extends Rapport
     public $beskrivelse = 'Arrangement i fylket';
     public $har_excel = false;
     public $har_epost = false;
+    public $har_sms = false;
     public $arrangementer = [];
 
     /**
@@ -88,10 +89,15 @@ class Arrangementifylke extends Rapport
                         'arrangementer' => $arrangementerIKommune
                     ];
                 } 
+                // Legg til arrangementer i listen
                 else {
-                // Legg til arrangementer i listen hvis det er start_dato
-               
                     $kommuneArrangementer = $this->getArrangementer($kommune);
+                    
+                    $kommuner[] = [
+                        'kommune' => $kommune,
+                        'arrangementer' => $kommuneArrangementer
+                    ];
+
                     $arrangementer[] = $kommuneArrangementer;
                 }
             }
