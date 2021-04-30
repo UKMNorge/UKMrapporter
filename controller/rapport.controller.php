@@ -3,6 +3,7 @@
 use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Rapporter\Framework\Kategorier;
 use UKMNorge\Twig\Twig;
+use UKMNorge\Rapporter\Template\Samling;
 
 $rapport = UKMrapporter::getAktivRapport();
 
@@ -29,5 +30,8 @@ if( method_exists(get_class($rapport), 'getCustomizerData') ) {
     UKMrapporter::addViewData($data);
 }
 
+$templates = Samling::getFromRapport($_GET['rapport'], $arrangement, get_current_user_id());
+
 Twig::addPath(UKMrapporter::getPluginPath() . 'twig/Components/');
 UKMrapporter::addViewData('rapport', $rapport);
+UKMrapporter::addViewData('templates', $templates->getAll());

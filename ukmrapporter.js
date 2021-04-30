@@ -309,12 +309,18 @@ var UKMrapporter = function(jQuery) {
             jQuery(document).on('click', '.hideTemplatePicker', templatePicker.hide);
             jQuery(document).on('click', '.showTemplatePicker', templatePicker.show);
             jQuery(document).on('click', templatePicker.selector + ' li.template', templatePicker.loadFromClick);
+            jQuery(document).on('click', '.template-button', templatePicker.loadFromClick);
+            jQuery(document).on('click', '#apenMalSelect', templatePicker.apenMalClick);
             emitter.on('templates.loaded', templatePicker.render);
         },
         init: function() {
             templatePicker.loadFromDB();
         },
-
+        apenMalClick: function(e) {
+            if(jQuery('#malSelect').val() != null) {
+                return templatePicker.load(jQuery('#malSelect').val());
+            }
+        },
         render: function() {
             jQuery(templatePicker.selector).html(
                 twigJS_templatePicker.render({
