@@ -5,6 +5,7 @@ namespace UKMNorge\Rapporter\Template;
 use Exception;
 use UKMNorge\Collection;
 use UKMNorge\Database\SQL\Query;
+use UKMNorge\Arrangement\Arrangement;
 
 class Samling extends Collection
 {
@@ -13,10 +14,11 @@ class Samling extends Collection
      * Hent alle templates for en rapport (og arrangement)
      *
      * @param String $rapportID
-     * @param Int $arrangementID
+     * @param Arrangement $arrangement
+     * @param Int $userID
      * @return Samling<Template>
      */
-    public static function getFromRapport(String $rapportID, Int $arrangementID)
+    public static function getFromRapport(String $rapportID, Arrangement $arrangement, Int $userID)
     {
         $samling = new Samling();
 
@@ -24,11 +26,20 @@ class Samling extends Collection
             "SELECT * 
             FROM `ukm_rapport_template`
             WHERE `report_id` = '#rapport'
-            AND `pl_id` = '#arrangement'
+            AND (
+                `pl_id` = '#arrangement'
+                OR 
+                `user_id` = '#user'
+                OR
+                (`omrade_type` = '#omrade_type' AND `omrade_id` = '#omrade_id')
+            )
             ORDER BY `name` ASC",
             [
                 'rapport' => $rapportID,
-                'arrangement' => $arrangementID
+                'arrangement' => $arrangement->getId(),
+                'user' => $userID,
+                'omrade_type' => $arrangement->getEierOmrade()->getType(),
+                'omrade_id' => $arrangement->getEierOmrade()->getForeignId()
             ]
         );
         $res = $query->getResults();

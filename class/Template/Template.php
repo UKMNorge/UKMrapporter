@@ -22,6 +22,8 @@ class Template {
         $this->user_id = (Int) $data['user_id'];
         $this->rapport_id = $data['report_id'];
         $this->arrangement_id = (Int) $data['pl_id'];
+        $this->omrade_id = $data['omrade_id'];
+        $this->omrade_type = $data['omrade_type'];
         $this->beskrivelse = $data['description'];
         if( isset( $data['config'] ) ) {
             $this->config = json_decode( $data['config'] );
@@ -91,6 +93,26 @@ class Template {
     public function getArrangementId()
     {
         return $this->arrangement_id;
+    }
+
+    /**
+     * Hent område ID
+     * 
+     * @return Int $arrangement_id
+     */ 
+    public function getOmradeId()
+    {
+        return $this->omrade_id;
+    }
+
+    /**
+     * Hent område type
+     * 
+     * @return string $arrangement_id
+     */ 
+    public function getOmradeType()
+    {
+        return $this->omrade_type;
     }
 
     /**
