@@ -295,12 +295,15 @@ var UKMrapporter = function(jQuery) {
             loader.show();
             customizer.hide();
             jQuery(templatePicker.selector).slideDown();
+            jQuery('#malSelect, #apenMalSelect').hide();
             emitter.emit('templatePicker.show');
         },
         hide: function(e) {
             preventDefault(e);
             jQuery(templatePicker.selector).hide();
             emitter.emit('templatePicker.hide');
+            jQuery('#malSelect, #apenMalSelect').show();
+
         },
         loadFromDB: function() {
             templates.load(loader.getId());
