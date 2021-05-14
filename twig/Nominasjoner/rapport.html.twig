@@ -1,0 +1,89 @@
+{% for type in til.getInnslagTyper()|filter(type => type.kanHaNominasjon() and til.harNominasjonFor(type)) %}
+	<h3>{{ type.getNavn() }}</h3>
+
+		<table class="table">
+						<thead>
+							<tr>
+								<th>Navn</th>
+								<th>Status</th>
+								<th>Fylke</th>
+								<th>Skjema voksen</th>
+								<th>Skjema ungdom</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+	{% for fra in avsendere %}
+		{% for innslag in fra.getInnslag().getAllByType(type) %}
+			{% set nominert = innslag.getNominasjoner().harTil(til.getId()) %}
+			{% set nominasjon = nominert ? innslag.getNominasjoner().getTil(til.getId()) : false %}
+			{% set person = innslag.getPersoner().getSingle() %}
+			{% set fylke = innslag.getFylke() %}
+
+				{% if nominasjon.erNominert %}
+
+								<tr>
+									<td class="voksen-navn">{{ nominasjon.voksen.getNavn() }}</td>
+									<td>
+										{% if nominert.erVideresendtTil( festivalen ) %}
+											<div class="dashicons dashicons-yes-alt yes" width="16"></div>
+											<span class="dashicon">Videresendt</span>
+										{% elseif nominasjon.erNominert() %}
+											<div class="dashicons dashicons-yes-alt yes" width="16"></div>
+											<span class="dashicon">Nominert</span>
+										{% else %}
+											{% if nominasjon.harVoksenSkjema() and nominasjon.harDeltakerskjema() %}
+												<div class="dashicons dashicons-yes-alt no"></div>
+											{% else %}
+												<div class="dashicons dashicons-yes-alt no"></div>
+											{% endif %}
+											Ikke nominert
+										{% endif %}
+									</td>
+									<td>
+										{{ fylke.getNavn() }}
+									</td>
+									<td class="text-{{ nominasjon.harVoksenskjema() ? 'success' : 'error' }}">
+										Har {{ not nominasjon.harVoksenskjema() ? 'ikke' }} voksenskjema
+									</td>
+									<td class="text-{{ nominasjon.harDeltakerskjema() ? 'success' : 'error' }}">
+										Har {{ not nominasjon.harDeltakerskjema() ? 'ikke' }} deltakerskjema
+									</td>
+								</tr>
+
+				{% endif %}
+		{% endfor %}
+		
+	{% else %}
+			<p class="mute">Ingen nominsasjon</p>
+	{% endfor %}
+		</tbody>
+	</table>
+	
+{% else %}
+	<p class="mute">Ingen nominsasjon</p>
+{% endfor %}
+
+
+
+<style>
+	.dashicons.yes {
+		color: #3c763d;
+	}
+	.dashicons.no {
+		color: #b94a48;
+	}
+	span.dashicon {
+	    vertical-align: text-top;
+	}
+	.mt-5 {
+		margin-top: 2em;
+	}
+	
+	.label-as-badge {
+		border-radius: 1em;
+	}
+	td.voksen-navn {
+		min-width: 120px;
+	}
+</style>

@@ -8,6 +8,8 @@ use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Media\Bilder\Bilde;
 use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Rapporter\Framework\Gruppe;
+use UKMNorge\Innslag\Nominasjon\Nominasjon;
+
 
 class Formatter extends ConfigAware implements FormatterInterface
 {
@@ -44,6 +46,29 @@ class Formatter extends ConfigAware implements FormatterInterface
             foreach ($gruppe->getPersoner() as $person) {
                 $loop_index++;
                 static::person($word, $person, $loop_index);
+            }
+        } elseif ($gruppe->harNominasjoner()) {
+            $loop_index = 0;
+            $alleTyper = []; // Typer i alle nominasjoner
+            
+            foreach ($gruppe->getNominasjoner() as $nominasjon) { 
+                $type = Innslag::getById($nominasjon->getInnslagId())->getType()->getNavn();
+                
+                if($alleTyper[$type]) {
+                    array_push($alleTyper[$type], $nominasjon);
+                }
+                else {
+                    $alleTyper[$type] = [$nominasjon];
+                }
+            }
+
+            foreach ($alleTyper as $key => $nominasjoner) {
+                $type = $key;
+                foreach($nominasjoner as $nominasjon) {
+                    $loop_index++;
+                    static::nominasjon($word, $nominasjon, $type, $loop_index);
+                    // $type = '';
+                }
             }
         } else {
             static::ingen($word, $gruppe->getOverskrift());
@@ -108,6 +133,23 @@ class Formatter extends ConfigAware implements FormatterInterface
         static::personBasisInfo($word, $table, $person);
         $word->linjeSkift();
     }
+
+    /**
+     * Rendre informasjonen om en nominasjon
+     *
+     * @param WordDok $word
+     * @param Nominasjon $nominasjon
+     * @param string $type
+     * @param Int $loop_index
+     * @return void
+     */
+    public static function nominasjon(WordDok $word, Nominasjon $nominasjon, string $type, Int $loop_index = null)
+    {
+        $table = $word->tabell();
+        static::nominasjonBasisInfo($word, $table, $type, $nominasjon);
+        $word->linjeSkift();
+    }
+
 
     /**
      * Sett inn linjeskift etter innslag
@@ -480,6 +522,32 @@ class Formatter extends ConfigAware implements FormatterInterface
                 WordDok::pcToTwips($width_navn),
                 $row
             )
+        );
+    }
+
+    /**
+     * Basisinfo om en gitt nominasjon
+     *
+     * @param WordDok $word
+     * @param Table $table
+     * @param string $type
+     * @param Nominasjon $nominasjon
+     * @return void
+     */
+    public static function nominasjonBasisInfo(WordDok $word, Table $table, string $type, Nominasjon $nominasjon){
+        // Beregn bredder
+        $width_navn = 100;
+
+        $row = $table->addRow();
+
+        if(strlen($type) > 0) {
+            $word->h2(
+                $type
+            );
+        }
+
+        $word->tekst(
+            $nominasjon->getVoksen()->getNavn()
         );
     }
 }
