@@ -18,7 +18,8 @@ class Excel {
             $this->excel->setArk('innslag', 'Innslag');
         }
         $this->rad();
-        $kolonne = $this->celle('A', 'Innslag');
+        $kolonne = $this->celle('A', 'Rekkefølge');
+        $kolonne = $this->celle($kolonne, 'Innslag');
         $kolonne = $this->celle($kolonne,'Kategori');
         $kolonne = $this->celleHvis('kategori_og_sjanger', 'Sjanger', $kolonne);
         $kolonne = $this->celleHvis('varighet', 'Varighet (sekunder)', $kolonne);
@@ -109,7 +110,8 @@ class Excel {
             $this->setArk('innslag');
             $this->rad();
 
-            $kolonne = $this->celle('A', $innslag->getNavn());
+            $kolonne = $this->celle('A', $innslag->getNummer());
+            $kolonne = $this->celle($kolonne, $innslag->getNavn());
             $kolonne = $this->celle($kolonne, $kategori);
             $kolonne = $this->celleHvis('kategori_og_sjanger', $innslag->getSjanger(), $kolonne);
             $kolonne = $this->celleHvis('varighet', $varighet, $kolonne);
