@@ -1,64 +1,67 @@
 {% for type in til.getInnslagTyper()|filter(type => type.kanHaNominasjon() and til.harNominasjonFor(type)) %}
 	<h3>{{ type.getNavn() }}</h3>
 
-		<table class="table">
-						<thead>
-							<tr>
-								<th width="*%">Navn</th>
-								<th width="250">Status</th>
-								<th width="250">Avsender</th>
-								<th width="200">Skjema voksen</th>
-								<th width="200">Skjema ungdom</th>
-							</tr>
-						</thead>
-						
-						<tbody>
-	{% for fra in avsendere %}
-		{% for innslag in fra.getInnslag().getAllByType(type) %}
-			{% set nominert = innslag.getNominasjoner().harTil(til.getId()) %}
-			{% set nominasjon = nominert ? innslag.getNominasjoner().getTil(til.getId()) : false %}
+	<table class="table">
+		<thead>
+			<tr>
+				<th width="*%">Navn</th>
+				<th width="250">Status</th>
+				<th width="250">Avsender</th>
+				<th width="200">Skjema voksen</th>
+				<th width="200">Skjema ungdom</th>
+			</tr>
+		</thead>
 
-				{% if nominasjon.erNominert() %}
-								<tr>
-									<td class="voksen-navn">{{ innslag.getNavn() }}</td>
-									<td>
-										{% if innslag.erVideresendtTil( til ) %}
-											<div class="dashicons dashicons-warning yes" width="16"></div>
-											<span class="dashicon">Videresendt</span>
-										{% else %}
-											{% if nominasjon.harVoksenSkjema() and nominasjon.harDeltakerskjema() %}
-												<div class="dashicons dashicons-yes-alt yes"></div>
-												Nominert
-											{% else %}
-												<div class="dashicons dashicons-no-alt no"></div>
-												Nominert, men mangler skjema
-											{% endif %}
-										{% endif %}
-									</td>
-									<td>
-										{{ nominasjon.getFraArrangement().getNavn() }}
-									</td>
-									<td class="text-{{ nominasjon.harVoksenskjema() ? 'success' : 'error' }}">
-										Har {{ not nominasjon.harVoksenskjema() ? 'ikke' }} voksenskjema
-									</td>
-									<td class="text-{{ nominasjon.harDeltakerskjema() ? 'success' : 'error' }}">
-										Har {{ not nominasjon.harDeltakerskjema() ? 'ikke' }} deltakerskjema
-									</td>
-								</tr>
+		<tbody>
+			{% for fra in avsendere %}
+				{% for innslag in fra.getInnslag().getAllByType(type) %}
+					{% set nominert = innslag.getNominasjoner().harTil(til.getId()) %}
+					{% set nominasjon = nominert ? innslag.getNominasjoner().getTil(til.getId()) : false %}
 
-				{% endif %}
-		{% endfor %}
-		
-	{% else %}
-			<p class="mute">Ingen nominasjon</p>
-	{% endfor %}
+					{% if nominasjon.erNominert() %}
+						<tr>
+							<td class="voksen-navn">{{ innslag.getNavn() }}</td>
+							<td>
+								{% if innslag.erVideresendtTil( til ) %}
+									<div class="dashicons dashicons-warning yes" width="16"></div>
+									<span class="dashicon">Videresendt</span>
+								{% else %}
+									{% if nominasjon.harVoksenSkjema() and nominasjon.harDeltakerskjema() %}
+										<div class="dashicons dashicons-yes-alt yes"></div>
+										Nominert
+									{% else %}
+										<div class="dashicons dashicons-no-alt no"></div>
+										Nominert, men mangler skjema
+									{% endif %}
+								{% endif %}
+							</td>
+							<td>
+								{{ nominasjon.getFraArrangement().getNavn() }}
+							</td>
+							<td class="text-{{ nominasjon.harVoksenskjema() ? 'success' : 'error' }}">
+								Har
+								{{ not nominasjon.harVoksenskjema() ? 'ikke' }}
+								voksenskjema
+							</td>
+							<td class="text-{{ nominasjon.harDeltakerskjema() ? 'success' : 'error' }}">
+								Har
+								{{ not nominasjon.harDeltakerskjema() ? 'ikke' }}
+								deltakerskjema
+							</td>
+						</tr>
+
+					{% endif %}
+				{% endfor %}
+
+			{% else %}
+				<p class="mute">Ingen nominasjon</p>
+			{% endfor %}
 		</tbody>
 	</table>
-	
+
 {% else %}
 	<p class="mute">Ingen nominasjon</p>
 {% endfor %}
-
 
 
 <style>
@@ -69,12 +72,12 @@
 		color: #b94a48 !important;
 	}
 	span.dashicon {
-	    vertical-align: text-top;
+		vertical-align: text-top;
 	}
 	.mt-5 {
 		margin-top: 2em;
 	}
-	
+
 	.label-as-badge {
 		border-radius: 1em;
 	}
