@@ -4,6 +4,9 @@ namespace UKMNorge\Rapporter\Framework;
 
 use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Person;
+use UKMNorge\Innslag\Typer\Type;
+use UKMNorge\Innslag\Nominasjon\Nominasjon;
+
 
 class Gruppe
 {
@@ -14,6 +17,7 @@ class Gruppe
     var $grupper = [];
     var $innslag = [];
     var $personer = [];
+    var $nominasjoner = [];
     var $custom_items = [];
     var $sorted_data = false;
     var $attributes = [];
@@ -136,6 +140,38 @@ class Gruppe
         $this->personer[$person->getNavn() . '-' . $person->getId()] = $person;
         return $this;
     }
+
+    /**
+     * Legg til en nominasjon
+     *
+     * @param Nominasjon $nominasjon
+     * @return self
+     */
+    public function addNominasjon(Nominasjon $nominasjon ) 
+    {
+        $this->nominasjoner[] = $nominasjon;
+
+        return $this;
+    }
+
+    /**
+     * Hent alle nominasjoner
+     * @return Array<Nominasjon>
+     */
+    public function getNominasjoner()
+    {
+        return $this->nominasjoner;
+    }
+
+    /**
+     * Hvorvidt denne gruppen skal ha, og har, nominasjoner
+     *
+     * @return Bool
+     */
+    public function harNominasjoner()
+    {
+        return !$this->harGrupper() && sizeof($this->nominasjoner) > 0;
+    }    
 
     /**
      * Hvorvidt denne gruppen skal ha, og har, custom-items
