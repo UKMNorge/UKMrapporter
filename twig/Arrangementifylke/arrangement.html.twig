@@ -1,8 +1,8 @@
 <tr>
     {% if config.vis('kommune') %}
         <td>
-        {% for kom in kommuner %}
-            <span>{{ kom }}</span>
+        {% for kommune in kommuner %}
+            <span>{{ kommune }}{{ not loop.last ? ', ' }}</span>
         {% endfor %}
         </td>
     {% endif %}
