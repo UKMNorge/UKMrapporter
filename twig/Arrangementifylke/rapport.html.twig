@@ -1,4 +1,4 @@
-{% if not config.vis('kommune') and not config.vis('start') and not config.vis('arrangement') and not config.vis('sted') and not config.vis('paameldte') %}
+{% if not config.vis('kommune') and not config.vis('start') and not config.vis('sted') and not config.vis('paameldte') %}
 <span>Ingen kolonner ble valgt!</span>
 {% endif %}
 
@@ -15,10 +15,6 @@
 
 		{% if config.vis('ferdig') %}
 		<th style="text-align:right;">Ferdig</th>
-		{% endif %}
-
-		{% if config.vis('arrangement') %}
-		<th>Arrangement</th>
 		{% endif %}
 
 		{% if config.vis('sted') %}

@@ -15,9 +15,7 @@
     <td style="text-align:right;">{{ arrangement.getStop()|dato("D j. M Y") }}</td>
     {% endif %}
 
-    {% if config.vis('arrangement') %}
     <td><a href="{{arrangement.getLink()}}" target="_blank">{{ arrangement.getNavn() }}</a></td>
-    {% endif %}
 
     {% if config.vis('sted') %}
     <td>{{ arrangement.getSted() }}</td>
