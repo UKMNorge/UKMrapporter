@@ -1,98 +1,83 @@
 {% if not config.vis('kommune') and not config.vis('start') and not config.vis('sted') and not config.vis('paameldte') %}
-<span>Ingen kolonner ble valgt!</span>
-{% endif %}
-
-{% set colspan = 1 %}
-<table class="table table-striped">
-	<tr>
-		{% if config.vis('kommune') %}
-		<th>Kommune</th>
-		{% endif %}
-
-		{% if config.vis('start') %}
-		<th style="text-align:right;">Starter</th>
-		{% endif %}
-
-		{% if config.vis('ferdig') %}
-		<th style="text-align:right;">Ferdig</th>
-		{% endif %}
-
-		{% if config.vis('sted') %}
-		<th>Sted</th>
-		{% endif %}
-
-		{% if config.vis('paameldte') %}
-		<th>Påmeldte personer</th>
-		{% endif %}
-	</tr>
-
-	{% if config.get('sortering') != 'start_dato' %}
-	
-		{% for kommune in kommuner %}
-
-			{% for arrangement in kommune['arrangementer'] %}
-			
-			{% if (config.vis('kunn_kommende_arrangement'))  %} 
-				{% if arrangement.start > tidNaa %}
-					{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
-				{% endif %}
-			{% else %}
-				{% if config.vis('vis_kommende') and arrangement.start > tidNaa %}
-					{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
-				
-				{% elseif config.vis("vis_sessong#{arrangement.getSesong()}") %}
-					{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
-				{% endif %}
+	<span>Ingen kolonner ble valgt!</span>
+{% else %}
+	{% set colspan = 1 %}
+	<table class="table table-striped">
+		<tr>
+			{% if config.vis('kommune') %}
+				<th>Kommune</th>
 			{% endif %}
 
+			{% if config.vis('start') %}
+				<th style="text-align:right;">Starter</th>
+			{% endif %}
+
+			{% if config.vis('ferdig') %}
+				<th style="text-align:right;">Ferdig</th>
+			{% endif %}
+
+			{% if config.vis('sted') %}
+				<th>Sted</th>
+			{% endif %}
+
+			{% if config.vis('paameldte') %}
+				<th>Påmeldte personer</th>
+			{% endif %}
+		</tr>
+
+		{% if config.get('sortering') != 'start_dato' %}
+			{% for kommune in kommuner %}
+				{% for arrangement in kommune['arrangementer'] %}
+					{% if config.vis('kunn_kommende_arrangement') %}
+						{% if arrangement.start > tidNaa %}
+							{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
+						{% endif %}
+					{% else %}
+						{% if (config.vis('vis_kommende') and arrangement.start > tidNaa) or config.vis("vis_sessong#{arrangement.getSesong()}") %}
+							{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
+						{% endif %}
+					{% endif %}
+				{% endfor %}
 			{% endfor %}
-		{% endfor %}
-	
-	{% else %}
-		
-		{% for arrangement in arrangementer %}
-			
-			{% if (config.vis('kunn_kommende_arrangement'))  %} 
-				{% if arrangement.start > tidNaa %}
-					{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
+		{% else %}
+			{% for arrangement in arrangementer %}
+				{% if config.vis('kunn_kommende_arrangement') %}
+					{% if arrangement.start > tidNaa %}
+						{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
+					{% endif %}
+				{% else %}
+					{% if (config.vis('vis_kommende') and arrangement.start > tidNaa) or config.vis("vis_sessong#{arrangement.getSesong()}") %}
+						{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
+					{% endif %}
 				{% endif %}
-			{% else %}
-				{% if config.vis('vis_kommende') and arrangement.start > tidNaa %}
-					{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
-				
-				{% elseif config.vis("vis_sessong#{arrangement.getSesong()}") %}
-					{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
-				{% endif %}
+			{% endfor %}
+		{% endif %}
+	</table>
+
+
+	<h3 id="utenArrTitle" class="mt-5 kommuner-uten-skjul-om-null">Kommuner uten arrangementer</h3>
+	<table class="table table-striped kommuner-uten-skjul-om-null">
+		<thead>
+			<tr>
+				<th>Kommune</th>
+				<th>Fylke</th>
+			</tr>
+		</thead>
+		{% set utenArrangmenet = false %}
+		{% for kommune in kommuner %}
+			{% if kommune['arrangementer']|length < 1 %}
+				{% set utenArrangmenet = true %}
+				<tr>
+					<td>{{ kommune['kommune'] }}</td>
+					<td>{{ kommune['kommune'].getFylke().getNavn() }}</td>
+				</tr>
 			{% endif %}
-
 		{% endfor %}
+	</table>
 
+	{% if utenArrangmenet == false %}
+		<script>
+			jQuery('.kommuner-uten-skjul-om-null').detach()
+		</script>
 	{% endif %}
-</table>
-
-
-<h3 id="utenArrTitle" class="mt-5 kommuner-uten-skjul-om-null">Kommuner uten arrangementer</h3>
-<table class="table table-striped kommuner-uten-skjul-om-null">
-	<thead>
-		<tr>
-			<th>Kommune</th>
-			<th>Fylke</th>
-		</tr>
-	</thead>
-{% set utenArrangmenet = false %}
-{% for kommune in kommuner %}
-	{% if kommune['arrangementer']|length < 1 %}
-		{% set utenArrangmenet = true %}
-		<tr>
-			<td>{{ kommune['kommune'] }}</td>
-			<td>{{ kommune['kommune'].getFylke().getNavn() }}</td>
-		</tr>
-	{% endif %}
-{% endfor %}
-</table>
-
-{% if utenArrangmenet == false %}
-<script>jQuery('.kommuner-uten-skjul-om-null').detach()</script>
 {% endif %}
-
-
