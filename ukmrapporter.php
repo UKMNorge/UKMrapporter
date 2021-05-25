@@ -11,7 +11,6 @@ Author URI: http://www.ukm-norge.no
 use UKMNorge\Wordpress\Modul;
 
 ini_set('display_errors', true);
-
 require_once('UKM/Autoloader.php');
 spl_autoload_register(['UKMrapporter','autoload']);
 
@@ -75,20 +74,18 @@ class UKMrapporter extends Modul
      */
     public static function userMeny()
     {
-        if (UKMnettverket::erCurrentAdminFylkeAdmin()) {
-            add_action(
-                'admin_print_styles-'. add_menu_page(
-                    'Rapporter',
-                    'Rapporter',
-                    'ukm_rapporter',
-                    'UKMrapporter',
-                    ['UKMrapporter', 'renderAdmin'],
-                    'dashicons-analytics',
-                    81
-                ),
-                ['UKMrapporter', 'scripts_and_styles']
-            );
-        }
+        add_action(
+            'admin_print_styles-'. add_menu_page(
+                'Rapporter',
+                'Rapporter',
+                'subscriber',
+                'UKMrapporter',
+                ['UKMrapporter', 'renderAdmin'],
+                'dashicons-analytics',
+                81
+            ),
+            ['UKMrapporter', 'scripts_and_styles']
+        );
     }
 
     public static function renderAdmin()
