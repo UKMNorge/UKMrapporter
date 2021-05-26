@@ -7,26 +7,29 @@
                 Tilpass rapporten
             </h2>
 
+            {% if templates is iterable and templates|length > 0 %}
             <span id="customizeHeader">
                 Vis rapport fra mal: 
             </span>
-                {% if templates|length < 5 %}
+            {% endif %}
+            {% if templates|length < 5 %}
+                {% for template in templates %}
+                    <h1>heyy</h1>
+                    <button type="button" data-id="{{template.id}}" class="btn btn-default btn-sm template-button" style="margin: 0 10px 0 0">
+                        {{ template.name }}
+                    </button>
+                {% endfor %}
+            {% else %}
+                <select id="malSelect" >
+                    <option value="null" disabled selected>Velg mal</option>
                     {% for template in templates %}
-                        <button type="button" data-id="{{template.id}}" class="btn btn-default btn-sm template-button" style="margin: 0 10px 0 0">
-                            {{ template.name }}
-                        </button>
-                    {% endfor %}
-                {% else %}
-                    <select id="malSelect" >
-                        <option value="null" disabled selected>Velg mal</option>
-                     {% for template in templates %}
-                        <option type="button" value="{{template.id}}">
-                            {{ template.name }}
-                        </option>
-                    {% endfor %}
-                    </select>
-                    <button id="apenMalSelect" class="btn btn-default btn-sm">Vis rapport</button>
-                {% endif %}
+                    <option type="button" value="{{template.id}}">
+                        {{ template.name }}
+                    </option>
+                {% endfor %}
+                </select>
+                <button id="apenMalSelect" class="btn btn-default btn-sm">Vis rapport</button>
+            {% endif %}
             
             <h2 id="templateHeader" style="display:none;">
                 Åpne mal
