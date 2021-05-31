@@ -1,6 +1,8 @@
 <?php
 
 namespace UKMNorge\Rapporter\Framework;
+use UKMNorge\Samtykke\Person as PersonSamtykke;
+
 
 use UKMNorge\File\Excel as ExcelDok;
 
@@ -41,6 +43,7 @@ class Excel {
             $kolonne_personer = $this->celle('C', 'Etternavn');
             $kolonne_personer = $this->celleHvis('deltakere_mobil', 'Mobil', $kolonne_personer);
             $kolonne_personer = $this->celleHvis('deltakere_alder', 'Alder', $kolonne_personer);
+            $kolonne_personer = $this->celle($kolonne_personer, 'Fotoreservajon');
             $kolonne_personer = $this->celleHvis('deltakere_rolle', 'Rolle', $kolonne_personer);
             
             $kolonne_personer = $this->celle($kolonne_personer, 'Kategori');
@@ -139,6 +142,10 @@ class Excel {
                     $kolonne_personer = $this->celleHvis('deltakere_mobil', $person->getMobil(), $kolonne_personer);
                     $kolonne_personer = $this->celleHvis('deltakere_alder', $person->getAlder(''), $kolonne_personer);
                     $kolonne_personer = $this->celleHvis('deltakere_rolle', $person->getRolle(), $kolonne_personer);
+
+                    $samtykke = new PersonSamtykke( $person, $innslag );
+                    $kolonne_personer = $this->celle($kolonne_personer, $samtykke->getStatus()->getId() == 'ikke_godkjent' ? 'vil ikke bli tatt bilde av' : '-');
+
 
                     $kolonne_personer = $this->celle($kolonne_personer, $kategori);
                     $kolonne_personer = $this->celleHvis('kategori_og_sjanger', $innslag->getSjanger(), $kolonne_personer);
