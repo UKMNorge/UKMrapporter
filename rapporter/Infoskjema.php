@@ -68,6 +68,6 @@ class Infoskjema extends Rapport
         UKMrapporter::addViewData('svarsett', $svarsett);
         UKMrapporter::addViewData('alleArrangementer', $alleArrangementer);
 
-        return 'Skjema/rapport.html.twig';
+        return 'Skjema/rapport-infoskjema.html.twig';
     }
 }
