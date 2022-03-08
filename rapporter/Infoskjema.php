@@ -3,7 +3,9 @@
 namespace UKMNorge\Rapporter;
 
 use Exception;
+use UKMNorge\Arrangement\Skjema\Skjema;
 use UKMNorge\Rapporter\Framework\Rapport;
+use UKMNorge\Arrangement\Skjema\SvarSett;
 use UKMrapporter;
 
 class Infoskjema extends Rapport
@@ -41,7 +43,31 @@ class Infoskjema extends Rapport
      */
     public function getTemplate()
     {
-        UKMrapporter::addViewData('skjema', $this->getArrangement()->getSkjema());
+        $arrangement = $this->getArrangement();
+        $svarsett = [];
+        $alleArrangementer = [];
+
+        // Hent alle arrangementer som videresender 
+        foreach($arrangement->getVideresending()->getAvsendere() as $arrangAvsender) {
+            $fraArrangement = $arrangAvsender->getArrangement();
+            try{
+                $skjemaFra = $fraArrangement->getSkjema();
+                $svarsett[] = SvarSett::getPlaceholder('arrangement', $fraArrangement->getId(), $skjemaFra->getId());
+                $alleArrangementer[] = $fraArrangement;
+            }catch(Exception $e) {
+                if($e->getCode() == 151002) {
+                    // Skjemma finnes ikke, fortsett videre fordi det er ikke nødvendigvis at alle arrangementer har sendt skjema
+                    continue;
+                }
+            }
+        }
+
+        $skjema = $arrangement->getSkjema();
+
+        UKMrapporter::addViewData('skjema', $skjema);
+        UKMrapporter::addViewData('svarsett', $svarsett);
+        UKMrapporter::addViewData('alleArrangementer', $alleArrangementer);
+
         return 'Skjema/rapport.html.twig';
     }
 }
