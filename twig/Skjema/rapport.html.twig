@@ -7,16 +7,16 @@
             <table class="table table-striped">
                 <tr>
                     <th>Spørsmål</th>
-                    {% for arrang in alleArrangementer %}
-                        <th>{{ arrang.getNavn() }}</th>
+                    {% for respondent in skjema.getRespondenter().getAllPameldt(arrangement) %}
+                        <th>{{ respondent.getNavn() }}</th>
                     {% endfor %}
                 </tr>
                 {% for sporsmal in gruppe.getAll()|filter(sporsmal => config.show('sporsmal_'~sporsmal.getId())) %}
                     <tr>
                         <th>{{sporsmal.getTittel()}}</th>
-                        {% for respondent in svarsett %}
+                        {% for respondent in skjema.getRespondenter().getAllPameldt(arrangement) %}
                             <td>
-                                {% include "Skjema/svar.html.twig" with { type: sporsmal.getType(), svar: respondent.get( sporsmal.getId() ).getValue() } %}
+                                {% include "Skjema/svar.html.twig" with { type: sporsmal.getType(), svar: respondent.getSvar().get( sporsmal.getId() ).getValue() } %}
                             </td>
                         {% endfor %}
                     </tr>
@@ -38,11 +38,11 @@
                         <th width="30%">Avsender</th>
                         <th>Svar</th>
                     </tr>
-                    {% for i in 0..alleArrangementer|length %}
+                    {% for respondent in skjema.getRespondenter().getAllPameldt(arrangement) %}
                         <tr>
-                            <th>{{ alleArrangementer[i].getNavn() }}</th>
+                            <th>{{ respondent.getNavn() }}</th>
                             <td>
-                                {% include "Skjema/svar.html.twig" with { type: sporsmal.getType(), svar: svarsett[i].get( sporsmal.getId() ).getValue() } %}
+                                {% include "Skjema/svar.html.twig" with { type: sporsmal.getType(), svar: respondent.getSvar().get( sporsmal.getId() ).getValue() } %}
                             </td>
                         </tr>
                     {% endfor %}
