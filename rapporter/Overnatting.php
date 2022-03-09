@@ -6,13 +6,14 @@ use Exception;
 use UKMNorge\Arrangement\Skjema\Skjema;
 use UKMNorge\Rapporter\Framework\Rapport;
 use UKMNorge\Arrangement\UKMFestival;
+use UKMNorge\Arrangement\Arrangement;
 use UKMrapporter;
 
 
 
 class Overnatting extends Rapport
 {
-    public $kategori_id = 'personer';
+    public $kategori_id = 'ukmfestivalen';
     public $ikon = 'dashicons-admin-multisite';
     public $navn = 'Overnatting';
     public $beskrivelse = 'Informasjon om hotel, rom osv.';
@@ -25,6 +26,20 @@ class Overnatting extends Rapport
 	private $object_type = 'gruppe';
 	private $filter = '';
 
+    
+    /**
+     * Er rapporten synlig
+     * Rapporten er synlig bare på UKM Festivalen (land)
+     * 
+     * @return Array
+     */
+    public function erSynlig() {
+        $arrangement = new Arrangement(get_option('pl_id'));
+        if($arrangement->getEierType() == 'land') {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Data til "tilpass rapporten"
@@ -33,7 +48,15 @@ class Overnatting extends Rapport
      */
     public function getCustomizerData()
     {
+        $arrangement = $this->getArrangement();
+
+       
         try {
+            if($arrangement->getEierType() == 'land') {
+                $arrangement = new UKMFestival($arrangement->getId());
+                return ['skjema' => $this->getArrangement()->getSkjema(), 'overnattingGrupper' => $arrangement->getOvernattingGrupper()];
+            }
+            
             return ['skjema' => $this->getArrangement()->getSkjema()];
         } catch (Exception $e) {
             if ($e->getCode() != 151002) {
@@ -56,8 +79,8 @@ class Overnatting extends Rapport
             $arrangement = new UKMFestival($arrangement->getId());
             UKMrapporter::addViewData('overnattingGrupper', $arrangement->getOvernattingGrupper());
         }
-
-        UKMrapporter::addViewData('sesong', (int) $this->getConfig()->get('vis_sesong')->getValue());
+        
+        UKMrapporter::addViewData('gruppe', (int) $this->getConfig()->get('vis_gruppe')->getValue());
         return 'Overnatting/rapport.html.twig';
     }
 }
