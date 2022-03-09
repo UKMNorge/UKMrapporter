@@ -1,0 +1,18 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Navn</th>
+            <th scope="col">Gruppe</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for oGruppe in overnattingGrupper %}
+            {% for person in oGruppe.getAllePersoner() %}
+            <tr>
+                <td>{{ person.getNavn() }}</td>
+                <td>{{ oGruppe.getNavn() }}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

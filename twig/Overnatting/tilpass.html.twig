@@ -1,0 +1,11 @@
+<div class="col-12 col-sm-6 col-md-4">
+	<ol class="list-group">
+		<li class="list-group-item list-group-title">
+			<h4>Velg sesong</h4>
+		</li>
+
+        {% for sesong in 2015..now|date('Y') %}
+		    {% include "radio.html.twig" with {id: 'sesong', value: sesong, title: sesong} %}
+        {% endfor %}
+	</ol>
+</div>
