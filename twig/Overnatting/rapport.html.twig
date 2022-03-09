@@ -1,0 +1,33 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Navn</th>
+            <th scope="col">Gruppe</th>
+            <th scope="col">Mobil</th>
+            <th scope="col">Epost</th>
+            <th scope="col">Ankomst</th>
+            <th scope="col">Avreise</th>
+            <th scope="col">Rom</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for oGruppe in overnattingGrupper %}
+            {% for person in oGruppe.getAllePersoner() %}
+                {% if gruppe == '-1' or gruppe == oGruppe.getId() %}
+                    <tr>
+                        <td>{{ person.getNavn() }}</td>
+                        <td>{{ oGruppe.getNavn() }}</td>
+                        <td>{{ person.getMobil() }}</td>
+                        <td>{{ person.getEpost() }}</td>
+                        <td>{{ person.getAnkomst() }}</td>
+                        <td>{{ person.getAvreise() }}</td>
+                        {# Rom #}
+                        {% if person.getRom() is not null %}
+                        <td>{{ person.getRom().getId() }} - {{ person.getRom().getType() }} (kapasitet: {{ person.getRom().getKapasitet() }})</td>
+                        {% endif %}
+                    </tr>            
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </tbody>
+</table>

@@ -23,7 +23,9 @@ foreach( $rapport_filer as $rapport_fil ) {
     $class = 'UKMNorge\Rapporter\\'. str_replace('.php','',$rapport_fil);
     $rapport = new $class();
 
-    Kategorier::getById( $rapport->getKategori()->getId() )->add( $rapport );
+    if(!method_exists($rapport, 'erSynlig') or (method_exists($rapport, 'erSynlig') and $rapport->erSynlig())) {
+        Kategorier::getById( $rapport->getKategori()->getId() )->add( $rapport );
+    }
 }
 
 UKMrapporter::addViewData('rapporter', $rapporter);
