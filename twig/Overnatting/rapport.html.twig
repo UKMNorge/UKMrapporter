@@ -3,6 +3,10 @@
         <tr>
             <th scope="col">Navn</th>
             <th scope="col">Gruppe</th>
+            <th scope="col">Mobil</th>
+            <th scope="col">Epost</th>
+            <th scope="col">Ankomst</th>
+            <th scope="col">Avreise</th>
         </tr>
     </thead>
     <tbody>
@@ -11,6 +15,10 @@
             <tr>
                 <td>{{ person.getNavn() }}</td>
                 <td>{{ oGruppe.getNavn() }}</td>
+                <td>{{ person.getMobil() }}</td>
+                <td>{{ person.getEpost() }}</td>
+                <td>{{ person.getAnkomst() }}</td>
+                <td>{{ person.getAvreise() }}</td>
             {% endfor %}
             </tr>
         {% endfor %}
