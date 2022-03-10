@@ -9,4 +9,6 @@ Oppretter overnatting rapport eksempel
 5. `tilpass.html.twig` fra punkt 3 skal innholde filtere og opsjoner for rapporten
 6. I tilleg kan man legge til nye kategorier på UKMrapporter/rapporter/kategorier.yml
 
+Visualisering:
+
 [![Visualisering av ny rapport](https://github.com/UKMNorge/UKMrapporter/blob/master/docs/img/Rapporter%20-%20Ny%20rapport.png?raw=true)
