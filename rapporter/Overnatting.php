@@ -34,7 +34,13 @@ class Overnatting extends Rapport
      * @return Array
      */
     public function erSynlig() {
-        $arrangement = new Arrangement(get_option('pl_id'));
+        // Sjekk om arrangementet finnes. Metoden kan kalles fra kommuner eller fylker
+        try {
+            $arrangement = new Arrangement(get_option('pl_id'));
+        }catch(Exception $e) {
+            return false;
+        }
+
         if($arrangement->getEierType() == 'land') {
             return true;
         }
