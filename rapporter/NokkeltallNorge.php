@@ -48,12 +48,31 @@ class NokkeltallNorge extends Nokkeltall
      */
     public function getInnslagTyper()
     {
+        // Hvis type er workshop, da skal hentes alle type enkelperson
+        $arrangementType = $this->getConfig()->get('arrangement_type')->getValue();
+        if($arrangementType == 'workshop') {
+            return $this->getInnslagTyperWorkshop();
+        }
+
         if (is_null($this->typer)) {
             $this->typer = new Typer();
             foreach (Typer::getAlleInkludertSkjulteTyper() as $type) {
                 $this->typer->add($type);
             }
         }
+        return $this->typer;
+    }
+
+    /**
+     * Hent alle typer som gjelder for workshop
+     *
+     * @return Typer
+     */
+    public function getInnslagTyperWorkshop()
+    {
+        $this->typer = new Typer();
+        $this->typer->add(Typer::getByKey('enkeltperson'));
+        
         return $this->typer;
     }
 }

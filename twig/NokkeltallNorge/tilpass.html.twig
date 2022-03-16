@@ -9,3 +9,7 @@
         {% endfor %}
 	</ol>
 </div>
+
+<div class="col-12 col-sm-6 col-md-4">
+	{% include "options.html.twig" with {id: 'arrangement_type', title: 'Velg visning:', start: 'festival', options: [{id: 'festival', title: 'Festival'},{id: 'workshop', title: 'Workshop (kurs)'}]} %}
+</div>

@@ -80,6 +80,11 @@ class Nokkeltall extends Rapport
         $grupper->setAttr('scene_innslag_count', $scene_innslag);
         $grupper->setAttr('scene_personer_count', $scene_personer);
         $grupper->setAttr('scene_typer', $scene_typer);
+        
+        if($this->getConfig()->get('arrangement_type')) {
+            $arrangementType = $this->getConfig()->get('arrangement_type')->getValue();
+            $grupper->setAttr('arrangement_type', $arrangementType);
+        }
 
         return $grupper;
     }

@@ -31,31 +31,33 @@
 				</tr>
 			</table>
 
-			<h3>
-				Antall sceneinnslag påmeldt
-				{{ arrangement.getNavn() }}
-                <br />
-				<small>
-					{{renderData.getAttr('scene_typer')|join(', ')}}
-					summert
-				</small>
-			</h3>
-			<table class="table table-striped col">
-				<tr>
-					<th></th>
-					<th>Innslag</th>
-					<th>Personer</th>
-				</tr>
-                <tr>
-					<th>
-						Sceneinnslag
-						<br/>
-						<small style="font-weight: normal;"></small>
-					</th>
-					<th>{{ renderData.getAttr('scene_innslag_count')}}</th>
-					<th>{{ renderData.getAttr('scene_personer_count')}}</th>
-				</tr>
-			</table>
+			{% if renderData.getAttr('arrangement_type') is not defined or renderData.getAttr('arrangement_type') != 'workshop' %}
+				<h3>
+					Antall sceneinnslag påmeldt
+					{{ arrangement.getNavn() }}
+					<br />
+					<small>
+						{{renderData.getAttr('scene_typer')|join(', ')}}
+						summert
+					</small>
+				</h3>
+				<table class="table table-striped col">
+					<tr>
+						<th></th>
+						<th>Innslag</th>
+						<th>Personer</th>
+					</tr>
+					<tr>
+						<th>
+							Sceneinnslag
+							<br/>
+							<small style="font-weight: normal;"></small>
+						</th>
+						<th>{{ renderData.getAttr('scene_innslag_count')}}</th>
+						<th>{{ renderData.getAttr('scene_personer_count')}}</th>
+					</tr>
+				</table>
+			{% endif %}
 		</div>
 	</div>
 </div>
