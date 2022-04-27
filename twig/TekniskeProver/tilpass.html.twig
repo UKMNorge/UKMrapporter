@@ -33,6 +33,7 @@
 			{% endblock %}
 		{% endembed %}
 	</div>
+
 	<div class="col-12 col-sm-6 col-md-4">
 		{% embed "toggle.html.twig" with {id: 'vis_kontaktperson', title: 'Vis kontaktperson?', start: 'yes' } %}
 			{% block yes %}
@@ -53,4 +54,13 @@
 			{% endblock %}
 		{% endembed %}
 	</div>
+
+	<div class="col-12 col-sm-6 col-md-4">
+        <ol class="list-group">
+            <li class="list-group-item list-group-title">
+                <h4>Oppmøtetid</h4>
+            </li>
+			{% include "checkbox.html.twig" with {id: 'oppmotetid', title: 'Oppmøtetid'} %}
+        </ol>
+    </div>
 </div>

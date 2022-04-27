@@ -16,3 +16,17 @@
 		</tr>
 	{% endif %}
 {% endblock %}
+
+{% block oppmotetid %}
+	{% if config.show('oppmotetid') %}
+        {% set forestillingInnslagId = innslag.context.forestilling.id %}	
+        {% for hendelse in rapport.arrangement.program.getAll() %}
+            {% if hendelse.id == forestillingInnslagId %}
+				<tr><td style="width: 100%" class="internalHeader">OPPMØTETID</td></tr>
+			    <tr><td>
+				<p>{{ hendelse.getOppmoteTid(innslag)|dato('j. M Y \k\\l. H:i') }}</p>
+				</tr></td>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

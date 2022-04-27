@@ -23,7 +23,34 @@ class FormatterTekniskeProver extends Formatter {
         if( static::show('notatfelt') ) {
             static::leggTilKommentarbokser( $word );
         }
+        // Oppmøtetid
+        if(static::show('oppmotetid')) {
+            static::leggTilOppmotetid($word, $innslag);
+        }
+
         $word->sideskift();
+    }
+
+    public static function leggTilOppmotetid(Word $word, Innslag $innslag) {
+        $width = $word::pcToTwips(100);
+        if( static::getConfig()->get('notatfelt_visning') == 'liten' ) {
+            $height = $word::mmToTwips(28);
+        } else {
+            $height = $word::mmToTwips(48);
+        }
+        
+        $tabell = $word->tabell();
+
+        foreach($innslag->getProgram()->getAll() as $hendelse) {
+            if($hendelse->getId() == $innslag->getContext()->getForestilling()->getId()) {
+                // Oppmøtetid rad
+                $row = $tabell->addRow($height);
+                $word->tekstMuted(
+                    'Oppmøtetid: ' . $hendelse->getOppmoteTid($innslag)->format('j. M Y \k\\l. H:i'),
+                    $row->addCell($width)
+                );
+            }
+        }
     }
 
     public static function leggTilKommentarbokser( Word $word ) {
