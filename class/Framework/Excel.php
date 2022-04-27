@@ -32,6 +32,7 @@ class Excel {
         $kolonne = $this->celleHvis('deltakere', 'Deltakere', $kolonne);
         $kolonne = $this->celleHvis('kontaktperson', 'Kontaktperson', $kolonne);
         $kolonne = $this->celleHvis('titler', 'Titler', $kolonne);
+        $kolonne = $this->celleHvis('oppmotetid', 'Oppmote', $kolonne);
         #$kolonne = $this->celleHvis('mediefiler', 'Har mediefiler', $kolonne);
         $this->fet('A'. $this->getRad() .':'. $kolonne . $this->getRad());
 
@@ -211,6 +212,13 @@ class Excel {
                 }
                 $this->setArk('innslag');
                 $kolonne = $this->celle( $kolonne, rtrim($kompakt_titler,', '));
+            }
+
+             // Oppmøtetid
+            foreach($innslag->getProgram()->getAll() as $hendelse) {
+                if($hendelse->getId() == $innslag->getContext()->getForestilling()->getId()) {
+                    $kolonne = $this->celleHvis('oppmotetid', $hendelse->getOppmoteTid($innslag)->format('j. M Y \k\\l. H:i'), $kolonne);
+                }
             }
         }
     }
