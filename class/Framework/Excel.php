@@ -215,11 +215,13 @@ class Excel {
             }
 
              // Oppmøtetid
-            foreach($innslag->getProgram()->getAll() as $hendelse) {
-                if($hendelse->getId() == $innslag->getContext()->getForestilling()->getId()) {
-                    $kolonne = $this->celleHvis('oppmotetid', $hendelse->getOppmoteTid($innslag)->format('j. M Y \k\\l. H:i'), $kolonne);
+             if( $config->vis('oppmotetid') ) {
+                foreach($innslag->getProgram()->getAll() as $hendelse) {
+                    if($hendelse->getId() == $innslag->getContext()->getForestilling()->getId()) {
+                        $kolonne = $this->celleHvis('oppmotetid', $hendelse->getOppmoteTid($innslag)->format('j. M Y \k\\l. H:i'), $kolonne);
+                    }
                 }
-            }
+             }
         }
     }
 
