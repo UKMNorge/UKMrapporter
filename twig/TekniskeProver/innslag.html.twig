@@ -20,7 +20,7 @@
 {% block oppmotetid %}
 	{% if config.show('oppmotetid') %}
         {% set forestillingInnslagId = innslag.context.forestilling.id %}	
-        {% for hendelse in rapport.arrangement.program.getAll() %}
+        {% for hendelse in innslag.getProgram().getAll() %}
             {% if hendelse.id == forestillingInnslagId %}
 				<tr><td style="width: 100%" class="internalHeader">OPPMØTETID</td></tr>
 			    <tr><td>
