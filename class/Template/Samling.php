@@ -30,8 +30,6 @@ class Samling extends Collection
                 `pl_id` = '#arrangement'
                 OR 
                 `user_id` = '#user'
-                OR
-                (`omrade_type` = '#omrade_type' AND `omrade_id` = '#omrade_id')
             )
             ORDER BY `name` ASC",
             [

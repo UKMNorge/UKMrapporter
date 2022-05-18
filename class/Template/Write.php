@@ -27,8 +27,8 @@ class Write {
         $query->add('pl_id', $arrangementID);
         $query->add('name', $name);
         $query->add('report_id', $rapportID);
-        $query->add('omrade_id', $omradeId);
-        $query->add('omrade_type', $omradeType);
+        // $query->add('omrade_id', $omradeId);
+        // $query->add('omrade_type', $omradeType);
         $template_id = $query->run();
 
         if( !$template_id ) {
@@ -75,8 +75,8 @@ class Write {
             ['RapportId', 'report_id'],
             ['BrukerId', 'user_id'],
             ['ArrangementId', 'pl_id'],
-            ['OmradeId', 'omrade_id'],
-            ['OmradeType', 'omrade_type'],
+            // ['OmradeId', 'omrade_id'],
+            // ['OmradeType', 'omrade_type'],
             ['Beskrivelse','description'],
             ['ConfigString','config']
         ];
