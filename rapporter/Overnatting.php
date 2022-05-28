@@ -60,7 +60,7 @@ class Overnatting extends Rapport
         try {
             if($arrangement->getEierType() == 'land') {
                 $arrangement = new UKMFestival($arrangement->getId());
-                return ['skjema' => $this->getArrangement()->getSkjema(), 'testYo' => ['hello']];
+                return ['skjema' => $this->getArrangement()->getSkjema(), 'overnattingGrupper' => $arrangement->getOvernattingGrupper()];
             }
             
             return ['skjema' => $this->getArrangement()->getSkjema()];
