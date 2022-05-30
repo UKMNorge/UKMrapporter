@@ -1,7 +1,5 @@
 <?php
-
 namespace UKMNorge\Rapporter;
-
 use Exception;
 use UKMNorge\Arrangement\Skjema\Skjema;
 use UKMNorge\Rapporter\Framework\Rapport;
@@ -11,25 +9,15 @@ use UKMrapporter;
 use UKMNorge\Geografi\Fylker;
 use UKMNorge\Arrangement\Videresending\Ledere\Ledere;
 
-
-
-
-
-class LedereOgOvernatting extends Rapport
+class LedereOversikt extends Rapport
 {
     public $kategori_id = 'ukmfestivalen';
     public $ikon = 'dashicons-businesswoman';
-    public $navn = 'Ledere Og Overnatting';
-    public $beskrivelse = 'Informasjon om hotel, rom osv.';
+    public $navn = 'Ledere oversikt';
+    public $beskrivelse = 'Informasjon om ledere';
     public $har_excel = false;
     public $har_sms = false;
     public $har_epost = false;
-    
-    private $table_name = 'ukm_festival_overnatting_gruppe';
-	private $table_idcol = 'id';
-	private $object_type = 'gruppe';
-	private $filter = '';
-
     
     /**
      * Er rapporten synlig
@@ -44,13 +32,11 @@ class LedereOgOvernatting extends Rapport
         }catch(Exception $e) {
             return false;
         }
-
         if($arrangement->getEierType() == 'land') {
             return true;
         }
         return false;
     }
-
     /**
      * Data til "tilpass rapporten"
      * 
@@ -60,7 +46,6 @@ class LedereOgOvernatting extends Rapport
     {
         return ['alleFylker' => Fylker::getAll()];
     }
-
     /**
      * Hent hvilken template som skal benyttes
      *
@@ -70,6 +55,11 @@ class LedereOgOvernatting extends Rapport
     {   
         // Fylker
         $selectedFylker = [];
+        // hvis brukeren velger ingen av alternativene så skal alle fylker vises
+        if(count($this->getConfig()->getAll()) < 1) {
+            $selectedFylker = Fylker::getAll();
+        }
+
         foreach($this->getConfig()->getAll() as $selectedItem) {
             if($selectedItem->getId() == 'vis_fylke_alle') {
                 $selectedFylker = [];
@@ -87,7 +77,6 @@ class LedereOgOvernatting extends Rapport
                 );
             }
         }
-
         // Ledere
         $fylkeLedere = [];
         $til = new Arrangement(get_option('pl_id'));
@@ -99,18 +88,20 @@ class LedereOgOvernatting extends Rapport
                 // var_dump($fra->getFylke());
                 if($fylke->getId() == $fra->getFylke()->getId()) {
                     $ledere = new Ledere($fra->getId(), $til->getId());
-                    $fylkeLedere[$fylke->getId()] = $ledere->getAll();
+
+                    $fylkeLedere[$fylke->getId()]['fylke'] = $fylke;
+                    $fylkeLedere[$fylke->getId()]['fra'] = $fra;
+                    foreach($ledere->getAll() as $leder) {
+                        if(!in_array($leder->getType(), ['turist', 'ledersager', 'sykerom'])) {
+                            $fylkeLedere[$fylke->getId()]['ledere'][] = $leder;
+                        }
+                    }
                 }
             }
-
-
         }
         // var_dump($fylkeLedere);
         // die;
-
-
-
         UKMrapporter::addViewData('fylkeLedere', $fylkeLedere);
-        return 'LederOgOvernatting/rapport.html.twig';
+        return 'LedereOversikt/rapport.html.twig';
     }
 }
