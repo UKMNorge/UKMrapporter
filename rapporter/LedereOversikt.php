@@ -92,7 +92,8 @@ class LedereOversikt extends Rapport
                     $fylkeLedere[$fylke->getId()]['fylke'] = $fylke;
                     $fylkeLedere[$fylke->getId()]['fra'] = $fra;
                     foreach($ledere->getAll() as $leder) {
-                        if(!in_array($leder->getType(), ['turist', 'ledersager', 'sykerom'])) {
+                        // turist, ledsager og sykerom blir ikke med i rapporten
+                        if(!in_array($leder->getType(), ['turist', 'ledsager', 'sykerom'])) {
                             $fylkeLedere[$fylke->getId()]['ledere'][] = $leder;
                         }
                     }
