@@ -1,0 +1,72 @@
+{# <h1>TOTALOVERSIKT LEDERE</h1>
+{% for ledereFylke in fylkeLedere %}
+    <h3>{{ ledereFylke['fylke'].getNavn() }}</h3>
+    <pre>{{ dump(ledereFylke['hovedledere']) }}</pre>
+    <table class="table ledere-oversikt" >
+        <thead>
+            <tr>
+                <th scope="col">Navn</th>
+                <th scope="col">Mobil</th>
+                <th scope="col">Epost</th>
+                <th scope="col">Funksjon</th>
+                <th scope="col">Fylke</th>
+                <th scope="col">Arrangement</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+                {% for leder in ledereFylke['ledere'] %}
+                    <tr class="ledere-tr">
+                        <td>{{ leder.getNavn() }}</td>
+                        <td>{{ leder.getMobil() }}</td>
+                        <td>{{ leder.getEpost() }}</td>
+                        <td>{{ leder.getTypeNavn() }}</td>
+                        <td>{{ ledereFylke['fylke'].getNavn() }}</td>
+                        <td>{{ ledereFylke['fra'].getNavn() }}</td>
+                    </tr>            
+                {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+
+
+<pre>
+{# {{ dump(netter) }} #}
+</pre>
+
+{% for natt in netter %}
+<div>
+<h5>{{ natt['natt']|date('d.m.yy') }}:</h5>
+<table class="table overnatting-oversikt" >
+        <thead>
+            <tr>
+                <th scope="col">Fylke</th>
+                <th scope="col">Leder som overnatter</th>
+                <th scope="col">Ansvarlig leder</th>
+            </tr>
+        </thead>
+
+    {% for key, data in natt['fylker'] %}
+        <tbody>
+            <tr class="ledere-tr">
+                <td>{{ fylker[key].getNavn() }}</td>
+                <td><b>{{ data['total'] }}</b> leder{{ data['total'] > 1 ? 'e' : '' }} overnatter</td>
+
+                <td>Ansvarlig her!</td>
+            </tr>
+        </tbody>
+    {% endfor %}
+</table>
+</div>
+{% endfor %}
+
+
+<style>
+    .overnatting-oversikt {
+        margin-left: 70px;
+        margin-bottom: 100px;
+    }
+    .ledere-tr td {
+        width: {{ 100/6 }}%;
+    }
+</style>
