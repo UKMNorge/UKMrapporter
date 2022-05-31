@@ -14,7 +14,7 @@
         <tbody>
             <tr class="ledere-tr">
                 <td>{{ fylker[key].getNavn() }}</td>
-                <td><b>{{ data['total'] }}</b> leder{{ data['total'] > 1 ? 'e' : '' }} overnatter</td>
+                <td><b>{{ data['total'] ? data['total'] : 0 }}</b> leder{{ data['total'] > 1 ? 'e' : '' }} overnatter</td>
 
                 <td>{{ data['hovedLedere'].getNavn() }} - {{ data['hovedLedere'].getMobil() }}</td>
             </tr>
