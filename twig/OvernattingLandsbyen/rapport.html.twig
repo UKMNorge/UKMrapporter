@@ -15,7 +15,6 @@
             <tr class="ledere-tr">
                 <td>{{ fylker[key].getNavn() }}</td>
                 <td><b>{{ data['total'] ? data['total'] : 0 }}</b> leder{{ data['total'] > 1 ? 'e' : '' }} overnatter</td>
-
                 <td>{{ data['hovedLedere'].getNavn() }} - {{ data['hovedLedere'].getMobil() }}</td>
             </tr>
         </tbody>
@@ -31,6 +30,6 @@
         margin-bottom: 100px;
     }
     .ledere-tr td {
-        width: {{ 100/6 }}%;
+        width: 33%;
     }
 </style>
