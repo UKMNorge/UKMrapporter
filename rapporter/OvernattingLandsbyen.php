@@ -61,6 +61,7 @@ class OvernattingLandsbyen extends Rapport
             $selectedFylker = Fylker::getAll();
         }
 
+        // Valgte fylker
         foreach($this->getConfig()->getAll() as $selectedItem) {
             if($selectedItem->getId() == 'vis_fylke_alle') {
                 $selectedFylker = [];
@@ -78,48 +79,49 @@ class OvernattingLandsbyen extends Rapport
                 );
             }
         }
-        // Ledere
-        $fylkeLedere = [];
-        $til = new Arrangement(get_option('pl_id'));
-        
-        $fylker = [];
 
+        // Festivalen (Arrangement)
+        $til = new Arrangement(get_option('pl_id'));
+    
+        $fylker = [];
         $netter = [];
         
         foreach($til->getNetter() as $natt) {
             $netter[$natt->format('d_m')]['natt'] = $natt;
         }
 
+        // Alle arrangementer som ble videresend til $til
         foreach($til->getVideresending()->getAvsendere() as $avsender) {
+            // For alle fylker som ble valgt
             foreach($selectedFylker as $fylke) {
                 $fylker[$fylke->getId()] = $fylke;
 
-
-
                 // Check if fylke has been selected
                 $fra = $avsender->getArrangement();
-                // var_dump($fra->getFylke());
+
+                // Hvis $fra (arrangement som ble videresendt) er fra fylke som er valgt
                 if($fylke->getId() == $fra->getFylke()->getId()) {
                     $ledere = new Ledere($fra->getId(), $til->getId());
 
-                    $fylkeLedere[$fylke->getId()]['fylke'] = $fylke;
-                    $fylkeLedere[$fylke->getId()]['fra'] = $fra;
                     foreach($ledere->getAll() as $leder) {
                         // turist, ledsager og sykerom blir ikke med i rapporten
                         if(!in_array($leder->getType(), ['turist', 'ledsager', 'sykerom'])) {
                             foreach($leder->getNetter()->getAll() as $natt) {
                                 $netter[$natt->getId()]['fylker'][$fylke->getId()]['total'] += 1;
                             }
-                            $hovedledere = new Hovedledere($fra->getId(), $til->getId());
-                            $hovedledere->getAll();
-                        }
+                        }    
+                    }
+
+                    // Hoved leder for en natt i et fylke
+                    $hovedledere = new Hovedledere($fra->getId(), $til->getId());
+                    foreach($hovedledere->getAll() as $hovedLeder) {
+                        $netter[$hovedLeder->getDato()]['fylker'][$fylke->getId()]['hovedLedere'] = $hovedLeder;
                     }
                 }
             }
         }
         
         UKMrapporter::addViewData('netter', $netter);
-        UKMrapporter::addViewData('fylkeLedere', $fylkeLedere);
         UKMrapporter::addViewData('fylker', $fylker);
         return 'OvernattingLandsbyen/rapport.html.twig';
     }
