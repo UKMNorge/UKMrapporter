@@ -1,26 +1,26 @@
 {% for natt in netter %}
-<div>
-<h5>Natt: {{ natt['natt']|date('d.m.Y') }}:</h5>
-<table class="table overnatting-oversikt" >
-        <thead>
-            <tr>
-                <th scope="col">Fylke</th>
-                <th scope="col">Leder som overnatter</th>
-                <th scope="col">Ansvarlig leder</th>
-            </tr>
-        </thead>
+    {% if natt['natt'] is defined %}
+    <h5>Natt: {{ natt['natt']|date('d.m.Y') }}:</h5>
+    <table class="table overnatting-oversikt" >
+            <thead>
+                <tr>
+                    <th scope="col">Fylke</th>
+                    <th scope="col">Leder som overnatter</th>
+                    <th scope="col">Ansvarlig leder</th>
+                </tr>
+            </thead>
 
-    {% for key, data in natt['fylker'] %}
-        <tbody>
-            <tr class="ledere-tr">
-                <td>{{ fylker[key].getNavn() }}</td>
-                <td><b>{{ data['total'] ? data['total'] : 0 }}</b> leder{{ data['total'] > 1 ? 'e' : '' }} overnatter</td>
-                <td>{{ data['hovedLedere'].getNavn() }} - {{ data['hovedLedere'].getMobil() }}</td>
-            </tr>
-        </tbody>
-    {% endfor %}
-</table>
-</div>
+        {% for key, data in natt['fylker'] %}
+            <tbody>
+                <tr class="ledere-tr">
+                    <td>{{ fylker[key].getNavn() }}</td>
+                    <td><b>{{ data['total'] ? data['total'] : 0 }}</b> leder{{ data['total'] > 1 ? 'e' : '' }} overnatter</td>
+                    <td>{{ data['hovedLedere'].getNavn() }} - {{ data['hovedLedere'].getMobil() }}</td>
+                </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+    {% endif %}
 {% endfor %}
 
 
