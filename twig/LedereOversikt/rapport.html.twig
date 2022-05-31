@@ -1,0 +1,39 @@
+<h1>TOTALOVERSIKT LEDERE</h1>
+{% for ledereFylke in fylkeLedere %}
+    <h3>{{ ledereFylke['fylke'].getNavn() }}</h3>
+    <table class="table ledere-oversikt" >
+        <thead>
+            <tr>
+                <th scope="col">Navn</th>
+                <th scope="col">Mobil</th>
+                <th scope="col">Epost</th>
+                <th scope="col">Funksjon</th>
+                <th scope="col">Fylke</th>
+                <th scope="col">Arrangement</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+                {% for leder in ledereFylke['ledere'] %}
+                    <tr class="ledere-tr">
+                        <td>{{ leder.getNavn() }}</td>
+                        <td>{{ leder.getMobil() }}</td>
+                        <td>{{ leder.getEpost() }}</td>
+                        <td>{{ leder.getTypeNavn() }}</td>
+                        <td>{{ ledereFylke['fylke'].getNavn() }}</td>
+                        <td>{{ ledereFylke['fra'].getNavn() }}</td>
+                    </tr>            
+                {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+
+
+<style>
+    .ledere-oversikt {
+        margin-bottom: 50px;
+    }
+    .ledere-tr td {
+        width: {{ 100/6 }}%;
+    }
+</style>

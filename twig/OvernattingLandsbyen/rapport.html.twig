@@ -1,0 +1,36 @@
+{% for natt in netter %}
+<div>
+<h5>Natt: {{ natt['natt']|date('d.m.yy') }}:</h5>
+<table class="table overnatting-oversikt" >
+        <thead>
+            <tr>
+                <th scope="col">Fylke</th>
+                <th scope="col">Leder som overnatter</th>
+                <th scope="col">Ansvarlig leder</th>
+            </tr>
+        </thead>
+
+    {% for key, data in natt['fylker'] %}
+        <tbody>
+            <tr class="ledere-tr">
+                <td>{{ fylker[key].getNavn() }}</td>
+                <td><b>{{ data['total'] }}</b> leder{{ data['total'] > 1 ? 'e' : '' }} overnatter</td>
+
+                <td>{{ data['hovedLedere'].getNavn() }} - {{ data['hovedLedere'].getMobil() }}</td>
+            </tr>
+        </tbody>
+    {% endfor %}
+</table>
+</div>
+{% endfor %}
+
+
+<style>
+    .overnatting-oversikt {
+        margin-left: 70px;
+        margin-bottom: 100px;
+    }
+    .ledere-tr td {
+        width: {{ 100/6 }}%;
+    }
+</style>
