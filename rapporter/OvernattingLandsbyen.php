@@ -13,7 +13,7 @@ use UKMNorge\Arrangement\Videresending\Ledere\Ledere;
 class OvernattingLandsbyen extends Rapport
 {
     public $kategori_id = 'ukmfestivalen';
-    public $ikon = 'dashicons-businesswoman';
+    public $ikon = 'dashicons-groups';
     public $navn = 'Overnatting og ansvar i landsbyen';
     public $beskrivelse = 'Informasjon om overnatting';
     public $har_excel = false;
