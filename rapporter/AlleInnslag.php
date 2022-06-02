@@ -4,6 +4,8 @@ namespace UKMNorge\Rapporter;
 
 use UKMNorge\Rapporter\Framework\Gruppe;
 use UKMNorge\Rapporter\Framework\Rapport;
+use UKMNorge\Geografi\Fylker;
+
 
 class AlleInnslag extends Rapport
 {
@@ -12,6 +14,16 @@ class AlleInnslag extends Rapport
     public $navn = 'Alle innslag';
     public $beskrivelse = 'Informasjon om alle som er påmeldt arrangementet.';
     public $har_word = true;
+
+
+    /**
+     * Data til "tilpass rapporten"
+     * 
+     * @return Array
+     */
+    public function getCustomizerData() {
+        return ['alleFylker' => Fylker::getAll()];
+    }
 
     /**
      * Hent render-data for rapporten
@@ -120,31 +132,61 @@ class AlleInnslag extends Rapport
 
                 // Gruppér alle innslag etter fylke
                 case 'fylke_type':
-                    foreach ($this->getArrangement()->getInnslag()->getAll() as $innslag) {
 
-                        // Opprett fylke-gruppe om den ikke finnes
-                        $fylke_gruppe_id = $innslag->getFylke()->getNavn() . '-' . $innslag->getFylke()->getId();
-                        if (!$grupper->harGruppe($fylke_gruppe_id)) {
-                            $grupper->addGruppe(
-                                new Gruppe(
-                                    $fylke_gruppe_id,
-                                    $innslag->getFylke()->getNavn()
-                                )
-                            );
+                    $fylker = [];
+
+                    foreach($this->getConfig()->getAll() as $selectedItem) {
+                        $id = $selectedItem->getId();
+
+                        // se under, hvis fylker length er 0, blir alle fylkene med
+                        if($id == 'vis_fylkeshow_alle') {
+                            $fylker = [];
+                            break;
                         }
-    
-                        // Har dette fylket denne typen innslag?
-                        $type_gruppe_id = $innslag->getType()->getNavn();
-                        if (!$grupper->getGruppe($fylke_gruppe_id)->harGruppe($type_gruppe_id)) {
-                            $grupper->getGruppe($fylke_gruppe_id)->addGruppe(
-                                new Gruppe(
-                                    $type_gruppe_id,
-                                    $innslag->getType()->getNavn()
-                                )
-                            );
+
+                        if(strpos($id, 'vis_fylkeshow') !== false) {
+                            $fylkeId = explode("_", $id, 3)[2];
+                            $fylker[$fylkeId] = Fylker::getById($fylkeId);
                         }
-    
-                        $grupper->getGruppe($fylke_gruppe_id)->getGruppe($type_gruppe_id)->addInnslag($innslag);
+                    }
+
+                    // Alle fylker eller ingen ble valgt. Likevel ble alle fylker eller blir resulat ingen ting!
+                    if(count($fylker) < 1) {
+                        foreach(Fylker::getAll() as $fylke) {
+                            $fylker[$fylke->getId()] = $fylke;
+                        }
+                    }
+
+                    foreach ($this->getArrangement()->getInnslag()->getAll() as $innslag) {
+                        $fylkeId = $innslag->getFylke()->getId();
+
+                        // Hvis fylke er velgt
+                        if(array_key_exists($fylkeId, $fylker)) {
+                            // Opprett fylke-gruppe om den ikke finnes
+                            $fylke_gruppe_id = $innslag->getFylke()->getNavn() . '-' . $fylkeId;
+                            if (!$grupper->harGruppe($fylke_gruppe_id)) {
+                                $grupper->addGruppe(
+                                    new Gruppe(
+                                        $fylke_gruppe_id,
+                                        $innslag->getFylke()->getNavn()
+                                    )
+                                );
+                            }
+        
+                            // Har dette fylket denne typen innslag?
+                            $type_gruppe_id = $innslag->getType()->getNavn();
+                            if (!$grupper->getGruppe($fylke_gruppe_id)->harGruppe($type_gruppe_id)) {
+                                $grupper->getGruppe($fylke_gruppe_id)->addGruppe(
+                                    new Gruppe(
+                                        $type_gruppe_id,
+                                        $innslag->getType()->getNavn()
+                                    )
+                                );
+                            }
+        
+                            $grupper->getGruppe($fylke_gruppe_id)->getGruppe($type_gruppe_id)->addInnslag($innslag);
+                        }
+
                     }
                     break;
 

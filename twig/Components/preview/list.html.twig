@@ -27,6 +27,14 @@
     });
 
     jQuery(document).on('change', '#previewList_{{ id }} input', function(e) {
+        // If fylke type, vis valg for fylker
+        if(jQuery(e.currentTarget).val() == 'fylke_type') {
+            jQuery('#velgFylker').show();
+        }
+        else {
+            jQuery('#velgFylker').hide();
+        }
+        
         jQuery('#previewList_{{ id }}').find('.preview .option').hide();
         jQuery('#previewList_{{ id }}').find('#preview_' + jQuery(e.target).val()).fadeIn();
     });
