@@ -15,7 +15,7 @@ class Overnatting extends Rapport
 {
     public $kategori_id = 'ukmfestivalen';
     public $ikon = 'dashicons-admin-multisite';
-    public $navn = 'Overnatting';
+    public $navn = 'Hotellbestillinger';
     public $beskrivelse = 'Informasjon om hotel, rom osv.';
     public $har_excel = false;
     public $har_sms = false;
