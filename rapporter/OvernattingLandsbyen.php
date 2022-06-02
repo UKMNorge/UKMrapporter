@@ -107,7 +107,10 @@ class OvernattingLandsbyen extends Rapport
                         // turist, ledsager og sykerom blir ikke med i rapporten
                         if(!in_array($leder->getType(), ['turist', 'ledsager', 'sykerom'])) {
                             foreach($leder->getNetter()->getAll() as $natt) {
-                                $netter[$natt->getId()]['fylker'][$fylke->getId()]['total'] += 1;
+                                // Bare ledere som overnatter i landsbyen skal bli med i rapporten
+                                if($natt->getSted() == 'deltakere') {
+                                    $netter[$natt->getId()]['fylker'][$fylke->getId()]['total'] += 1;
+                                }
                             }
                         }    
                     }
