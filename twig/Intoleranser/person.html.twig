@@ -1,7 +1,7 @@
 {% extends "Components/Person/element.html.twig" %}
 
 {% block content %}
-    <b>{{ person.getNavn() }} </b>
+    <b>{{ person.getNavn() }}</b> ({{ person.getMobil() }})
     -
     {{person.getSensitivt().getIntoleranse().getListeHuman(true)}}
     {% if person.getSensitivt().getIntoleranse().getTekst() is not empty %}

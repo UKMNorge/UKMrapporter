@@ -29,14 +29,37 @@ class Intoleranser extends Rapport
         $gruppe = new Gruppe('container', 'Deltakere med intoleranser / allergier');
         $gruppe->setVisOverskrift(true);
 
-        foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
-            foreach( $innslag->getPersoner()->getAll() as $person ) {
-                if( !$person->getSensitivt()->getIntoleranse()->har() ) {
-                    continue;
+        // UKM landsfesitvalen - grupper etter fylker
+        if($this->getArrangement()->getType() == 'land') {
+            foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
+                foreach( $innslag->getPersoner()->getAll() as $person ) {
+                    $fylke_gruppe_id = $innslag->getFylke()->getNavn() . '-' . $innslag->getFylke()->getId();
+                    if( $person->getSensitivt()->getIntoleranse()->har() ) {
+                        if (!$gruppe->harGruppe($fylke_gruppe_id)) {
+                            $gruppe->addGruppe(
+                                new Gruppe(
+                                    $fylke_gruppe_id,
+                                    $innslag->getFylke()->getNavn()
+                                )
+                            );
+                        }
+                        $gruppe->getGruppe($fylke_gruppe_id)->addPerson($person);
+                    }
                 }
-                $gruppe->addPerson($person);
             }
         }
+        // Alle andre arrangementer
+        else {
+            foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
+                foreach( $innslag->getPersoner()->getAll() as $person ) {
+                    if( !$person->getSensitivt()->getIntoleranse()->har() ) {
+                        continue;
+                    }
+                    $gruppe->addPerson($person);
+                }
+            }
+        }
+
         return $gruppe;
     }
     
