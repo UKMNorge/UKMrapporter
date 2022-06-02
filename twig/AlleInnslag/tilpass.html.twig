@@ -35,6 +35,7 @@
 				{% include "preview/option.html.twig" with {id: 'grupper', val: 'type_kommune', title: 'Gruppert etter type innslag og kommune', desc: 'Grupperes først i typer innslag, og deretter per kommune, før innslagene vises alfabetisk sortert'} %}
 				{% include "preview/option.html.twig" with {id: 'grupper', val: 'kommune', title: 'Gruppert etter kommune', desc: 'Grupperes per kommune, før innslagene vises alfabetisk sortert'} %}
 				{% include "preview/option.html.twig" with {id: 'grupper', val: 'kommune_type', title: 'Gruppert etter kommune og type innslag', desc: 'Grupperes per kommune, før innslagene vises alfabetisk sortert'} %}
+				{% include "preview/option.html.twig" with {id: 'grupper', val: 'fylke_type', title: 'Gruppert etter fylke og type innslag', desc: 'Grupperes per fylke, før innslagene vises alfabetisk sortert'} %}
 			{% endblock %}
 
 			{% block previews %}
@@ -108,6 +109,24 @@
 						Innslag B
 					{% endblock %}
 				{% endembed %}
+
+				{% embed "preview/preview.html.twig" with {id: 'fylke_type'} %}
+					{% block content %}
+						<h4>Fylke F1</h4>
+						<h5>Media</h5>
+						Innslag E
+						<h5>Musikk</h5>
+						Innslag A<br/>
+						Innslag F
+						<h4>Fylke F2</h4>
+						<h5>Media</h5>
+						Innslag C<br/>
+						Innslag D<br/>
+						<h5>Musikk</h5>
+						Innslag B
+					{% endblock %}
+				{% endembed %}
+
 			{% endblock %}
 		{% endembed %}
 	</div>

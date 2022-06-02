@@ -118,6 +118,36 @@ class AlleInnslag extends Rapport
                 }
                 break;
 
+                // Gruppér alle innslag etter fylke
+                case 'fylke_type':
+                    foreach ($this->getArrangement()->getInnslag()->getAll() as $innslag) {
+
+                        // Opprett fylke-gruppe om den ikke finnes
+                        $fylke_gruppe_id = $innslag->getFylke()->getNavn() . '-' . $innslag->getFylke()->getId();
+                        if (!$grupper->harGruppe($fylke_gruppe_id)) {
+                            $grupper->addGruppe(
+                                new Gruppe(
+                                    $fylke_gruppe_id,
+                                    $innslag->getFylke()->getNavn()
+                                )
+                            );
+                        }
+    
+                        // Har dette fylket denne typen innslag?
+                        $type_gruppe_id = $innslag->getType()->getNavn();
+                        if (!$grupper->getGruppe($fylke_gruppe_id)->harGruppe($type_gruppe_id)) {
+                            $grupper->getGruppe($fylke_gruppe_id)->addGruppe(
+                                new Gruppe(
+                                    $type_gruppe_id,
+                                    $innslag->getType()->getNavn()
+                                )
+                            );
+                        }
+    
+                        $grupper->getGruppe($fylke_gruppe_id)->getGruppe($type_gruppe_id)->addInnslag($innslag);
+                    }
+                    break;
+
                 // Vis alle innslag alfabetisk
             case 'alfabetisk':
             default:
