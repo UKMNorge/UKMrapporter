@@ -10,14 +10,16 @@
                 </tr>
             </thead>
 
-        {% for key, data in natt['fylker'] %}
-            <tbody>
-                <tr class="ledere-tr">
-                    <td>{{ fylker[key].getNavn() }}</td>
-                    <td><b>{{ data['total'] ? data['total'] : 0 }}</b> leder{{ data['total'] > 1 ? 'e' : '' }} overnatter</td>
-                    <td>{{ data['hovedLedere'].getNavn() }} - {{ data['hovedLedere'].getMobil() }}</td>
-                </tr>
-            </tbody>
+        {% for fylke_key, fylke_data in natt['fylker'] %}
+            {% for key_arr, arr_data in fylke_data %}    
+                <tbody>
+                    <tr class="ledere-tr">                       
+                        <td><b>{{ fylker[fylke_key].getNavn() }}</b> ({{ arrangementer[key_arr].getNavn() }})</td>
+                        <td><b>{{ arr_data['total'] ? arr_data['total'] : 0 }}</b> leder{{ arr_data['total'] > 1 ? 'e' : '' }} overnatter</td>
+                        <td>{{ arr_data['hovedLedere'].getNavn() }} - {{ arr_data['hovedLedere'].getMobil() }}</td>
+                    </tr>
+                </tbody>
+            {% endfor %}
         {% endfor %}
     </table>
     {% endif %}

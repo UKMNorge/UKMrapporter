@@ -84,6 +84,7 @@ class OvernattingLandsbyen extends Rapport
         $til = new Arrangement(get_option('pl_id'));
     
         $fylker = [];
+        $arrangementer = [];
         $netter = [];
         
         foreach($til->getNetter() as $natt) {
@@ -96,12 +97,14 @@ class OvernattingLandsbyen extends Rapport
             foreach($selectedFylker as $fylke) {
                 $fylker[$fylke->getId()] = $fylke;
 
-                // Check if fylke has been selected
                 $fra = $avsender->getArrangement();
 
                 // Hvis $fra (arrangement som ble videresendt) er fra fylke som er valgt
                 if($fylke->getId() == $fra->getFylke()->getId()) {
+                    $arrangementer[$fra->getId()] = $fra;
+                    
                     $ledere = new Ledere($fra->getId(), $til->getId());
+
 
                     foreach($ledere->getAll() as $leder) {
                         // turist, ledsager og sykerom blir ikke med i rapporten
@@ -109,7 +112,7 @@ class OvernattingLandsbyen extends Rapport
                             foreach($leder->getNetter()->getAll() as $natt) {
                                 // Bare ledere som overnatter i landsbyen skal bli med i rapporten
                                 if($natt->getSted() == 'deltakere') {
-                                    $netter[$natt->getId()]['fylker'][$fylke->getId()]['total'] += 1;
+                                    $netter[$natt->getId()]['fylker'][$fylke->getId()][$fra->getId()]['total'] += 1;
                                 }
                             }
                         }    
@@ -118,7 +121,7 @@ class OvernattingLandsbyen extends Rapport
                     // Hoved leder for en natt i et fylke
                     $hovedledere = new Hovedledere($fra->getId(), $til->getId());
                     foreach($hovedledere->getAll() as $hovedLeder) {
-                        $netter[$hovedLeder->getDato()]['fylker'][$fylke->getId()]['hovedLedere'] = $hovedLeder;
+                        $netter[$hovedLeder->getDato()]['fylker'][$fylke->getId()][$fra->getId()]['hovedLedere'] = $hovedLeder;
                     }
                 }
             }
@@ -126,6 +129,7 @@ class OvernattingLandsbyen extends Rapport
         
         UKMrapporter::addViewData('netter', $netter);
         UKMrapporter::addViewData('fylker', $fylker);
+        UKMrapporter::addViewData('arrangementer', $arrangementer);
         return 'OvernattingLandsbyen/rapport.html.twig';
     }
 }
