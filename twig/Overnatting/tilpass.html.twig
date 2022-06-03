@@ -1,12 +1,34 @@
 <div class="col-12 col-sm-6 col-md-4">
-	<ol class="list-group">
-		<li class="list-group-item list-group-title">
-			<h4>Velg gruppe</h4>
-		</li>
-	    {% include "radio.html.twig" with {id: 'gruppe', value: '-1', title: 'Alle'} %}
+	{% embed "toggle.html.twig" with {id: 'vis_overnatting_videresending', title: 'Hotellbestilling fra fylker?', start: 'yes' } %}
 
-        {% for oGruppe in overnattingGrupper %}
-		    {% include "radio.html.twig" with {id: 'gruppe', value: oGruppe.getId(), title: oGruppe.getNavn()} %}
-        {% endfor %}
-	</ol>
+		{% block no %}
+			<ol class="list-group">
+				<li class="list-group-item list-group-title">
+					<h4>Hotellbestilling definert i festivalen</h4>
+				</li>
+				{% include "radio.html.twig" with {id: 'gruppe', value: '-1', title: 'Alle'} %}
+
+				{% for oGruppe in overnattingGrupper %}
+					{% include "radio.html.twig" with {id: 'gruppe', value: oGruppe.getId(), title: oGruppe.getNavn()} %}
+				{% endfor %}
+			</ol>
+		{% endblock %}
+
+		{% block yes %}
+			{# Alle fylker #}
+			<ol class="list-group">
+				<li class="list-group-item list-group-title">
+					<h4>Bestilling fra fylker</h4>
+				</li>
+			
+				{% include "checkbox.html.twig" with {id: 'fylke_alle' , title: 'Alle'} %}
+
+				{% for fylke in alleFylker %}
+					{% include "checkbox.html.twig" with {id: 'fylke_'~ fylke.getId() , title: fylke.getNavn()} %}
+				{% endfor %}
+			</ol>
+
+		{% endblock %}
+	{% endembed %}
 </div>
+

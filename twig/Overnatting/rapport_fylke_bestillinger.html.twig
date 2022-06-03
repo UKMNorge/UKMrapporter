@@ -1,0 +1,68 @@
+{% for natt in netter %}
+
+        <h5>Natt: {{ natt['natt']|date('d.m.Y') }}:</h5>
+        <table class="table overnatting-oversikt" >
+                <thead>
+                    <tr>
+                        <th scope="col">Fylke</th>
+                        <th scope="col">Arrangement</th>
+                        <th scope="col">Person / rom</th>
+                        <th scope="col">Type</th>
+                    </tr>
+                </thead>
+
+            {% for fylke_key, fylke_data in natt['fylker'] %}
+                {% for key_arr, arr_data in fylke_data %}    
+                    {% for leder in arr_data %}    
+                        <tbody>
+                            <tr class="ledere-tr-videresending">                       
+                                <td>{{ fylker[fylke_key] }}</td>
+                                <td>{{ arrangementer[leder.getArrangementFraId()].getNavn() }}</td>
+                                <td>{{ leder.getNavn() }}</td>
+                                <td>{{ leder.getType() }}</td>
+                            </tr>
+                        </tbody>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+        </table>
+
+{% endfor %}
+
+<h4>Kommentarer fra fylker</h4>
+<table class="table" >
+    <thead>
+        <tr>
+            <th scope="col">Fylke</th>
+            <th scope="col">Arrangement</th>
+            <th scope="col">Kommentar</th>
+        </tr>
+    </thead>
+    {% for fylke_key, fylke_data in kommentarer %}
+        {% for arrang_key, kommentar in fylke_data %}
+            {% if fylker[fylke_key] is defined and kommentar != null %}
+                <tbody>
+                    <tr class="ledere-tr">                       
+                        <td>{{ fylker[fylke_key].getNavn() }}</td>
+                        <td>{{ arrangementer[arrang_key].getNavn() }}</td>
+                        <td><b>{{ kommentar }}</b></td>
+                    </tr>
+                </tbody>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</table>
+
+
+<style>
+    .overnatting-oversikt {
+        margin-left: 70px;
+        margin-bottom: 100px;
+    }
+    .ledere-tr td {
+        width: 33%;
+    }
+    .ledere-tr-videresending td {
+        width: 25%;
+    }
+</style>
