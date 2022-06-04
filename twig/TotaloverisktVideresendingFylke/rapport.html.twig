@@ -1,0 +1,81 @@
+{% for fylke_key, fylker in fylkerData %}
+    {% set totalInnslag = 0 %}
+    {% set totalUnikeDeltakere = 0 %}
+    {% set totalLedere = 0 %}
+    {% set totalLedsagerTurister = 0 %}
+
+    <h2 class="fylke-overskrift">{{ alleFylker[fylke_key] }}</h2>
+    {% for arrng_key, arrangementData in fylker %}
+        <h4 class="arrangement-oversikt">{{ arrangementer[arrng_key].getNavn() }}</h4>
+        <table class="table total-oversikt">
+            <thead>
+                <tr>
+                    <th scope="col">Antall innslag</th>
+                    <th scope="col">Antall unike deltakere</th>
+                    <th scope="col">Antall ledere</th>
+                    <th scope="col">Antall ledsagere / turister</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="ledere-tr">                       
+                    <td>{{ arrangementData['antallInnslag'] }}</td>
+                    <td>{{ arrangementData['antallUnikeDeltakere'] }}</td>
+                    <td>{{ arrangementData['antallLedere'] }}</td>
+                    <td>{{ arrangementData['antallLedsagerTurister'] }}</td>
+
+
+                </tr>
+            </tbody>
+        </table>
+
+        {# Setter data for bruk på fylke totaloversikt #}
+        {% set totalInnslag = totalInnslag + arrangementData['antallInnslag'] %}
+        {% set totalUnikeDeltakere = totalUnikeDeltakere + arrangementData['antallUnikeDeltakere'] %}
+        {% set totalLedere = totalLedere + arrangementData['antallLedere'] %}
+        {% set totalLedsagerTurister = totalLedsagerTurister + arrangementData['antallLedsagerTurister'] %}
+    {% endfor %}
+
+    {# TOTALOVERSIKT FOR FYLKE #}
+    <h3 class="arrangement-oversikt">Totaloversikt i fylke</h3>
+     <table class="table total-oversikt total-i-fylke">
+        <thead>
+            <tr>
+                <th scope="col">Antall innslag i fylke</th>
+                <th scope="col">Antall unike deltakere i fylke</th>
+                <th scope="col">Antall ledere i fylke</th>
+                <th scope="col">Antall ledsagere / turister i fylke</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="ledere-tr">                     
+                <td><h4>{{ totalInnslag }}</h4></td>
+                <td><h4>{{ totalUnikeDeltakere }}</h4></td>
+                <td><h4>{{ totalLedere }}</h4></td>
+                <td><h4>{{ totalLedsagerTurister }}</h4></td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endfor %}
+
+<style>
+    .fylke-overskrift {
+        margin-top: 100px;
+    }
+    .fylke-overskrift:nth-child(1) {
+        margin-top: 0;
+    }
+    .total-oversikt {
+        margin-left: 100px;
+    }
+    .arrangement-oversikt {
+        margin-left: 50px;
+    }
+    .ledere-tr td {
+        width: 25%;
+    }
+    .ledere-tr td h4 {
+        margin: 0;
+    }
+</style>
