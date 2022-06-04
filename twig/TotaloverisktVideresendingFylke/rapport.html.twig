@@ -1,3 +1,9 @@
+{% set superTotalInnslag = 0 %}
+{% set superTotalUnikeDeltakere = 0 %}
+{% set superTotalLedere = 0 %}
+{% set superTotalLedsagerTurister = 0 %}
+
+
 {% for fylke_key, fylker in fylkerData %}
     {% set totalInnslag = 0 %}
     {% set totalUnikeDeltakere = 0 %}
@@ -5,11 +11,10 @@
     {% set totalLedsagerTurister = 0 %}
 
     <h2 class="fylke-overskrift">{{ alleFylker[fylke_key] }}</h2>
-    {% for arrng_key, arrangementData in fylker %}
-        <h4 class="arrangement-oversikt">{{ arrangementer[arrng_key].getNavn() }}</h4>
-        <table class="table total-oversikt">
+    <table class="table total-oversikt">
             <thead>
                 <tr>
+                    <th scope="col">Arrangement</th>
                     <th scope="col">Antall innslag</th>
                     <th scope="col">Antall unike deltakere</th>
                     <th scope="col">Antall ledere</th>
@@ -17,8 +22,10 @@
                 </tr>
             </thead>
 
+        {% for arrng_key, arrangementData in fylker %}
             <tbody>
                 <tr class="ledere-tr">                       
+                    <td>{{ arrangementer[arrng_key].getNavn() }}</td>
                     <td>{{ arrangementData['antallInnslag'] }}</td>
                     <td>{{ arrangementData['antallUnikeDeltakere'] }}</td>
                     <td>{{ arrangementData['antallLedere'] }}</td>
@@ -27,53 +34,73 @@
 
                 </tr>
             </tbody>
-        </table>
 
-        {# Setter data for bruk på fylke totaloversikt #}
-        {% set totalInnslag = totalInnslag + arrangementData['antallInnslag'] %}
-        {% set totalUnikeDeltakere = totalUnikeDeltakere + arrangementData['antallUnikeDeltakere'] %}
-        {% set totalLedere = totalLedere + arrangementData['antallLedere'] %}
-        {% set totalLedsagerTurister = totalLedsagerTurister + arrangementData['antallLedsagerTurister'] %}
-    {% endfor %}
+            {# Setter data for bruk på fylke totaloversikt #}
+            {% set totalInnslag = totalInnslag + arrangementData['antallInnslag'] %}
+            {% set totalUnikeDeltakere = totalUnikeDeltakere + arrangementData['antallUnikeDeltakere'] %}
+            {% set totalLedere = totalLedere + arrangementData['antallLedere'] %}
+            {% set totalLedsagerTurister = totalLedsagerTurister + arrangementData['antallLedsagerTurister'] %}
+        {% endfor %}
+
 
     {# TOTALOVERSIKT FOR FYLKE #}
-    <h3 class="arrangement-oversikt">Totaloversikt</h3>
-     <table class="table total-oversikt total-i-fylke">
-        <thead>
-            <tr>
-                <th scope="col">Antall innslag i fylke</th>
-                <th scope="col">Antall unike deltakere i fylke</th>
-                <th scope="col">Antall ledere i fylke</th>
-                <th scope="col">Antall ledsagere / turister i fylke</th>
-            </tr>
-        </thead>
         <tbody>
             <tr class="ledere-tr">                     
-                <td><h4>{{ totalInnslag }}</h4></td>
-                <td><h4>{{ totalUnikeDeltakere }}</h4></td>
-                <td><h4>{{ totalLedere }}</h4></td>
-                <td><h4>{{ totalLedsagerTurister }}</h4></td>
+                <td><b>Sum</b></td>
+                <td><b>{{ totalInnslag }}</b></td>
+                <td><b>{{ totalUnikeDeltakere }}</b></td>
+                <td><b>{{ totalLedere }}</b></td>
+                <td><b>{{ totalLedsagerTurister }}</b></td>
             </tr>
         </tbody>
     </table>
 
+
+    {% set totalInnslag = totalInnslag + totalInnslag %}
+    {% set superTotalUnikeDeltakere = superTotalUnikeDeltakere + totalUnikeDeltakere %}
+    {% set superTotalLedere = superTotalLedere + totalLedere %}
+    {% set superTotalLedsagerTurister = superTotalLedsagerTurister + totalLedsagerTurister %}
 {% endfor %}
 
+
+{# TOTALOVERSIKT FOR ALLE VIDERESENDINGER TIL DETTE ARRANGEMENTET #}
+    <h3 class="super-total-oversikt">SUM FOR ALLE FYLKER</h3>
+     <table class="table total-oversikt total-i-fylke">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Antall innslag</th>
+                <th scope="col">Antall unike deltakere</th>
+                <th scope="col">Antall ledere</th>
+                <th scope="col">Antall ledsagere / turister</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="ledere-tr">                     
+                <td><h4>Total</h4></td>
+                <td><h4>{{ superTotalInnslag }}</h4></td>
+                <td><h4>{{ superTotalUnikeDeltakere }}</h4></td>
+                <td><h4>{{ superTotalLedere }}</h4></td>
+                <td><h4>{{ superTotalLedsagerTurister }}</h4></td>
+            </tr>
+        </tbody>
+    </table>
+
 <style>
-    .fylke-overskrift {
+    .fylke-overskrift, .super-total-oversikt {
         margin-top: 100px;
     }
     .fylke-overskrift:nth-child(1) {
         margin-top: 0;
     }
     .total-oversikt {
-        margin-left: 100px;
+        margin-left: 50px;
     }
     .arrangement-oversikt {
         margin-left: 50px;
     }
     .ledere-tr td {
-        width: 25%;
+        width: 16.66%;
     }
     .ledere-tr td h4 {
         margin: 0;
