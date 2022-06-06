@@ -1,6 +1,6 @@
 <h1>TOTALOVERSIKT LEDERE</h1>
 {% for ledereFylke in fylkeLedere %}
-    <h3>{{ ledereFylke['fylke'].getNavn() }}</h3>
+    <h3>{{ ledereFylke['fylke'].getNavn() }} <span class="total-rapport-sum">total: {{ ledereFylke['ledere']|length }}</span></h3>
     <table class="table ledere-oversikt" >
         <thead>
             <tr>
@@ -35,5 +35,13 @@
     }
     .ledere-tr td {
         width: 16.66% !important;
+    }
+    .total-rapport-sum {
+        border: solid 1px #00000036;
+        padding: 7px 15px;
+        border-radius: 5px;
+        background: #fff;
+        font-size: 14px;
+        margin-left: 10px;
     }
 </style>
