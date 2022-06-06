@@ -122,7 +122,13 @@ class Overnatting extends Rapport
         $arrangementer = [];
         $netter = [];
         $kommentarer = [];
-
+        $alleGyldigeNetter = [];
+        $alleLedere = 0;
+        
+        foreach($til->getNetter() as $natt) {
+            $alleGyldigeNetter[$natt->format('d_m')] = $natt;
+        }
+        
 
         // Alle arrangementer som ble videresend til $til
         foreach($til->getVideresending()->getAvsendere() as $avsender) {
@@ -142,20 +148,24 @@ class Overnatting extends Rapport
                     foreach($ledere->getAll() as $leder) {
                     
                         foreach($leder->getNetter()->getAll() as $natt) {
-                            // Bare ledere som overnatter i landsbyen skal bli med i rapporten
-                            $netter[$natt->getId()]['fylker'][$fylke->getId()][$fra->getId()][] = $leder;
+                            // Hvis natten er del av gyldige netter for 'til' arrangementet
+                            if($alleGyldigeNetter[$natt->getId()]) {
+                                // Bare ledere som overnatter i landsbyen skal bli med i rapporten
+                                $netter[$natt->getId()]['fylker'][$fylke->getId()][$fra->getId()][] = $leder;
+                                $alleLedere++;
+                            }
                         }
                     }
                 }
             }
         }
-
-        // Get alle fritekst kommentarer fra fylkene angående overnatting bestiling
         
         UKMrapporter::addViewData('netter', $netter);
         UKMrapporter::addViewData('fylker', $fylker);
         UKMrapporter::addViewData('arrangementer', $arrangementer);
         UKMrapporter::addViewData('kommentarer', $kommentarer);
+        UKMrapporter::addViewData('alleGyldigeNetter', $alleGyldigeNetter);
+        UKMrapporter::addViewData('alleLedere', $alleLedere);
 
         // Hvis brukeren har sagt ja til hotellbestilling lokalt
         if($this->getConfig()->get('vis_overnatting_videresending')->getValue() == 'no') {

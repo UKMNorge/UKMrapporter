@@ -1,4 +1,7 @@
-{% for natt in netter %}
+<h2>Hotellbestillinger fra fylker <span class="total-rapport-sum">total: {{ alleLedere }}</span></h2>
+
+{% for gyldigNatt in alleGyldigeNetter %}
+    {% set natt = netter[gyldigNatt|date('d_m')] %}
     {% set superTotal = 0 %}
 
     {% for fylke_key, fylke_data in natt['fylker'] %}
@@ -7,7 +10,7 @@
         {% endfor %}
     {% endfor %}
 
-    <h4>Natt: {{ natt['natt']|date('d.m.Y') }}: <span class="total-rapport-sum">total: {{ superTotal }}</span> </h4>
+    <h4 class="natt-rapport-item">Natt: {{ gyldigNatt|date('d.m.y') }}: <span class="total-rapport-sum">total: {{ superTotal }}</span></h4>
     <table class="table overnatting-oversikt" >
             <thead>
                 <tr>
@@ -62,9 +65,12 @@
 
 
 <style>
+    .natt-rapport-item {
+        margin-top: 50px;
+    }
     .overnatting-oversikt {
         margin-left: 70px;
-        margin-bottom: 100px;
+        margin-bottom: 50px;
     }
     .ledere-tr td {
         width: 33%;
