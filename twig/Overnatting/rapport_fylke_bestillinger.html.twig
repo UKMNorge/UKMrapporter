@@ -1,31 +1,38 @@
 {% for natt in netter %}
+    {% set superTotal = 0 %}
 
-        <h5>Natt: {{ natt['natt']|date('d.m.Y') }}:</h5>
-        <table class="table overnatting-oversikt" >
-                <thead>
-                    <tr>
-                        <th scope="col">Fylke</th>
-                        <th scope="col">Arrangement</th>
-                        <th scope="col">Person / rom</th>
-                        <th scope="col">Type</th>
-                    </tr>
-                </thead>
+    {% for fylke_key, fylke_data in natt['fylker'] %}
+        {% for arr_data in fylke_data %} 
+            {% set superTotal = superTotal + arr_data|length %}
+        {% endfor %}
+    {% endfor %}
 
-            {% for fylke_key, fylke_data in natt['fylker'] %}
-                {% for key_arr, arr_data in fylke_data %}    
-                    {% for leder in arr_data %}    
-                        <tbody>
-                            <tr class="ledere-tr-videresending">                       
-                                <td>{{ fylker[fylke_key] }}</td>
-                                <td>{{ arrangementer[leder.getArrangementFraId()].getNavn() }}</td>
-                                <td>{{ leder.getNavn() }}</td>
-                                <td>{{ leder.getType() }}</td>
-                            </tr>
-                        </tbody>
-                    {% endfor %}
+    <h4>Natt: {{ natt['natt']|date('d.m.Y') }}: <span class="total-rapport-sum">total: {{ superTotal }}</span> </h4>
+    <table class="table overnatting-oversikt" >
+            <thead>
+                <tr>
+                    <th scope="col">Fylke</th>
+                    <th scope="col">Arrangement</th>
+                    <th scope="col">Person / rom</th>
+                    <th scope="col">Type</th>
+                </tr>
+            </thead>
+
+        {% for fylke_key, fylke_data in natt['fylker'] %}
+            {% for key_arr, arr_data in fylke_data %}    
+                {% for leder in arr_data %}
+                    <tbody>
+                        <tr class="ledere-tr-videresending">                       
+                            <td>{{ fylker[fylke_key] }}</td>
+                            <td>{{ arrangementer[leder.getArrangementFraId()].getNavn() }}</td>
+                            <td>{{ leder.getNavn() }}</td>
+                            <td>{{ leder.getType() }}</td>
+                        </tr>
+                    </tbody>
                 {% endfor %}
             {% endfor %}
-        </table>
+        {% endfor %}
+    </table>
 
 {% endfor %}
 
@@ -64,5 +71,14 @@
     }
     .ledere-tr-videresending td {
         width: 25%;
+    }
+    .total-rapport-sum {
+        border: solid 1px #00000036;
+        padding: 7px 15px;
+        border-radius: 5px;
+        background: #fff;
+        font-size: 14px;
+        margin-left: 10px;
+        vertical-align: middle;
     }
 </style>
