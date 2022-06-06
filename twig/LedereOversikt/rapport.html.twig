@@ -1,4 +1,11 @@
-<h1>TOTALOVERSIKT LEDERE</h1>
+{% set superTotal = 0 %}
+{% for ledereFylke in fylkeLedere %}
+    {% for leder in ledereFylke['ledere'] %}
+        {% set superTotal = superTotal + 1 %}
+    {% endfor %}
+{% endfor %}
+
+<h1>TOTALOVERSIKT LEDERE <span class="total-rapport-sum">total: {{ superTotal }}</span></h1>
 {% for ledereFylke in fylkeLedere %}
     <h3>{{ ledereFylke['fylke'].getNavn() }} <span class="total-rapport-sum">total: {{ ledereFylke['ledere']|length }}</span></h3>
     <table class="table ledere-oversikt" >
@@ -43,5 +50,6 @@
         background: #fff;
         font-size: 14px;
         margin-left: 10px;
+        vertical-align: middle;
     }
 </style>
