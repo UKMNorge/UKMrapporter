@@ -25,7 +25,7 @@
                 </thead>
 
                 {% for typeNavn, innslagData in arrangementData['innslagIArrangement'] %}
-                <tbody>
+                <tbody class="t-body-border">
                     {% set antallInnslag = 0 %}
                     {% set antallPersoner = 0 %}
                     {% set typeStr = typeNavn %}
@@ -45,9 +45,9 @@
                     {% endfor %}
 
                     <tr class="ledere-tr">                       
-                        <td>Total for {{ typeNavn }}</td>
-                        <td>{{ antallInnslag }}</td>
-                        <td>{{ antallPersoner }}</td>
+                        <td><b>Total</b></td>
+                        <td><b>{{ antallInnslag }}</b></td>
+                        <td><b>{{ antallPersoner }}</b></td>
                     </tr>
                 
                 </tbody>
@@ -153,5 +153,8 @@
     }
     .ledere-tr td h4 {
         margin: 0;
+    }
+    .t-body-border {
+        border-bottom: solid 2px #428bca !important;
     }
 </style>
