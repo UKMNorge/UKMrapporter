@@ -23,9 +23,9 @@
                         <th scope="col">Personer</th>
                     </tr>
                 </thead>
-                <tbody>
 
                 {% for typeNavn, innslagData in arrangementData['innslagIArrangement'] %}
+                <tbody>
                     {% set antallInnslag = 0 %}
                     {% set antallPersoner = 0 %}
                     {% set typeStr = typeNavn %}
@@ -50,8 +50,8 @@
                         <td>{{ antallPersoner }}</td>
                     </tr>
                 
-                {% endfor %}
                 </tbody>
+                {% endfor %}
             </table>
         
         {% endif %}
