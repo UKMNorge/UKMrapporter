@@ -148,8 +148,8 @@ class Overnatting extends Rapport
                     foreach($ledere->getAll() as $leder) {
                     
                         foreach($leder->getNetter()->getAll() as $natt) {
-                            // Hvis natten er del av gyldige netter for 'til' arrangementet og sted er ikke privat
-                            if($alleGyldigeNetter[$natt->getId()] && $natt->getSted() != 'privat') {
+                            // Hvis natten er del av gyldige netter for 'til' arrangementet og sted er hotell
+                            if($alleGyldigeNetter[$natt->getId()] && $natt->getSted() == 'hotell') {
                                 // Bare ledere som overnatter i landsbyen skal bli med i rapporten
                                 $netter[$natt->getId()]['fylker'][$fylke->getId()][$fra->getId()][] = $leder;
                                 $alleLedere++;
