@@ -102,7 +102,8 @@ class TotaloverisktVideresendingFylke extends Rapport
                     $fylker[$fylke->getId()][$fra->getId()]['antallInnslag'] = $this->getAntallInnslag($fra);
                     $fylker[$fylke->getId()][$fra->getId()]['antallUnikeDeltakere'] = $this->getAntallUnikeDeltakere($fra);
                     $fylker[$fylke->getId()][$fra->getId()]['antallLedere'] = $this->getAntallLedere($fra);
-                    $fylker[$fylke->getId()][$fra->getId()]['antallLedsagerTurister'] = $this->getAntallLedsagerTurister($fra);   
+                    $fylker[$fylke->getId()][$fra->getId()]['antallLedsagerTurister'] = $this->getAntallLedsagerTurister($fra);
+                    $fylker[$fylke->getId()][$fra->getId()]['innslagIArrangement'] = $this->getVideresendtInnslag($fra);
                 }
             }
         }
@@ -188,6 +189,24 @@ class TotaloverisktVideresendingFylke extends Rapport
         }
         
         return $total;
+    }
+
+    /**
+     * Get antall lesager og turister
+     * 
+     * @param Arrangement $fraArrangement
+     * @return Int
+     */
+    private function getVideresendtInnslag($fraArrangement): array {
+        $tilArrangement = new Arrangement(get_option('pl_id'));
+
+        $innslagIArrang = [];
+        
+        foreach($fraArrangement->getVideresendte($tilArrangement->getId())->getAll() as $innslag) {
+            $innslagIArrang[$innslag->getType()->getNavn()][] = $innslag;
+        }
+
+        return $innslagIArrang;
     }
 
 }

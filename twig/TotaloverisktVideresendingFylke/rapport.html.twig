@@ -11,6 +11,53 @@
     {% set totalLedsagerTurister = 0 %}
 
     <h2 class="fylke-overskrift">{{ alleFylker[fylke_key] }}</h2>
+
+    {% for arrng_key, arrangementData in fylker %}
+        {% if arrangementData['innslagIArrangement'] %}
+            <h4 class="total-oversikt text">Innslag typene oversikt:</h4>
+            <table class="table total-oversikt">
+                <thead>
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Innslag</th>
+                        <th scope="col">Personer</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                {% for typeNavn, innslagData in arrangementData['innslagIArrangement'] %}
+                    {% set antallInnslag = 0 %}
+                    {% set antallPersoner = 0 %}
+                    {% set typeStr = typeNavn %}
+
+
+                    {% for innslag in innslagData %}
+                        {% set antallInnslag = antallInnslag + 1 %}
+                        {% set antallPersoner = antallPersoner + innslag.getPersoner().getAntall() %}
+
+                        <tr class="ledere-tr">
+                            <td><b>{{ typeStr }}</b></td>
+                            <td>{{ innslag.getNavn() }}</td>
+                            <td>{{ innslag.getPersoner().getAntall() }}</td>
+                        </tr>
+
+                        {% set typeStr = '' %}
+                    {% endfor %}
+
+                    <tr class="ledere-tr">                       
+                        <td>Total for {{ typeNavn }}</td>
+                        <td>{{ antallInnslag }}</td>
+                        <td>{{ antallPersoner }}</td>
+                    </tr>
+                
+                {% endfor %}
+                </tbody>
+            </table>
+        
+        {% endif %}
+    {% endfor %}
+
+    <h4 class="total-oversikt text">Arrangementer oversikt:</h4>
     <table class="table total-oversikt">
             <thead>
                 <tr>
@@ -30,8 +77,6 @@
                     <td>{{ arrangementData['antallUnikeDeltakere'] }}</td>
                     <td>{{ arrangementData['antallLedere'] }}</td>
                     <td>{{ arrangementData['antallLedsagerTurister'] }}</td>
-
-
                 </tr>
             </tbody>
 
@@ -92,6 +137,10 @@
     }
     .fylke-overskrift:nth-child(1) {
         margin-top: 0;
+    }
+    .total-oversikt.text {
+        margin-top: 40px;
+        margin-bottom: 20px;
     }
     .total-oversikt {
         margin-left: 50px;
