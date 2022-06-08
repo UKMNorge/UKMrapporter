@@ -14,7 +14,8 @@
 
     {% for arrng_key, arrangementData in fylker %}
         {% if arrangementData['innslagIArrangement'] %}
-            <h4 class="total-oversikt text">Innslag typene oversikt:</h4>
+            <h4 class="total-oversikt text arrangement">{{ arrangementer[arrng_key].getNavn() }}</h4>
+            <h5 class="total-oversikt text">Innslag typene oversikt:</h5>
             <table class="table total-oversikt">
                 <thead>
                     <tr>
@@ -57,7 +58,7 @@
         {% endif %}
     {% endfor %}
 
-    <h4 class="total-oversikt text">Arrangementer oversikt:</h4>
+    <h4 class="total-oversikt text">Oversikt:</h4>
     <table class="table total-oversikt">
             <thead>
                 <tr>
@@ -142,6 +143,9 @@
         margin-top: 40px;
         margin-bottom: 20px;
     }
+    .total-oversikt.text.arrangement {
+        margin-bottom: -10px;
+    }
     .total-oversikt {
         margin-left: 50px;
     }
@@ -155,6 +159,6 @@
         margin: 0;
     }
     .t-body-border {
-        border-bottom: solid 2px #428bca !important;
+        border-bottom: solid 2px #0000004f !important;
     }
 </style>
