@@ -62,6 +62,7 @@
 </pre> #}
 
 {% set antallBestillinger = 0 %}
+{% set ledere = [] %}
 
 {% for gyldigNatt in alleGyldigeNetter %}
     {% set personerArr = [] %}
@@ -89,11 +90,14 @@
         {% for fylke_key, fylke_data in natt['fylker'] %}
             {% for key_arr, arr_data in fylke_data %}    
                 {% for leder in arr_data %}
+                    {% set ledere = ledere|merge([leder]) %}
+
                     {% set antallBestillinger = antallBestillinger+1 %}
                     {# Legger til unique personer #}
                     {% if leder.getId() not in personerArr %}
                         {% set personerArr = personerArr|merge([leder.getId()]) %}
                     {% endif %}
+                    
                     {# Legger til unique personer #}
                     {% if leder.getRom().getId() not in roomArr %}
                         {% set roomArr = roomArr|merge([leder.getRom() ? leder.getRom().getId() : leder.getNavn()]) %}
@@ -103,7 +107,7 @@
                             <td>{{ leder.getNavn() }}</td>
                             <td>{{ leder.getMobil() }}</td>
                         {% if leder.getRom() %}
-                            <td>{{ leder.getRom().getType() }} (kapasitet: {{ leder.getRom().getKapasitet() }}) ID: {{ leder.getRom().getId() }}</td>
+                            <td>{{ leder.getRom().getType() }}</td>
                         {% else %}
                             <td>-</td>    
                         {% endif %}
@@ -123,10 +127,68 @@
 
 {% endfor %}
 
+{% set totalEnkeltrom = 0 %}
+{% set totalDobbeltrom = 0 %}
+{% set totalTrippeltrom = 0 %}
+{% set totalKvadrupeltrom = 0 %}
+
+{% for gyldigNatt in alleGyldigeNetter %}
+    {% set natt = netter[gyldigNatt|date('d_m')] %}
+
+    {% set antallEnkeltrom = [] %}
+    {% set antallDobbeltrom = [] %}
+    {% set antallTrippeltrom = [] %}
+    {% set antallKvadrupeltrom = [] %}
+
+    {% for fylke_key, fylke_data in natt['fylker'] %}
+        {% for key_arr, arr_data in fylke_data %}    
+            {% for leder in arr_data %}
+                
+            {% if leder.getRom() is defined %}
+                {% set rom = leder.getRom() ? leder.getRom() : null %}
+                {% set kapasitet = leder.getRom() is defined ? leder.getRom().getKapasitet() : 1 %}
+
+                {% if leder and kapasitet == 1 and leder.getRom().getId() not in antallEnkeltrom %}
+                    {% set antallEnkeltrom = antallEnkeltrom|merge([leder.getRom().getId()]) %}
+                {% elseif leder and kapasitet == 2 and leder.getRom().getId() not in antallDobbeltrom %}
+                    {% set antallDobbeltrom = antallDobbeltrom|merge([leder.getRom().getId()]) %}
+                {% elseif leder and kapasitet == 3 and leder.getRom().getId() not in antallTrippeltrom %}
+                    {% set antallTrippeltrom = antallTrippeltrom|merge([leder.getRom().getId()]) %}
+                {% elseif leder and kapasitet == 4 and leder.getRom().getId() not in antallKvadrupeltrom %}
+                    {% set antallKvadrupeltrom = antallKvadrupeltrom|merge([leder.getRom().getId()]) %}
+                {% endif %}
+            {% else %}
+                {% set antallEnkeltrom = antallEnkeltrom|merge([1])%}
+            {% endif %}
+
+    
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+
+    {% set totalEnkeltrom = totalEnkeltrom + antallEnkeltrom|length %}
+    {% set totalDobbeltrom = totalDobbeltrom + antallDobbeltrom|length %}
+    {% set totalTrippeltrom = totalTrippeltrom + antallTrippeltrom|length %}
+    {% set totalKvadrupeltrom = totalKvadrupeltrom + antallKvadrupeltrom|length %}
+{% endfor %}
+
+
+{# Legger til type rom #}
+{# {% for leder in ledere %}
+    
+{% endfor %} #}
+
+
+<h4>Totalt for alle netter:</h4>
+<h5>Antall enkeltrom: <b>{{ totalEnkeltrom }}</b></h5>
+<h5>Antall dobbeltrom: <b>{{ totalDobbeltrom }}</b></h5>
+<h5>Antall trippeltrom: <b>{{ totalTrippeltrom }}</b></h5>
+<h5>Antall kvadrupeltrom: <b>{{ totalKvadrupeltrom }}</b></h5>
+
+
+
 <br>
-<br>
-<br>
-<br>
+<span class="muted">Personer som ikke har definert romtype har blitt beregnet som enkeltrom</span>
 
 <style>
     .natt-rapport-item {
