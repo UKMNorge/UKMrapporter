@@ -168,11 +168,10 @@ class UKMFestivalenHotell extends Rapport
                     $avreise = new DateTime(str_replace('.', '-', $person->getAvreise() . '-' . date("Y")));
 
                     for($i = $ankomst; $i <= $avreise; $i->modify('+1 day')){
-                        $netter[$i->format("d_m")]['fylker'][0][$person->getId()][$person->getId()] = $person;
+                        $netter[$i->format("d_m")]['fylker'][0][$person->getRom() ? $person->getRom()->getId() : $person->getId()][$person->getId()] = $person;
                     }
                 }
             }
-
         }
         
         UKMrapporter::addViewData('netter', $netter);

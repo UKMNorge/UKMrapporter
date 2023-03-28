@@ -88,7 +88,7 @@
             </thead>
 
         {% for fylke_key, fylke_data in natt['fylker'] %}
-            {% for key_arr, arr_data in fylke_data %}    
+            {% for key_arr, arr_data in fylke_data %}
                 {% for leder in arr_data %}
                     {% set ledere = ledere|merge([leder]) %}
 
@@ -103,11 +103,11 @@
                         {% set roomArr = roomArr|merge([leder.getRom() ? leder.getRom().getId() : leder.getNavn()]) %}
                     {% endif %}
                     <tbody>
-                        <tr class="ledere-tr-videresending">                       
+                        <tr class="ledere-tr-videresending {{ (arr_data|filter(led => led.getRom().getId() == leder.getRom().getId())|length) > 1 ? 'same-room' : '' }} ">                       
                             <td>{{ leder.getNavn() }}</td>
                             <td>{{ leder.getMobil() }}</td>
                         {% if leder.getRom() %}
-                            <td>{{ leder.getRom().getType() }}</td>
+                            <td>{{ leder.getRom().getType() }} (kapasitet: {{ leder.getRom().getKapasitet() }}) ID: {{ leder.getRom().getId() }}</td>
                         {% else %}
                             <td>-</td>    
                         {% endif %}
@@ -212,5 +212,8 @@
         font-size: 14px;
         margin-left: 10px;
         vertical-align: middle;
+    }
+    .ledere-tr-videresending.same-room {
+        background: #dbdbdb;
     }
 </style>
