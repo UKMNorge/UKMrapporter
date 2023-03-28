@@ -1,0 +1,154 @@
+{# {% if gruppe is not defined %}
+    <p>Du må velge minst en gruppe for å få rapporten</p>
+{% else %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Navn</th>
+                <th scope="col">Gruppe</th>
+                <th scope="col">Mobil</th>
+                <th scope="col">Epost</th>
+                <th scope="col">Ankomst</th>
+                <th scope="col">Avreise</th>
+                <th scope="col">Rom</th>
+            </tr>
+        </thead>
+        <tbody>
+        <pre>
+
+        </pre>
+            {% for oGruppe in overnattingGrupper %}
+                {% for person in oGruppe.getAllePersoner() %}
+                    {% if gruppe == '-1' or gruppe == oGruppe.getId() %}
+                        <tr>
+                            <td>{{ person.getNavn() }}</td>
+                            <td>{{ oGruppe.getNavn() }}</td>
+                            <td>{{ person.getMobil() }}</td>
+                            <td>{{ person.getEpost() }}</td>
+                            <td>{{ person.getAnkomst() }}</td>
+                            <td>{{ person.getAvreise() }}</td>
+
+                            {% if person.getRom() is not null %}
+                            <td>{{ person.getRom().getId() }} - {{ person.getRom().getType() }} (kapasitet: {{ person.getRom().getKapasitet() }})</td>
+                            {% endif %}
+                        </tr>            
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <style>
+        .overnatting-oversikt {
+            margin-left: 70px;
+            margin-bottom: 100px;
+        }
+        .ledere-tr td {
+            width: 33%;
+        }
+        .ledere-tr-videresending td {
+            width: 25%;
+        }
+    </style>
+{% endif %} #}
+
+
+{# <pre>
+{{ dump(alleGyldigeNetter) }}
+</pre>
+
+<pre>
+{{ dump(netter) }}
+</pre> #}
+
+{% set antallBestillinger = 0 %}
+
+{% for gyldigNatt in alleGyldigeNetter %}
+    {% set personerArr = [] %}
+    {% set roomArr = [] %}
+    {% set natt = netter[gyldigNatt|date('d_m')] %}
+    {% set superTotal = 0 %}
+
+    {% for fylke_key, fylke_data in natt['fylker'] %}
+        {% for arr_data in fylke_data %} 
+            {% set superTotal = superTotal + arr_data|length %}
+        {% endfor %}
+    {% endfor %}
+
+    <h4 class="natt-rapport-item">Natt: {{ gyldigNatt|date('d.m.y') }}</h4>
+    <table class="table overnatting-oversikt" >
+            <thead>
+                <tr>
+                    <th scope="col">Navn</th>
+                    <th scope="col">Tlf</th>
+                    <th scope="col">Rom</th>
+                    <th scope="col">Fylke</th>
+                </tr>
+            </thead>
+
+        {% for fylke_key, fylke_data in natt['fylker'] %}
+            {% for key_arr, arr_data in fylke_data %}    
+                {% for leder in arr_data %}
+                    {% set antallBestillinger = antallBestillinger+1 %}
+                    {# Legger til unique personer #}
+                    {% if leder.getId() not in personerArr %}
+                        {% set personerArr = personerArr|merge([leder.getId()]) %}
+                    {% endif %}
+                    {# Legger til unique personer #}
+                    {% if leder.getRom().getId() not in roomArr %}
+                        {% set roomArr = roomArr|merge([leder.getRom() ? leder.getRom().getId() : leder.getNavn()]) %}
+                    {% endif %}
+                    <tbody>
+                        <tr class="ledere-tr-videresending">                       
+                            <td>{{ leder.getNavn() }}</td>
+                            <td>{{ leder.getMobil() }}</td>
+                        {% if leder.getRom() %}
+                            <td>{{ leder.getRom().getType() }} (kapasitet: {{ leder.getRom().getKapasitet() }}) ID: {{ leder.getRom().getId() }}</td>
+                        {% else %}
+                            <td>-</td>    
+                        {% endif %}
+                            
+                            <td>{{ fylker[fylke_key] ? fylker[fylke_key] : 'UKM Norge' }}</td>
+                        </tr>
+                    </tbody>
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+    </table>
+    <div style="display: flex; max-width: 300px; margin-bottom: 100px;">
+        <h5 style="margin: auto; margin-left: 0;">Antall personer: {{ personerArr|length }}</h5> 
+        <h5 style="margin: auto; margin-left: 0;">Antall rom: {{ roomArr|length }}</h5>
+    </div>
+
+
+{% endfor %}
+
+<br>
+<br>
+<br>
+<br>
+
+<style>
+    .natt-rapport-item {
+        margin-top: 50px;
+    }
+    .overnatting-oversikt {
+        margin-left: 70px;
+        margin-bottom: 50px;
+    }
+    .ledere-tr td {
+        width: 33%;
+    }
+    .ledere-tr-videresending td {
+        width: 25%;
+    }
+    .total-rapport-sum {
+        border: solid 1px #00000036;
+        padding: 7px 15px;
+        border-radius: 5px;
+        background: #fff;
+        font-size: 14px;
+        margin-left: 10px;
+        vertical-align: middle;
+    }
+</style>
