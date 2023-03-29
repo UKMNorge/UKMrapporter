@@ -21,7 +21,7 @@ class UKMFestivalenHotell extends Rapport
     public $kategori_id = 'ukmfestivalen';
     public $ikon = 'dashicons-admin-multisite';
     public $navn = 'UKM Festivalen Hotell';
-    public $beskrivelse = 'Informasjon om som skal brukes av hotell';
+    public $beskrivelse = 'Informasjon om overnattinger, romtype osv.';
     public $har_excel = false;
     public $har_sms = false;
     public $har_epost = false;
@@ -173,7 +173,7 @@ class UKMFestivalenHotell extends Rapport
                 }
             }
         }
-        
+
         UKMrapporter::addViewData('netter', $netter);
         UKMrapporter::addViewData('fylker', $fylker);
         UKMrapporter::addViewData('arrangementer', $arrangementer);
