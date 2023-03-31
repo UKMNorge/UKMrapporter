@@ -155,10 +155,6 @@ class UKMFestivalenHotell extends Rapport
             $alleGyldigeNetter[$natt->format('d_m')] = $newNatt;
         }
 
-        // Sorterer gyldige netter
-        usort($alleGyldigeNetter, function($a, $b) { return $a > $b ? 1 : ($b < $a ? -1 : 0); });
-
-
         // Alle arrangementer som ble videresend til $til
         foreach($til->getVideresending()->getAvsendere() as $avsender) {
             $fra = $avsender->getArrangement();
@@ -187,21 +183,24 @@ class UKMFestivalenHotell extends Rapport
                     }
                 }
             }
+        }
 
-            $arrangement = new Arrangement(get_option('pl_id'));
-            $arrangement = new UKMFestival($arrangement->getId());
-            foreach($arrangement->getOvernattingGrupper() as $og) {
-                foreach($og->getAllePersoner() as $person) {
-                    $ankomst = new DateTime(str_replace('.', '-', $person->getAnkomst() . '-' . date("Y")));
-                    $avreise = new DateTime(str_replace('.', '-', $person->getAvreise() . '-' . date("Y")));
+        $arrangement = new Arrangement(get_option('pl_id'));
+        $arrangement = new UKMFestival($arrangement->getId());
+        foreach($arrangement->getOvernattingGrupper() as $og) {
+            foreach($og->getAllePersoner() as $person) {
+                $ankomst = new DateTime(str_replace('.', '-', $person->getAnkomst() . '-' . date("Y")));
+                $avreise = new DateTime(str_replace('.', '-', $person->getAvreise() . '-' . date("Y")));
 
-                    for($i = $ankomst; $i <= $avreise; $i->modify('+1 day')){
-                        $netter[$i->format("d_m")]['fylker'][0][$person->getRom() ? $person->getRom()->getId() : $person->getId()][$person->getId()] = $person;
-                    }
+                for($i = $ankomst; $i <= $avreise; $i->modify('+1 day')){
+                    $netter[$i->format("d_m")]['fylker'][0][$person->getRom() ? $person->getRom()->getId() : $person->getId()][$person->getId()] = $person;
                 }
             }
         }
+        
 
+        // Sorterer gyldige netter
+        usort($alleGyldigeNetter, function($a, $b) { return $a > $b ? 1 : ($b < $a ? -1 : 0); });
 
         UKMrapporter::addViewData('netter', $netter);
         UKMrapporter::addViewData('fylker', $fylker);
