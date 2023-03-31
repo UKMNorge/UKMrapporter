@@ -52,14 +52,17 @@
     </style>
 {% endif %} #}
 
+{# 
+<pre>
+{{ dump(alleGyldigeNetter) }}
+</pre> #}
+
+
 
 {# <pre>
-{{ dump(alleGyldigeNetter) }}
-</pre>
-
-<pre>
 {{ dump(netter) }}
 </pre> #}
+
 
 {% set antallBestillinger = 0 %}
 {% set ledere = [] %}
@@ -76,53 +79,55 @@
         {% endfor %}
     {% endfor %}
 
-    <h4 class="natt-rapport-item">Natt: {{ gyldigNatt|date('d.m.y') }}</h4>
-    <table class="table overnatting-oversikt" >
-            <thead>
-                <tr>
-                    <th scope="col">Navn</th>
-                    <th scope="col">Tlf</th>
-                    <th scope="col">Rom</th>
-                    <th scope="col">Fylke</th>
-                </tr>
-            </thead>
+    {% if natt %}    
+        <h4 class="natt-rapport-item">Natt: {{ gyldigNatt|date('d.m.y') }}</h4>
+        <table class="table overnatting-oversikt" >
+                <thead>
+                    <tr>
+                        <th scope="col">Navn</th>
+                        <th scope="col">Tlf</th>
+                        <th scope="col">Rom</th>
+                        <th scope="col">Fylke</th>
+                    </tr>
+                </thead>
 
-        {% for fylke_key, fylke_data in natt['fylker'] %}
-            {% for key_arr, arr_data in fylke_data %}
-                {% for leder in arr_data %}
-                    {% set ledere = ledere|merge([leder]) %}
+            {% for fylke_key, fylke_data in natt['fylker'] %}
+                {% for key_arr, arr_data in fylke_data %}
+                    {% for leder in arr_data %}
+                        {% set ledere = ledere|merge([leder]) %}
 
-                    {% set antallBestillinger = antallBestillinger+1 %}
-                    {# Legger til unique personer #}
-                    {% if leder.getId() not in personerArr %}
-                        {% set personerArr = personerArr|merge([leder.getId()]) %}
-                    {% endif %}
-                    
-                    {# Legger til unique personer #}
-                    {% if leder.getRom().getId() not in roomArr %}
-                        {% set roomArr = roomArr|merge([leder.getRom() ? leder.getRom().getId() : leder.getNavn()]) %}
-                    {% endif %}
-                    <tbody>
-                        <tr class="ledere-tr-videresending {{ (arr_data|filter(led => led.getRom().getId() == leder.getRom().getId())|length) > 1 ? 'same-room' : '' }} ">                       
-                            <td>{{ leder.getNavn() }}</td>
-                            <td>{{ leder.getMobil() }}</td>
-                        {% if leder.getRom() %}
-                            <td>{{ leder.getRom().getType() }} (kapasitet: {{ leder.getRom().getKapasitet() }}) ID: {{ leder.getRom().getId() }}</td>
-                        {% else %}
-                            <td>-</td>    
+                        {% set antallBestillinger = antallBestillinger+1 %}
+                        {# Legger til unique personer #}
+                        {% if leder.getId() not in personerArr %}
+                            {% set personerArr = personerArr|merge([leder.getId()]) %}
                         {% endif %}
-                            
-                            <td>{{ fylker[fylke_key] ? fylker[fylke_key] : 'UKM Norge' }}</td>
-                        </tr>
-                    </tbody>
+                        
+                        {# Legger til unique personer #}
+                        {% if leder.getRom().getId() not in roomArr %}
+                            {% set roomArr = roomArr|merge([leder.getRom() ? leder.getRom().getId() : leder.getNavn()]) %}
+                        {% endif %}
+                        <tbody>
+                            <tr class="ledere-tr-videresending {{ (arr_data|filter(led => led.getRom().getId() == leder.getRom().getId())|length) > 1 ? 'same-room' : '' }} ">                       
+                                <td>{{ leder.getNavn() }}</td>
+                                <td>{{ leder.getMobil() }}</td>
+                            {% if leder.getRom() %}
+                                <td>{{ leder.getRom().getType() }} (kapasitet: {{ leder.getRom().getKapasitet() }}) ID: {{ leder.getRom().getId() }}</td>
+                            {% else %}
+                                <td>-</td>    
+                            {% endif %}
+                                
+                                <td>{{ fylker[fylke_key] ? fylker[fylke_key] : 'UKM Norge' }}</td>
+                            </tr>
+                        </tbody>
+                    {% endfor %}
                 {% endfor %}
             {% endfor %}
-        {% endfor %}
-    </table>
-    <div style="display: flex; max-width: 300px; margin-bottom: 100px;">
-        <h5 style="margin: auto; margin-left: 0;">Antall personer: {{ personerArr|length }}</h5> 
-        <h5 style="margin: auto; margin-left: 0;">Antall rom: {{ roomArr|length }}</h5>
-    </div>
+        </table>
+        <div style="display: flex; max-width: 300px; margin-bottom: 100px;">
+            <h5 style="margin: auto; margin-left: 0;">Antall personer: {{ personerArr|length }}</h5> 
+            <h5 style="margin: auto; margin-left: 0;">Antall rom: {{ roomArr|length }}</h5>
+        </div>
+    {% endif %}
 
 
 {% endfor %}
