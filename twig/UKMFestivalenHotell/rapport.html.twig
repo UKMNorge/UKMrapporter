@@ -78,7 +78,6 @@
             {% set superTotal = superTotal + arr_data|length %}
         {% endfor %}
     {% endfor %}
-
     {% if natt %}    
         <h4 class="natt-rapport-item">Natt: {{ gyldigNatt|date('d.m.y') }}</h4>
         <table class="table overnatting-oversikt" >
@@ -107,7 +106,7 @@
                             {% set roomArr = roomArr|merge([leder.getRom() ? leder.getRom().getId() : leder.getNavn()]) %}
                         {% endif %}
                         <tbody>
-                            <tr class="ledere-tr-videresending {{ (arr_data|filter(led => led.getRom().getId() == leder.getRom().getId())|length) > 1 ? 'same-room' : '' }} ">                       
+                            <tr class="ledere-tr-videresending {{ (arr_data|filter(led => led.getRom() and led.getRom().getId() == leder.getRom().getId())|length) > 1 ? 'same-room' : '' }} ">                       
                                 <td>{{ leder.getNavn() }}</td>
                                 <td>{{ leder.getMobil() }}</td>
                             {% if leder.getRom() %}
