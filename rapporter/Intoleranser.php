@@ -7,6 +7,9 @@ use UKMNorge\Rapporter\Framework\Gruppe;
 use UKMNorge\Rapporter\Framework\Rapport;
 use UKMNorge\Sensitivt\Requester;
 use UKMNorge\Sensitivt\Sensitivt;
+use UKMNorge\Arrangement\Videresending\Ledere\Ledere;
+use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Geografi\Fylker;
 
 class Intoleranser extends Rapport
 {
@@ -44,6 +47,40 @@ class Intoleranser extends Rapport
                             );
                         }
                         $gruppe->getGruppe($fylke_gruppe_id)->addPerson($person);
+                    }
+                }
+            }
+
+            $til = new Arrangement(get_option('pl_id'));
+            foreach($til->getVideresending()->getAvsendere() as $avsender) {
+                foreach(Fylker::getAll() as $fylke) {
+                    $fra = $avsender->getArrangement();
+                    if($fylke->getId() == $fra->getFylke()->getId()) {
+                        $ledere = new Ledere($fra->getId(), $til->getId());
+                        $ledereMed = [];
+                        foreach($ledere->getAll() as $leder) {
+                            // turist, ledsager og sykerom blir ikke med i rapporten
+                            if(!in_array($leder->getType(), ['turist', 'ledsager', 'hoved', 'reise'])) {
+
+                                $leder->getSensitivt()->getIntoleranse();
+
+                                $fylke_gruppe_id = $fylke->getNavn() . '-' . $fylke->getId();
+    
+                                if (!$gruppe->harGruppe($fylke_gruppe_id)) {
+                                    $gruppe->addGruppe(
+                                        new Gruppe(
+                                            $fylke_gruppe_id,
+                                            $fylke->getNavn()
+                                        )
+                                    );
+                                }
+                                $leder->setNavn($leder->getNavn() . ' (Leder)');
+                                $ledereMed[] = $leder;
+                            }
+                        }
+                        // Merger personer og ledere. Dette kan feile og her brukes kun som representasjon på brukergrensesnitt. Person og Leder er veldig forskjellige men metodene som kalles på GUI i dette tilfelle finnes i begge klassene
+                        $personerLedere = array_merge($gruppe->getGruppe($fylke_gruppe_id)->getPersoner(), $ledereMed);
+                        $gruppe->getGruppe($fylke_gruppe_id)->setPersoner($personerLedere);
                     }
                 }
             }
