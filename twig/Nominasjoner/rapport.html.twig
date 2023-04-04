@@ -43,17 +43,10 @@
 								{{ not nominasjon.harVoksenskjema() ? 'ikke' }}
 								voksenskjema
 							</td>
-							{# Arrangement of type land har ikke deltakerskjema #}
-							{% set hasDeltakerSkj = type.getKey() not in ['konferansier', 'datakulturarrangor'] or til.getEierType() != 'land' %}
-							<td class="text-{{ nominasjon.harDeltakerskjema() or not hasDeltakerSkj ? 'success' : 'error' }}">
-								{# Det blir ikke deltakerskjema på disse typene og på land arrangement #}
-								{% if hasDeltakerSkj%}
-									Har
-									{{ not nominasjon.harDeltakerskjema() ? 'ikke' }}
-									deltakerskjema
-								{% else %}
-									{{ type.getNavn() }} har ikke deltakerskjema	
-								{% endif %}
+							<td class="text-{{ nominasjon.harDeltakerskjema() ? 'success' : 'error' }}">
+								Har
+								{{ not nominasjon.harDeltakerskjema() ? 'ikke' }}
+								deltakerskjema
 							</td>
 						</tr>
 
