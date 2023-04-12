@@ -25,7 +25,7 @@ class FormatterNominasjoner extends Formatter
      */
     public static function nominasjon(Word $word, Nominasjon $nominasjon, string $type, Int $loop_index = null)
     {
-        if( !in_array($type, ['Media','Arrangør','Konferansier'])) {
+        if( !in_array($type, ['Media','Arrangør','Konferansier', 'Datakultur'])) {
             throw new Exception('Beklager, vi støtter ikke denne typen innslag ' . $type);
         }
 

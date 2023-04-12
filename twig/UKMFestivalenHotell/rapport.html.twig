@@ -1,0 +1,157 @@
+{% set antallBestillinger = 0 %}
+{% set ledere = [] %}
+
+{% for gyldigNatt in alleGyldigeNetter %}
+    {% set personerArr = [] %}
+    {% set roomArr = [] %}
+    {% set natt = netter[gyldigNatt|date('d_m')] %}
+    {% set superTotal = 0 %}
+
+    {% for fylke_key, fylke_data in natt['fylker'] %}
+        {% for arr_data in fylke_data %} 
+            {% set superTotal = superTotal + arr_data|length %}
+        {% endfor %}
+    {% endfor %}
+    {% if natt %}    
+        <h4 class="natt-rapport-item">Natt: {{ gyldigNatt|date('d.m.y') }}</h4>
+        <table class="table overnatting-oversikt" >
+                <thead>
+                    <tr>
+                        <th scope="col">Navn</th>
+                        <th scope="col">Tlf</th>
+                        <th scope="col">Rom</th>
+                        <th scope="col">Fylke</th>
+                    </tr>
+                </thead>
+
+            {% for fylke_key, fylke_data in natt['fylker'] %}
+                {% for key_arr, arr_data in fylke_data %}
+                    {% for leder in arr_data %}
+                        {% set ledere = ledere|merge([leder]) %}
+
+                        {% set antallBestillinger = antallBestillinger+1 %}
+                        {# Legger til unique personer #}
+                        {% if leder.getId() not in personerArr %}
+                            {% set personerArr = personerArr|merge([leder.getId()]) %}
+                        {% endif %}
+                        
+                        {# Legger til unique personer #}
+                        {% if leder.getRom().getId() not in roomArr %}
+                            {% set roomArr = roomArr|merge([leder.getRom() ? leder.getRom().getId() : leder.getNavn()]) %}
+                        {% endif %}
+                        <tbody>
+                            <tr class="ledere-tr-videresending {{ (arr_data|filter(led => led.getRom() and led.getRom().getId() == leder.getRom().getId())|length) > 1 ? 'same-room' : '' }} ">                       
+                                <td>{{ leder.getNavn() }}</td>
+                                <td>{{ leder.getMobil() }}</td>
+                            {% if leder.getRom() %}
+                                <td>{{ leder.getRom().getType() }}</td>
+                            {% else %}
+                                <td>enkeltrom</td>    
+                            {% endif %}
+                                
+                                <td>{{ fylker[fylke_key] ? fylker[fylke_key] : 'UKM Norge' }}</td>
+                            </tr>
+                        </tbody>
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+        </table>
+        <div style="display: flex; max-width: 300px; margin-bottom: 100px;">
+            <h5 style="margin: auto; margin-left: 0;">Antall personer: {{ personerArr|length }}</h5> 
+            <h5 style="margin: auto; margin-left: 0;">Antall rom: {{ roomArr|length }}</h5>
+        </div>
+    {% endif %}
+
+
+{% endfor %}
+
+{% set totalEnkeltrom = 0 %}
+{% set totalDobbeltrom = 0 %}
+{% set totalTrippeltrom = 0 %}
+{% set totalKvadrupeltrom = 0 %}
+
+{% for gyldigNatt in alleGyldigeNetter %}
+    {% set natt = netter[gyldigNatt|date('d_m')] %}
+
+    {% set antallEnkeltrom = [] %}
+    {% set antallDobbeltrom = [] %}
+    {% set antallTrippeltrom = [] %}
+    {% set antallKvadrupeltrom = [] %}
+
+    {% for fylke_key, fylke_data in natt['fylker'] %}
+        {% for key_arr, arr_data in fylke_data %}    
+            {% for leder in arr_data %}
+                
+            {% if leder.getRom() is defined %}
+                {% set rom = leder.getRom() ? leder.getRom() : null %}
+                {% set kapasitet = leder.getRom() is defined ? leder.getRom().getKapasitet() : 1 %}
+
+                {% if leder and kapasitet == 1 and leder.getRom().getId() not in antallEnkeltrom %}
+                    {% set antallEnkeltrom = antallEnkeltrom|merge([leder.getRom().getId()]) %}
+                {% elseif leder and kapasitet == 2 and leder.getRom().getId() not in antallDobbeltrom %}
+                    {% set antallDobbeltrom = antallDobbeltrom|merge([leder.getRom().getId()]) %}
+                {% elseif leder and kapasitet == 3 and leder.getRom().getId() not in antallTrippeltrom %}
+                    {% set antallTrippeltrom = antallTrippeltrom|merge([leder.getRom().getId()]) %}
+                {% elseif leder and kapasitet == 4 and leder.getRom().getId() not in antallKvadrupeltrom %}
+                    {% set antallKvadrupeltrom = antallKvadrupeltrom|merge([leder.getRom().getId()]) %}
+                {% endif %}
+            {% else %}
+                {% set antallEnkeltrom = antallEnkeltrom|merge([1])%}
+            {% endif %}
+
+    
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+
+    {% set totalEnkeltrom = totalEnkeltrom + antallEnkeltrom|length %}
+    {% set totalDobbeltrom = totalDobbeltrom + antallDobbeltrom|length %}
+    {% set totalTrippeltrom = totalTrippeltrom + antallTrippeltrom|length %}
+    {% set totalKvadrupeltrom = totalKvadrupeltrom + antallKvadrupeltrom|length %}
+{% endfor %}
+
+
+{# Legger til type rom #}
+{# {% for leder in ledere %}
+    
+{% endfor %} #}
+
+
+<h4>Totalt for alle netter:</h4>
+<h5>Antall enkeltrom: <b>{{ totalEnkeltrom }}</b></h5>
+<h5>Antall dobbeltrom: <b>{{ totalDobbeltrom }}</b></h5>
+<h5>Antall trippeltrom: <b>{{ totalTrippeltrom }}</b></h5>
+<h5>Antall kvadrupeltrom: <b>{{ totalKvadrupeltrom }}</b></h5>
+
+
+
+<br>
+<span class="muted">Personer som ikke har definert romtype har blitt beregnet som enkeltrom</span>
+
+<style>
+    .natt-rapport-item {
+        margin-top: 50px;
+    }
+    .overnatting-oversikt {
+        margin-left: 70px;
+        margin-bottom: 50px;
+    }
+    .ledere-tr td {
+        width: 33%;
+    }
+    .ledere-tr-videresending td {
+        width: 25%;
+    }
+    .total-rapport-sum {
+        border: solid 1px #00000036;
+        padding: 7px 15px;
+        border-radius: 5px;
+        background: #fff;
+        font-size: 14px;
+        margin-left: 10px;
+        vertical-align: middle;
+    }
+    .ledere-tr-videresending.same-room {
+        background: #dbdbdb;
+    }
+</style>
