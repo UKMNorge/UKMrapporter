@@ -33,71 +33,71 @@ class Intoleranser extends Rapport
         $gruppe->setVisOverskrift(true);
 
         // UKM landsfesitvalen - grupper etter fylker
-        if($this->getArrangement()->getType() == 'land') {
-            foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
-                foreach( $innslag->getPersoner()->getAll() as $person ) {
-                    $fylke_gruppe_id = $innslag->getFylke()->getNavn() . '-' . $innslag->getFylke()->getId();
-                    if( $person->getSensitivt()->getIntoleranse()->har() ) {
+        // if($this->getArrangement()->getType() == 'land') {
+        foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
+            foreach( $innslag->getPersoner()->getAll() as $person ) {
+                $fylke_gruppe_id = $innslag->getFylke()->getNavn() . '-' . $innslag->getFylke()->getId();
+                if( $person->getSensitivt()->getIntoleranse()->har() ) {
+                    if (!$gruppe->harGruppe($fylke_gruppe_id)) {
+                        $gruppe->addGruppe(
+                            new Gruppe(
+                                $fylke_gruppe_id,
+                                $innslag->getFylke()->getNavn()
+                            )
+                        );
+                    }
+                    $gruppe->getGruppe($fylke_gruppe_id)->addPerson($person);
+                }
+            }
+        }
+
+        $til = new Arrangement(get_option('pl_id'));
+        foreach($til->getVideresending()->getAvsendere() as $avsender) {
+            foreach(Fylker::getAll() as $fylke) {
+                $fra = $avsender->getArrangement();
+                if($fylke->getId() == $fra->getFylke()->getId()) {
+                    $ledere = new Ledere($fra->getId(), $til->getId());
+                    $ledereMed = [];
+                    foreach($ledere->getAll() as $leder) {
+                        if( !$leder->getSensitivt()->getIntoleranse()->har() ) {
+                            continue;
+                        }
+                        
+                        $leder->getSensitivt()->getIntoleranse();
+
+                        $fylke_gruppe_id = $fylke->getNavn() . '-' . $fylke->getId();
+
                         if (!$gruppe->harGruppe($fylke_gruppe_id)) {
                             $gruppe->addGruppe(
                                 new Gruppe(
                                     $fylke_gruppe_id,
-                                    $innslag->getFylke()->getNavn()
+                                    $fylke->getNavn()
                                 )
                             );
                         }
-                        $gruppe->getGruppe($fylke_gruppe_id)->addPerson($person);
+                        $leder->setNavn($leder->getNavn() . ' ('. $leder->getTypeNavn() .')');
+                        $ledereMed[] = $leder;
                     }
-                }
-            }
-
-            $til = new Arrangement(get_option('pl_id'));
-            foreach($til->getVideresending()->getAvsendere() as $avsender) {
-                foreach(Fylker::getAll() as $fylke) {
-                    $fra = $avsender->getArrangement();
-                    if($fylke->getId() == $fra->getFylke()->getId()) {
-                        $ledere = new Ledere($fra->getId(), $til->getId());
-                        $ledereMed = [];
-                        foreach($ledere->getAll() as $leder) {
-                            if( !$leder->getSensitivt()->getIntoleranse()->har() ) {
-                                continue;
-                            }
-                            
-                            $leder->getSensitivt()->getIntoleranse();
-
-                            $fylke_gruppe_id = $fylke->getNavn() . '-' . $fylke->getId();
-
-                            if (!$gruppe->harGruppe($fylke_gruppe_id)) {
-                                $gruppe->addGruppe(
-                                    new Gruppe(
-                                        $fylke_gruppe_id,
-                                        $fylke->getNavn()
-                                    )
-                                );
-                            }
-                            $leder->setNavn($leder->getNavn() . ' ('. $leder->getTypeNavn() .')');
-                            $ledereMed[] = $leder;
-                        }
-                        // Merger personer og ledere. Dette kan feile og her brukes kun som representasjon på brukergrensesnitt. Person og Leder er veldig forskjellige men metodene som kalles på GUI i dette tilfelle finnes i begge klassene
-                        if($gruppe->getGruppe($fylke_gruppe_id)) {
-                            $personerLedere = array_merge($gruppe->getGruppe($fylke_gruppe_id)->getPersoner(), $ledereMed);
-                            $gruppe->getGruppe($fylke_gruppe_id)->setPersoner($personerLedere);
-                        }
+                    // Merger personer og ledere. Dette kan feile og her brukes kun som representasjon på brukergrensesnitt. Person og Leder er veldig forskjellige men metodene som kalles på GUI i dette tilfelle finnes i begge klassene
+                    if($gruppe->getGruppe($fylke_gruppe_id)) {
+                        $personerLedere = array_merge($gruppe->getGruppe($fylke_gruppe_id)->getPersoner(), $ledereMed);
+                        $gruppe->getGruppe($fylke_gruppe_id)->setPersoner($personerLedere);
                     }
                 }
             }
         }
-        // Alle andre arrangementer
-        else {
-            foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
-                foreach( $innslag->getPersoner()->getAll() as $person ) {
-                    if( !$person->getSensitivt()->getIntoleranse()->har() ) {
-                        continue;
-                    }
-                    $gruppe->addPerson($person);
-                }
-            }
-        }
+        // }
+        // // Alle andre arrangementer
+        // else {
+        //     foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
+        //         foreach( $innslag->getPersoner()->getAll() as $person ) {
+        //             if( !$person->getSensitivt()->getIntoleranse()->har() ) {
+        //                 continue;
+        //             }
+        //             $gruppe->addPerson($person);
+        //         }
+        //     }
+        // }
 
         return $gruppe;
     }
