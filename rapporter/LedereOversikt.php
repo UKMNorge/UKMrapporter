@@ -11,7 +11,7 @@ use UKMNorge\Arrangement\Videresending\Ledere\Ledere;
 
 class LedereOversikt extends Rapport
 {
-    public $kategori_id = 'ukmfestivalen';
+    public $kategori_id = 'personer';
     public $ikon = 'dashicons-businesswoman';
     public $navn = 'Ledere oversikt';
     public $beskrivelse = 'Informasjon om ledere';
@@ -19,24 +19,24 @@ class LedereOversikt extends Rapport
     public $har_sms = false;
     public $har_epost = false;
     
-    /**
-     * Er rapporten synlig
-     * Rapporten er synlig bare på UKM Festivalen (land)
-     * 
-     * @return Array
-     */
-    public function erSynlig() {
-        // Sjekk om arrangementet finnes. Metoden kan kalles fra kommuner eller fylker
-        try {
-            $arrangement = new Arrangement(get_option('pl_id'));
-        }catch(Exception $e) {
-            return false;
-        }
-        if($arrangement->getEierType() == 'land') {
-            return true;
-        }
-        return false;
-    }
+    // /**
+    //  * Er rapporten synlig
+    //  * Rapporten er synlig bare på UKM Festivalen (land)
+    //  * 
+    //  * @return Array
+    //  */
+    // public function erSynlig() {
+    //     // Sjekk om arrangementet finnes. Metoden kan kalles fra kommuner eller fylker
+    //     try {
+    //         $arrangement = new Arrangement(get_option('pl_id'));
+    //     }catch(Exception $e) {
+    //         return false;
+    //     }
+    //     if($arrangement->getEierType() == 'land') {
+    //         return true;
+    //     }
+    //     return false;
+    // }
     /**
      * Data til "tilpass rapporten"
      * 
