@@ -23,11 +23,11 @@
 							<td class="voksen-navn">{{ innslag.getNavn() }}</td>
 							<td>
 								{% if innslag.erVideresendtTil( til ) %}
-									<div class="dashicons dashicons-warning warning" width="16"></div>
+									<div class="dashicons dashicons-yes-alt yes" width="16"></div>
 									<span class="dashicon">Videresendt</span>
 								{% else %}
 									{% if nominasjon.harVoksenSkjema() and nominasjon.harDeltakerskjema() %}
-										<div class="dashicons dashicons-yes-alt yes"></div>
+										<div class="dashicons dashicons-warning warning"></div>
 										Nominert
 									{% else %}
 										<div class="dashicons dashicons-no-alt no"></div>
