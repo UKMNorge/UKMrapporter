@@ -35,7 +35,7 @@
 
         <h4>{{ key }}</h4>
         <table id="rapportDeltakereTable" class="table innslag-sorting table-striped">
-            {% for person in personer|sort((a, b) => a['person'].getNavn() <=> b['person'].getNavn()) %}
+            {% for person in personer|sort((a, b) => a.getNavn() <=> b.getNavn()) %}
             <tr>
                 <td>{{ person.getNavn() }}</td>
                 {% if person.getKommune() %}
