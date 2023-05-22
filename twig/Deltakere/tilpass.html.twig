@@ -1,0 +1,38 @@
+<div class="row mt-5">
+	<div class="col-xs-12">
+		{% embed "preview/list.html.twig" with {id: 'grupper', title: 'Hvordan skal det sorteres?' } %}
+			{% block options %}
+				{% include "preview/option.html.twig" with {id: 'grupper', val: 'alfabetisk', title: 'Alfabetisk sortert', selected:true} %}
+				{% include "preview/option.html.twig" with {id: 'grupper', val: 'innslag', title: 'Gruppert etter type innslag', desc: 'Deretter sortert etter deltaker'} %}
+			{% endblock %}
+
+			{% block previews %}
+				{% embed "preview/preview.html.twig" with {id: 'alfabetisk'} %}
+					{% block content %}
+						Person A - Innslag X - ...<br/>
+						Person B - Innslag X - ...<br/>
+						Person C - Innslag Y - ...<br/>
+						Person D - Innslag Y - ...<br/>
+						Person E - Innslag Z - ...
+					{% endblock %}
+				{% endembed %}
+
+				{% embed "preview/preview.html.twig" with {id: 'innslag'} %}
+					{% block content %}
+						<h4>Innslag X</h4>
+						Person A - 	kommune - ...<br/>
+						Person B - 	kommune - ...<br/>
+						Person C - 	kommune - ...
+						<h4>Innslag Y</h4>
+                        Person A - 	kommune - ...<br/>
+                        Person B - 	kommune - ...<br/>
+						Person C - 	kommune - ...
+					{% endblock %}
+				{% endembed %}
+
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+</div>
+
