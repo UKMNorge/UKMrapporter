@@ -1,0 +1,26 @@
+<h1>Hello World</h1>
+
+{# <pre>
+    {{ dump(hendelser) }}
+</pre> #}
+
+
+
+{% for hendelse in hendelser %}
+    <div id="rapportDeltakereTable" class="table table-striped">
+        <div>
+            <h3>{{ hendelse.getNavn() }}</h3>
+            {% for innslag in hendelse.getInnslag().getAll() %}
+                <h5>{{ innslag.getNavn() }} - {{ innslag.getType().getKey() }}</h5>
+                <h4>oppmotetid: {{ hendelse.getOppmoteTid(innslag)|date('Y-m-d H:i:s') }}</h4>
+                {% if innslag.getType().harTitler() %}
+                    {% for person in innslag.getPersoner().getAll() %}
+                        <p style="padding-left: 30px">
+                            {{ person.getNavn() }} - tid: - varighet {{ dump(innslag.getVarighet()) }}
+                        </p>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}

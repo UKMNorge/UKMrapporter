@@ -28,40 +28,20 @@ class Timeplan extends Rapport
 
     
     public function getTemplate() {
-        $grupper = new Gruppe('container', 'Alle innslag');
-        $grupper->setVisOverskrift(false);
-
-        $sortering_metode = '';
-
-        $personerInnslag = [];
-        switch ($this->getConfig()->get('grupper')) {
-            case 'alfabetisk':
-                $sortering_metode = 'alfabetisk';
-                foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
-                    foreach( $innslag->getPersoner()->getAll() as $person ) {
-                        $personerInnslag[] = ['person' => $person, 'innslag' => $innslag];
-                    }
-                }
-                break;
-
-            case 'innslag':
-                $sortering_metode = 'innslag';
-                foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
-                    foreach( $innslag->getPersoner()->getAll() as $person ) {
-                        $personerInnslag[$innslag->getType()->getNavn()]['personer'][] = $person;
-                    }
-
-                    $personerInnslag[$innslag->getType()->getNavn()]['innslag'] = $innslag;
-                }
-                break;
-
-            default:
-            $grupper->setInnslag($this->getArrangement()->getInnslag()->getAll());
-            break;
+        $arrangement = $this->getArrangement();
+        $hendelser = [];
+        foreach($arrangement->getProgram()->getAll() as $hendelse) {
+            $hendelse->getInnslag()->getAll();
+            $hendelse->getTid();
+            $hendelser[] = $hendelse;
         }
 
-        UKMrapporter::addViewData('sorteringMetode', $sortering_metode);
-        UKMrapporter::addViewData('personerInnslag', $personerInnslag);
+
+        
+
+        UKMrapporter::addViewData('sorteringMetode', -1);
+        UKMrapporter::addViewData('hendelser', $hendelser);
+
         return 'Timeplan/rapport.html.twig';
     }
 }
