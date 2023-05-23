@@ -17,15 +17,6 @@ class Deltakere extends Rapport
     public $krever_hendelse = false;
     public $har_excel = false;
 
-    /**
-     * Data til "tilpass rapporten"
-     * 
-     * @return Array
-     */
-    public function getCustomizerData() {
-        return ['alleFylker' => Fylker::getAll()];
-    }
-
     
     public function getTemplate() {
         $grupper = new Gruppe('container', 'Alle innslag');
