@@ -19,9 +19,6 @@ class Deltakere extends Rapport
 
     
     public function getTemplate() {
-        $grupper = new Gruppe('container', 'Alle innslag');
-        $grupper->setVisOverskrift(false);
-
         $sortering_metode = '';
 
         $personerInnslag = [];
@@ -45,10 +42,6 @@ class Deltakere extends Rapport
                     $personerInnslag[$innslag->getType()->getNavn()]['innslag'] = $innslag;
                 }
                 break;
-
-            default:
-            $grupper->setInnslag($this->getArrangement()->getInnslag()->getAll());
-            break;
         }
 
         UKMrapporter::addViewData('sorteringMetode', $sortering_metode);
