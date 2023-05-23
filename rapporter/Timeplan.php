@@ -62,8 +62,6 @@ class Timeplan extends Rapport
 
         UKMrapporter::addViewData('sorteringMetode', $sortering_metode);
         UKMrapporter::addViewData('personerInnslag', $personerInnslag);
-        return 'Deltakere/rapport.html.twig';
-
-        
+        return 'Timeplan/rapport.html.twig';
     }
 }
