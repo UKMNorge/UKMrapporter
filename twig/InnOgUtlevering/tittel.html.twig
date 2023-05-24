@@ -8,5 +8,12 @@
             <span class="small bold" style="opacity: .5">INN</span>
         </div>
     </div>
-    {{ innslag.getNavn() }}: {{ tittel.getNavn() }}
+    {{ innslag.getNavn() }}: {{ tittel.getNavn() }} ooo
+{% endblock %}
+
+{% block personer %}
+    {{ parent() }}
+        <td>
+            <p>Fylke: {{ innslag.getFylke().getNavn() }}</p>
+        </td>
 {% endblock %}
