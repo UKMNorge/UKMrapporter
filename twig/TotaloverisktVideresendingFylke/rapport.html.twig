@@ -8,6 +8,7 @@
 
 {% for fylke_key, fylker in fylkerData %}
     {% set totalInnslag = 0 %}
+    {% set totalDeltakere = 0 %}
     {% set totalUnikeDeltakere = 0 %}
     {% set totalLedere = 0 %}
     {% set totalLedsagerTurister = 0 %}
@@ -69,6 +70,7 @@
                 <tr>
                     <th scope="col">Arrangement</th>
                     <th scope="col">Antall innslag</th>
+                    <th scope="col">Antall deltakere</th>
                     <th scope="col">Antall unike deltakere</th>
                     <th scope="col">Antall ledere</th>
                     <th scope="col">Antall ledsagere / turister</th>
@@ -80,6 +82,7 @@
                 <tr class="ledere-tr">                       
                     <td>{{ arrangementer[arrng_key].getNavn() }}</td>
                     <td>{{ arrangementData['antallInnslag'] }}</td>
+                    <td>{{ arrangementData['antallDeltakere'] }}</td>
                     <td>{{ arrangementData['antallUnikeDeltakere'] }}</td>
                     <td>{{ arrangementData['antallLedere'] }}</td>
                     <td>{{ arrangementData['antallLedsagerTurister'] }}</td>
@@ -88,6 +91,7 @@
 
             {# Setter data for bruk på fylke totaloversikt #}
             {% set totalInnslag = totalInnslag + arrangementData['antallInnslag'] %}
+            {% set totalDeltakere = totalDeltakere + arrangementData['antallDeltakere'] %}
             {% set totalUnikeDeltakere = totalUnikeDeltakere + arrangementData['antallUnikeDeltakere'] %}
             {% set totalLedere = totalLedere + arrangementData['antallLedere'] %}
             {% set totalLedsagerTurister = totalLedsagerTurister + arrangementData['antallLedsagerTurister'] %}
@@ -99,6 +103,7 @@
             <tr class="ledere-tr">                     
                 <td><b>Sum</b></td>
                 <td><b>{{ totalInnslag }}</b></td>
+                <td><b>{{ totalDeltakere }}</b></td>
                 <td><b>{{ totalUnikeDeltakere }}</b></td>
                 <td><b>{{ totalLedere }}</b></td>
                 <td><b>{{ totalLedsagerTurister }}</b></td>
