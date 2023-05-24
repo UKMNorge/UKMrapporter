@@ -33,6 +33,7 @@
 										<div class="dashicons dashicons-no-alt no"></div>
 										Nominert, men mangler skjema
 									{% endif %}
+									<span>( {{ not nominasjon.erAnswered() ? 'ikke besvart' : (nominasjon.erGodkjent() ? 'godkjent' : 'ikke godkjent') }} )</span>
 								{% endif %}
 							</td>
 							<td>
