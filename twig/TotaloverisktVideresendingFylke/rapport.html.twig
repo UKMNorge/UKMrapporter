@@ -4,6 +4,7 @@
 {% set superTotalLedsagerTurister = 0 %}
 
 {% set totalPerTypeArr = [] %}
+{% set totalInnslagPerFylke = [] %}
 
 {% for fylke_key, fylker in fylkerData %}
     {% set totalInnslag = 0 %}
@@ -44,6 +45,7 @@
                         </tr>
 
                         {% set typeStr = '' %}
+                        {% set totalInnslagPerFylke = totalInnslagPerFylke|merge({(typeNavn): totalInnslagPerFylke[typeNavn] + 1}) %}
                     {% endfor %}
 
                     {% set totalPerTypeArr = totalPerTypeArr|merge({(typeNavn): totalPerTypeArr[typeNavn] + antallPersoner}) %}
@@ -113,13 +115,14 @@
 
 
 {# TOTALOVERSIKT FOR ALLE VIDERESENDINGER TIL DETTE ARRANGEMENTET #}
-    <h3 class="super-total-oversikt">SUM FOR UTVALGTE FYLKER</h3>
+<h3 class="super-total-oversikt">SUM FOR UTVALGTE FYLKER</h3>
 
 {% if totalPerTypeArr %}
     <table class="table total-oversikt total-i-fylke">
         <thead>
             <tr>
                 <th scope="col">Type</th>
+                <th scope="col">Antall innslag</th>
                 <th scope="col">Antall personer</th>
             </tr>
         </thead>
@@ -127,6 +130,7 @@
             {% for key, antall in totalPerTypeArr %}
             <tr class="ledere-tr">                     
                 <td><h5>{{ key }}</h5></td>
+                <td><h5>{{ totalInnslagPerFylke[key] }}</h5></td>
                 <td><h5>{{ antall }}</h5></td>
             </tr>
             {% endfor %}
