@@ -1,5 +1,6 @@
 {% set superTotalInnslag = 0 %}
 {% set superTotalUnikeDeltakere = 0 %}
+{% set superTotalDeltakere = 0 %}
 {% set superTotalLedere = 0 %}
 {% set superTotalLedsagerTurister = 0 %}
 
@@ -114,6 +115,7 @@
 
     {% set superTotalInnslag = superTotalInnslag + totalInnslag %}
     {% set superTotalUnikeDeltakere = superTotalUnikeDeltakere + totalUnikeDeltakere %}
+    {% set superTotalDeltakere = superTotalDeltakere + totalDeltakere %}
     {% set superTotalLedere = superTotalLedere + totalLedere %}
     {% set superTotalLedsagerTurister = superTotalLedsagerTurister + totalLedsagerTurister %}
 {% endfor %}
@@ -148,6 +150,7 @@
             <tr>
                 <th scope="col"></th>
                 <th scope="col">Antall innslag</th>
+                <th scope="col">Antall deltakere</th>
                 <th scope="col">Antall unike deltakere</th>
                 <th scope="col">Antall ledere</th>
                 <th scope="col">Antall ledsagere / turister</th>
@@ -157,6 +160,7 @@
             <tr class="ledere-tr">                     
                 <td><h4>Total</h4></td>
                 <td><h4>{{ superTotalInnslag }}</h4></td>
+                <td><h4>{{ superTotalDeltakere }}</h4></td>
                 <td><h4>{{ superTotalUnikeDeltakere }}</h4></td>
                 <td><h4>{{ superTotalLedere }}</h4></td>
                 <td><h4>{{ superTotalLedsagerTurister }}</h4></td>
