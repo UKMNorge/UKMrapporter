@@ -10,3 +10,10 @@
     </div>
     {{ innslag.getNavn() }}: {{ tittel.getNavn() }}
 {% endblock %}
+
+{% block personer %}
+    {{ parent() }}
+        <td>
+            <p>Fylke: {{ innslag.getFylke().getNavn() }}</p>
+        </td>
+{% endblock %}

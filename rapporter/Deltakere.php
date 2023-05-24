@@ -22,9 +22,10 @@ class Deltakere extends Rapport
         $sortering_metode = '';
 
         $personerInnslag = [];
+        $sortering_metode = $this->getConfig()->get('grupper');
+
         switch ($this->getConfig()->get('grupper')) {
             case 'alfabetisk':
-                $sortering_metode = 'alfabetisk';
                 foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
                     foreach( $innslag->getPersoner()->getAll() as $person ) {
                         $personerInnslag[] = ['person' => $person, 'innslag' => $innslag];
@@ -33,7 +34,6 @@ class Deltakere extends Rapport
                 break;
 
             case 'innslag':
-                $sortering_metode = 'innslag';
                 foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
                     foreach( $innslag->getPersoner()->getAll() as $person ) {
                         $personerInnslag[$innslag->getType()->getNavn()]['personer'][] = $person;
@@ -42,6 +42,30 @@ class Deltakere extends Rapport
                     $personerInnslag[$innslag->getType()->getNavn()]['innslag'] = $innslag;
                 }
                 break;
+        
+            case 'fylke':
+                foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
+                    foreach( $innslag->getPersoner()->getAll() as $person ) {
+                        $personerInnslag[$innslag->getFylke()->getNavn()]['personer'][] = $person;
+                    }
+
+                    $personerInnslag[$innslag->getFylke()->getNavn()]['innslag'] = $innslag;
+                }
+                break;
+
+            case 'kommune':
+                foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
+                    foreach( $innslag->getPersoner()->getAll() as $person ) {
+                        $personerInnslag[$innslag->getKommune()->getNavn()]['personer'][] = $person;
+                    }
+
+                    $personerInnslag[$innslag->getKommune()->getNavn()]['innslag'] = $innslag;
+                }
+                break;
+        }
+        
+        if($sortering_metode != 'alfabetisk') {
+            ksort($personerInnslag);
         }
 
         UKMrapporter::addViewData('sorteringMetode', $sortering_metode);

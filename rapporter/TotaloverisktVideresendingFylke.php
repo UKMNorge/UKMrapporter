@@ -100,6 +100,7 @@ class TotaloverisktVideresendingFylke extends Rapport
                 // Hvis $fra (arrangement som ble videresendt) er fra fylke som er valgt
                 if($fylke->getId() == $fra->getFylke()->getId()) {                    
                     $fylker[$fylke->getId()][$fra->getId()]['antallInnslag'] = $this->getAntallInnslag($fra);
+                    $fylker[$fylke->getId()][$fra->getId()]['antallDeltakere'] = $this->getAntallDeltakere($fra);
                     $fylker[$fylke->getId()][$fra->getId()]['antallUnikeDeltakere'] = $this->getAntallUnikeDeltakere($fra);
                     $fylker[$fylke->getId()][$fra->getId()]['antallLedere'] = $this->getAntallLedere($fra);
                     $fylker[$fylke->getId()][$fra->getId()]['antallLedsagerTurister'] = $this->getAntallLedsagerTurister($fra);
@@ -115,6 +116,26 @@ class TotaloverisktVideresendingFylke extends Rapport
         return 'TotaloverisktVideresendingFylke/rapport.html.twig';
     }
     
+
+    /**
+     * Get antall deltakere i videresending
+     * 
+     * @param Arrangement $arrangement
+     * @return Int
+     */
+    private function getAntallDeltakere($fraArrangement): int {
+        $personer = [];
+        $tilArrangement = new Arrangement(get_option('pl_id'));
+
+        
+        foreach($fraArrangement->getVideresendte($tilArrangement->getId())->getAll() as $innslag) {
+            foreach( $innslag->getPersoner()->getAll() as $person ) {
+                $personer[] = $person;
+            }
+        }
+
+        return count($personer);
+    }
 
     /**
      * Get antall UNIKE deltakere i videresending

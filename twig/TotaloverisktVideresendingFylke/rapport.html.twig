@@ -1,12 +1,15 @@
 {% set superTotalInnslag = 0 %}
 {% set superTotalUnikeDeltakere = 0 %}
+{% set superTotalDeltakere = 0 %}
 {% set superTotalLedere = 0 %}
 {% set superTotalLedsagerTurister = 0 %}
 
 {% set totalPerTypeArr = [] %}
+{% set totalInnslagPerFylke = [] %}
 
 {% for fylke_key, fylker in fylkerData %}
     {% set totalInnslag = 0 %}
+    {% set totalDeltakere = 0 %}
     {% set totalUnikeDeltakere = 0 %}
     {% set totalLedere = 0 %}
     {% set totalLedsagerTurister = 0 %}
@@ -44,6 +47,7 @@
                         </tr>
 
                         {% set typeStr = '' %}
+                        {% set totalInnslagPerFylke = totalInnslagPerFylke|merge({(typeNavn): totalInnslagPerFylke[typeNavn] + 1}) %}
                     {% endfor %}
 
                     {% set totalPerTypeArr = totalPerTypeArr|merge({(typeNavn): totalPerTypeArr[typeNavn] + antallPersoner}) %}
@@ -67,6 +71,7 @@
                 <tr>
                     <th scope="col">Arrangement</th>
                     <th scope="col">Antall innslag</th>
+                    <th scope="col">Antall deltakere</th>
                     <th scope="col">Antall unike deltakere</th>
                     <th scope="col">Antall ledere</th>
                     <th scope="col">Antall ledsagere / turister</th>
@@ -78,6 +83,7 @@
                 <tr class="ledere-tr">                       
                     <td>{{ arrangementer[arrng_key].getNavn() }}</td>
                     <td>{{ arrangementData['antallInnslag'] }}</td>
+                    <td>{{ arrangementData['antallDeltakere'] }}</td>
                     <td>{{ arrangementData['antallUnikeDeltakere'] }}</td>
                     <td>{{ arrangementData['antallLedere'] }}</td>
                     <td>{{ arrangementData['antallLedsagerTurister'] }}</td>
@@ -86,6 +92,7 @@
 
             {# Setter data for bruk på fylke totaloversikt #}
             {% set totalInnslag = totalInnslag + arrangementData['antallInnslag'] %}
+            {% set totalDeltakere = totalDeltakere + arrangementData['antallDeltakere'] %}
             {% set totalUnikeDeltakere = totalUnikeDeltakere + arrangementData['antallUnikeDeltakere'] %}
             {% set totalLedere = totalLedere + arrangementData['antallLedere'] %}
             {% set totalLedsagerTurister = totalLedsagerTurister + arrangementData['antallLedsagerTurister'] %}
@@ -97,6 +104,7 @@
             <tr class="ledere-tr">                     
                 <td><b>Sum</b></td>
                 <td><b>{{ totalInnslag }}</b></td>
+                <td><b>{{ totalDeltakere }}</b></td>
                 <td><b>{{ totalUnikeDeltakere }}</b></td>
                 <td><b>{{ totalLedere }}</b></td>
                 <td><b>{{ totalLedsagerTurister }}</b></td>
@@ -107,19 +115,21 @@
 
     {% set superTotalInnslag = superTotalInnslag + totalInnslag %}
     {% set superTotalUnikeDeltakere = superTotalUnikeDeltakere + totalUnikeDeltakere %}
+    {% set superTotalDeltakere = superTotalDeltakere + totalDeltakere %}
     {% set superTotalLedere = superTotalLedere + totalLedere %}
     {% set superTotalLedsagerTurister = superTotalLedsagerTurister + totalLedsagerTurister %}
 {% endfor %}
 
 
 {# TOTALOVERSIKT FOR ALLE VIDERESENDINGER TIL DETTE ARRANGEMENTET #}
-    <h3 class="super-total-oversikt">SUM FOR UTVALGTE FYLKER</h3>
+<h3 class="super-total-oversikt">SUM FOR UTVALGTE FYLKER</h3>
 
 {% if totalPerTypeArr %}
     <table class="table total-oversikt total-i-fylke">
         <thead>
             <tr>
                 <th scope="col">Type</th>
+                <th scope="col">Antall innslag</th>
                 <th scope="col">Antall personer</th>
             </tr>
         </thead>
@@ -127,6 +137,7 @@
             {% for key, antall in totalPerTypeArr %}
             <tr class="ledere-tr">                     
                 <td><h5>{{ key }}</h5></td>
+                <td><h5>{{ totalInnslagPerFylke[key] }}</h5></td>
                 <td><h5>{{ antall }}</h5></td>
             </tr>
             {% endfor %}
@@ -139,6 +150,7 @@
             <tr>
                 <th scope="col"></th>
                 <th scope="col">Antall innslag</th>
+                <th scope="col">Antall deltakere</th>
                 <th scope="col">Antall unike deltakere</th>
                 <th scope="col">Antall ledere</th>
                 <th scope="col">Antall ledsagere / turister</th>
@@ -148,6 +160,7 @@
             <tr class="ledere-tr">                     
                 <td><h4>Total</h4></td>
                 <td><h4>{{ superTotalInnslag }}</h4></td>
+                <td><h4>{{ superTotalDeltakere }}</h4></td>
                 <td><h4>{{ superTotalUnikeDeltakere }}</h4></td>
                 <td><h4>{{ superTotalLedere }}</h4></td>
                 <td><h4>{{ superTotalLedsagerTurister }}</h4></td>
