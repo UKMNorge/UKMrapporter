@@ -2,6 +2,7 @@
 
 
 {% if sorteringMetode == 'alfabetisk' %}
+    {% set totalt = 0 %}
     {% set counter = 0 %}
     <table id="rapportDeltakereTable" class="table table-striped">
         <tr>
@@ -28,8 +29,10 @@
                     <td>{{ person.getFylke().getNavn() }}</td>
                 {% endif %}
             </tr>
+            {% set totalt = totalt + counter %}
         {% endfor %}
     </table>
+    <h4>Totalt: {{ totalt }}</h4>
 {% else %}
     {% set totalt = 0 %}
     {% for key, persIns in personerInnslag %}
