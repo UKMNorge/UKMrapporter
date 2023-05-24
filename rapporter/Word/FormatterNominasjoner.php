@@ -187,7 +187,7 @@ class FormatterNominasjoner extends Formatter
                             $table->addCell(3000)
                         );	
                         $word->tekst(
-                            $playback->download(),
+                            method_exists($playback, 'download') ? $playback->download() : '-',
                             $table->addCell(8500)
                         );
                     }
