@@ -1,6 +1,8 @@
 {% block content %}
 
+
 {% if sorteringMetode == 'alfabetisk' %}
+    {% set counter = 0 %}
     <table id="rapportDeltakereTable" class="table table-striped">
         <tr>
             <th><h5>Deltaker navn</h5></th>
@@ -14,8 +16,9 @@
         {% for personerInnslag in personerInnslag|sort((a, b) => a['person'].getNavn() <=> b['person'].getNavn()) %}
             {% set person = personerInnslag['person'] %}
             {% set innslag = personerInnslag['innslag'] %}
+            {% set counter = counter + 1 %}
             <tr>
-                <td><b>{{ person.getNavn() }}</b></td>
+                <td>{{ counter }}. {{ person.getNavn() }}</td>
                 <td>{{ innslag.getNavn() }}</td>
                 <td>{{ innslag.getType() }}</td>
                 {% if person.getKommune() %}
@@ -27,8 +30,10 @@
             </tr>
         {% endfor %}
     </table>
-{% elseif sorteringMetode == 'innslag' %}
-    {% for key, persIns in personerInnslag|sort((a, b) => a['innslag'].getType().getNavn() <=> b['person'].getType().getNavn()) %}
+{% else %}
+    {% set totalt = 0 %}
+    {% for key, persIns in personerInnslag %}
+        {% set counter = 0 %}
 
         {% set innslag = persIns['innslag'] %}
         {% set personer = persIns['personer'] %}
@@ -36,19 +41,28 @@
         <h4>{{ key }}</h4>
         <table id="rapportDeltakereTable" class="table innslag-sorting table-striped">
             {% for person in personer|sort((a, b) => a.getNavn() <=> b.getNavn()) %}
+            {% set counter = counter + 1 %}
             <tr>
-                <td>{{ person.getNavn() }}</td>
+                <td>{{ counter }}. {{ person.getNavn() }}</td>
+                <td>{{ innslag.getNavn() }}</td>
+                <td>{{ innslag.getType() }}</td>
+
                 {% if person.getKommune() %}
                     <td>{{ person.getKommune().getNavn() }}</td>
                 {% endif %}
+                
                 {% if person.getFylke() %}
                     <td>{{ person.getFylke().getNavn() }}</td>
                 {% endif %}
             </tr>
             {% endfor %}
         </table>
+        <h5>Antall: {{ counter}}</h5>
+        <hr>
         <br>
+        {% set totalt = totalt + counter %}
     {% endfor %}
+        <h4>Totalt: {{ totalt }}</h4>
 {% endif %}
 
 
@@ -67,9 +81,6 @@
 
 #rapportDeltakereTable th tr:nth-child(even) {
     background-color: #dddddd;
-}
-#rapportDeltakereTable.innslag-sorting tr td {
-    width: 33.3%;
 }
 </style>
 {% endblock %}

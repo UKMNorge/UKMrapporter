@@ -4,6 +4,13 @@
 			{% block options %}
 				{% include "preview/option.html.twig" with {id: 'grupper', val: 'alfabetisk', title: 'Alfabetisk sortert', selected:true} %}
 				{% include "preview/option.html.twig" with {id: 'grupper', val: 'innslag', title: 'Gruppert etter type innslag', desc: 'Deretter sortert etter deltaker'} %}
+                {% if arrangement.getType() == 'land' %}
+				    {% include "preview/option.html.twig" with {id: 'grupper', val: 'fylke', title: 'Gruppert etter fylke', desc: 'Deretter sortert etter deltaker'} %}
+                {% endif %}
+                {% if arrangement.getType() != 'kommune' %}
+				    {% include "preview/option.html.twig" with {id: 'grupper', val: 'kommune', title: 'Gruppert etter kommune', desc: 'Deretter sortert etter deltaker'} %}
+                {% endif %}
+                
 			{% endblock %}
 
 			{% block previews %}
@@ -27,6 +34,32 @@
                         Person A - 	kommune - ...<br/>
                         Person B - 	kommune - ...<br/>
 						Person C - 	kommune - ...
+					{% endblock %}
+				{% endembed %}
+
+                {% embed "preview/preview.html.twig" with {id: 'fylke'} %}
+					{% block content %}
+						<h4>Fylke K</h4>
+                        Person A - Innslag X - ...<br/>
+                        Person B - Innslag X - ...<br/>
+                        Person C - Innslag Y - ...<br/>
+						<h4>Fylke M</h4>
+                        Person D - 	Innslag X - ...<br/>
+                        Person E - 	Innslag Y - ...<br/>
+						Person F - 	Innslag X - ...
+					{% endblock %}
+				{% endembed %}
+
+                {% embed "preview/preview.html.twig" with {id: 'kommune'} %}
+					{% block content %}
+						<h4>Kommune K</h4>
+                        Person A - Innslag X - ...<br/>
+                        Person B - Innslag X - ...<br/>
+                        Person C - Innslag Y - ...<br/>
+						<h4>Kommune M</h4>
+                        Person D - 	Innslag X - ...<br/>
+                        Person E - 	Innslag Y - ...<br/>
+						Person F - 	Innslag X - ...
 					{% endblock %}
 				{% endembed %}
 
