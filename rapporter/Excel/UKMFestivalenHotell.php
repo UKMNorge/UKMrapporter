@@ -31,13 +31,13 @@ class UKMFestivalenHotell extends Excel {
             $natt = $netter[$nattKey];
             $superTotal = 0;
             
-            foreach ($natt['fylker'] as $fylke_data) {
-                foreach ($fylke_data as $arr_data) {
-                    $superTotal = $superTotal + count($arr_data);
-                }
-            }
-            
             if ($natt) {
+                foreach ($natt['fylker'] as $fylke_data) {
+                    foreach ($fylke_data as $arr_data) {
+                        $superTotal = $superTotal + count($arr_data);
+                    }
+                }
+            
                 $this->excel->setArk($nattKey, $gyldigNatt->format('d.m.y'));
                 
                 $this->rad();
