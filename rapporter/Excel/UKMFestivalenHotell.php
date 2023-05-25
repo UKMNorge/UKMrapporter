@@ -43,8 +43,9 @@ class UKMFestivalenHotell extends Excel {
                 $this->rad();
                 $kolonne = $this->celle('A', 'Navn');
                 $kolonne = $this->celle('B', 'Tlf');
-                $kolonne = $this->celle('C', 'Rom');
-                $kolonne = $this->celle('D', 'Fylke');
+                $kolonne = $this->celle('C', 'Epost');
+                $kolonne = $this->celle('D', 'Rom');
+                $kolonne = $this->celle('E', 'Fylke');
 
                 foreach ($natt['fylker'] as $fylke_key => $fylke_data) {
                     foreach ($fylke_data as $key_arr => $arr_data) {
@@ -63,13 +64,14 @@ class UKMFestivalenHotell extends Excel {
                             $this->rad();
                             $kolonne = $this->celle('A', $leder->getNavn());
                             $kolonne = $this->celle('B', $leder->getMobil());
+                            $kolonne = $this->celle('C', $leder->getEpost());
                             if($leder instanceof OvernattingPersonClass && $leder->getRom()) {
-                                $kolonne = $this->celle('C', $leder->getRom()->getType());
+                                $kolonne = $this->celle('D', $leder->getRom()->getType());
                             }
                             else {
-                                $kolonne = $this->celle('C', 'enkeltrom');
+                                $kolonne = $this->celle('D', 'enkeltrom');
                             }
-                            $kolonne = $this->celle('D', $fylker[$fylke_key] ? $fylker[$fylke_key] : 'UKM Norge');
+                            $kolonne = $this->celle('E', $fylker[$fylke_key] ? $fylker[$fylke_key] : 'UKM Norge');
                         }
                     }
                 }
