@@ -29,10 +29,9 @@
                     <td>{{ person.getFylke().getNavn() }}</td>
                 {% endif %}
             </tr>
-            {% set totalt = totalt + counter %}
         {% endfor %}
     </table>
-    <h4>Totalt: {{ totalt }}</h4>
+    <h4>Totalt: {{ counter }}</h4>
 {% else %}
     {% set totalt = 0 %}
     {% for key, persIns in personerInnslag %}
