@@ -108,20 +108,20 @@ class UKMFestivalenHotell extends Excel {
                                 $kapasitet = $leder->getRom() ? $leder->getRom()->getKapasitet() : 1;
     
                                 if($leder && $kapasitet == 1 && $leder->getRom()->getId()) {
-                                    $antallEnkeltrom[$leder->getRom()->getId()] = $leder->getRom()->getId();
+                                    $antallEnkeltrom[] = $leder->getRom()->getId();
                                 }
                                 else if($leder && $kapasitet == 2 && $leder->getRom()->getId()) {
-                                    $antallDobbeltrom[$leder->getRom()->getId()] = $leder->getRom()->getId();
+                                    $antallDobbeltrom[] = $leder->getRom()->getId();
                                 }
                                 else if($leder && $kapasitet == 3 && $leder->getRom()->getId()) {
-                                    $antallTrippeltrom[$leder->getRom()->getId()] = $leder->getRom()->getId();
+                                    $antallTrippeltrom[] = $leder->getRom()->getId();
                                 }
                                 else if($leder && $kapasitet == 3 && $leder->getRom()->getId()) {
-                                    $antallKvadrupeltrom[$leder->getRom()->getId()] = $leder->getRom()->getId();
+                                    $antallKvadrupeltrom[] = $leder->getRom()->getId();
                                 }
                             }
                             else {
-                                $antallEnkeltrom[$leder->getId] = $leder->getId();
+                                $antallEnkeltrom[] = $leder->getId();
                             }
                         }
                     }
