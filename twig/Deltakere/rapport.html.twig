@@ -41,25 +41,28 @@
 
         <h4>{{ key }}</h4>
         <table id="rapportDeltakereTable" class="table innslag-sorting table-striped">
+        {% if personer %}
             {% for person in personer|sort((a, b) => a.getNavn() <=> b.getNavn()) %}
-            {% set counter = counter + 1 %}
+                {% set counter = counter + 1 %}
 
-            {% set innslag = alleInnslag[person.getContext().getInnslag().getId()] %}
+                {% set innslag = alleInnslag[person.getContext().getInnslag().getId()] %}
 
-            <tr>
-                <td>{{ counter }}. {{ person.getNavn() }}</td>
-                <td>{{ innslag.getNavn() }}</td>
-                <td>{{ innslag.getType() }}</td>
+                <tr>
+                    <td>{{ counter }}. {{ person.getNavn() }}</td>
+                    <td>{{ innslag.getNavn() }}</td>
+                    <td>{{ innslag.getType() }}</td>
 
-                {% if person.getKommune() %}
-                    <td>{{ person.getKommune().getNavn() }}</td>
-                {% endif %}
-                
-                {% if person.getFylke() %}
-                    <td>{{ person.getFylke().getNavn() }}</td>
-                {% endif %}
-            </tr>
+                    {% if person.getKommune() %}
+                        <td>{{ person.getKommune().getNavn() }}</td>
+                    {% endif %}
+                    
+                    {% if person.getFylke() %}
+                        <td>{{ person.getFylke().getNavn() }}</td>
+                    {% endif %}
+                </tr>
             {% endfor %}
+        {% endif %}
+        
         </table>
         <h5>Antall: {{ counter}}</h5>
         <hr>
