@@ -37,14 +37,15 @@
     {% set totalt = 0 %}
     {% for key, persIns in personerInnslag %}
         {% set counter = 0 %}
-
-        {% set innslag = persIns['innslag'] %}
         {% set personer = persIns['personer'] %}
 
         <h4>{{ key }}</h4>
         <table id="rapportDeltakereTable" class="table innslag-sorting table-striped">
             {% for person in personer|sort((a, b) => a.getNavn() <=> b.getNavn()) %}
             {% set counter = counter + 1 %}
+
+            {% set innslag = alleInnslag[person.getContext().getInnslag().getId()] %}
+
             <tr>
                 <td>{{ counter }}. {{ person.getNavn() }}</td>
                 <td>{{ innslag.getNavn() }}</td>
@@ -80,6 +81,7 @@
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
+    width: 20%;
 }
 
 #rapportDeltakereTable th tr:nth-child(even) {
