@@ -6,7 +6,7 @@
 		{% include "checkbox.html.twig" with {id: 'dager_alle' , title: 'Alle'} %}
 
         {# Alle dager #}
-        {% for key, dag in dager %}
+        {% for key, dag in dager|sort((a, b) => a|date('U') <=> b|date('U') ) %}
 			{% include "checkbox.html.twig" with {id: key|dato('d.m.Y') , title: key|dato('l (d.m.Y)')|capitalize } %}
         {% endfor %}
 	</ol>
