@@ -36,7 +36,7 @@ class Timeplan extends Rapport
             $hendelse->getTid();
             $hendelser[] = $hendelse;
             foreach($hendelse->getInnslag()->getAll() as $innslag) {
-                $dager[$hendelse->getOppmoteTid($innslag)->format('d.m.Y')]['hendelse'] = $hendelse;
+                $dager[$hendelse->getOppmoteTid($innslag)->format('d.m.Y')]['hendelse'][] = $hendelse;
                 $dager[$hendelse->getOppmoteTid($innslag)->format('d.m.Y')]['innslag'][] = $innslag;
             }
         }   

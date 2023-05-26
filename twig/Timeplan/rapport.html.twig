@@ -1,34 +1,35 @@
 {% for key, dag in dager %}
     <h1>{{ key|dato('l')|capitalize }}</h1>
-    {% set hendelse = dag['hendelse'] %}
+    {% for hendelse in dag['hendelse'] %}
+        
+        <h3>{{ hendelse.getNavn() }}</h3>
 
-    <h3>{{ hendelse.getNavn() }}</h3>
+        {% for innslag in dag['innslag'] %}        
+            {% set personer = innslag.getPersoner().getAll() %}
+            <hr>
+            <h5 class="innslag-hendelse-info make-tab"><b>{{ innslag.getNavn() }}</b> - <i>oppmotested: {{ hendelse.getSted() }}</i></h5>
+                <table class="table make-tab">
+                    <thead>
+                        <tr >
+                            <th class="col-xs-4" scope="col">Navn</th>
+                            <th class="col-xs-4" scope="col">Tlf</th>
+                            <th class="col-xs-4" scope="col">Oppmøtetid</th>
+                        </tr>
+                    </thead>
+            {% for person in personer %}
 
-    {% for innslag in dag['innslag'] %}        
-        {% set personer = innslag.getPersoner().getAll() %}
-        <hr>
-        <h5 class="innslag-hendelse-info make-tab"><b>{{ innslag.getNavn() }}</b> - <i>oppmotested: {{ hendelse.getSted() }}</i></h5>
-            <table class="table make-tab">
-                <thead>
-                    <tr >
-                        <th class="col-xs-4" scope="col">Navn</th>
-                        <th class="col-xs-4" scope="col">Tlf</th>
-                        <th class="col-xs-4" scope="col">Oppmøtetid</th>
-                    </tr>
-                </thead>
-        {% for person in personer %}
-
-                <tbody>
-                    <tr class="">
-                        <td class="col-xs-4">{{ person.getNavn() }}</td>
-                        <td class="col-xs-4">{{ person.getMobil() }}</td>
-                        <td class="col-xs-4">{{ hendelse.getOppmoteTid(innslag)|dato('H:i') }}</td>
-                    </tr>
-                </tbody>
+                    <tbody>
+                        <tr class="">
+                            <td class="col-xs-4">{{ person.getNavn() }}</td>
+                            <td class="col-xs-4">{{ person.getMobil() }}</td>
+                            <td class="col-xs-4">{{ hendelse.getOppmoteTid(innslag)|dato('H:i') }}</td>
+                        </tr>
+                    </tbody>
+            {% endfor %}
+                </table>
         {% endfor %}
-            </table>
+        <hr>
     {% endfor %}
-    <hr>
 {% endfor %}
 
 <style>
