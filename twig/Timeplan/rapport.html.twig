@@ -5,7 +5,6 @@
         <h3>{{ dag_key|dato('l - d.m.Y') }}</h3>
         {% for hendelse in fylke %}
             <h4 class="make-tab">{{ hendelse.getNavn() }}</h4>
-            <hr>
 
             {% for innslag in hendelse.getInnslag().getAll() %}
                 {% if innslag.getFylke().getNavn() == fylke_key %}      
