@@ -1,6 +1,6 @@
-{% for key, dag in dager %}
-    <h1>{{ key|dato('l')|capitalize }}</h1>
-    {% for hendelse in dag %}
+{% for key, fylke in fylker %}
+    <h1>{{ key }}</h1>
+    {% for hendelse in fylke %}
         
         <h3>{{ hendelse.getNavn() }}</h3>
 

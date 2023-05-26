@@ -1,13 +1,13 @@
 <div class="col-12 col-sm-6 col-md-4">
 	<ol class="list-group">
 		<li class="list-group-item list-group-title">
-			<h4>Velg dag</h4>
+			<h4>Velg fylke</h4>
 		</li>
-		{% include "checkbox.html.twig" with {id: 'dager_alle' , title: 'Alle'} %}
+		{% include "checkbox.html.twig" with {id: 'fylke_alle' , title: 'Alle'} %}
 
-        {# Alle dager #}
-        {% for key, dag in dager|sort((a, b) => a|date('U') <=> b|date('U') ) %}
-			{% include "checkbox.html.twig" with {id: key|dato('d.m.Y') , title: key|dato('l (d.m.Y)')|capitalize } %}
+        {# Alle fylker #}
+        {% for fylke in alleFylker %}
+			{% include "checkbox.html.twig" with {id: 'fylke_'~ fylke.getId() , title: fylke.getNavn()} %}
         {% endfor %}
 	</ol>
 </div>

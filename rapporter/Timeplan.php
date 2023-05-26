@@ -24,32 +24,28 @@ class Timeplan extends Rapport
      */
     public function getCustomizerData()
     {
-        $arrangement = $this->getArrangement();
-        $dager = [];
-        foreach($arrangement->getProgram()->getAbsoluteAll() as $hendelse) {
-            foreach($hendelse->getInnslag()->getAll() as $innslag) {
-                $dager[$hendelse->getOppmoteTid($innslag)->format('d.m.Y')] = $hendelse->getOppmoteTid($innslag)->format('d.m.Y');
-            }
-        }
-        return ['dager' => $dager];
+        return ['alleFylker' => Fylker::getAll()];
     }
     
     public function getTemplate() {
-        $selectedDager = [];
+        $selectedFylker = [];
         foreach($this->getConfig()->getAll() as $selectedDag) {
-            $selectedDager[] = $selectedDag->getId();
+            $selectedFylker[] = $selectedDag->getId();
         }
 
         $arrangement = $this->getArrangement();
-        $dager = [];
+        $fylker = [];
         foreach($arrangement->getProgram()->getAbsoluteAll() as $hendelse) {
             $hendelse->getInnslag()->getAll();
-            if((count($selectedDager) == 0) || ($selectedDager[0] == 'vis_dager_alle') || (in_array("vis_" . $hendelse->getStart()->format('d_m_Y'), $selectedDager))) {
-                $dager[$hendelse->getStart()->format('d.m.Y')][$hendelse->getId()] = $hendelse;
+            foreach($hendelse->getInnslag()->getAll() as $innslag) {
+                if((count($selectedFylker) == 0) || ($selectedFylker[0] == 'vis_dager_alle') || (in_array("vis_fylke_" . $innslag->getFylke()->getId(), $selectedFylker))) {
+                    $fylker[$innslag->getFylke()->getNavn()][$hendelse->getId()] = $hendelse;
+                }
             }
+            
         }
 
-        UKMrapporter::addViewData('dager', $dager);
+        UKMrapporter::addViewData('fylker', $fylker);
 
         return 'Timeplan/rapport.html.twig';
     }
