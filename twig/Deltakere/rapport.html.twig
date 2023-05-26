@@ -29,36 +29,39 @@
                     <td>{{ person.getFylke().getNavn() }}</td>
                 {% endif %}
             </tr>
-            {% set totalt = totalt + counter %}
         {% endfor %}
     </table>
-    <h4>Totalt: {{ totalt }}</h4>
+    <h4>Totalt: {{ counter }}</h4>
 {% else %}
     {% set totalt = 0 %}
     {% for key, persIns in personerInnslag %}
         {% set counter = 0 %}
-
-        {% set innslag = persIns['innslag'] %}
         {% set personer = persIns['personer'] %}
 
         <h4>{{ key }}</h4>
         <table id="rapportDeltakereTable" class="table innslag-sorting table-striped">
+        {% if personer %}
             {% for person in personer|sort((a, b) => a.getNavn() <=> b.getNavn()) %}
-            {% set counter = counter + 1 %}
-            <tr>
-                <td>{{ counter }}. {{ person.getNavn() }}</td>
-                <td>{{ innslag.getNavn() }}</td>
-                <td>{{ innslag.getType() }}</td>
+                {% set counter = counter + 1 %}
 
-                {% if person.getKommune() %}
-                    <td>{{ person.getKommune().getNavn() }}</td>
-                {% endif %}
-                
-                {% if person.getFylke() %}
-                    <td>{{ person.getFylke().getNavn() }}</td>
-                {% endif %}
-            </tr>
+                {% set innslag = alleInnslag[person.getContext().getInnslag().getId()] %}
+
+                <tr>
+                    <td>{{ counter }}. {{ person.getNavn() }}</td>
+                    <td>{{ innslag.getNavn() }}</td>
+                    <td>{{ innslag.getType() }}</td>
+
+                    {% if person.getKommune() %}
+                        <td>{{ person.getKommune().getNavn() }}</td>
+                    {% endif %}
+                    
+                    {% if person.getFylke() %}
+                        <td>{{ person.getFylke().getNavn() }}</td>
+                    {% endif %}
+                </tr>
             {% endfor %}
+        {% endif %}
+        
         </table>
         <h5>Antall: {{ counter}}</h5>
         <hr>
@@ -80,6 +83,7 @@
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
+    width: 20%;
 }
 
 #rapportDeltakereTable th tr:nth-child(even) {

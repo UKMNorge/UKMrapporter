@@ -9,6 +9,8 @@ use UKMNorge\Arrangement\UKMFestival;
 use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Geografi\Fylker;
 use UKMNorge\Arrangement\Videresending\Ledere\Ledere;
+use UKMNorge\Rapporter\Excel\UKMFestivalenHotell as ExcelUKMFestivalenHotell;
+
 use DateTime;
 
 
@@ -22,7 +24,7 @@ class UKMFestivalenHotell extends Rapport
     public $ikon = 'dashicons-admin-multisite';
     public $navn = 'UKM Festivalen Hotell';
     public $beskrivelse = 'Informasjon om overnattinger, romtype osv.';
-    public $har_excel = false;
+    public $har_excel = true;
     public $har_sms = false;
     public $har_epost = false;
     
@@ -78,12 +80,11 @@ class UKMFestivalenHotell extends Rapport
     }
 
     /**
-     * Hent hvilken template som skal benyttes
-     *
-     * @return String $template_id
+     * Data til rapporten
+     * 
+     * @return Array
      */
-    public function getTemplate()
-    {
+    public function getRenderDataArray() {
         $til = $this->getArrangement();
 
         if($til->getEierType() == 'land') {
@@ -202,14 +203,49 @@ class UKMFestivalenHotell extends Rapport
         // Sorterer gyldige netter
         usort($alleGyldigeNetter, function($a, $b) { return $a > $b ? 1 : ($b < $a ? -1 : 0); });
 
-        UKMrapporter::addViewData('netter', $netter);
-        UKMrapporter::addViewData('fylker', $fylker);
-        UKMrapporter::addViewData('arrangementer', $arrangementer);
-        UKMrapporter::addViewData('kommentarer', $kommentarer);
-        UKMrapporter::addViewData('alleGyldigeNetter', $alleGyldigeNetter);
-        UKMrapporter::addViewData('alleLedere', $alleLedere);
+        return [
+            'netter' => $netter,
+            'fylker' => $fylker,
+            'arrangementer' => $arrangementer,
+            'kommentarer' => $kommentarer,
+            'alleGyldigeNetter' => $alleGyldigeNetter,
+            'alleLedere' => $alleLedere
+        ];
+    }
+
+    /**
+     * Hent hvilken template som skal benyttes
+     *
+     * @return String $template_id
+     */
+    public function getTemplate()
+    {
+
+        $data = $this->getRenderDataArray();
+
+        UKMrapporter::addViewData('netter', $data['netter']);
+        UKMrapporter::addViewData('fylker', $data['fylker']);
+        UKMrapporter::addViewData('arrangementer', $data['arrangementer']);
+        UKMrapporter::addViewData('kommentarer', $data['kommentarer']);
+        UKMrapporter::addViewData('alleGyldigeNetter', $data['alleGyldigeNetter']);
+        UKMrapporter::addViewData('alleLedere', $data['alleLedere']);
 
         return 'UKMFestivalenHotell/rapport.html.twig';
 
+    }
+
+     /**
+     * Lag og returner excel-filens URL
+     * 
+     * @return String url
+     */
+    public function getExcelFile()
+    {
+        $excel = new ExcelUKMFestivalenHotell(
+            $this->getNavn() . ' oppdatert ' . date('d-m-Y') . ' kl '. date('Hi') . ' - ' . $this->getArrangement()->getNavn(),
+            $this->getRenderDataArray(),
+            $this->getConfig()
+        );
+        return $excel->writeToFile();
     }
 }

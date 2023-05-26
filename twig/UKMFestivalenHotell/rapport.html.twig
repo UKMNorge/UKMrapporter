@@ -19,6 +19,7 @@
                     <tr>
                         <th scope="col">Navn</th>
                         <th scope="col">Tlf</th>
+                        <th scope="col">Epost</th>
                         <th scope="col">Rom</th>
                         <th scope="col">Fylke</th>
                     </tr>
@@ -43,6 +44,7 @@
                             <tr class="ledere-tr-videresending {{ (arr_data|filter(led => led.getRom() and led.getRom().getId() == leder.getRom().getId())|length) > 1 ? 'same-room' : '' }} ">                       
                                 <td>{{ leder.getNavn() }}</td>
                                 <td>{{ leder.getMobil() }}</td>
+                                <td>{{ leder.getEpost() }}</td>
                             {% if leder.getRom() %}
                                 <td>{{ leder.getRom().getType() }}</td>
                             {% else %}
@@ -140,7 +142,7 @@
         width: 33%;
     }
     .ledere-tr-videresending td {
-        width: 25%;
+        width: 20%;
     }
     .total-rapport-sum {
         border: solid 1px #00000036;
