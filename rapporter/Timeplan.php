@@ -39,7 +39,7 @@ class Timeplan extends Rapport
             $hendelse->getInnslag()->getAll();
             foreach($hendelse->getInnslag()->getAll() as $innslag) {
                 if((count($selectedFylker) == 0) || ($selectedFylker[0] == 'vis_dager_alle') || (in_array("vis_fylke_" . $innslag->getFylke()->getId(), $selectedFylker))) {
-                    $fylker[$innslag->getFylke()->getNavn()][$hendelse->getId()] = $hendelse;
+                    $fylker[$innslag->getFylke()->getNavn()][$hendelse->getStart()->format('U')][$hendelse->getId()] = $hendelse;
                 }
             }
             

@@ -1,33 +1,37 @@
-{% for key, fylke in fylker %}
-    <h1>{{ key }}</h1>
-    {% for hendelse in fylke %}
-        
-        <h3>{{ hendelse.getNavn() }}</h3>
+{% for fylke_key, fylkeArr in fylker %}
+    <h1>{{ fylke_key }}</h1>
 
-        {% for innslag in hendelse.getInnslag().getAll() %}        
-            <hr>
-            <h5 class="innslag-hendelse-info make-tab"><b>{{ innslag.getNavn() }}</b> - <i>oppmotested: {{ hendelse.getSted() }}</i></h5>
-                <table class="table make-tab">
-                    <thead>
-                        <tr >
-                            <th class="col-xs-4" scope="col">Navn</th>
-                            <th class="col-xs-4" scope="col">Tlf</th>
-                            <th class="col-xs-4" scope="col">Oppmøtetid</th>
-                        </tr>
-                    </thead>
-            {% for person in innslag.getPersoner().getAll() %}
+    {% for dag_key, fylke in fylkeArr|sort((a, b) => dag_key <=> dag_key) %}
+        <h3>{{ dag_key|dato('l - d.m.Y') }}</h3>
+        {% for hendelse in fylke %}
+            {% for innslag in hendelse.getInnslag().getAll() %}
+                {% if innslag.getFylke().getNavn() == fylke_key %}      
+                    <hr>
+                    <h5 class="innslag-hendelse-info make-tab"><b>{{ innslag.getNavn() }}</b> - <i>oppmotested: {{ hendelse.getSted() }}</i></h5>
+                        <table class="table make-tab">
+                            <thead>
+                                <tr >
+                                    <th class="col-xs-4" scope="col">Navn</th>
+                                    <th class="col-xs-4" scope="col">Tlf</th>
+                                    <th class="col-xs-4" scope="col">Oppmøtetid</th>
+                                </tr>
+                            </thead>
+                    {% for person in innslag.getPersoner().getAll() %}
 
-                    <tbody>
-                        <tr class="">
-                            <td class="col-xs-4">{{ person.getNavn() }}</td>
-                            <td class="col-xs-4">{{ person.getMobil() }}</td>
-                            <td class="col-xs-4">{{ hendelse.getOppmoteTid(innslag)|dato('H:i') }}</td>
-                        </tr>
-                    </tbody>
+                            <tbody>
+                                <tr class="">
+                                    <td class="col-xs-4">{{ person.getNavn() }}</td>
+                                    <td class="col-xs-4">{{ person.getMobil() }}</td>
+                                    <td class="col-xs-4">{{ hendelse.getOppmoteTid(innslag)|dato('H:i') }}</td>
+                                </tr>
+                            </tbody>
+                    {% endfor %}
+                        </table>
+                {% endif %}
+
             {% endfor %}
-                </table>
+            <hr>
         {% endfor %}
-        <hr>
     {% endfor %}
 {% endfor %}
 
