@@ -5,7 +5,6 @@
         <h3>{{ hendelse.getNavn() }}</h3>
 
         {% for innslag in dag['innslag'] %}        
-            {% set personer = innslag.getPersoner().getAll() %}
             <hr>
             <h5 class="innslag-hendelse-info make-tab"><b>{{ innslag.getNavn() }}</b> - <i>oppmotested: {{ hendelse.getSted() }}</i></h5>
                 <table class="table make-tab">
@@ -16,7 +15,7 @@
                             <th class="col-xs-4" scope="col">Oppmøtetid</th>
                         </tr>
                     </thead>
-            {% for person in personer %}
+            {% for person in innslag.getPersoner().getAll() %}
 
                     <tbody>
                         <tr class="">
