@@ -30,17 +30,23 @@ class Timeplan extends Rapport
     public function getTemplate() {
         $arrangement = $this->getArrangement();
         $hendelser = [];
+        $dager = [];
         foreach($arrangement->getProgram()->getAll() as $hendelse) {
             $hendelse->getInnslag()->getAll();
             $hendelse->getTid();
             $hendelser[] = $hendelse;
-        }
+            foreach($hendelse->getInnslag()->getAll() as $innslag) {
+                $dager[$hendelse->getOppmoteTid($innslag)->format('d.m.Y')]['hendelse'] = $hendelse;
+                $dager[$hendelse->getOppmoteTid($innslag)->format('d.m.Y')]['innslag'][] = $innslag;
+            }
+        }   
 
 
         
 
         UKMrapporter::addViewData('sorteringMetode', -1);
         UKMrapporter::addViewData('hendelser', $hendelser);
+        UKMrapporter::addViewData('dager', $dager);
 
         return 'Timeplan/rapport.html.twig';
     }
