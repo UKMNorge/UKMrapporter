@@ -31,7 +31,7 @@ class Timeplan extends Rapport
         $arrangement = $this->getArrangement();
         $hendelser = [];
         $dager = [];
-        foreach($arrangement->getProgram()->getAll() as $hendelse) {
+        foreach($arrangement->getProgram()->getAbsoluteAll() as $hendelse) {
             $hendelse->getInnslag()->getAll();
             $hendelse->getTid();
             $hendelser[] = $hendelse;
