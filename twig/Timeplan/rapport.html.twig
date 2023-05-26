@@ -4,6 +4,8 @@
     {% for dag_key, fylke in fylkeArr|sort((a, b) => dag_key <=> dag_key) %}
         <h3>{{ dag_key|dato('l - d.m.Y') }}</h3>
         {% for hendelse in fylke %}
+            <h3>{{ hendelse.getNavn() }}</h3>
+
             {% for innslag in hendelse.getInnslag().getAll() %}
                 {% if innslag.getFylke().getNavn() == fylke_key %}      
                     <hr>
