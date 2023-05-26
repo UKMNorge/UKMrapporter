@@ -4,12 +4,12 @@
     {% for dag_key, fylke in fylkeArr|sort((a, b) => dag_key <=> dag_key) %}
         <h3>{{ dag_key|dato('l - d.m.Y') }}</h3>
         {% for hendelse in fylke %}
-            <h4>{{ hendelse.getNavn() }}</h4>
+            <hr>
+            <h4 class="make-tab">{{ hendelse.getNavn() }}</h4>
 
             {% for innslag in hendelse.getInnslag().getAll() %}
                 {% if innslag.getFylke().getNavn() == fylke_key %}      
-                    <hr>
-                    <h5 class="innslag-hendelse-info make-tab"><b>{{ innslag.getNavn() }}</b> - <i>oppmotested: {{ hendelse.getSted() }}</i></h5>
+                    <h5 class="innslag-hendelse-info make-tab-2"><b>{{ innslag.getNavn() }}</b> - <i>oppmotested: {{ hendelse.getSted() }}</i></h5>
                         <table class="table make-tab">
                             <thead>
                                 <tr >
@@ -40,6 +40,9 @@
 <style>
     .make-tab {
         margin-left: 30px;
+    }
+    .make-tab-2{
+        margin-left: 60px;
     }
     table.make-tab {
         margin-left: 60px;
