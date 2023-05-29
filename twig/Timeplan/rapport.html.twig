@@ -2,7 +2,7 @@
     <h1>{{ fylke_key }}</h1>
 
     {% for dag_key, fylke in fylkeArr|sort((a, b) => dag_key|date('U') <=> dag_key|date('U')) %}
-        <h3>{{ dag_key|dato('l - d.m.Y') }}</h3>
+        <h3>{{ dag_key|dato('l - d.m.Y')|capitalize }}</h3>
         {% for hendelse in fylke %}
             <h4 class="make-tab">{{ hendelse.getNavn() }}</h4>
 
