@@ -24,6 +24,8 @@ class UKMFestivalenHotell extends Excel {
         $fylker = $data['fylker'];
         $alleGyldigeNetter = $data['alleGyldigeNetter'];
 
+        $personerNetter = [];
+
         foreach($alleGyldigeNetter as $gyldigNatt) {
             $nattKey = $gyldigNatt->format('d_m');
             $personerArr = [];
@@ -60,7 +62,10 @@ class UKMFestivalenHotell extends Excel {
                             $lederRomKey = $leder instanceof OvernattingPersonClass && $leder->getRom() ? $leder->getRom()->getId() : $leder->getId();
                             $roomArr[$lederRomKey] = $lederRomKey;
 
-                            
+                            // instanceof brukes fordi leder kan komme fra flere klasser og det finnes tilfeller hvor ID kan være det samme for 2 ledere. 
+                            $lederId = $leder instanceof OvernattingPersonClass ? 'OP'.$leder->getId() : $leder->getId();
+                            $personerNetter[$lederId][] = $gyldigNatt;
+
                             $this->rad();
                             $kolonne = $this->celle('A', $leder->getNavn());
                             $kolonne = $this->celle('B', $leder->getMobil());
@@ -149,5 +154,52 @@ class UKMFestivalenHotell extends Excel {
         $kolonne = $this->celle('B', $totalDobbeltrom);
         $kolonne = $this->celle('C', $totalTrippeltrom);
         $kolonne = $this->celle('D', $totalKvadrupeltrom);
+
+
+        // Ark - Alle personer
+        $this->excel->setArk('alle', 'Alle personer');
+
+        $this->rad();
+        $kolonne = $this->celle('A', 'Navn');
+        $kolonne = $this->celle('B', 'Tlf');
+        $kolonne = $this->celle('C', 'Epost');
+        $kolonne = $this->celle('D', 'Dager');
+
+
+        foreach ($personerNetter as $lederKeyID => $netter) {
+            $currentLeder = null;
+            foreach ($ledere as $leder) {
+                $lederId = $leder instanceof OvernattingPersonClass ? 'OP'.$leder->getId() : $leder->getId();
+                if($lederId == $lederKeyID) {
+                    $currentLeder = $leder;
+                }
+            }
+
+            // Sortering datoer
+            usort($netter, function($time1, $time2)
+            {
+                $time1 = $time1->format('d.m.Y');
+                $time2 = $time2->format('d.m.Y');
+                if (strtotime($time1) > strtotime($time2))
+                    return 1;
+                else if (strtotime($time1) < strtotime($time2)) 
+                    return -1;
+                else
+                    return 0;
+            });
+
+            // Lager string
+            $netterStr = '';
+            foreach ($netter as $n) {
+                $netterStr = $netterStr .'|'. $n->format('d.m.Y') .' ';
+            }
+
+
+            $this->rad();
+            $kolonne = $this->celle('A', $currentLeder->getNavn());
+            $kolonne = $this->celle('B', $currentLeder->getMobil());
+            $kolonne = $this->celle('C', $currentLeder->getEpost());
+            $kolonne = $this->celle('D', $netterStr . '|');
+        }
     }
 }
