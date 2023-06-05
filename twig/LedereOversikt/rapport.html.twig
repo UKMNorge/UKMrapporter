@@ -35,6 +35,37 @@
     </table>
 {% endfor %}
 
+<p>
+
+{# Alle ledere post #}
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseLedereEposter" aria-expanded="false" aria-controls="collapseLedereEposter">
+    Alle ledere e-poster
+</button>
+
+<div class="collapse nop col-xs-12" id="collapseLedereEposter">
+    <div class="card ledere-eposter card-body">
+{% set counter = 0 %}
+{% set withoutEpost = false %}
+{% for ledereFylke in fylkeLedere %}
+    {% for leder in ledereFylke['ledere'] %}
+        {% set counter = counter+1 %}
+
+        {% if leder.getEpost() %}
+            {{ leder.getEpost() }}{{ counter+1 < superTotal ? ',' : '' }}
+        {% else %}
+            {% set withoutEpost = true %}
+        {% endif %}
+        
+    {% endfor %}
+{% endfor %}
+    </div>
+{% if withoutEpost == true %}
+    <div class="info">
+        <span><b>OBS:</b> Ikke alle ledere har e-post!</span>
+    </div>
+{% endif %}
+    
+</div>
 
 <style>
     .ledere-oversikt {
@@ -51,5 +82,13 @@
         font-size: 14px;
         margin-left: 10px;
         vertical-align: middle;
+    }
+    .card.ledere-eposter {
+        width: 100%;
+        min-width: 100%;
+        padding: 10px;
+    }
+    #collapseLedereEposter {
+        padding: 0;
     }
 </style>
