@@ -51,7 +51,7 @@
         {% set counter = counter+1 %}
 
         {% if leder.getEpost() %}
-            {{ leder.getEpost() }}{{ counter+1 < superTotal ? ',' : '' }}
+            {{ leder.getEpost() }}{{ counter < superTotal ? ',' : '' }}
         {% else %}
             {% set withoutEpost = true %}
         {% endif %}
