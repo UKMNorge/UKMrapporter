@@ -22,9 +22,13 @@
                 <td>{{ counter }}. {{ person.getNavn() }}</td>
                 <td>{{ innslag.getNavn() }}</td>
                 <td>{{ innslag.getType() }}</td>
-                {% if person.getKommune() %}
+
+                {% if person.getKommune() && person.getKommune() != 'ukjent' %}
                     <td>{{ person.getKommune().getNavn() }}</td>
+                {% else %}
+                    <td>{{ innslag.getKommune().getNavn() }}</td>
                 {% endif %}
+
                 {% if person.getFylke() %}
                     <td>{{ person.getFylke().getNavn() }}</td>
                 {% else %}
@@ -53,8 +57,10 @@
                     <td>{{ innslag.getNavn() }}</td>
                     <td>{{ innslag.getType() }}</td>
 
-                    {% if person.getKommune() %}
+                    {% if person.getKommune() && person.getKommune() != 'ukjent' %}
                         <td>{{ person.getKommune().getNavn() }}</td>
+                    {% else %}
+                        <td>{{ innslag.getKommune().getNavn() }}</td>
                     {% endif %}
                     
                     {% if person.getFylke() %}
