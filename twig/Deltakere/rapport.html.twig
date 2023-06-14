@@ -27,6 +27,8 @@
                 {% endif %}
                 {% if person.getFylke() %}
                     <td>{{ person.getFylke().getNavn() }}</td>
+                {% else %}
+                    <td>{{ innslag.getFylke().getNavn() }}</td>
                 {% endif %}
             </tr>
         {% endfor %}
@@ -57,6 +59,8 @@
                     
                     {% if person.getFylke() %}
                         <td>{{ person.getFylke().getNavn() }}</td>
+                    {% else %}
+                        <td>{{ innslag.getFylke().getNavn() }}</td>
                     {% endif %}
                 </tr>
             {% endfor %}
