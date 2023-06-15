@@ -56,7 +56,7 @@ class Nokkeltall extends Rapport
                 $personer += $innslag->getPersoner()->getAntall();
                 foreach( $innslag->getPersoner()->getAll() as $person ) {
                     $antall_personer++;
-                    $unike_personer[ $person->getId() ] = $person;
+                    $unike_personer[ $person->getNavn() . $person->getMobil() ] = $person;
                 }
             }
 
