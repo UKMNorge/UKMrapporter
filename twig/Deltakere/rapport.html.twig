@@ -1,11 +1,12 @@
 {% block content %}
 
 {# Unique deltaker basert på tlf nummer #}
-{% set uniqueDeltaker = [] %}
-{% set counter = 0 %}
+
 
 {% if sorteringMetode == 'alfabetisk' %}
     {% set counterShow = 0 %}
+    {% set uniqueDeltaker = [] %}
+    {% set counter = 0 %}
 
     <table id="rapportDeltakereTable" class="table table-striped">
         <tr>
@@ -47,16 +48,24 @@
             </tr>
         {% endfor %}
     </table>
+    <h4>Antall unike deltakere: {{ counter + uniqueDeltaker|length }}</h4>
 {% else %}
+    {% set uniqueTotal = 0 %}
+    {% set allePersoner = [] %}
+
     {% for key, persIns in personerInnslag %}
         {% set personer = persIns['personer'] %}
         {% set counterShow = 0 %}
+        {% set uniqueDeltaker = [] %}
+        {% set counter = 0 %}
         
 
         <h4>{{ key }}</h4>
         <table id="rapportDeltakereTable" class="table innslag-sorting table-striped">
         {% if personer %}
             {% for person in personer|sort((a, b) => a.getNavn() <=> b.getNavn()) %}
+                {% set allePersoner = allePersoner | merge([(person)]) %}
+                
                 {% if person.getMobil() %}
                     {% set uniqueDeltaker = uniqueDeltaker|merge({(person.getNavn() ~ '_' ~ person.getMobil()) : person.getMobil()}) %}
                 {% else %}
@@ -87,13 +96,24 @@
         {% endif %}
         
         </table>
-        <h5>Antall: {{ counter}}</h5>
+        <h5>Unike deltakere: {{ counter + uniqueDeltaker|length }}</h5>
+        {% set uniqueTotal = uniqueTotal + counter + uniqueDeltaker|length %}
         <hr>
         <br>
     {% endfor %}
+
+    {% set alleUniqueDeltaker = [] %}
+    {% for pers in allePersoner %}
+        {% if pers.getMobil() %}
+            {% set alleUniqueDeltaker = alleUniqueDeltaker|merge({(pers.getNavn() ~ '_' ~ pers.getMobil()) : pers.getMobil()}) %}
+        {% else %}
+            {% set counter = counter + 1 %} 
+        {% endif %}
+    {% endfor %}
+
+    <h4>Antall unike deltakere: {{ alleUniqueDeltaker|length }}</h4>    
 {% endif %}
 
-<h4>Unike deltakere: {{ counter + uniqueDeltaker|length }}</h4>
 
 <style>
 #rapportDeltakereTable {
