@@ -5,6 +5,8 @@
 {% set counter = 0 %}
 
 {% if sorteringMetode == 'alfabetisk' %}
+    {% set counterShow = 0 %}
+
     <table id="rapportDeltakereTable" class="table table-striped">
         <tr>
             <th><h5>Deltaker navn</h5></th>
@@ -20,13 +22,14 @@
             {% set innslag = personerInnslag['innslag'] %}
 
             {% if person.getMobil() %}
-                {% set uniqueDeltaker = uniqueDeltaker|merge({(person.getMobil()) : person.getMobil()}) %}
+                {% set uniqueDeltaker = uniqueDeltaker|merge({('mobil_' ~ person.getMobil()) : person.getMobil()}) %}
             {% else %}
                 {% set counter = counter + 1 %} 
             {% endif %}
-            
+
+            {% set counterShow = counterShow + 1 %}            
             <tr>
-                <td>{{ counter }}. {{ person.getNavn() }}</td>
+                <td>{{ counterShow }}. {{ person.getNavn() }}</td>
                 <td>{{ innslag.getNavn() }}</td>
                 <td>{{ innslag.getType() }}</td>
 
@@ -47,21 +50,24 @@
 {% else %}
     {% for key, persIns in personerInnslag %}
         {% set personer = persIns['personer'] %}
+        {% set counterShow = 0 %}
+        
 
         <h4>{{ key }}</h4>
         <table id="rapportDeltakereTable" class="table innslag-sorting table-striped">
         {% if personer %}
             {% for person in personer|sort((a, b) => a.getNavn() <=> b.getNavn()) %}
                 {% if person.getMobil() %}
-                    {% set uniqueDeltaker = uniqueDeltaker|merge({(person.getMobil()) : person.getMobil()}) %}
+                    {% set uniqueDeltaker = uniqueDeltaker|merge({('mobil_' ~ person.getMobil()) : person.getMobil()}) %}
                 {% else %}
                     {% set counter = counter + 1 %} 
                 {% endif %}
 
                 {% set innslag = alleInnslag[person.getContext().getInnslag().getId()] %}
 
+                {% set counterShow = counterShow + 1 %}            
                 <tr>
-                    <td>{{ counter }}. {{ person.getNavn() }}</td>
+                    <td>{{ counterShow }}. {{ person.getNavn() }}</td>
                     <td>{{ innslag.getNavn() }}</td>
                     <td>{{ innslag.getType() }}</td>
 
