@@ -96,7 +96,7 @@
         {% endif %}
         
         </table>
-        <h5>Unike deltakere i {{ key|lower }}: {{ counter + uniqueDeltaker|length }}</h5>
+        <h5>Unike deltakere i {{ sorteringMetode == 'fylke' ? key : key|lower }}: {{ counter + uniqueDeltaker|length }}</h5>
         {% set uniqueTotal = uniqueTotal + counter + uniqueDeltaker|length %}
         <hr>
         <br>
