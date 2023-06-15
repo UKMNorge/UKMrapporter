@@ -1,9 +1,10 @@
 {% block content %}
 
+{# Unique deltaker basert på tlf nummer #}
+{% set uniqueDeltaker = [] %}
+{% set counter = 0 %}
 
 {% if sorteringMetode == 'alfabetisk' %}
-    {% set totalt = 0 %}
-    {% set counter = 0 %}
     <table id="rapportDeltakereTable" class="table table-striped">
         <tr>
             <th><h5>Deltaker navn</h5></th>
@@ -17,7 +18,13 @@
         {% for personerInnslag in personerInnslag|sort((a, b) => a['person'].getNavn() <=> b['person'].getNavn()) %}
             {% set person = personerInnslag['person'] %}
             {% set innslag = personerInnslag['innslag'] %}
-            {% set counter = counter + 1 %}
+
+            {% if person.getMobil() %}
+                {% set uniqueDeltaker = uniqueDeltaker|merge({(person.getMobil()) : person.getMobil()}) %}
+            {% else %}
+                {% set counter = counter + 1 %} 
+            {% endif %}
+            
             <tr>
                 <td>{{ counter }}. {{ person.getNavn() }}</td>
                 <td>{{ innslag.getNavn() }}</td>
@@ -37,18 +44,19 @@
             </tr>
         {% endfor %}
     </table>
-    <h4>Totalt: {{ counter }}</h4>
 {% else %}
-    {% set totalt = 0 %}
     {% for key, persIns in personerInnslag %}
-        {% set counter = 0 %}
         {% set personer = persIns['personer'] %}
 
         <h4>{{ key }}</h4>
         <table id="rapportDeltakereTable" class="table innslag-sorting table-striped">
         {% if personer %}
             {% for person in personer|sort((a, b) => a.getNavn() <=> b.getNavn()) %}
-                {% set counter = counter + 1 %}
+                {% if person.getMobil() %}
+                    {% set uniqueDeltaker = uniqueDeltaker|merge({(person.getMobil()) : person.getMobil()}) %}
+                {% else %}
+                    {% set counter = counter + 1 %} 
+                {% endif %}
 
                 {% set innslag = alleInnslag[person.getContext().getInnslag().getId()] %}
 
@@ -76,11 +84,10 @@
         <h5>Antall: {{ counter}}</h5>
         <hr>
         <br>
-        {% set totalt = totalt + counter %}
     {% endfor %}
-        <h4>Totalt: {{ totalt }}</h4>
 {% endif %}
 
+<h4>Totalt: {{ counter + uniqueDeltaker|length }}</h4>
 
 <style>
 #rapportDeltakereTable {
