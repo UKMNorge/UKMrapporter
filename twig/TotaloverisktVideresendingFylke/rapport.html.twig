@@ -151,7 +151,8 @@
                 <th scope="col"></th>
                 <th scope="col">Antall innslag</th>
                 <th scope="col">Antall deltakere</th>
-                <th scope="col">Antall unike deltakere</th>
+                <th scope="col">Antall unike deltakere per fylke</th>
+                <th scope="col">Antall unike deltakere i {{ arrangementTil.getNavn() }}</th>
                 <th scope="col">Antall ledere</th>
                 <th scope="col">Antall ledsagere / turister</th>
             </tr>
@@ -162,6 +163,7 @@
                 <td><h4>{{ superTotalInnslag }}</h4></td>
                 <td><h4>{{ superTotalDeltakere }}</h4></td>
                 <td><h4>{{ superTotalUnikeDeltakere }}</h4></td>
+                <td><h4>{{ alleUnikePersoner|length }}</h4></td>
                 <td><h4>{{ superTotalLedere }}</h4></td>
                 <td><h4>{{ superTotalLedsagerTurister }}</h4></td>
             </tr>

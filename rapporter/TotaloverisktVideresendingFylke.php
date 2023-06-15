@@ -85,7 +85,7 @@ class TotaloverisktVideresendingFylke extends Rapport
         $alle_selected_fylker = [];
         $fylker = [];
         $arrangementer = [];
-        
+        $alle_unike_personer = [];
 
         // Alle arrangementer som ble videresend til $til
         foreach($til->getVideresending()->getAvsendere() as $avsender) {
@@ -106,6 +106,14 @@ class TotaloverisktVideresendingFylke extends Rapport
                     $fylker[$fylke->getId()][$fra->getId()]['antallLedsagerTurister'] = $this->getAntallLedsagerTurister($fra);
                     $fylker[$fylke->getId()][$fra->getId()]['innslagIArrangement'] = $this->getVideresendtInnslag($fra);
                 }
+
+                // Legger til alle unike personer
+                $tilArrangement = new Arrangement(get_option('pl_id'));
+                foreach($fra->getVideresendte($tilArrangement->getId())->getAll() as $innslag) {
+                    foreach( $innslag->getPersoner()->getAll() as $person ) {
+                        $alle_unike_personer[$person->getNavn() . $person->getMobil()] = $person;
+                    }
+                }
             }
         }
         
@@ -113,6 +121,8 @@ class TotaloverisktVideresendingFylke extends Rapport
         UKMrapporter::addViewData('fylkerData', $fylker);
         UKMrapporter::addViewData('alleFylker', $alle_selected_fylker);
         UKMrapporter::addViewData('arrangementer', $arrangementer);
+        UKMrapporter::addViewData('alleUnikePersoner', $alle_unike_personer);
+        UKMrapporter::addViewData('arrangementTil', $til);
         return 'TotaloverisktVideresendingFylke/rapport.html.twig';
     }
     
@@ -147,10 +157,9 @@ class TotaloverisktVideresendingFylke extends Rapport
         $unike_personer = [];
         $tilArrangement = new Arrangement(get_option('pl_id'));
 
-        
         foreach($fraArrangement->getVideresendte($tilArrangement->getId())->getAll() as $innslag) {
             foreach( $innslag->getPersoner()->getAll() as $person ) {
-                $unike_personer[ $person->getId() ] = $person;
+                $unike_personer[ $person->getNavn() . $person->getMobil() ] = $person;
             }
         }
 
