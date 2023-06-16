@@ -25,10 +25,11 @@ class AlleDeltakere extends Excel {
         $kolonne = $this->celle('A', 'Deltaker navn');
         $kolonne = $this->celle('B', 'Mobilnummer');
         $kolonne = $this->celle('C', 'Alder');
-        $kolonne = $this->celle('D', 'Innslag navn');
-        $kolonne = $this->celle('E', 'Innslag type');
-        $kolonne = $this->celle('F', 'Kommune');
-        $kolonne = $this->celle('G', 'Fylke');
+        $kolonne = $this->celle('D', 'Arrangement navn');
+        $kolonne = $this->celle('E', 'Innslag navn');
+        $kolonne = $this->celle('F', 'Innslag type');
+        $kolonne = $this->celle('G', 'Kommune');
+        $kolonne = $this->celle('H', 'Fylke');
 
         if($sorteringMetode == 'alfabetisk') {
             $counterShow = 0;
@@ -54,19 +55,20 @@ class AlleDeltakere extends Excel {
                 $kolonne = $this->celle('A', $counterShow . '. ' . $person->getNavn());
                 $kolonne = $this->celle('B', $person->getMobil());
                 $kolonne = $this->celle('C', $person->getAlder());
-                $kolonne = $this->celle('D', $innslag->getNavn());
-                $kolonne = $this->celle('E', $innslag->getType());
+                $kolonne = $this->celle('D', $innslag->getHome()->getNavn());
+                $kolonne = $this->celle('E', $innslag->getNavn());
+                $kolonne = $this->celle('F', $innslag->getType());
                 
                 if($person->getKommune() && $person->getKommune() != 'ukjent') {
-                    $kolonne = $this->celle('F', $person->getKommune()->getNavn());
+                    $kolonne = $this->celle('G', $person->getKommune()->getNavn());
                 } else {
-                    $kolonne = $this->celle('F', $innslag->getKommune()->getNavn());
+                    $kolonne = $this->celle('G', $innslag->getKommune()->getNavn());
                 }
                 
                 if($person->getFylke()) { 
-                    $kolonne = $this->celle('G', $person->getFylke()->getNavn());
+                    $kolonne = $this->celle('H', $person->getFylke()->getNavn());
                 } else {
-                    $kolonne = $this->celle('G', $innslag->getFylke()->getNavn());
+                    $kolonne = $this->celle('GH', $innslag->getFylke()->getNavn());
                 }
                 
             }
@@ -112,19 +114,20 @@ class AlleDeltakere extends Excel {
                         $kolonne = $this->celle('A', $counterShow . '. ' . $person->getNavn());
                         $kolonne = $this->celle('B', $person->getMobil());
                         $kolonne = $this->celle('C', $person->getAlder());
-                        $kolonne = $this->celle('D', $innslag->getNavn());
-                        $kolonne = $this->celle('E', $innslag->getType());
+                        $kolonne = $this->celle('D', $innslag->getHome()->getNavn());
+                        $kolonne = $this->celle('E', $innslag->getNavn());
+                        $kolonne = $this->celle('F', $innslag->getType());
 
                         if($person->getKommune() && $person->getKommune() != 'ukjent') {
-                            $kolonne = $this->celle('F', $person->getKommune()->getNavn());
+                            $kolonne = $this->celle('G', $person->getKommune()->getNavn());
                         } else {
-                            $kolonne = $this->celle('F', $innslag->getKommune()->getNavn());
+                            $kolonne = $this->celle('G', $innslag->getKommune()->getNavn());
                         }
                         
                         if($person->getFylke()) {
-                            $kolonne = $this->celle('G', $person->getFylke()->getNavn());
+                            $kolonne = $this->celle('H', $person->getFylke()->getNavn());
                         } else {
-                            $kolonne = $this->celle('G', $innslag->getFylke()->getNavn());
+                            $kolonne = $this->celle('H', $innslag->getFylke()->getNavn());
                         }
                     }
                 }
