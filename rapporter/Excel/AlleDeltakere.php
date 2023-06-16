@@ -24,10 +24,11 @@ class AlleDeltakere extends Excel {
         $this->rad();
         $kolonne = $this->celle('A', 'Deltaker navn');
         $kolonne = $this->celle('B', 'Mobil');
-        $kolonne = $this->celle('C', 'Innslag navn');
-        $kolonne = $this->celle('D', 'Innslag type');
-        $kolonne = $this->celle('E', 'Kommune');
-        $kolonne = $this->celle('F', 'Fylke');
+        $kolonne = $this->celle('C', 'Alder');
+        $kolonne = $this->celle('D', 'Innslag navn');
+        $kolonne = $this->celle('E', 'Innslag type');
+        $kolonne = $this->celle('F', 'Kommune');
+        $kolonne = $this->celle('G', 'Fylke');
 
         if($sorteringMetode == 'alfabetisk') {
             $counterShow = 0;
@@ -52,19 +53,20 @@ class AlleDeltakere extends Excel {
                 $this->rad();
                 $kolonne = $this->celle('A', $counterShow . '. ' . $person->getNavn());
                 $kolonne = $this->celle('B', $person->getMobil());
-                $kolonne = $this->celle('C', $innslag->getNavn());
-                $kolonne = $this->celle('D', $innslag->getType());
+                $kolonne = $this->celle('C', $person->getAlder());
+                $kolonne = $this->celle('D', $innslag->getNavn());
+                $kolonne = $this->celle('E', $innslag->getType());
                 
                 if($person->getKommune() && $person->getKommune() != 'ukjent') {
-                    $kolonne = $this->celle('E', $person->getKommune()->getNavn());
+                    $kolonne = $this->celle('F', $person->getKommune()->getNavn());
                 } else {
-                    $kolonne = $this->celle('E', $innslag->getKommune()->getNavn());
+                    $kolonne = $this->celle('F', $innslag->getKommune()->getNavn());
                 }
                 
                 if($person->getFylke()) { 
-                    $kolonne = $this->celle('F', $person->getFylke()->getNavn());
+                    $kolonne = $this->celle('G', $person->getFylke()->getNavn());
                 } else {
-                    $kolonne = $this->celle('F', $innslag->getFylke()->getNavn());
+                    $kolonne = $this->celle('G', $innslag->getFylke()->getNavn());
                 }
                 
             }
@@ -109,19 +111,20 @@ class AlleDeltakere extends Excel {
                         $this->rad();
                         $kolonne = $this->celle('A', $counterShow . '. ' . $person->getNavn());
                         $kolonne = $this->celle('B', $person->getMobil());
-                        $kolonne = $this->celle('C', $innslag->getNavn());
-                        $kolonne = $this->celle('D', $innslag->getType());
+                        $kolonne = $this->celle('C', $person->getAlder());
+                        $kolonne = $this->celle('D', $innslag->getNavn());
+                        $kolonne = $this->celle('E', $innslag->getType());
 
                         if($person->getKommune() && $person->getKommune() != 'ukjent') {
-                            $kolonne = $this->celle('E', $person->getKommune()->getNavn());
+                            $kolonne = $this->celle('F', $person->getKommune()->getNavn());
                         } else {
-                            $kolonne = $this->celle('E', $innslag->getKommune()->getNavn());
+                            $kolonne = $this->celle('F', $innslag->getKommune()->getNavn());
                         }
                         
                         if($person->getFylke()) {
-                            $kolonne = $this->celle('F', $person->getFylke()->getNavn());
+                            $kolonne = $this->celle('G', $person->getFylke()->getNavn());
                         } else {
-                            $kolonne = $this->celle('F', $innslag->getFylke()->getNavn());
+                            $kolonne = $this->celle('G', $innslag->getFylke()->getNavn());
                         }
                     }
                 }
