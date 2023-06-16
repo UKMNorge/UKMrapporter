@@ -23,7 +23,7 @@ class AlleDeltakere extends Excel {
 
         $this->rad();
         $kolonne = $this->celle('A', 'Deltaker navn');
-        $kolonne = $this->celle('B', 'Mobil');
+        $kolonne = $this->celle('B', 'Mobilnummer');
         $kolonne = $this->celle('C', 'Alder');
         $kolonne = $this->celle('D', 'Innslag navn');
         $kolonne = $this->celle('E', 'Innslag type');
