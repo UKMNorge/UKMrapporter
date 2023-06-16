@@ -6,6 +6,9 @@ use UKMNorge\Rapporter\Framework\Gruppe;
 use UKMNorge\Rapporter\Framework\Rapport;
 use UKMNorge\Geografi\Fylker;
 use UKMNorge\Innslag\Context\Context;
+use UKMNorge\Rapporter\Excel\AlleDeltakere as ExcelAlleDeltakere;
+
+
 
 use UKMrapporter;
 
@@ -16,10 +19,10 @@ class Deltakere extends Rapport
     public $navn = 'Alle deltakere';
     public $beskrivelse = 'Informasjon om deltakere som er påmeldt arrangementet.';
     public $krever_hendelse = false;
-    public $har_excel = false;
+    public $har_excel = true;
 
-    
-    public function getTemplate() {
+
+    public function getRenderDataArray() {
         $sortering_metode = '';
         $alleInnslag = [];
 
@@ -56,9 +59,35 @@ class Deltakere extends Rapport
             }
         }
 
-        UKMrapporter::addViewData('sorteringMetode', $sortering_metode);
-        UKMrapporter::addViewData('personerInnslag', $personerInnslag);
-        UKMrapporter::addViewData('alleInnslag', $alleInnslag);
+        return [
+            'sorteringMetode' => $sortering_metode,
+            'personerInnslag' => $personerInnslag,
+            'alleInnslag' => $alleInnslag
+        ];
+    }
+    
+    
+    public function getTemplate() {
+        $data = $this->getRenderDataArray();
+
+        UKMrapporter::addViewData('sorteringMetode', $data['sorteringMetode']);
+        UKMrapporter::addViewData('personerInnslag', $data['personerInnslag']);
+        UKMrapporter::addViewData('alleInnslag', $data['alleInnslag']);
         return 'Deltakere/rapport.html.twig';
+    }
+
+    /**
+     * Lag og returner excel-filens URL
+     * 
+     * @return String url
+     */
+    public function getExcelFile()
+    {
+        $excel = new ExcelAlleDeltakere(
+            $this->getNavn() . ' oppdatert ' . date('d-m-Y') . ' kl '. date('Hi') . ' - ' . $this->getArrangement()->getNavn(),
+            $this->getRenderDataArray(),
+            $this->getConfig()
+        );
+        return $excel->writeToFile();
     }
 }
