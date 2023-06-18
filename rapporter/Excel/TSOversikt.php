@@ -57,7 +57,7 @@ class TSOversikt extends Excel {
             $fylke = $alleFylker[$fylkeId];
             foreach ($arrangementer as $arrId => $person) {
                 $arrang = new Arrangement($arrId);
-                $this->excel->setArk($arrId, substr(($fylke->getNavn() . ' - '. $arrang->getNavn()), 0, 30));
+                $this->excel->setArk($arrId, substr($arrang->getNavn(), 0, 30));
                 foreach ($person as $p) {
                     $this->rad();
                     $kolonne = $this->celle('A', $p->getNavn());
