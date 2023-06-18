@@ -9,6 +9,8 @@ use UKMNorge\Arrangement\Videresending\Ledere\Hovedledere;
 use UKMrapporter;
 use UKMNorge\Geografi\Fylker;
 use UKMNorge\Arrangement\Videresending\Ledere\Ledere;
+use UKMNorge\Rapporter\Excel\TSOversikt;
+
 
 class TotaloverisktVideresendingFylke extends Rapport
 {
@@ -16,10 +18,48 @@ class TotaloverisktVideresendingFylke extends Rapport
     public $ikon = 'dashicons-chart-bar';
     public $navn = 'Totaloversikt videresending fra fylkene';
     public $beskrivelse = 'Totaloversikt over innslag, deltakere, ledere og ledsager/turister';
-    public $har_excel = false;
+    public $har_excel = true;
     public $har_sms = false;
     public $har_epost = false;
     
+
+    /**
+     * Returnerer alle selekterte fylker
+     * 
+     * @return Array
+     */
+    private function getRenderDataArray() {
+        $til = new Arrangement(get_option('pl_id'));
+
+        // Fylker
+        $selectedFylker = [];
+        // hvis brukeren velger ingen av alternativene så skal alle fylker vises
+        if(count($this->getConfig()->getAll()) < 1) {
+            $selectedFylker = Fylker::getAll();
+        }
+
+        // Valgte fylker
+        foreach($this->getConfig()->getAll() as $selectedItem) {
+            if($selectedItem->getId() == 'vis_fylke_alle') {
+                $selectedFylker = [];
+                $selectedFylker = Fylker::getAll();
+                continue;
+            }
+            try{
+                // struktur av strengen er: 'vis_fylke_00'
+                $fylkeId = (int) explode("_", $selectedItem->getId(), 3)[2];
+                $selectedFylker[] = Fylker::getById($fylkeId);
+            }catch(Exception $e) {
+                throw new Exception(
+                    'Beklager, fylke kunne ikke leses' . $selectedItem->getId(),
+                    100001003
+                );
+            }
+        }
+
+        return $selectedFylker;
+    }
+
     /**
      * Er rapporten synlig
      * Rapporten er synlig bare på UKM Festivalen (land)
@@ -66,7 +106,7 @@ class TotaloverisktVideresendingFylke extends Rapport
             if($selectedItem->getId() == 'vis_fylke_alle') {
                 $selectedFylker = [];
                 $selectedFylker = Fylker::getAll();
-                break;
+                continue;
             }
             try{
                 // struktur av strengen er: 'vis_fylke_00'
@@ -239,4 +279,19 @@ class TotaloverisktVideresendingFylke extends Rapport
         return $innslagIArrang;
     }
 
+
+    /**
+     * Lag og returner excel-filens URL
+     * 
+     * @return String url
+     */
+    public function getExcelFile()
+    {
+        $excel = new TSOversikt (
+            $this->getNavn() . ' oppdatert ' . date('d-m-Y') . ' kl '. date('Hi') . ' - ' . $this->getArrangement()->getNavn(),
+            $this->getRenderDataArray(),
+            $this->getConfig()
+        );
+        return $excel->writeToFile();
+    }
 }
