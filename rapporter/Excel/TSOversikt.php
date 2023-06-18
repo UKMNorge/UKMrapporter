@@ -39,7 +39,7 @@ class TSOversikt extends Excel {
                     $alleFylker[$fylke->getId()] = $fylke;   
                     foreach($avsender->getVideresendte()->getAll() as $innslag) {
                         foreach ($innslag->getPersoner()->getAll() as $person) {
-                            $personer[$fylke->getId()][$fra->getId()][] = $person;
+                            $personer[$fylke->getId()][$fra->getId()][$person->getId()] = $person;
                             $counter++;
                         }
                     }
