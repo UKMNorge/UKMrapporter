@@ -39,7 +39,8 @@ class Intoleranser extends Excel {
             $kolonne = $this->celle('A', $person->getNavn());
             $kolonne = $this->celle('B', $person->getMobil());
             $kolonne = $this->celle('C', $person->getSensitivt()->getIntoleranse()->getTekst());
-            $kolonne = $this->celle('D', $person->getSensitivt()->getIntoleranse()->getListeHuman(true));
+            $d = $person->getSensitivt()->getIntoleranse()->getListeHuman(true);
+            $kolonne = $this->celle('D', $d ? $d : '-');
             foreach( Allergener::getAll() as $allergen ) {
                 $kolonne = $this->celle(
                     $kolonne,
