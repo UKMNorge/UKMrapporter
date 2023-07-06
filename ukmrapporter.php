@@ -124,6 +124,10 @@ class UKMrapporter extends Modul
 
         wp_enqueue_script('jquery');
         wp_enqueue_script('jqueryGoogleUI', '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js');
+
+
+        wp_enqueue_style('UKMrapporterVueStyle', plugin_dir_url(__FILE__) . '/client/dist/assets/build.css');
+        wp_enqueue_script('UKMrapporterVueJs', plugin_dir_url(__FILE__) . '/client/dist/assets/build.js','','',true);
     }
 
     public static function autoload($class_name)
