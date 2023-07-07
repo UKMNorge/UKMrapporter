@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import App from "./App.vue";
+import UKMrapporter from "./UKMrapporter.vue";
 
 import hljs from "highlight.js/lib/core";
 import javascript from "highlight.js/lib/languages/javascript";
@@ -12,7 +12,7 @@ hljs.registerLanguage("xml", xml);
 hljs.registerLanguage("javascript", javascript);
 hljs.registerLanguage("css", css);
 
-const app = createApp(App);
+const app = createApp(UKMrapporter);
 
 // Make Director global
 import { Director } from 'ukm-spa/Director';
@@ -23,4 +23,4 @@ var director = new Director();
 
 app.use(hljsVuePlugin);
 
-app.mount("#app");
+app.mount("#rapporterApp");

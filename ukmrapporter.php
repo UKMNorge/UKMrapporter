@@ -128,6 +128,8 @@ class UKMrapporter extends Modul
 
         wp_enqueue_style('UKMrapporterVueStyle', plugin_dir_url(__FILE__) . '/client/dist/assets/build.css');
         wp_enqueue_script('UKMrapporterVueJs', plugin_dir_url(__FILE__) . '/client/dist/assets/build.js','','',true);
+
+        wp_enqueue_style('UKMvideoArrSysStyle', '//assets.' . UKM_HOSTNAME . '//css/arr-sys.css');
     }
 
     public static function autoload($class_name)
