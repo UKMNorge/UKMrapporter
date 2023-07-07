@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import UKMrapporter from "./UKMrapporter.vue";
+import Singlerapport from "./SingleRapport.vue";
 
 import hljs from "highlight.js/lib/core";
 import javascript from "highlight.js/lib/languages/javascript";
@@ -24,3 +25,8 @@ var director = new Director();
 app.use(hljsVuePlugin);
 
 app.mount("#rapporterApp");
+
+
+const app2 = createApp(Singlerapport);
+app2.use(hljsVuePlugin);
+app2.mount("#singleRapport");
