@@ -2,7 +2,7 @@
     <div class="as-container">
         <div class="rapport-meny nop as-card-1 as-padding-space-4">
             <!-- nodes -->
-            <div v-for="(node, key) in props.nodes" :key="key" class="object item as-card-2 as-padding-space-2 as-margin-right-space-2">
+            <div v-for="(node, key) in getNodes()" :key="key" class="object item as-card-2 as-padding-space-2 as-margin-right-space-2">
                 <h4>{{ node.getRepresentativeName() }}</h4>
                 <div class="attributes as-margin-top-space-2">
                     
@@ -33,13 +33,14 @@ import Vue from 'vue'
 import { reactive } from 'vue';
 import { defineProps } from 'vue';
 import $ from "jquery";
+import RootNode from '../objects/RootNode';
 import NodeObj from '../objects/NodeObj';
 import NodeProperty from '../objects/NodeProperty';
 
 
 const props = defineProps<{
-    nodes: NodeObj[]
-}>()
+    root: RootNode|null
+}>();
 
 
 function toggleFunction(node : NodeObj) {
@@ -48,6 +49,31 @@ function toggleFunction(node : NodeObj) {
 
 function removeNodeProperty(nodeProp : NodeProperty) {
     nodeProp.active = false;
+}
+
+// Going through all NodeObj and getting object extending NodeObj
+function getNodes() : NodeObj[] {
+    var root = props.root;
+    var nodeTypes : NodeObj[] = [];
+    
+    while(root != null) {
+        var newNode = getChildNode(root);
+        if(newNode) {
+            nodeTypes.push(newNode);
+        }
+        
+        root = newNode;
+    }
+
+    return nodeTypes;
+}
+
+// Get child Nodeobj which is an extend of NodeObj
+// Example: Person extending NodeObj
+function getChildNode(node : NodeObj) : NodeObj|null {
+    console.log(node.getId());
+    var children = node.getChildren();
+    return children.length > 0 ? children[0] : null;
 }
 
 </script>
@@ -78,8 +104,11 @@ function removeNodeProperty(nodeProp : NodeProperty) {
         background: var(--color-primary-grey-light);
     }
     .rapport-meny .item .attributes .attribute.toggle-function.active {
-        background: var(--color-primary-bla-500);
+        background: var(--color-primary-bla-500) !important;
         color: #fff;
+    }
+    .rapport-meny .item .attributes .attribute.toggle-function.active span {
+        color: #fff !important;
     }
     .rapport-meny .item .attributes .attribute .icon {
         display: flex;

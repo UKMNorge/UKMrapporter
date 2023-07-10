@@ -6,7 +6,7 @@ abstract class NodeObj {
     protected className: string = '';
 
     // Pointer to the next array of Node
-    private children : NodeObj[] | null = null;
+    private children : NodeObj[] = [];
 
     // Using for reactivity on Vue
     protected refs : any
@@ -14,6 +14,14 @@ abstract class NodeObj {
     constructor(id: string) {
         this.id = id;
 
+    }
+
+    public addChildren(children : NodeObj[]) {
+        this.children = children;
+    }
+
+    public getChildren() : NodeObj[] {
+        return this.children;
     }
 
     public getRepresentativeName() : string {
