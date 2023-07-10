@@ -1,36 +1,26 @@
 import { ref } from 'vue';
-import NodeProperty from './NodeProperty';
+// import NodeProperty from './NodeProperty';
 
-class NodeObj {
-    private id: number;
-    private name: string;
-    private unique: Boolean = false;
-    private properties : NodeProperty[];
+abstract class NodeObj {
+    protected id: string;
+    protected className: string = '';
+
+    // Pointer to the next array of Node
+    private children : NodeObj[] | null = null;
 
     // Using for reactivity on Vue
-    private refs : any;
+    protected refs : any
 
-    constructor(id: number, name: string, properties : NodeProperty[]) {
+    constructor(id: string) {
         this.id = id;
-        this.name = name;
-        this.properties = properties;
-
-        // Making variables reactive
-        this.refs = ref({
-            id : this.id,
-            name : this.name,
-            unique : this.unique,
-            properties : this.properties,
-        });
-
 
     }
 
-    public getName() : string {
-        return this.name;
+    public getRepresentativeName() : string {
+        return this.className;
     }
 
-    public getId() : number {
+    public getId() : string {
         return this.id;
     }
 

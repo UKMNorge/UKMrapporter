@@ -3,7 +3,7 @@
         <div class="rapport-meny nop as-card-1 as-padding-space-4">
             <!-- nodes -->
             <div v-for="(node, key) in props.nodes" :key="key" class="object item as-card-2 as-padding-space-2 as-margin-right-space-2">
-                <h4>{{ node.getName() }}</h4>
+                <h4>{{ node.getRepresentativeName() }}</h4>
                 <div class="attributes as-margin-top-space-2">
                     
                     <div @click="toggleFunction(node)" :class="node.getUnique() ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
@@ -22,20 +22,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-    
-            <!-- <div class="object item as-card-2 as-padding-space-2 as-margin-right-space-2">
-                <h4>Innslag</h4>
-                <div class="attributes as-margin-top-space-2">
-                    <div class="attribute as-padding-space-1 as-margin-right-space-1">
-                        <span>Navn</span>
-                    </div>
-                    <div class="attribute as-padding-space-1 as-margin-right-space-1">
-                        <span>Type</span>
-                    </div>
-                </div>
-            </div> -->
-    
+            </div>    
         </div>
 
     </div>
@@ -54,15 +41,6 @@ const props = defineProps<{
     nodes: NodeObj[]
 }>()
 
-// Define the props
-// const props = defineProps({
-//     nodes: [NodeObj],
-//     obj : {},
-//     // propName2: {
-//     //     type: Number,
-//     //     required: true
-//     // }
-// });
 
 function toggleFunction(node : NodeObj) {
     node.setUnique(!node.getUnique());
@@ -73,7 +51,6 @@ function removeNodeProperty(nodeProp : NodeProperty) {
 }
 
 </script>
-
 
 <style scoped>
     .rapport-meny {

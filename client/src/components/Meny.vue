@@ -1,27 +1,29 @@
 <template>
     <div class="as-container container">
-        <Node :nodes="nodes" />
+        <NodeVue :nodes="nodes" />
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import $ from "jquery";
-import Node from './Node.vue'
+import NodeVue from './Node.vue'
 import NodeObj from '../objects/NodeObj';
 import NodeProperty from '../objects/NodeProperty';
+import Person from '../objects/Person';
+import Kommune from '../objects/Kommune';
 
 
-var properties = [
-    new NodeProperty('Navn'),
-    new NodeProperty('Kommune'),
-]
+// var properties = [
+//     new NodeProperty('Navn'),
+//     new NodeProperty('Kommune'),
+// ]
 
 // Accepts objects
 var nodes: NodeObj[] =[
-    new NodeObj(0, 'Fylke', properties),
-    new NodeObj(1, 'Kommune', []),
-    new NodeObj(2, 'Person', []),
+    new Person('aa3kjsd', 'Ole Nordby', 18),
+    new Kommune('unnd25', "Asker", 'Viken'),
+    // new NodeObj(1, 'Kommune', []),
+    // new NodeObj(2, 'Person', []),
 ];
 
 
@@ -30,9 +32,6 @@ var nodes: NodeObj[] =[
 
 // Callback on change
 
-function toggleFunction(event : any) {
-    $(event.currentTarget).toggleClass('active');
-}
 </script>
 
 
