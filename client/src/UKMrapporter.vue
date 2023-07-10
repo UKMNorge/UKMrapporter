@@ -21,7 +21,7 @@
         <div class="tab-spaces as-margin-top-space-8 container">
             <!-- Personer -->
             <div class="rapport-side-tab">
-                <div v-for="btn in tabsButtons[activeTab]" class="outer col-xs-6 nop as-margin-bottom-space-4">
+                <div v-for="btn in tabsButtons[activeTab]" :key="btn.title" class="outer col-xs-6 nop as-margin-bottom-space-4">
                     <a :href="btn.link">
                         <div class="rapport-button as-padding-space-2 as-box-shadow-card">
                             <div class="left as-margin-right-space-2">
@@ -52,7 +52,7 @@ import { ref, onMounted } from 'vue'
 
 var activeTab = ref(0);
 
-var tabsButtons = {
+var tabsButtons : any = {
     // tab 0
     [0]: [
         {title: 'Alle innslag', description: 'Informasjon om alle som er påmeldt arrangementet.', link: "?page=UKMrapporter&action=rapport&rapport=AlleInnslag", icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #fff;transform: ;msFilter:;"><circle cx="6" cy="4" r="2"></circle><path d="M9 7H3a1 1 0 0 0-1 1v7h2v7h4v-7h2V8a1 1 0 0 0-1-1z"></path><circle cx="17" cy="4" r="2"></circle><path d="M20.21 7.73a1 1 0 0 0-1-.73h-4.5a1 1 0 0 0-1 .73L12 14h2l-1 4h2v4h4v-4h2l-1-4h2z"></path></svg>'},
