@@ -1,9 +1,10 @@
 import { ref } from 'vue';
 import NodeObj from "./NodeObj";
 import NodeProperty from './NodeProperty';
+import type TableItemInterface from './table/TableInterface';
 
 
-class Person extends NodeObj {
+class Person extends NodeObj implements TableItemInterface {
     // Static context
     private static unique: Boolean = false;
     private static properties : NodeProperty[] = [
@@ -30,6 +31,22 @@ class Person extends NodeObj {
             unique : Person.unique,
             properties : Person.properties,
         });
+    }
+
+    public getNavn() {
+        return this.navn;
+    }
+
+    public static getKeysForTable() : {navn : string, method : string}[] {
+        return [
+            {navn : 'navn', method :'getNavn'},
+        ];
+    }
+
+    public getKeysForTable() : {navn : string, method : string}[] {
+        return [
+            {navn : 'navn', method :'getNavn'},
+        ];
     }
 }
 

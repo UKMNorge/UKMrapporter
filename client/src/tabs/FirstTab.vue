@@ -5,7 +5,7 @@
             <ChildComponent ref="childArrangementer" :title="'Alfa'" />
             <ChildComponent ref="childArrangementer2" :title="'Beta'" />
             <h2>Fra UKM Komponenter</h2>
-            <UKMTable msg='Hello Table test' color="red" />
+            <!-- <UKMTable msg='Hello Table test' color="red" /> -->
 
         </div>
         <p>active: {{ active }}</p>
@@ -18,7 +18,7 @@
 <script lang="ts">
 import ChildComponent from '../components/ChildComponent.vue';
 // Fra pakke UKM Komponenter
-import { UKMTable } from 'ukm-components-vue3';
+// import { UKMTable } from 'ukm-components-vue3';
         
 
 
@@ -29,10 +29,10 @@ export default {
         }
     },
 
-    components : {
-        ChildComponent : ChildComponent,
-        UKMTable : UKMTable,
-    },
+    // components : {
+    //     ChildComponent : ChildComponent,
+    //     UKMTable : UKMTable,
+    // },
 
     methods : {
         setActive() {
