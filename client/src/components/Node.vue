@@ -32,7 +32,7 @@
 import Vue from 'vue'
 import { reactive } from 'vue';
 import { defineProps } from 'vue';
-import $ from "jquery";
+// import $ from "jquery";
 import RootNode from '../objects/RootNode';
 import NodeObj from '../objects/NodeObj';
 import NodeProperty from '../objects/NodeProperty';

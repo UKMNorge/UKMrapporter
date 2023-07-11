@@ -4,7 +4,7 @@
 
         <div class="container as-container">
             <div class="as-margin-top-space-7">
-                <Table :loading="loading" :keys="tableKeys" :values="values" />
+                <Table :loading="loading" :keys="tableKeys" :values="values" :root="root" :nodes="[]" />
             </div>
         </div>
     </div>
@@ -17,11 +17,18 @@ import MenyVue from '../components/Meny.vue';
 import Person from '../objects/Person';
 import Kommune from '../objects/Kommune';
 import RootNode from '../objects/RootNode';
+import NodeObj from '../objects/NodeObj';
+import NodeProperty from '../objects/NodeProperty';
 
 
 var loading : boolean = false;
-var tableKeys : {navn : string, method : string}[]= Person.getKeysForTable();
-var values : Person[] = [];
+var tableKeys : {node : Object, value : NodeProperty[]}[] = [
+    {'node' : Person, 'value' : Person.getKeysForTable()},
+];
+
+var values : NodeObj[] = [];
+
+
 
 console.log(tableKeys);
 console.log(values);
@@ -37,6 +44,15 @@ var k2 = new Kommune('igwdjhh98', "Oslo", 'Viken');
 var p1 = new Person('aa3kjsd', 'Ole Nordby', 18);
 var p2 = new Person('ag3ghss', 'Lene Langvei', 21);
 var p3 = new Person('lkjdklj', 'Dag Steinfjell', 20);
+
+
+// Kommune: unndgsg25
+// Person: aa3kjsd
+// Person: ag3ghss
+// Person: lkjdklj
+// Kommune: aaawggd64
+// Kommune: igwdjhh98
+
 
 values = [p1, p2, p3];
 

@@ -17,6 +17,18 @@ abstract class NodeObj {
 
     }
 
+    public static generateProperies(node : NodeObj) {
+        var classNode = (<any>node.constructor);
+
+        console.log(NodeObj.getAllMethods(classNode));
+    }
+
+    public static getAllMethods(node : NodeObj) {
+        return Object.getOwnPropertyNames(node).filter(function(property) {
+            return typeof (<any>node)[property] == 'function';
+        });
+    }
+
     public addChildren(children : NodeObj[]) {
         this.children = children;
     }
