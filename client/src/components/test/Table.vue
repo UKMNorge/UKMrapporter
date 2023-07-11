@@ -24,24 +24,26 @@
         <table v-show="!loading" class="table ukm-vue-table-row">
             <thead>
                 <tr>
-                    <th v-for="key in keys" scope="col">
-                        <div class="inner-div">
-                            <button @click="sortBy(key)" class="sort-button">
-                                <span class="title">{{ key.navn }}</span>
-                                <div class="indicators">
-                                    <div>
-                                        <svg :class="{'not-active' : currentSort == key.navn && ascSort}" class="sort-indicator" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 6 19 1" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"></path></svg>
+                    <template v-for="key in keys">
+                        <th v-if="key.active" scope="col">
+                            <div  class="inner-div">
+                                <button @click="sortBy(key)" class="sort-button">
+                                    <span class="title">{{ key.navn }}</span>
+                                    <div class="indicators">
+                                        <div>
+                                            <svg :class="{'not-active' : currentSort == key.navn && ascSort}" class="sort-indicator" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 6 19 1" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"></path></svg>
+                                        </div>
+                                        <div>
+                                            <svg :class="{'not-active' : currentSort == key.navn && !ascSort}" class="sort-indicator" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 7 19 18" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"></path></svg>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <svg :class="{'not-active' : currentSort == key.navn && !ascSort}" class="sort-indicator" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 7 19 18" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"></path></svg>
-                                    </div>
-                                </div>
-                            </button>
-                            <button class="remove-row ukm-botton-style not-correct-button" @click="removeRow(key)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="3 4 19 18" style="fill: #272727"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
-                            </button>
-                        </div>
-                    </th>
+                                </button>
+                                <button class="remove-row ukm-botton-style not-correct-button" @click="removeRow(key)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="3 4 19 18" style="fill: #272727"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
+                                </button>
+                            </div>
+                        </th>
+                    </template>
                 </tr>
             </thead>
             <tbody>
@@ -57,22 +59,22 @@
 <script setup lang="ts">
     import { ref } from 'vue';
     
-    // var keys!: {navn : string, method : string}[];
+    // var keys!: {navn : string, method : string , active: Boolean}[];
     // var values!: any[];
     // var loading!: boolean;
 
     const props = defineProps<{
-        keys: {navn : string, method : string}[],
+        keys: {navn : string, method : string , active: Boolean}[],
         values: any[],
         loading: boolean
     }>();
 
-    var removedKeys : {navn : string, method : string}[] = [];
+    var removedKeys : {navn : string, method : string , active: Boolean}[] = [];
 
     var currentSort : string = '';
     var ascSort : boolean = true;
 
-    function sortBy(key : {navn : string, method : string}) {
+    function sortBy(key : {navn : string, method : string , active: Boolean}) {
         currentSort = key.navn;
 
         props.values.sort((a, b) => {return a[key.method]() > b[key.method]() ? 1 : (a[key.method]() < b[key.method]() ? -1 : 0)})
@@ -85,7 +87,7 @@
     }
 
     // Delete row
-    function removeRow(key : {navn : string, method : string}) {           
+    function removeRow(key : {navn : string, method : string , active: Boolean}) {           
         for(var i = 0; i < props.keys.length; i++) {
             if(props.keys[i].navn == key.navn) { 
                 removedKeys.push(props.keys[i]);
@@ -95,12 +97,11 @@
 
     }
 
-    function addKey(key : {navn : string, method : string}) {
+    function addKey(key : {navn : string, method : string , active: Boolean}) {
         for(var i = 0; i < removedKeys.length; i++) {
-            if(removedKeys[i].navn == key.navn) { 
+            if(key.active && removedKeys[i].navn == key.navn) {
                 props.keys.push(key);
                 removedKeys.splice(i, 1);
-
             }
         }
     }
@@ -112,8 +113,10 @@
         for(var value of props.values) { 
             var item = []          
             for(var key of props.keys) {
-                console.log(key)
-                item.push(value[key.method]());
+                console.log('yoyo');
+                if(key.active) {
+                    item.push(value[key.method]());
+                }
             }
             items.push(item);
         }

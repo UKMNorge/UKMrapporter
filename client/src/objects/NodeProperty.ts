@@ -1,11 +1,11 @@
 class NodeProperty {
-    public key : string;
-    public name : string;
+    public method : string;
+    public navn : string;
     public active : Boolean = true;
 
-    constructor(key : string, name : string, active = false) {
-        this.key = key;
-        this.name = name;
+    constructor(method : string, navn : string, active = false) {
+        this.method = method;
+        this.navn = navn;
         this.active = active;
     }
 }

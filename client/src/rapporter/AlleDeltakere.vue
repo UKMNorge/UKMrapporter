@@ -4,7 +4,7 @@
 
         <div class="container as-container">
             <div class="as-margin-top-space-7">
-                <Table :loading="loading" :keys="tableKeys" :values="personer" />
+                <Table :loading="loading" :keys="tableKeys" :values="values" />
             </div>
         </div>
     </div>
@@ -21,10 +21,10 @@ import RootNode from '../objects/RootNode';
 
 var loading : boolean = false;
 var tableKeys : {navn : string, method : string}[]= Person.getKeysForTable();
-var personer : Person[] = [new Person('aa3kjsd', 'Ole Nordby', 18)];
+var values : Person[] = [];
 
 console.log(tableKeys);
-console.log(personer);
+console.log(values);
 // ----- DATA -----
 var root = new RootNode();
 
@@ -38,7 +38,7 @@ var p1 = new Person('aa3kjsd', 'Ole Nordby', 18);
 var p2 = new Person('ag3ghss', 'Lene Langvei', 21);
 var p3 = new Person('lkjdklj', 'Dag Steinfjell', 20);
 
-personer = [p1, p2, p3];
+values = [p1, p2, p3];
 
 // Adding Person(s) to Kommune(s)
 k0.addChildren([

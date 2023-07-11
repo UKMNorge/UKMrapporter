@@ -5,18 +5,45 @@ import type TableItemInterface from './table/TableInterface';
 
 
 class Person extends NodeObj implements TableItemInterface {
-    // Static context
+
+    /* -- Static start -- */
     private static unique: Boolean = false;
     private static properties : NodeProperty[] = [
-        new NodeProperty('navn', 'Navn', true),
-        new NodeProperty('alder', 'Alder', true),
+        new NodeProperty('getNavn', 'Navn', true),
+        new NodeProperty('getAlder', 'Alder', true),
     ];
-    protected className = 'Person';
-    // Using for reactivity on Vue
-    protected refs : any;
 
+    // Using for reactivity on Vue
+    protected static staticRefs : any;
+    public static getAllProperies() : NodeProperty[] {
+        return Person.staticRefs.value.properties;
+    }
+
+    public static getUnique() : Boolean {
+        return Person.staticRefs.value.unique;
+    }
+
+    public static setUnique(boolVal : Boolean) {
+        return Person.staticRefs.value.unique = boolVal;
+    }
+
+    public static getKeysForTable() : NodeProperty[] {
+        // Making variables reactive on static
+        Person.staticRefs = ref({
+            unique : Person.unique,
+            properties : Person.properties,
+        });
+
+        return Person.getAllProperies()
+
+        // return retArr;
+    }
+    /* -- Static end -- */
+
+    
 
     // Class attributes
+    protected className = 'Person';
     private navn : string;
     private alder : number;
 
@@ -25,28 +52,20 @@ class Person extends NodeObj implements TableItemInterface {
 
         this.navn = navn;
         this.alder = alder;
-
-        // Making variables reactive
-        this.refs = ref({
-            unique : Person.unique,
-            properties : Person.properties,
-        });
     }
 
-    public getNavn() {
+
+    public getNavn() : string {
         return this.navn;
     }
 
-    public static getKeysForTable() : {navn : string, method : string}[] {
-        return [
-            {navn : 'navn', method :'getNavn'},
-        ];
+    public getAlder() : number {
+        return this.alder;
     }
 
-    public getKeysForTable() : {navn : string, method : string}[] {
-        return [
-            {navn : 'navn', method :'getNavn'},
-        ];
+    // Returnerer data fra static
+    public getKeysForTable() : NodeProperty[] {
+        return Person.getKeysForTable();
     }
 }
 

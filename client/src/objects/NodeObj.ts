@@ -9,7 +9,8 @@ abstract class NodeObj {
     private children : NodeObj[] = [];
 
     // Using for reactivity on Vue
-    protected refs : any
+    protected refs : any;
+    protected static staticRefs : any;
 
     constructor(id: string) {
         this.id = id;
@@ -36,13 +37,16 @@ abstract class NodeObj {
         return this.refs.value.properties;
     }
 
-    public getUnique() : Boolean {
-        return this.refs.value.unique;
+    public static getAllProperies() {
+        return NodeObj.staticRefs.value.properties;
     }
 
-    public setUnique(boolVal : Boolean) {
-        console.log('here');
-        this.refs.value.unique = boolVal;
+    public static getUnique() : Boolean {
+        return NodeObj.staticRefs.value.unique;
+    }
+
+    public static setUnique(boolVal : Boolean) {
+        return NodeObj.staticRefs.value.unique = boolVal;
     }
 
 }

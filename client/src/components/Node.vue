@@ -6,14 +6,14 @@
                 <h4>{{ node.getRepresentativeName() }}</h4>
                 <div class="attributes as-margin-top-space-2">
                     
-                    <div @click="toggleFunction(node)" :class="node.getUnique() ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
+                    <div @click="toggleFunction(node)" :class="getUnique(node) ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
                         <span>Unique</span>
                     </div>
 
                     <!-- Node property -->
-                    <div v-for="(nodeProp, key2) in node.getAllProperies()" :key="key2">
+                    <div v-for="(nodeProp, key2) in getAllProperties(node)" :key="key2">
                         <div @click="removeNodeProperty(nodeProp)" v-if="nodeProp.active" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
-                            <span>{{ nodeProp.name }}</span>
+                            <span>{{ nodeProp.navn }}</span>
                             <div class="icon">
                                 <svg class="remove-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"/>
@@ -44,7 +44,8 @@ const props = defineProps<{
 
 
 function toggleFunction(node : NodeObj) {
-    node.setUnique(!node.getUnique());
+    var classNode = (<any>node.constructor);
+    classNode.setUnique(!classNode.getUnique());
 }
 
 function removeNodeProperty(nodeProp : NodeProperty) {
@@ -66,6 +67,15 @@ function getNodes() : NodeObj[] {
     }
 
     return nodeTypes;
+}
+
+function getAllProperties(node : NodeObj) : NodeProperty[] {
+    // Getting class name from instance and calling static method
+    return (<any>node.constructor).getAllProperies();
+}
+
+function getUnique(node : NodeObj) : Boolean {
+    return (<any>node.constructor).getUnique();
 }
 
 // Get child Nodeobj which is an extend of NodeObj
