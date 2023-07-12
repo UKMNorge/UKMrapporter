@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import NodeProperty from './NodeProperty';
 // import NodeProperty from './NodeProperty';
 
 abstract class NodeObj {
@@ -6,7 +7,8 @@ abstract class NodeObj {
     protected className: string = '';
 
     // Pointer to the next array of Node
-    private children : NodeObj[] = [];
+    public children : NodeObj[] = [];
+    public parent : NodeObj|null = null;
 
     // Using for reactivity on Vue
     protected refs : any;
@@ -17,16 +19,14 @@ abstract class NodeObj {
 
     }
 
-    public static generateProperies(node : NodeObj) {
-        var classNode = (<any>node.constructor);
-
-        console.log(NodeObj.getAllMethods(classNode));
-    }
-
-    public static getAllMethods(node : NodeObj) {
-        return Object.getOwnPropertyNames(node).filter(function(property) {
-            return typeof (<any>node)[property] == 'function';
-        });
+    public getActiveProperties() : NodeProperty[] {
+        var retArr = [];
+        for(var p of NodeObj.staticRefs.value.properties) {
+            if(p.active) {
+                retArr.push(p);
+            }
+        }
+        return retArr;
     }
 
     public addChildren(children : NodeObj[]) {

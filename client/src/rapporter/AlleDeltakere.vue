@@ -22,8 +22,10 @@ import NodeProperty from '../objects/NodeProperty';
 
 
 var loading : boolean = false;
+// Må automatiseres på Tab
 var tableKeys : {node : Object, value : NodeProperty[]}[] = [
     {'node' : Person, 'value' : Person.getKeysForTable()},
+    {'node' : Kommune, 'value' : Kommune.getKeysForTable()},
 ];
 
 var values : NodeObj[] = [];
@@ -36,35 +38,67 @@ console.log(values);
 var root = new RootNode();
 
 // Adding Kommune(s)
-var k0 = new Kommune('unndgsg25', "Asker", 'Viken');
-var k1 = new Kommune('aaawggd64', "Lillestrøm", 'Viken');
-var k2 = new Kommune('igwdjhh98', "Oslo", 'Viken');
+var k0 = new Kommune('k1', "Tana", 'Nordland');
+var k1 = new Kommune('k2', "Lillestrøm", 'Viken');
+var k2 = new Kommune('k3', "Oslo", 'Viken');
 
 
-var p1 = new Person('aa3kjsd', 'Ole Nordby', 18);
-var p2 = new Person('ag3ghss', 'Lene Langvei', 21);
-var p3 = new Person('lkjdklj', 'Dag Steinfjell', 20);
+var p1 = new Person('p1', 'Ole Nordby', 18);
+var p2 = new Person('p2', 'Lene Langvei', 21);
+var p3 = new Person('p3', 'Dag Steinfjell', 17);
+var p4 = new Person('p4', 'Stein Olavsgård', 16);
+var p5 = new Person('p5', 'Gerard Sørgård', 20);
 
-
-// Kommune: unndgsg25
-// Person: aa3kjsd
-// Person: ag3ghss
-// Person: lkjdklj
-// Kommune: aaawggd64
-// Kommune: igwdjhh98
-
-
-values = [p1, p2, p3];
 
 // Adding Person(s) to Kommune(s)
 k0.addChildren([
     p1, p2, p3
 ]);
 
+k1.addChildren([
+    p4
+]);
+
+k2.addChildren([
+    p5
+]);
+
 // Adding children to Kommune(s) to Root
 root.addChildren([
     k0, k1, k2
 ]);
-        
+
+addParents(root);
+
+getLeafNodes(root, values)
+
+/* ------- TO SUPERCLASS ------- */
+
+// Recursive function to add parents to NodeObj
+function addParents(node : NodeObj, parent : NodeObj|null = null) {
+    // var obj : any = {};
+    if(!(parent instanceof RootNode)) {
+        node.parent = parent;
+    }
+    
+    if (node.children.length > 0) {
+        // obj.children = [];
+        for (var i = 0; i < node.children.length; i++) {
+            // obj.children.push(addParents(node.children[i], node));
+            addParents(node.children[i], node);
+        }
+    }
+}
+
+// Recursive function to get leaf nodes
+function getLeafNodes(node : NodeObj, leafNodes : NodeObj[]) {
+    if (node.children.length === 0) {
+        leafNodes.push(node);
+    } else {
+        for (var i = 0; i < node.children.length; i++) {
+            getLeafNodes(node.children[i], leafNodes);
+        }
+    }
+}
 
 </script>

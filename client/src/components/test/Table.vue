@@ -16,11 +16,6 @@
             </table>
         </div>
 
-        <div class="removed-keys">
-            <!-- <button v-for="key in removedKeys" @click="addKey(key)" class="key ukm-botton-style correct-button">
-                <span>{{ key.navn }}</span>
-            </button> -->
-        </div>
         <table v-show="!loading" class="table ukm-vue-table-row">
             <thead>
                 <tr>
@@ -39,7 +34,7 @@
                                             </div>
                                         </div>
                                     </button>
-                                    <button class="remove-row ukm-botton-style not-correct-button">
+                                    <button @click="removeProperty(key)" class="remove-row ukm-botton-style not-correct-button">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="3 4 19 18" style="fill: #272727"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
                                     </button>
                                 </div>
@@ -54,14 +49,6 @@
                 </tr>
             </tbody>
         </table>
-        <!-- <button @click="getNodeChildren(root)">Test recurs</button> -->
-
-        <h1>here we go</h1>
-        <div>
-            <RecursiveTableComp :obj="root" :parents="[]" />
-        </div>
-
-        <button @click="getLeafClick(root, [])">Get leafs with parents</button>
 
     </div>
 </template>
@@ -72,7 +59,6 @@
     import NodeObj from '../../objects/NodeObj';
     import NodeProperty from '../../objects/NodeProperty';
     import RootNode from '../../objects/RootNode';
-    import RecursiveTableComp from './RecursiveTableComp.vue';
 
     // var keys!: {node : Object, value : NodeProperty[]}[];
     // var values!: any[];
@@ -103,109 +89,44 @@
         ascSort = !ascSort
     }
 
-    // Delete row
-    // function removeRow(key : {navn : string, method : string , active: Boolean}) {           
-    //     for(var i = 0; i < props.keys.length; i++) {
-    //         if(props.keys[i].navn == key.navn) { 
-    //             removedKeys.push(props.keys[i]);
-    //             props.keys.splice(i, 1);
-    //         }
-    //     }
-
-    // }
-
-    // function addKey(key : {navn : string, method : string , active: Boolean}) {
-    //     for(var i = 0; i < removedKeys.length; i++) {
-    //         if(key.active && removedKeys[i].navn == key.navn) {
-    //             props.keys.push(key);
-    //             removedKeys.splice(i, 1);
-    //         }
-    //     }
-    // }
-
-    // function getNodes() : NodeObj[] {
-    //     var root = props.root;
-        
-    //     var children : NodeObj[] = [];
-        
-        
-    //     while(root != null) {
-    //         var children = getNodeChildren(root);
-    //         for(var c of )
-    //         if(children.length > 0) {
-    //             children.push(children);
-    //         }
-    //         else {
-    //             break;
-    //         }
-    //     }
-
-    //     return children;
-
-    // }
-    // var objs = {};
-    
-    // Print children recursively
-    // function getNodeChildren(node : NodeObj) { //: NodeObj[] {
-
-    //     objs[node.getId()] = [];
-        
-    //     // console.warn(node);
-        
-    //     if(node.getChildren().length > 0) {
-    //         for(var c of node.getChildren()) {
-    //             objs[node.getId()].push(c);
-    //             // console.log(c);
-    //             if(c.getChildren().length > 0) {
-    //                 getNodeChildren(c);
-    //             }
-    //         }
-    //     }
-
-    //     console.log(objs);
-    // }
-
-    function getLeafClick() {
-        console.log(getLeaf(props.root, [], props));
-        console.log(props.nodes);
-    }
-
-    function getLeaf(root : NodeObj, parents : NodeObj[], props : any) {
-
-        if(root.getChildren().length > 1) {
-            for(var c of root.getChildren()) {
-                console.log('b')
-                return [...getLeaf(c, [...parents, root], props)]
-            }
-        }
-
-        if(root.getChildren().length < 1) {
-            console.log('a')
-            return [{'node' : root, 'parents' : parents }]
-        }
-
-    }
-
-
-
     // Get all items from the classes sendt as array on values
     function getItems() {
-        console.log(props.root);
-        var items = [];
-        for(var value of props.values) { 
-            var item = []          
-            for(var keyObj of props.keys) {
-                for(var key of keyObj.value) {
-                    console.log('yoyo');
-                    if(key.active) {
-                        item.push(value[key.method]());
-                    }
-                }
-            }
-            items.push(item);
+        var items : any[] = [];
+        for(var node of props.values) { 
+            items.push(_getProperty(node));
         }
 
         return items;
+    }
+
+    function removeProperty(nodeProp : NodeProperty) {
+        nodeProp.active = false;
+    }
+
+    // Get properties including properties on parents 
+    function _getProperty(node : NodeObj) : any[] {
+        var objProperies = []          
+        for(var activeProp of node.getActiveProperties()) {
+            try {
+                objProperies.push((<any>node)[activeProp.method]());
+            } catch (e: unknown) {
+                console.error('Method: ' + activeProp.method + ' does not exist on ' + node.getRepresentativeName() + '. Please check the properties and methods');
+            }
+        }
+
+        var parent = node.parent;
+        while(parent) {
+            for(var activeProp of parent.getActiveProperties()) {
+                try {
+                    objProperies.push((<any>parent)[activeProp.method]());
+                } catch (e: unknown) {
+                    console.error('Method: ' + activeProp.method + ' does not exist on ' + node.getRepresentativeName() + '. Please check the properties and methods');
+                }
+            }
+            parent = parent.parent;
+        }
+
+        return objProperies;
     }
 </script>
 

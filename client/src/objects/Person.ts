@@ -19,6 +19,16 @@ class Person extends NodeObj implements TableItemInterface {
         return Person.staticRefs.value.properties;
     }
 
+    public getActiveProperties() : NodeProperty[] {
+        var retArr = [];
+        for(var p of Person.staticRefs.value.properties) {
+            if(p.active) {
+                retArr.push(p);
+            }
+        }
+        return retArr;
+    }
+
     public static getUnique() : Boolean {
         return Person.staticRefs.value.unique;
     }
