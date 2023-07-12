@@ -8,6 +8,7 @@ class Person extends NodeObj implements TableItemInterface {
 
     /* -- Static start -- */
     private static unique: Boolean = false;
+    public static hasUnique : Boolean = false;
     private static properties : NodeProperty[] = [
         new NodeProperty('getNavn', 'Navn', true),
         new NodeProperty('getAlder', 'Alder', true),
@@ -28,9 +29,14 @@ class Person extends NodeObj implements TableItemInterface {
         }
         return retArr;
     }
+    
 
     public static getUnique() : Boolean {
         return Person.staticRefs.value.unique;
+    }
+
+    public static usesUnique() : Boolean {
+        return Person.staticRefs.value.hasUnique;
     }
 
     public static setUnique(boolVal : Boolean) {
@@ -42,6 +48,7 @@ class Person extends NodeObj implements TableItemInterface {
         Person.staticRefs = ref({
             unique : Person.unique,
             properties : Person.properties,
+            hasUnique : Person.hasUnique,
         });
 
         return Person.getAllProperies()

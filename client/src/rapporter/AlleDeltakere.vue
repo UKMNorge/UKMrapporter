@@ -21,12 +21,16 @@ import NodeObj from '../objects/NodeObj';
 import NodeProperty from '../objects/NodeProperty';
 
 
+
+Person.hasUnique = true;
+
 var loading : boolean = false;
 // Må automatiseres på Tab
 var tableKeys : {node : Object, value : NodeProperty[]}[] = [
     {'node' : Person, 'value' : Person.getKeysForTable()},
     {'node' : Kommune, 'value' : Kommune.getKeysForTable()},
 ];
+
 
 var values : NodeObj[] = [];
 

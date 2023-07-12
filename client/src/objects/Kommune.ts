@@ -7,6 +7,7 @@ class Kommune extends NodeObj {
 
     /* -- Static start -- */
     private static unique: Boolean = false;
+    public static hasUnique : Boolean = false;
     private static properties : NodeProperty[] = [
         new NodeProperty('getNavn', 'Kommune navn', true),
         new NodeProperty('getFylkeNavn', 'Fylke', true),
@@ -33,6 +34,10 @@ class Kommune extends NodeObj {
         return Kommune.staticRefs.value.unique;
     }
 
+    public static usesUnique() : Boolean {
+        return Kommune.staticRefs.value.hasUnique;
+    }
+
     public static setUnique(boolVal : Boolean) {
         return Kommune.staticRefs.value.unique = boolVal;
     }
@@ -42,6 +47,7 @@ class Kommune extends NodeObj {
         Kommune.staticRefs = ref({
             unique : Kommune.unique,
             properties : Kommune.properties,
+            hasUnique : Kommune.hasUnique,
         });
 
         return Kommune.getAllProperies()

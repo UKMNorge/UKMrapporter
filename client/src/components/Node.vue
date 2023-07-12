@@ -6,7 +6,7 @@
                 <h4>{{ node.getRepresentativeName() }}</h4>
                 <div class="attributes as-margin-top-space-2">
                     
-                    <div @click="toggleFunction(node)" :class="getUnique(node) ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
+                    <div v-if="hasUnique(node)" @click="toggleFunction(node)" :class="getUnique(node) ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
                         <span>Unique</span>
                     </div>
 
@@ -46,6 +46,13 @@ const props = defineProps<{
 function toggleFunction(node : NodeObj) {
     var classNode = (<any>node.constructor);
     classNode.setUnique(!classNode.getUnique());
+}
+
+function hasUnique(node : NodeObj) {
+    var classNode = (<any>node.constructor);
+    
+    return classNode.usesUnique();
+    
 }
 
 function removeNodeProperty(nodeProp : NodeProperty) {

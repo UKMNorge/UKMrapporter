@@ -16,7 +16,6 @@ abstract class NodeObj {
 
     constructor(id: string) {
         this.id = id;
-
     }
 
     public getActiveProperties() : NodeProperty[] {
@@ -61,6 +60,9 @@ abstract class NodeObj {
         return NodeObj.staticRefs.value.unique = boolVal;
     }
 
+    public static usesUnique() : Boolean {
+        return NodeObj.staticRefs.value.hasUnique;
+    }
 }
 
 export default NodeObj;
