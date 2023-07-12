@@ -7,7 +7,7 @@
                 <div class="attributes as-margin-top-space-2">
                     
                     <div v-if="hasUnique(node)" @click="toggleFunction(node)" :class="getUnique(node) ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
-                        <span>Unique</span>
+                        <span>Unike</span>
                     </div>
 
                     <!-- Node property -->
