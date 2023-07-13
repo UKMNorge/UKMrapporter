@@ -6,6 +6,8 @@ abstract class NodeObj {
     protected id: string;
     protected className: string = '';
 
+    private static subclass : any = null;
+
     // Pointer to the next array of Node
     public children : NodeObj[] = [];
     public parent : NodeObj|null = null;
@@ -16,16 +18,18 @@ abstract class NodeObj {
 
     constructor(id: string) {
         this.id = id;
+        NodeObj.subclass = this.constructor;
+
     }
 
-    public getActiveProperties() : NodeProperty[] {
-        var retArr = [];
-        for(var p of NodeObj.staticRefs.value.properties) {
-            if(p.active) {
-                retArr.push(p);
-            }
-        }
-        return retArr;
+    public static getKeysForTable(subclass : any) : NodeProperty[] {
+        subclass.staticRefs = ref({
+            unique : subclass.unique,
+            properties : subclass.properties,
+            hasUnique : subclass.hasUnique,
+        });
+
+        return subclass.getAllProperies()
     }
 
     public addChildren(children : NodeObj[]) {
@@ -45,23 +49,37 @@ abstract class NodeObj {
     }
 
     public getAllProperies() {
-        return this.refs.value.properties;
+        return NodeObj.getAllProperies(NodeObj);
     }
 
-    public static getAllProperies() {
-        return NodeObj.staticRefs.value.properties;
+    public static getAllProperies(subclass : any) : NodeProperty[] {
+        return subclass.staticRefs.value.properties;
     }
 
-    public static getUnique() : Boolean {
-        return NodeObj.staticRefs.value.unique;
+    public getActiveProperties() : NodeProperty[] { 
+        return NodeObj.getActiveProperties(NodeObj);
     }
 
-    public static setUnique(boolVal : Boolean) {
-        return NodeObj.staticRefs.value.unique = boolVal;
+    public static getActiveProperties(subclass : any) : NodeProperty[] { 
+        var retArr = [];
+        for(var p of subclass.staticRefs.value.properties) {
+            if(p.active) {
+                retArr.push(p);
+            }
+        }
+        return retArr;
     }
 
-    public static usesUnique() : Boolean {
-        return NodeObj.staticRefs.value.hasUnique;
+    public static getUnique(subclass : any) : Boolean {
+        return subclass.staticRefs.value.unique;
+    }
+
+    public static setUnique(subclass : any, boolVal : Boolean) {
+        return subclass.staticRefs.value.unique = boolVal;
+    }
+
+    public static usesUnique(subclass : any) : Boolean {
+        return subclass.staticRefs.value.hasUnique;
     }
 }
 

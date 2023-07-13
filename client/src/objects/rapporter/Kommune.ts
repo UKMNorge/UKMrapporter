@@ -1,6 +1,6 @@
 import { ref } from 'vue';
-import NodeObj from "./NodeObj";
-import NodeProperty from './NodeProperty';
+import NodeObj from './../NodeObj';
+import NodeProperty from './../NodeProperty';
 
 
 class Kommune extends NodeObj {
@@ -10,49 +10,38 @@ class Kommune extends NodeObj {
     public static hasUnique : Boolean = false;
     private static properties : NodeProperty[] = [
         new NodeProperty('getNavn', 'Kommune navn', true),
-        new NodeProperty('getFylkeNavn', 'Fylke', true),
+        new NodeProperty('getFylkeNavn', 'Fylke'),
     ];    
 
     // Using for reactivity on Vue
     protected static staticRefs : any;
     
-    public static getAllProperies() {
-        return Kommune.staticRefs.value.properties;
-    }
-
+    // Mutual methods
     public getActiveProperties() : NodeProperty[] {
-        var retArr = [];
-        for(var p of Kommune.staticRefs.value.properties) {
-            if(p.active) {
-                retArr.push(p);
-            }
-        }
-        return retArr;
+        return Kommune.getActiveProperties();
     }
 
+    public static getAllProperies() : NodeProperty[] {
+        return super.getAllProperies(Kommune);
+    }
+    
+    public static getActiveProperties() : NodeProperty[] {
+        return super.getActiveProperties(Kommune);
+    }
     public static getUnique() : Boolean {
-        return Kommune.staticRefs.value.unique;
+        return super.getUnique(Kommune);
     }
 
     public static usesUnique() : Boolean {
-        return Kommune.staticRefs.value.hasUnique;
+        return super.usesUnique(Kommune);
     }
 
     public static setUnique(boolVal : Boolean) {
-        return Kommune.staticRefs.value.unique = boolVal;
+        return super.setUnique(Kommune, boolVal);
     }
 
     public static getKeysForTable() : NodeProperty[] {
-        // Making variables reactive on static
-        Kommune.staticRefs = ref({
-            unique : Kommune.unique,
-            properties : Kommune.properties,
-            hasUnique : Kommune.hasUnique,
-        });
-
-        return Kommune.getAllProperies()
-
-        // return retArr;
+        return super.getKeysForTable(Kommune);
     }
     /* -- Static end -- */
 

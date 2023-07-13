@@ -65,7 +65,7 @@ var tabsButtons : any = {
         {title: 'Personvern', description: 'Alle deltakere som ikke vil bli filmet eller tatt bilde av', link: "?page=UKMrapporter&action=rapport&rapport=Personvern", icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 25" style="fill: #fff;transform: ;msFilter:;"><path d="M20 12c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5S7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"></path></svg>'},
         {title: 'Type innslag', description: 'Velg hvilken type deltakere du vil ha informasjon om', link: "?page=UKMrapporter&action=rapport&rapport=TypeInnslag", icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #fff;transform: ;msFilter:;"><path d="M13 2.051V11h8.949c-.47-4.717-4.232-8.479-8.949-8.949zm4.969 17.953c2.189-1.637 3.694-4.14 3.98-7.004h-8.183l4.203 7.004z"></path><path d="M11 12V2.051C5.954 2.555 2 6.824 2 12c0 5.514 4.486 10 10 10a9.93 9.93 0 0 0 4.255-.964s-5.253-8.915-5.254-9.031A.02.02 0 0 0 11 12z"></path></svg>'},
         //TEST BARE
-        {title: 'TEST SINGLE RAPPORT', description: 'Kun testing', link: "?page=UKMrapporter&action=rapportVue", icon: ''},
+        {title: 'TEST SINGLE RAPPORT', description: 'Kun testing', link: "?page=UKMrapporter&action=rapportVue", icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M15.78 15.84S18.64 13 19.61 12c3.07-3 1.54-9.18 1.54-9.18S15 1.29 12 4.36C9.66 6.64 8.14 8.22 8.14 8.22S4.3 7.42 2 9.72L14.25 22c2.3-2.33 1.53-6.16 1.53-6.16zm-1.5-9a2 2 0 0 1 2.83 0 2 2 0 1 1-2.83 0zM3 21a7.81 7.81 0 0 0 5-2l-3-3c-2 1-2 5-2 5z"></path></svg>'},
     ],
     // tab 1
     [1]: [
@@ -121,6 +121,9 @@ function openTab(tabId : number) {
     }
     .rapporter-tabs .tab.active {
         border-bottom: solid 2px var(--color-primary-bla-500);
+        background: var(--color-primary-white) !important;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
     }
     .rapport-side-tab .outer .rapport-button {
         border-radius: var(--radius-medium);

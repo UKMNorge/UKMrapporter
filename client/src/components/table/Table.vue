@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="as-padding-space-4 as-padding-top-space-2 as-padding-bottom-space-2 as-card-1">
         <!-- Phantom loading -->
         <div v-show="loading">
             <table class="table ukm-vue-table-row">
@@ -35,7 +35,9 @@
                                         </div>
                                     </button>
                                     <button @click="removeProperty(key)" class="remove-row ukm-botton-style not-correct-button">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="3 4 19 18" style="fill: #272727"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
+                                        <svg class="remove-icon close-selector" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path class="close-selector" d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"/>
+                                        </svg>
                                     </button>
                                 </div>
                             </th>
@@ -45,7 +47,7 @@
             </thead>
             <tbody>
                 <tr v-for="value in getItems()">
-                    <td v-for="item in value">{{ item }}</td>
+                    <td class="as-padding-space-4" v-for="item in value">{{ item }}</td>
                 </tr>
             </tbody>
         </table>
@@ -131,7 +133,9 @@
 </script>
 
 <style>
-    
+    .ukm-vue-table-row {
+        margin: 0;
+    }
     .ukm-vue-table-row thead tr th .inner-div {
         display: flex;
     }
@@ -166,8 +170,8 @@
         font-weight: 400;
         padding: 10px 20px;
         background: #0000;
-        margin-left: -20px;
         display: flex;
+        padding: 0;
     }
     .ukm-vue-table-row thead tr th .sort-button .title {
         margin: auto;
@@ -175,5 +179,8 @@
     }
     .removed-keys {
         display: flex;
+    }
+    .table > thead > tr > th {
+        
     }
 </style>

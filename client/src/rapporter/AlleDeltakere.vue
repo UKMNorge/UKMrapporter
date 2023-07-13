@@ -12,10 +12,11 @@
   
 <script setup lang="ts">
 // Fra pakke UKM Komponenter
-import Table from '../components/test/Table.vue'
+import Table from '../components/table/Table.vue'
+import { ref } from 'vue';
 import MenyVue from '../components/Meny.vue';
-import Person from '../objects/Person';
-import Kommune from '../objects/Kommune';
+import Person from '../objects/rapporter/Person';
+import Kommune from '../objects/rapporter/Kommune';
 import RootNode from '../objects/RootNode';
 import NodeObj from '../objects/NodeObj';
 import NodeProperty from '../objects/NodeProperty';
@@ -24,7 +25,12 @@ import NodeProperty from '../objects/NodeProperty';
 
 Person.hasUnique = true;
 
-var loading : boolean = false;
+var loading = ref(true);
+
+setTimeout(() => {
+    loading.value = false;
+}, 1000);
+
 // Må automatiseres på Tab
 var tableKeys : {node : Object, value : NodeProperty[]}[] = [
     {'node' : Person, 'value' : Person.getKeysForTable()},
@@ -47,11 +53,11 @@ var k1 = new Kommune('k2', "Lillestrøm", 'Viken');
 var k2 = new Kommune('k3', "Oslo", 'Viken');
 
 
-var p1 = new Person('p1', 'Ole Nordby', 18);
-var p2 = new Person('p2', 'Lene Langvei', 21);
-var p3 = new Person('p3', 'Dag Steinfjell', 17);
-var p4 = new Person('p4', 'Stein Olavsgård', 16);
-var p5 = new Person('p5', 'Gerard Sørgård', 20);
+var p1 = new Person('p1', 'Ole Nordby', 18, '46516256',  'Ole_Nordby@gmail.com');
+var p2 = new Person('p2', 'Lene Langvei', 21, '55516200', 'Lene_Langvei@gmail.com');
+var p3 = new Person('p3', 'Dag Steinfjell', 17, '12316211', 'Dag_Steinfjell@gmail.com');
+var p4 = new Person('p4', 'Stein Olavsgård', 16, '56516222', 'Stein_Olavsgård@gmail.com');
+var p5 = new Person('p5', 'Gerard Sørgård', 20, '47816353', 'Gerard_Sørgård@gmail.com');
 
 
 // Adding Person(s) to Kommune(s)
@@ -72,9 +78,10 @@ root.addChildren([
     k0, k1, k2
 ]);
 
-addParents(root);
 
+addParents(root);
 getLeafNodes(root, values)
+
 
 /* ------- TO SUPERCLASS ------- */
 

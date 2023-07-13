@@ -1,7 +1,7 @@
 import { ref } from 'vue';
-import NodeObj from "./NodeObj";
-import NodeProperty from './NodeProperty';
-import type TableItemInterface from './table/TableInterface';
+import NodeObj from './../NodeObj';
+import NodeProperty from './../NodeProperty';
+import type TableItemInterface from './../table/TableInterface';
 
 
 class Person extends NodeObj implements TableItemInterface {
@@ -12,48 +12,40 @@ class Person extends NodeObj implements TableItemInterface {
     private static properties : NodeProperty[] = [
         new NodeProperty('getNavn', 'Navn', true),
         new NodeProperty('getAlder', 'Alder', true),
+        new NodeProperty('getMobil', 'Mobil', false),
+        new NodeProperty('getEpost', 'Epost', false),
     ];
 
     // Using for reactivity on Vue
     protected static staticRefs : any;
-    public static getAllProperies() : NodeProperty[] {
-        return Person.staticRefs.value.properties;
-    }
-
-    public getActiveProperties() : NodeProperty[] {
-        var retArr = [];
-        for(var p of Person.staticRefs.value.properties) {
-            if(p.active) {
-                retArr.push(p);
-            }
-        }
-        return retArr;
-    }
     
 
+    // Mutual methods
+    public getActiveProperties() : NodeProperty[] {
+        return Person.getActiveProperties();
+    }
+
+    public static getAllProperies() : NodeProperty[] {
+        return super.getAllProperies(Person);
+    }
+    
+    public static getActiveProperties() : NodeProperty[] {
+        return super.getActiveProperties(Person);
+    }
     public static getUnique() : Boolean {
-        return Person.staticRefs.value.unique;
+        return super.getUnique(Person);
     }
 
     public static usesUnique() : Boolean {
-        return Person.staticRefs.value.hasUnique;
+        return super.usesUnique(Person);
     }
 
     public static setUnique(boolVal : Boolean) {
-        return Person.staticRefs.value.unique = boolVal;
+        return super.setUnique(Person, boolVal);
     }
 
     public static getKeysForTable() : NodeProperty[] {
-        // Making variables reactive on static
-        Person.staticRefs = ref({
-            unique : Person.unique,
-            properties : Person.properties,
-            hasUnique : Person.hasUnique,
-        });
-
-        return Person.getAllProperies()
-
-        // return retArr;
+        return super.getKeysForTable(Person);
     }
     /* -- Static end -- */
 
@@ -63,12 +55,16 @@ class Person extends NodeObj implements TableItemInterface {
     protected className = 'Person';
     private navn : string;
     private alder : number;
+    private mobil : string;
+    private epost : string;
 
-    constructor(id : string, navn : string, alder : number) {
+    constructor(id : string, navn : string, alder : number, mobil : string, epost : string) {
         super(id);
 
         this.navn = navn;
         this.alder = alder;
+        this.mobil = mobil;
+        this.epost = epost;
     }
 
 
@@ -78,6 +74,14 @@ class Person extends NodeObj implements TableItemInterface {
 
     public getAlder() : number {
         return this.alder;
+    }
+
+    public getMobil() : string {
+        return this.mobil;
+    }
+
+    public getEpost() : string {
+        return this.epost;
     }
 
     // Returnerer data fra static
