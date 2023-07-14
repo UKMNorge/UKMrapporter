@@ -36,17 +36,17 @@
         
                         <h4>Filtrering</h4>
 
-                        <!-- <div class="attributes as-margin-top-space-2">
-                            <div class="prop as-margin-top-space-1" v-for="(nodeProp, key) in getAllProperties(node)" :key="key">
-                                <div @click="addNodeProperty(nodeProp)" v-if="!nodeProp.active" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
-                                    <span>{{ nodeProp.navn }}</span>
+                        <div class="attributes as-margin-top-space-2">
+                            <div class="prop as-margin-top-space-1" v-for="(node, key) in getFiltersNodes()" :key="key">
+                                <div @click="activateNode(node)" v-if="!node.isActive()" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
+                                    <span>{{ node.getNavn() }}</span>
                                 </div>
                             </div>
                             <p></p>
-                            <div v-if="getActiveProperties(node).length == getAllProperties(node).length">
+                            <!-- <div v-if="getFiltersNodes().length == getAllProperties(node).length">
                                 <span>Du har lagt til alle feltene!</span>
-                            </div>
-                        </div> -->
+                            </div> -->
+                        </div>
 
                     </div>
                 </div>
@@ -61,12 +61,17 @@
 import NodeObj from "../objects/NodeObj";
 import RootNode from "../objects/RootNode";
 import { ref } from 'vue';
+import { onUpdated, onMounted } from 'vue';
 
 
+onUpdated(() => {
+    props.updateCallback();
+})
 
 const props = defineProps<{
     root: RootNode|null,
-    nodeFilter: any
+    nodeFilter: any,
+    updateCallback : ()=>void
 }>();
 
 var selectorPopup : any = ref(false);

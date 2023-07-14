@@ -95,7 +95,9 @@
     function getItems() {
         var items : any[] = [];
         for(var node of props.values) { 
-            items.push(_getProperty(node));
+            if(node.isActive()){ 
+                items.push(_getProperty(node));
+            }
         }
 
         return items;

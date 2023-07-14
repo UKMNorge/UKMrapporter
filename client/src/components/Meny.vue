@@ -2,7 +2,7 @@
     <div class="as-container container">
         <div class="rapport-meny-components nop as-card-1 as-padding-space-4">
             <NodeVue :root="root" />
-            <FilterVue :root="root" :nodeFilter="kommune" />
+            <FilterVue :root="root" :nodeFilter="kommune" :updateCallback="updateCallback" />
         </div>
     </div>
 </template>
@@ -18,10 +18,9 @@ import Kommune from '../objects/rapporter/Kommune';
 var kommune = Kommune;
 
 const props = defineProps<{
-    root: RootNode|null
+    root: RootNode|null,
+    updateCallback : ()=>void
 }>();
-
-
 
 // Accepts filtering
 // Accepts grupping

@@ -1,6 +1,6 @@
 <template> 
     <div>
-        <MenyVue :root="root" />
+        <MenyVue :updateCallback="update" :root="root" />
 
         <div class="container as-container">
             <div class="as-margin-top-space-7">
@@ -8,7 +8,7 @@
             </div>
         </div>
 
-        <button @click="getLeafNodes(root, values)">getLeafs()</button>
+        <!-- <button @click="updateFilter()">updateFilter()</button> -->
     </div>
 </template>
   
@@ -40,7 +40,9 @@ var tableKeys : {node : Object, value : NodeProperty[]}[] = [
 ];
 
 
-var values : NodeObj[] = [];
+// var values : NodeObj[] = [];
+var values : any = ref([]);
+
 
 
 
@@ -81,8 +83,9 @@ root.addChildren([
 ]);
 
 
+
 addParents(root);
-getLeafNodes(root, values)
+getLeafNodes(root, values.value)
 
 
 /* ------- TO SUPERCLASS ------- */
@@ -103,6 +106,11 @@ function addParents(node : NodeObj, parent : NodeObj|null = null) {
     }
 }
 
+function update() : void {
+    values.value = [];
+    getLeafNodes(root, values.value);
+}
+
 // Recursive function to get leaf nodes
 function getLeafNodes(node : NodeObj, leafNodes : NodeObj[]) {
     console.log('ffff');
@@ -110,7 +118,9 @@ function getLeafNodes(node : NodeObj, leafNodes : NodeObj[]) {
         leafNodes.push(node);
     } else {
         for (var i = 0; i < node.children.length; i++) {
-            getLeafNodes(node.children[i], leafNodes);
+            if(node.isActive()) {
+                getLeafNodes(node.children[i], leafNodes);
+            }
         }
     }
 }

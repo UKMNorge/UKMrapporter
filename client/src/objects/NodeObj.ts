@@ -52,7 +52,10 @@ abstract class NodeObj {
     }
 
     public isActive() : Boolean {
-        return this.refs.value.active;
+        if(this.refs.value) {
+            return this.refs.value.active;
+        }
+        return true;
     }
 
     public getId() : string {
