@@ -2,7 +2,7 @@
     <div class="as-container container">
         <div class="rapport-meny-components nop as-card-1 as-padding-space-4">
             <NodeVue :root="root" />
-            <FilterVue :root="root" :nodeFilter="kommune" :updateCallback="updateCallback" />
+            <FilterVue :root="root" :updateCallback="updateCallback" />
         </div>
     </div>
 </template>
@@ -15,7 +15,6 @@ import RootNode from '../objects/RootNode';
 import Kommune from '../objects/rapporter/Kommune';
 
 
-var kommune = Kommune;
 
 const props = defineProps<{
     root: RootNode|null,

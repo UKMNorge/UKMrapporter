@@ -1,7 +1,7 @@
 <template>
     <div class="rapport-meny">
         <div class="object item as-card-2 as-padding-space-2 as-margin-right-space-2">
-            <h4>Filtrering</h4>
+            <h4>Filtrering etter {{ getNodeName(nodeFilter) }}</h4>
             <div class="attributes as-margin-top-space-2">
                 <div v-for="(node, key) in getFiltersNodes()" :key="key">
                     <div @click="deactivateNode(node)" :key="key" v-if="node.isActive()" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
@@ -37,23 +37,23 @@
                         <h4>Filtrering</h4>
 
                         <div class="attributes as-margin-top-space-2">
+                            <div class="container nop buttons-selector">
+                                <div class="" v-for="(n, key) in filterNodes" :key="key">
+                                    <button class="btn" @click="selectNode(n)" >{{ getNodeName(n) }}</button>
+                                </div>
+                            </div>
                             <div class="prop as-margin-top-space-1" v-for="(node, key) in getFiltersNodes()" :key="key">
                                 <div @click="activateNode(node)" v-if="!node.isActive()" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
                                     <span>{{ node.getNavn() }}</span>
                                 </div>
                             </div>
-                            <p></p>
-                            <!-- <div v-if="getFiltersNodes().length == getAllProperties(node).length">
-                                <span>Du har lagt til alle feltene!</span>
-                            </div> -->
                         </div>
 
                     </div>
                 </div>
 
             </div>
-        </div>
-        
+        </div>        
     </div>
 </template>
 
@@ -62,6 +62,8 @@ import NodeObj from "../objects/NodeObj";
 import RootNode from "../objects/RootNode";
 import { ref } from 'vue';
 import { onUpdated, onMounted } from 'vue';
+import Kommune from '../objects/rapporter/Kommune';
+
 
 
 onUpdated(() => {
@@ -70,16 +72,51 @@ onUpdated(() => {
 
 const props = defineProps<{
     root: RootNode|null,
-    nodeFilter: any,
     updateCallback : ()=>void
 }>();
 
 var selectorPopup : any = ref(false);
+var filterNodes : any = ref([]);
+var nodeFilter : any = ref(Kommune)
+
+
+onMounted(() => {
+    var arrTest : {} = [];
+    if(props.root) {
+        getFilterNodes(props.root, arrTest);
+    }
+
+    for(var key of Object.keys(arrTest)) {
+        var val = (<any>arrTest)[key];
+        filterNodes.value.push(val.constructor);
+    }
+    console.log(arrTest);
+})
+
+function selectNode(node : NodeObj) {
+    nodeFilter.value = node;
+}
+
+function getNodeName(node : NodeObj) : string {
+    return node.className != undefined ? node.className : ''; 
+}
+ 
+// Recursive function to get all unqiue objects
+function getFilterNodes(node : NodeObj, leafNodes : {}) {
+    for (var i = 0; i < node.children.length; i++) {
+        getFilterNodes(node.children[i], leafNodes);
+    }
+
+    // Add all nodes that are not leaf and root
+    if (node.children.length > 0 && !(node instanceof RootNode)) {
+        (<any>leafNodes)[(<any>node.constructor).name] = node;
+    }
+}
 
 function getFiltersNodes() : NodeObj[] {
     var filteredNodes : NodeObj[] = [];
     if(props.root != null) {
-        getAllNodesAtLevel(props.root, filteredNodes, props.nodeFilter);
+        getAllNodesAtLevel(props.root, filteredNodes, nodeFilter.value);
     }
     return filteredNodes;
 }
@@ -101,6 +138,7 @@ function openSelector() {
     selectorPopup.value = true;
 }
 
+// Recursive
 function getAllNodesAtLevel(node : NodeObj, filteredNodes : NodeObj[], filterNode : NodeObj) {
     if (node.constructor.name === (<any>filterNode).name) {
         filteredNodes.push(node);
@@ -198,6 +236,9 @@ function getAllNodesAtLevel(node : NodeObj, filteredNodes : NodeObj[], filterNod
         display: block;
     }
     .box.selector .attributes .prop {
+        display: flex;
+    }
+    .buttons-selector {
         display: flex;
     }
 </style>

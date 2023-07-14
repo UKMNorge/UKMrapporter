@@ -19,6 +19,8 @@ class Person extends NodeObj implements TableItemInterface {
 
     // Using for reactivity on Vue
     protected static staticRefs : any;
+
+    static className = 'Person';
     
 
     // Mutual methods
@@ -53,7 +55,7 @@ class Person extends NodeObj implements TableItemInterface {
     
 
     // Class attributes
-    protected className = 'Person';
+    public className = 'Person';
     private navn : string;
     private alder : number;
     private mobil : string;

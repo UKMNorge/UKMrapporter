@@ -4,7 +4,7 @@ import NodeProperty from './NodeProperty';
 
 abstract class NodeObj {
     protected id: string;
-    protected className: string = '';
+    public className: string = '';
     private active : Boolean = true;
 
     // Pointer to the next array of Node

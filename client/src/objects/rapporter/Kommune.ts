@@ -12,7 +12,9 @@ class Kommune extends NodeObj {
     private static properties : NodeProperty[] = [
         new NodeProperty('getNavn', 'Kommune navn', true),
         new NodeProperty('getFylkeNavn', 'Fylke'),
-    ];    
+    ];
+
+    static className = 'Kommune';
 
     // Using for reactivity on Vue
     protected static staticRefs : any;
@@ -50,7 +52,7 @@ class Kommune extends NodeObj {
     
     
     // Class attributes
-    protected className = 'Kommune';
+    public className = 'Kommune';
     private navn : string;
     private fylkeNavn : string;
     

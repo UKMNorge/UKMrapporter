@@ -45,7 +45,6 @@ var values : any = ref([]);
 
 
 
-
 console.log(tableKeys);
 console.log(values);
 // ----- DATA -----
