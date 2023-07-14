@@ -1,68 +1,64 @@
 <template>
-    <div class="as-container">
-        <div class="rapport-meny nop as-card-1 as-padding-space-4">
-            <!-- nodes -->
-            <div v-for="(node, key) in getNodes()" :key="key" class="object item as-card-2 as-padding-space-2 as-margin-right-space-2">
-                <h4>{{ node.getRepresentativeName() }}</h4>
-                <div class="attributes as-margin-top-space-2">
-                    
-                    <div v-if="hasUnique(node)" @click="toggleFunction(node)" :class="getUnique(node) ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
-                        <span>Unike</span>
-                    </div>
-
-                    <!-- Node property -->
-                    <div v-for="(nodeProp, key2) in getAllProperties(node)" :key="key2">
-                        <div @click="removeNodeProperty(nodeProp)" v-if="nodeProp.active" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
-                            <span>{{ nodeProp.navn }}</span>
-                            <div class="icon">
-                                <svg class="remove-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div v-if="getActiveProperties(node).length != getAllProperties(node).length" @click="openSelector(node.getRepresentativeName())" class="attribute new as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
-                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 0H4V4H0V6H4V10H6V6H10V4H6V0Z" fill=""/>
-                            </svg>
-
-                        </div>
-                    </div>
-
+    <div class="as-container rapport-meny">
+        <!-- nodes -->
+        <div v-for="(node, key) in getNodes()" :key="key" class="object item as-card-2 as-padding-space-2 as-margin-right-space-2">
+            <h4>{{ node.getRepresentativeName() }}</h4>
+            <div class="attributes as-margin-top-space-2">
+                
+                <div v-if="hasUnique(node)" @click="toggleFunction(node)" :class="getUnique(node) ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
+                    <span>Unike</span>
                 </div>
 
-                <div @click="closeSelector($event)" v-if="selectorPopup == node.getRepresentativeName()" class="node-floating-selector close-selector">
-                    <div class="box selector as-card-1 as-padding-space-5">
-                        <button class="close-selector close-btn as-btn-hover-default">
-                            <div class="icon close-selector">
-                                <svg class="remove-icon close-selector" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path class="close-selector" d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"/>
-                                </svg>
-                            </div>
-                        </button>
-                        <h4>{{ node.getRepresentativeName() }}</h4>
-
-                        <div class="attributes as-margin-top-space-2">
-                            <div class="prop as-margin-top-space-1" v-for="(nodeProp, key) in getAllProperties(node)" :key="key">
-                                <div @click="addNodeProperty(nodeProp)" v-if="!nodeProp.active" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
-                                    <span>{{ nodeProp.navn }}</span>
-                                </div>
-                            </div>
-                            <p></p>
-                            <div v-if="getActiveProperties(node).length == getAllProperties(node).length">
-                                <span>Du har lagt til alle feltene!</span>
-                            </div>
+                <!-- Node property -->
+                <div v-for="(nodeProp, key2) in getAllProperties(node)" :key="key2">
+                    <div @click="removeNodeProperty(nodeProp)" v-if="nodeProp.active" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
+                        <span>{{ nodeProp.navn }}</span>
+                        <div class="icon">
+                            <svg class="remove-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"/>
+                            </svg>
                         </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div v-if="getActiveProperties(node).length != getAllProperties(node).length" @click="openSelector(node.getRepresentativeName())" class="attribute new as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 0H4V4H0V6H4V10H6V6H10V4H6V0Z" fill=""/>
+                        </svg>
 
                     </div>
                 </div>
 
             </div>
+
+            <div @click="closeSelector($event)" v-if="selectorPopup == node.getRepresentativeName()" class="node-floating-selector close-selector">
+                <div class="box selector as-card-1 as-padding-space-5">
+                    <button class="close-selector close-btn as-btn-hover-default">
+                        <div class="icon close-selector">
+                            <svg class="remove-icon close-selector" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path class="close-selector" d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"/>
+                            </svg>
+                        </div>
+                    </button>
+                    <h4>{{ node.getRepresentativeName() }}</h4>
+
+                    <div class="attributes as-margin-top-space-2">
+                        <div class="prop as-margin-top-space-1" v-for="(nodeProp, key) in getAllProperties(node)" :key="key">
+                            <div @click="addNodeProperty(nodeProp)" v-if="!nodeProp.active" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
+                                <span>{{ nodeProp.navn }}</span>
+                            </div>
+                        </div>
+                        <p></p>
+                        <div v-if="getActiveProperties(node).length == getAllProperties(node).length">
+                            <span>Du har lagt til alle feltene!</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
-
-
     </div>
 </template>
 
@@ -168,7 +164,6 @@ function getChildNode(node : NodeObj) : NodeObj|null {
 
 <style scoped>
     .rapport-meny {
-        width: 100%;
         display: flex;
         border-radius: var(--radius-medium);
     }

@@ -5,8 +5,7 @@ import NodeProperty from './NodeProperty';
 abstract class NodeObj {
     protected id: string;
     protected className: string = '';
-
-    private static subclass : any = null;
+    private active : Boolean = true;
 
     // Pointer to the next array of Node
     public children : NodeObj[] = [];
@@ -16,10 +15,14 @@ abstract class NodeObj {
     protected refs : any;
     protected static staticRefs : any;
 
+
     constructor(id: string) {
         this.id = id;
-        NodeObj.subclass = this.constructor;
 
+        // Making reactive values outside static
+        this.refs = ref({
+            active : this.active
+        })
     }
 
     public static getKeysForTable(subclass : any) : NodeProperty[] {
@@ -44,8 +47,20 @@ abstract class NodeObj {
         return this.className;
     }
 
+    public setAcitve(val : Boolean) {
+        this.refs.value.active = val;
+    }
+
+    public isActive() : Boolean {
+        return this.refs.value.active;
+    }
+
     public getId() : string {
         return this.id;
+    }
+
+    public getNavn() : string {
+        return this.getRepresentativeName();
     }
 
     public getAllProperies() {

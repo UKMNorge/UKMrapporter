@@ -7,6 +7,8 @@
                 <Table :loading="loading" :keys="tableKeys" :values="values" :root="root" :nodes="[]" />
             </div>
         </div>
+
+        <button @click="getLeafNodes(root, values)">getLeafs()</button>
     </div>
 </template>
   
@@ -103,6 +105,7 @@ function addParents(node : NodeObj, parent : NodeObj|null = null) {
 
 // Recursive function to get leaf nodes
 function getLeafNodes(node : NodeObj, leafNodes : NodeObj[]) {
+    console.log('ffff');
     if (node.children.length === 0) {
         leafNodes.push(node);
     } else {

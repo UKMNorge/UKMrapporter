@@ -9,6 +9,7 @@ class Person extends NodeObj implements TableItemInterface {
     /* -- Static start -- */
     private static unique: Boolean = false;
     public static hasUnique : Boolean = false;
+
     private static properties : NodeProperty[] = [
         new NodeProperty('getNavn', 'Navn', true),
         new NodeProperty('getAlder', 'Alder', true),

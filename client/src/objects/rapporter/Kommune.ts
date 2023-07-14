@@ -8,6 +8,7 @@ class Kommune extends NodeObj {
     /* -- Static start -- */
     private static unique: Boolean = false;
     public static hasUnique : Boolean = false;
+
     private static properties : NodeProperty[] = [
         new NodeProperty('getNavn', 'Kommune navn', true),
         new NodeProperty('getFylkeNavn', 'Fylke'),
