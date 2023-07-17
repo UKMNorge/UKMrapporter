@@ -122,11 +122,13 @@ function getFiltersNodes() : NodeObj[] {
 }
 
 function activateNode(node : NodeObj) {
-    node.setAcitve(true);
+    node.setActive(true);
 }
 
 function deactivateNode(node : NodeObj) {
-    node.setAcitve(false);
+    node.setActive(false);
+    console.log('node');
+    console.log(node);
 }
 
 function closeSelector(event : any) {

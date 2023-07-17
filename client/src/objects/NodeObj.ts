@@ -47,7 +47,7 @@ abstract class NodeObj {
         return this.className;
     }
 
-    public setAcitve(val : Boolean) {
+    public setActive(val : Boolean) {
         this.refs.value.active = val;
     }
 

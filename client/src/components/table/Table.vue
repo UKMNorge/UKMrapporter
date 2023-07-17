@@ -1,63 +1,69 @@
 <template>
-    <div class="as-padding-space-4 as-padding-top-space-2 as-padding-bottom-space-2 as-card-1">
-        <!-- Phantom loading -->
-        <div v-show="loading">
-            <table class="table ukm-vue-table-row">
+    <div class="as-container">
+        <div v-if="root.getNavn()" class="as-margin-bottom-space-2">
+            <h4>{{ root.getNavn() }}</h4>
+        </div>
+
+        <div class="as-padding-space-4 as-padding-top-space-2 as-padding-bottom-space-2 as-card-1">
+            <!-- Phantom loading -->
+            <div v-show="loading">
+                <table class="table ukm-vue-table-row">
+                    <thead>
+                        <tr>
+                            <th v-for="index in 5" :key="index"><span class="phantom-loading">---------</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                         <tr v-for="index in Math.floor((Math.random() * 15) + 5)" :key="index">
+                            <td v-for="innerIndex in 5" :key="innerIndex"><span class="phantom-loading">-----</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <table v-show="!loading" class="table ukm-vue-table-row">
                 <thead>
                     <tr>
-                        <th v-for="index in 5" :key="index"><span class="phantom-loading">---------</span></th>
+                        <template v-for="keyObj in keys">
+                            <template v-for="key in keyObj.value">
+                                <th v-if="key.active" scope="col">
+                                    <div  class="inner-div">
+                                        <button @click="sortBy(key)" class="sort-button">
+                                            <span class="title">{{ key.navn }}</span>
+                                            <div class="indicators">
+                                                <div>
+                                                    <svg :class="{'not-active' : currentSort == key.navn && ascSort}" class="sort-indicator" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 6 19 1" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"></path></svg>
+                                                </div>
+                                                <div>
+                                                    <svg :class="{'not-active' : currentSort == key.navn && !ascSort}" class="sort-indicator" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 7 19 18" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"></path></svg>
+                                                </div>
+                                            </div>
+                                        </button>
+                                        <button @click="removeProperty(key)" class="remove-row ukm-botton-style not-correct-button">
+                                            <svg class="remove-icon close-selector" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path class="close-selector" d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </th>
+                            </template>
+                        </template>
                     </tr>
                 </thead>
                 <tbody>
-                     <tr v-for="index in Math.floor((Math.random() * 15) + 5)" :key="index">
-                        <td v-for="innerIndex in 5" :key="innerIndex"><span class="phantom-loading">-----</span></td>
+                    <tr v-for="value in getItems()">
+                        <td class="as-padding-space-4" v-for="item in value">{{ item }}</td>
                     </tr>
                 </tbody>
             </table>
+    
         </div>
-
-        <table v-show="!loading" class="table ukm-vue-table-row">
-            <thead>
-                <tr>
-                    <template v-for="keyObj in keys">
-                        <template v-for="key in keyObj.value">
-                            <th v-if="key.active" scope="col">
-                                <div  class="inner-div">
-                                    <button @click="sortBy(key)" class="sort-button">
-                                        <span class="title">{{ key.navn }}</span>
-                                        <div class="indicators">
-                                            <div>
-                                                <svg :class="{'not-active' : currentSort == key.navn && ascSort}" class="sort-indicator" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 6 19 1" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"></path></svg>
-                                            </div>
-                                            <div>
-                                                <svg :class="{'not-active' : currentSort == key.navn && !ascSort}" class="sort-indicator" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 7 19 18" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"></path></svg>
-                                            </div>
-                                        </div>
-                                    </button>
-                                    <button @click="removeProperty(key)" class="remove-row ukm-botton-style not-correct-button">
-                                        <svg class="remove-icon close-selector" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path class="close-selector" d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </th>
-                        </template>
-                    </template>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="value in getItems()">
-                    <td class="as-padding-space-4" v-for="item in value">{{ item }}</td>
-                </tr>
-            </tbody>
-        </table>
-
     </div>
 </template>
 
 
 <script setup lang="ts">
-    import { ref } from 'vue';
+    import { watchEffect, ref, onMounted, onUpdated } from 'vue';
     import NodeObj from '../../objects/NodeObj';
     import NodeProperty from '../../objects/NodeProperty';
     import RootNode from '../../objects/RootNode';
@@ -68,13 +74,22 @@
 
     const props = defineProps<{
         keys: {node : Object, value : NodeProperty[]}[],
-        values: any[],
         loading: boolean,
         root: RootNode,
-        nodes : any[],
     }>();
 
-    var removedKeys : {node : Object, value : NodeProperty[]}[] = [];
+    var values : any = ref([]);
+
+     // Watch changes of the root
+     watchEffect(() => {
+        const newVal = props.root;
+        updateNodes();
+    });
+
+    function updateNodes() {
+        values.value = [];
+        getLeafNodes(props.root, values.value);
+    }
 
     var currentSort : string = '';
     var ascSort : boolean = true;
@@ -82,10 +97,10 @@
     function sortBy(key : {navn : string, method : string , active: Boolean}) {
         currentSort = key.navn;
 
-        props.values.sort((a, b) => {return a[key.method]() > b[key.method]() ? 1 : (a[key.method]() < b[key.method]() ? -1 : 0)})
+        values.sort((a : any, b : any) => {return a[key.method]() > b[key.method]() ? 1 : (a[key.method]() < b[key.method]() ? -1 : 0)})
 
         if(ascSort) {
-            props.values.reverse();
+            values.reverse();
         }
 
         ascSort = !ascSort
@@ -94,13 +109,27 @@
     // Get all items from the classes sendt as array on values
     function getItems() {
         var items : any[] = [];
-        for(var node of props.values) { 
+        for(var node of values.value) { 
             if(node.isActive()){ 
                 items.push(_getProperty(node));
             }
         }
 
         return items;
+    }
+
+    function getLeafNodes(node : NodeObj, leafNodes : any[]) {
+        console.log('getLeafNodes TABLE: ' + node.className);
+        if (node.children.length === 0) {
+            console.log('yyy');
+            leafNodes.push(node);
+        } else {
+            for (var i = 0; i < node.children.length; i++) {
+                if(node.isActive()) {
+                    getLeafNodes(node.children[i], leafNodes);
+                }
+            }
+        }
     }
 
     function removeProperty(nodeProp : NodeProperty) {

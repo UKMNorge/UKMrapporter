@@ -1,14 +1,20 @@
 <template> 
     <div>
-        <MenyVue :updateCallback="update" :root="root" />
+        <MenyVue :updateCallback="update" :root="root" :gruppingUpdateCallback="gruppingUpdateCallback" />
 
         <div class="container as-container">
-            <div class="as-margin-top-space-7">
-                <Table :loading="loading" :keys="tableKeys" :values="values" :root="root" :nodes="[]" />
+            <div v-for="(r, key) in rootNodes" :key="key">
+                <div class="as-margin-top-space-7" >
+                    <Table :key="key" :loading="loading" :keys="tableKeys" :root="r" />
+                </div>
             </div>
         </div>
 
         <!-- <button @click="updateFilter()">updateFilter()</button> -->
+        <div>
+            <h1>hello</h1>
+            {{ groupingNode.className }}
+        </div>
     </div>
 </template>
   
@@ -40,15 +46,17 @@ var tableKeys : {node : Object, value : NodeProperty[]}[] = [
 ];
 
 
-// var values : NodeObj[] = [];
-var values : any = ref([]);
-
-
-
 console.log(tableKeys);
 console.log(values);
 // ----- DATA -----
 var root = new RootNode();
+
+// var values : NodeObj[] = [];
+var values : any = ref([]);
+var groupingNode : any = ref(RootNode);
+var rootNodes : any = ref([root]);
+
+
 
 // Adding Kommune(s)
 var k0 = new Kommune('k1', "Tana", 'Nordland');
@@ -84,7 +92,7 @@ root.addChildren([
 
 
 addParents(root);
-getLeafNodes(root, values.value)
+// getLeafNodes(root, values.value)
 
 
 /* ------- TO SUPERCLASS ------- */
@@ -105,23 +113,52 @@ function addParents(node : NodeObj, parent : NodeObj|null = null) {
     }
 }
 
-function update() : void {
-    values.value = [];
-    getLeafNodes(root, values.value);
+function gruppingUpdateCallback(node : NodeObj) : void {
+    groupingNode.value = node;
+    // console.log('gruppingUpdateCallback');
+    // console.log(node.className)
+
+    // Get nodes at level
+    var rootNodesArr : NodeObj[] = [];
+    if(root != null) {
+        getAllNodesAtLevel(root, rootNodesArr, node);
+    }
+    console.log(rootNodesArr);
+
+    rootNodes.value = [];
+    rootNodes.value = rootNodesArr;
+
 }
 
-// Recursive function to get leaf nodes
-function getLeafNodes(node : NodeObj, leafNodes : NodeObj[]) {
-    console.log('ffff');
-    if (node.children.length === 0) {
-        leafNodes.push(node);
+function update() : void {
+    // values.value = [];
+    // getLeafNodes(root, values.value);
+}
+
+
+// Move to graph repo or class
+function getAllNodesAtLevel(node : NodeObj, filteredNodes : NodeObj[], filterNode : NodeObj) {
+    if (node.constructor.name === (<any>filterNode).name) {
+        filteredNodes.push(node);
     } else {
         for (var i = 0; i < node.children.length; i++) {
-            if(node.isActive()) {
-                getLeafNodes(node.children[i], leafNodes);
-            }
+            getAllNodesAtLevel(node.children[i], filteredNodes, filterNode);
         }
     }
 }
+
+// Recursive function to get leaf nodes
+// function getLeafNodes(node : NodeObj, leafNodes : NodeObj[]) {
+//     console.log('ffff');
+//     if (node.children.length === 0) {
+//         leafNodes.push(node);
+//     } else {
+//         for (var i = 0; i < node.children.length; i++) {
+//             if(node.isActive()) {
+//                 getLeafNodes(node.children[i], leafNodes);
+//             }
+//         }
+//     }
+// }
 
 </script>
