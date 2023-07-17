@@ -119,7 +119,6 @@
     }
 
     function getLeafNodes(node : NodeObj, leafNodes : any[]) {
-        console.log('getLeafNodes TABLE: ' + node.className);
         if (node.children.length === 0) {
             console.log('yyy');
             leafNodes.push(node);

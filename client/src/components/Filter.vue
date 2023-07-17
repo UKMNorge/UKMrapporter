@@ -3,7 +3,7 @@
         <div class="object item as-card-2 as-padding-space-2 as-margin-right-space-2">
             <h4>Filtrering etter {{ getNodeName(selectedNode) }}</h4>
             <div class="attributes as-margin-top-space-2">
-                <div v-for="(node, key) in getFiltersNodes()" :key="key">
+                <div v-for="(node, key) in getProperties()" :key="key">
                     <div @click="deactivateNode(node)" :key="key" v-if="node.isActive()" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
                         <span>{{ node.getNavn() }}</span>
                         <div class="icon">
@@ -42,7 +42,7 @@
                                     <button class="btn" @click="selectNode(n)" >{{ getNodeName(n) }}</button>
                                 </div>
                             </div>
-                            <div class="prop as-margin-top-space-1" v-for="(node, key) in getFiltersNodes()" :key="key">
+                            <div class="prop as-margin-top-space-1" v-for="(node, key) in getProperties()" :key="key">
                                 <div @click="activateNode(node)" v-if="!node.isActive()" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
                                     <span>{{ node.getNavn() }}</span>
                                 </div>
@@ -66,13 +66,8 @@ import Kommune from '../objects/rapporter/Kommune';
 
 
 
-onUpdated(() => {
-    props.updateCallback();
-})
-
 const props = defineProps<{
     root: RootNode|null,
-    updateCallback : ()=>void
 }>();
 
 var selectorPopup : any = ref(false);
@@ -81,6 +76,7 @@ var selectedNode : any = ref(props.root ? props.root.constructor : null)
 
 
 onMounted(() => {
+    selectedNode.value = props.root;
     var arrTest : {} = [];
     if(props.root) {
         getFilterNodes(props.root, arrTest);
@@ -90,7 +86,6 @@ onMounted(() => {
         var val = (<any>arrTest)[key];
         filterNodes.value.push(val.constructor);
     }
-    console.log(arrTest);
 })
 
 function selectNode(node : NodeObj) {
@@ -113,8 +108,12 @@ function getFilterNodes(node : NodeObj, leafNodes : {}) {
     }
 }
 
-function getFiltersNodes() : NodeObj[] {
+function getProperties() : NodeObj[] {
     var filteredNodes : NodeObj[] = [];
+    // If it is root, there is no properties
+    if(selectedNode.value instanceof RootNode) {
+        return [];
+    }
     if(props.root != null) {
         getAllNodesAtLevel(props.root, filteredNodes, selectedNode.value);
     }
@@ -127,7 +126,7 @@ function activateNode(node : NodeObj) {
 
 function deactivateNode(node : NodeObj) {
     node.setActive(false);
-    console.log('node');
+    console.log('Deactivated');
     console.log(node);
 }
 

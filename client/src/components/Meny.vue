@@ -2,7 +2,7 @@
     <div class="as-container container">
         <div class="rapport-meny-components nop as-card-1 as-padding-space-4">
             <NodeVue :root="root" />
-            <FilterVue :root="root" :updateCallback="updateCallback" />
+            <FilterVue :root="root" />
             <GroupingVue :root="root" :gruppingUpdateCallback="gruppingUpdateCallback" />
         </div>
     </div>
@@ -20,7 +20,6 @@ import NodeObj from '../objects/NodeObj';
 
 const props = defineProps<{
     root: RootNode|null,
-    updateCallback : ()=>void,
     gruppingUpdateCallback : (n : NodeObj)=>void,
 }>();
 

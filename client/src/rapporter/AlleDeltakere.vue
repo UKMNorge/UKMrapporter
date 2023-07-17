@@ -1,6 +1,6 @@
 <template> 
     <div>
-        <MenyVue :updateCallback="update" :root="root" :gruppingUpdateCallback="gruppingUpdateCallback" />
+        <MenyVue :root="root" :gruppingUpdateCallback="gruppingUpdateCallback" />
 
         <div class="container as-container">
             <div v-for="(r, key) in rootNodes" :key="key">
@@ -10,11 +10,6 @@
             </div>
         </div>
 
-        <!-- <button @click="updateFilter()">updateFilter()</button> -->
-        <div>
-            <h1>hello</h1>
-            {{ groupingNode.className }}
-        </div>
     </div>
 </template>
   
@@ -46,8 +41,6 @@ var tableKeys : {node : Object, value : NodeProperty[]}[] = [
 ];
 
 
-console.log(tableKeys);
-console.log(values);
 // ----- DATA -----
 var root = new RootNode();
 
@@ -115,24 +108,16 @@ function addParents(node : NodeObj, parent : NodeObj|null = null) {
 
 function gruppingUpdateCallback(node : NodeObj) : void {
     groupingNode.value = node;
-    // console.log('gruppingUpdateCallback');
-    // console.log(node.className)
 
     // Get nodes at level
     var rootNodesArr : NodeObj[] = [];
     if(root != null) {
         getAllNodesAtLevel(root, rootNodesArr, node);
     }
-    console.log(rootNodesArr);
 
     rootNodes.value = [];
     rootNodes.value = rootNodesArr;
 
-}
-
-function update() : void {
-    // values.value = [];
-    // getLeafNodes(root, values.value);
 }
 
 
