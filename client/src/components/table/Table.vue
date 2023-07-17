@@ -1,5 +1,5 @@
 <template>
-    <div class="as-container">
+    <div v-if="getItems().length > 0" class="as-container">
         <div v-if="root.getNavn()" class="as-margin-bottom-space-2">
             <h4>{{ root.getNavn() }}</h4>
         </div>
@@ -63,7 +63,7 @@
 
 
 <script setup lang="ts">
-    import { watchEffect, ref, onMounted, onUpdated } from 'vue';
+    import { watchEffect, ref, onMounted, onUpdated, toRaw } from 'vue';
     import NodeObj from '../../objects/NodeObj';
     import NodeProperty from '../../objects/NodeProperty';
     import RootNode from '../../objects/RootNode';
@@ -125,7 +125,7 @@
             leafNodes.push(node);
         } else {
             for (var i = 0; i < node.children.length; i++) {
-                if(node.isActive()) {
+                if((node instanceof RootNode) || toRaw(node).isActive()) {
                     getLeafNodes(node.children[i], leafNodes);
                 }
             }
