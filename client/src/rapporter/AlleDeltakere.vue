@@ -20,6 +20,7 @@ import { ref } from 'vue';
 import MenyVue from '../components/Meny.vue';
 import Person from '../objects/rapporter/Person';
 import Kommune from '../objects/rapporter/Kommune';
+import Fylke from '../objects/rapporter/Fylke';
 import RootNode from '../objects/RootNode';
 import NodeObj from '../objects/NodeObj';
 import NodeProperty from '../objects/NodeProperty';
@@ -34,10 +35,11 @@ setTimeout(() => {
     loading.value = false;
 }, 1000);
 
-// Må automatiseres på Tab
+// Må automatiseres på Tab !!!!!!
 var tableKeys : {node : Object, value : NodeProperty[]}[] = [
     {'node' : Person, 'value' : Person.getKeysForTable()},
     {'node' : Kommune, 'value' : Kommune.getKeysForTable()},
+    {'node' : Fylke, 'value' : Fylke.getKeysForTable()},
 ];
 
 
@@ -55,6 +57,22 @@ var rootNodes : any = ref([root]);
 var k0 = new Kommune('k1', "Tana", 'Nordland');
 var k1 = new Kommune('k2', "Lillestrøm", 'Viken');
 var k2 = new Kommune('k3', "Oslo", 'Viken');
+
+var f0 = new Fylke('f1', 'Viken');
+var f1 = new Fylke('f2', 'Nordland');
+
+// Adding children to Kommune(s) to Fylke
+f0.addChildren([
+    k1, k2
+]);
+f1.addChildren([
+    k0
+])
+
+// Adding children to Fylke(s) to Root
+root.addChildren([
+    f0, f1
+]);
 
 
 var p1 = new Person('p1', 'Ole Nordby', 18, '46516256',  'Ole_Nordby@gmail.com');
@@ -75,11 +93,6 @@ k1.addChildren([
 
 k2.addChildren([
     p5
-]);
-
-// Adding children to Kommune(s) to Root
-root.addChildren([
-    k0, k1, k2
 ]);
 
 
