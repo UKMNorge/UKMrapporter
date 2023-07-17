@@ -1,7 +1,7 @@
 <template>
     <div class="rapport-meny">
         <div class="object item as-card-2 as-padding-space-2 as-margin-right-space-2">
-            <h4>Filtrering etter {{ getNodeName(nodeFilter) }}</h4>
+            <h4>Filtrering etter {{ getNodeName(selectedNode) }}</h4>
             <div class="attributes as-margin-top-space-2">
                 <div v-for="(node, key) in getFiltersNodes()" :key="key">
                     <div @click="deactivateNode(node)" :key="key" v-if="node.isActive()" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
@@ -77,7 +77,7 @@ const props = defineProps<{
 
 var selectorPopup : any = ref(false);
 var filterNodes : any = ref([]);
-var nodeFilter : any = ref(Kommune)
+var selectedNode : any = ref(props.root ? props.root.constructor : null)
 
 
 onMounted(() => {
@@ -94,7 +94,7 @@ onMounted(() => {
 })
 
 function selectNode(node : NodeObj) {
-    nodeFilter.value = node;
+    selectedNode.value = node;
 }
 
 function getNodeName(node : NodeObj) : string {
@@ -116,7 +116,7 @@ function getFilterNodes(node : NodeObj, leafNodes : {}) {
 function getFiltersNodes() : NodeObj[] {
     var filteredNodes : NodeObj[] = [];
     if(props.root != null) {
-        getAllNodesAtLevel(props.root, filteredNodes, nodeFilter.value);
+        getAllNodesAtLevel(props.root, filteredNodes, selectedNode.value);
     }
     return filteredNodes;
 }
