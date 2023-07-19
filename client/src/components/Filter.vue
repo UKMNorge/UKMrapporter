@@ -2,8 +2,8 @@
     <div class="rapport-meny">
         <div class="object item as-card-2 as-padding-space-2 as-margin-space-1">
             <h4>Filtrering etter {{ getNodeName(selectedNode) }}</h4>
-            <div class="attributes as-margin-top-space-2">
-                <div v-for="(node, key) in getProperties()" :key="key">
+            <div class="attributes as-margin-top-space-1">
+                <div v-for="(node, key) in getProperties()" :key="key" class="attribute-outer as-padding-top-space-1">
                     <div @click="deactivateNode(node)" :key="key" v-if="node.isActive()" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
                         <span>{{ node.getNavn() }}</span>
                         <div class="icon">
@@ -15,7 +15,7 @@
                 </div>
 
                 
-                <div>
+                <div class="attribute-outer as-padding-top-space-1">
                     <div @click="openSelector()" class="attribute new as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
                         <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M6 0H4V4H0V6H4V10H6V6H10V4H6V0Z" fill=""/>
@@ -163,6 +163,7 @@ function getAllNodesAtLevel(node : NodeObj, filteredNodes : NodeObj[], filterNod
     .rapport-meny .item .attributes {
         display: flex;
         min-width: 200px;
+        flex-wrap: wrap;
     }
     .rapport-meny .item .attributes .attribute {
         background: var(--color-primary-bla-50);

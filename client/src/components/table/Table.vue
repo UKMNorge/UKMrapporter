@@ -171,6 +171,10 @@
     }
     .ukm-vue-table-row thead tr th .inner-div .indicators div {
         display: flex;
+        visibility: hidden;
+    }
+    .ukm-vue-table-row thead tr th .inner-div:hover .indicators div {
+        visibility: visible;
     }
     .ukm-vue-table-row thead tr th .inner-div .indicators div svg.sort-indicator.not-active{
         fill: #bebebe !important;

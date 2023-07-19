@@ -3,14 +3,16 @@
         <!-- nodes -->
         <div v-for="(node, key) in getNodes()" :key="key" class="object item as-card-2 as-padding-space-2 as-margin-space-1">
             <h4>{{ node.getRepresentativeName() }}</h4>
-            <div class="attributes as-margin-top-space-2">
+            <div class="attributes as-margin-top-space-1">
                 
-                <div v-if="hasUnique(node)" @click="toggleFunction(node)" :class="getUnique(node) ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
-                    <span>Unike</span>
+                <div class="as-padding-top-space-1">
+                    <div v-if="hasUnique(node)" @click="toggleFunction(node)" :class="getUnique(node) ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
+                        <span>Unike</span>
+                    </div>
                 </div>
 
                 <!-- Node property -->
-                <div v-for="(nodeProp, key2) in getAllProperties(node)" :key="key2">
+                <div v-for="(nodeProp, key2) in getAllProperties(node)" :key="key2" class="as-padding-top-space-1">
                     <div @click="removeNodeProperty(nodeProp)" v-if="nodeProp.active" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
                         <span>{{ nodeProp.navn }}</span>
                         <div class="icon">
@@ -21,7 +23,7 @@
                     </div>
                 </div>
 
-                <div>
+                <div class="as-padding-top-space-1">
                     <div v-if="getActiveProperties(node).length != getAllProperties(node).length" @click="openSelector(node.getRepresentativeName())" class="attribute new as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
                         <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M6 0H4V4H0V6H4V10H6V6H10V4H6V0Z" fill=""/>
