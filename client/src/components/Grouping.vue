@@ -46,11 +46,13 @@ onMounted(() => {
 
 function changeNode(event : any) {
     var node = keyValueNode.value[event.target.value].constructor;
+    console.log(1439);
+    console.log(node);
     props.gruppingUpdateCallback(node);
 }
 
 function getNodeName(node : NodeObj) : string {
-    console.log(node.className);
+
     if(node.className == 'Root' || node.className.length < 1) {
         return 'Ingen';
     }

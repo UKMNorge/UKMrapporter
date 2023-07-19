@@ -1,14 +1,16 @@
 <template> 
     <div>
-        <MenyVue :root="root" :gruppingUpdateCallback="gruppingUpdateCallback" />
+        <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" />
 
         <div class="container as-container">
             <div v-for="(r, key) in rootNodes" :key="key">
                 <div class="as-margin-top-space-7" >
-                    <Table :key="key" :loading="loading" :keys="tableKeys" :root="r" />
+                    <Table :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" />
                 </div>
             </div>
         </div>
+
+        <button @click="getDataAjax()">Get data</button>
 
     </div>
 </template>
@@ -24,8 +26,23 @@ import Fylke from '../objects/rapporter/Fylke';
 import RootNode from '../objects/RootNode';
 import NodeObj from '../objects/NodeObj';
 import NodeProperty from '../objects/NodeProperty';
+import { SPAInteraction } from 'ukm-spa/SPAInteraction';
+import Repo from '../objects/Repo';
 
+var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
+const spaInteraction = new SPAInteraction(null, ajaxurl);
+
+async function getDataAjax() {
+    var data = {
+        action: 'UKMrapporter_ajax',
+        controller: 'rapport_alleDeltakere',
+    };
+
+    var response = await spaInteraction.runAjaxCall('/', 'POST', data);
+
+    return response;
+}
 
 Person.hasUnique = true;
 
@@ -35,22 +52,9 @@ setTimeout(() => {
     loading.value = false;
 }, 1000);
 
-// Må automatiseres på Tab !!!!!!
-var tableKeys : {node : Object, value : NodeProperty[]}[] = [
-    {'node' : Person, 'value' : Person.getKeysForTable()},
-    {'node' : Kommune, 'value' : Kommune.getKeysForTable()},
-    {'node' : Fylke, 'value' : Fylke.getKeysForTable()},
-];
-
 
 // ----- DATA -----
 var root = new RootNode();
-
-// var values : NodeObj[] = [];
-var values : any = ref([]);
-var groupingNode : any = ref(RootNode);
-var rootNodes : any = ref([root]);
-
 
 
 // Adding Kommune(s)
@@ -96,67 +100,7 @@ k2.addChildren([
 ]);
 
 
-
-addParents(root);
-// getLeafNodes(root, values.value)
-
-
-/* ------- TO SUPERCLASS ------- */
-
-// Recursive function to add parents to NodeObj
-function addParents(node : NodeObj, parent : NodeObj|null = null) {
-    // var obj : any = {};
-    if(!(parent instanceof RootNode)) {
-        node.parent = parent;
-    }
-    
-    if (node.children.length > 0) {
-        // obj.children = [];
-        for (var i = 0; i < node.children.length; i++) {
-            // obj.children.push(addParents(node.children[i], node));
-            addParents(node.children[i], node);
-        }
-    }
-}
-
-function gruppingUpdateCallback(node : NodeObj) : void {
-    groupingNode.value = node;
-
-    // Get nodes at level
-    var rootNodesArr : NodeObj[] = [];
-    if(root != null) {
-        getAllNodesAtLevel(root, rootNodesArr, node);
-    }
-
-    rootNodes.value = [];
-    rootNodes.value = rootNodesArr;
-
-}
-
-
-// Move to graph repo or class
-function getAllNodesAtLevel(node : NodeObj, filteredNodes : NodeObj[], filterNode : NodeObj) {
-    if (node.constructor.name === (<any>filterNode).name) {
-        filteredNodes.push(node);
-    } else {
-        for (var i = 0; i < node.children.length; i++) {
-            getAllNodesAtLevel(node.children[i], filteredNodes, filterNode);
-        }
-    }
-}
-
-// Recursive function to get leaf nodes
-// function getLeafNodes(node : NodeObj, leafNodes : NodeObj[]) {
-//     console.log('ffff');
-//     if (node.children.length === 0) {
-//         leafNodes.push(node);
-//     } else {
-//         for (var i = 0; i < node.children.length; i++) {
-//             if(node.isActive()) {
-//                 getLeafNodes(node.children[i], leafNodes);
-//             }
-//         }
-//     }
-// }
+var repo = new Repo(root);
+var rootNodes : any = repo.getRootNodes();
 
 </script>
