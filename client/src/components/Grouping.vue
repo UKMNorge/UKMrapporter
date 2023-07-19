@@ -1,6 +1,6 @@
 <template>
     <div class="rapport-meny">
-        <div class="object item as-card-2 as-padding-space-2 as-margin-right-space-2">
+        <div class="object item as-card-2 as-padding-space-2 as-margin-space-1">
             <h4>Gruppering</h4>
 
             <div class="attributes as-margin-top-space-2">
@@ -72,6 +72,9 @@ function getGroupingNodes(node : NodeObj, leafNodes : {}) {
 </script>
 
 <style scoped>
+.rapport-meny {
+    width: 100%;
+}
 .rapport-meny .item {
         background: var(--color-primary-grey-lightest);
         box-shadow: none;

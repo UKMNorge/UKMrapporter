@@ -1,9 +1,11 @@
 <template>
     <div class="as-container container">
-        <div class="rapport-meny-components nop as-card-1 as-padding-space-4">
+        <div class="rapport-meny-components nop as-card-1 as-padding-space-3">
             <NodeVue :root="root" />
+        <div class="filter-grouping-div col-xs-3 nop">
             <FilterVue :root="root" />
             <GroupingVue :root="root" :gruppingUpdateCallback="gruppingUpdateCallback" />
+        </div>
         </div>
     </div>
 </template>
@@ -38,5 +40,10 @@ const props = defineProps<{
         width: 100%;
         display: flex;
         border-radius: var(--radius-medium);
+    }
+    .filter-grouping-div {
+        display: flex;
+        flex-wrap: wrap;
+        float: revert;
     }
 </style>

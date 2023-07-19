@@ -1,7 +1,7 @@
 <template>
-    <div class="as-container rapport-meny">
+    <div class="as-container rapport-meny col-xs-9 nop">
         <!-- nodes -->
-        <div v-for="(node, key) in getNodes()" :key="key" class="object item as-card-2 as-padding-space-2 as-margin-right-space-2">
+        <div v-for="(node, key) in getNodes()" :key="key" class="object item as-card-2 as-padding-space-2 as-margin-space-1">
             <h4>{{ node.getRepresentativeName() }}</h4>
             <div class="attributes as-margin-top-space-2">
                 
@@ -165,7 +165,9 @@ function getChildNode(node : NodeObj) : NodeObj|null {
 <style scoped>
     .rapport-meny {
         display: flex;
+        flex-wrap: wrap;
         border-radius: var(--radius-medium);
+        height: fit-content;
     }
     .rapport-meny .item {
         background: var(--color-primary-grey-lightest);
@@ -174,6 +176,7 @@ function getChildNode(node : NodeObj) : NodeObj|null {
     }
     .rapport-meny .item .attributes {
         display: flex;
+        flex-wrap: wrap;
         min-width: 200px;
     }
     .rapport-meny .item .attributes .attribute {
