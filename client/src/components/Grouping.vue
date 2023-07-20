@@ -46,8 +46,6 @@ onMounted(() => {
 
 function changeNode(event : any) {
     var node = keyValueNode.value[event.target.value].constructor;
-    console.log(1439);
-    console.log(node);
     props.gruppingUpdateCallback(node);
 }
 

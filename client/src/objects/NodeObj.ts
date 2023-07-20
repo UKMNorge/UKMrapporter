@@ -39,6 +39,10 @@ abstract class NodeObj {
         this.children = children;
     }
 
+    public addChild(child : NodeObj) {
+        this.children.push(child);
+    }
+
     public getChildren() : NodeObj[] {
         return this.children;
     }
