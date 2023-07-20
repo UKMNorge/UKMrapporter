@@ -22,7 +22,7 @@ class Node {
     }
 
     public function addChild($id, $child) {
-        $this->children[$id] = $child;
+        $this->children[] = $child;
     }
 
     public function getChildren() {

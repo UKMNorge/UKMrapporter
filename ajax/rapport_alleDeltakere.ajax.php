@@ -14,7 +14,7 @@ $arrangement = new Arrangement(get_option('pl_id'));
 $root = new Node('Root', null);
 $fylker = [];
 $kommuner = [];
-$innslag = [];
+$innslags = [];
 
 $retObj = [];
 
@@ -23,20 +23,23 @@ foreach( $arrangement->getInnslag()->getAll() as $innslag ) {
     $kommune = $innslag->getKommune();
 
     // Adding fylke
-    $nodeFylke = new Node('Fylke', $fylke);
-    $root->addChild($fylke->getId(), $nodeFylke);
+    if(!key_exists($fylke->getId(), $fylker)) {
+        $fylker[$fylke->getId()] = new Node('Fylke', $fylke);
+        $root->addChild($fylke->getId(), $fylker[$fylke->getId()]);
+    }
+    
 
 
     // Adding kommune
-    // var_dump($kommune->getAll());
-
-    $kommuneObj = ['id' => $kommune->getId(), 'navn' => $kommune->getNavn()];
-    $nodeKommune = new Node('Kommune', $kommuneObj);
-    $nodeFylke->addChild($kommune->getId(), $nodeKommune);
+    if(!key_exists($kommune->getId(), $kommuner)) {
+        $kommuneObj = ['id' => $kommune->getId(), 'navn' => $kommune->getNavn()];
+        $kommuner[$kommune->getId()] = new Node('Kommune', $kommuneObj);
+        $fylker[$fylke->getId()]->addChild($kommune->getId(), $kommuner[$kommune->getId()]);
+    }
     
     // Adding innslag
     $nodeInnslag = new Node('Innslag', $innslag);
-    $nodeKommune->addChild($innslag->getId(), $nodeInnslag);
+    $kommuner[$kommune->getId()]->addChild($innslag->getId(), $nodeInnslag);
     
     foreach( $innslag->getPersoner()->getAll() as $person ) {
         $nodeInnslag->addChild($person->getId(), $person);
