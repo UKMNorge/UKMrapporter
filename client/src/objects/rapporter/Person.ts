@@ -76,7 +76,13 @@ class Person extends NodeObj implements TableItemInterface {
     }
 
     public getAlder() : number {
-        return this.alder;
+        if(this.alder < 1) {
+            return 0;
+        }
+        var alder = (<number>this.alder);
+        var date = new Date(alder * 1000);
+
+        return this.getYearDiff(date, new Date());
     }
 
     public getMobil() : string {
@@ -91,6 +97,24 @@ class Person extends NodeObj implements TableItemInterface {
     public getKeysForTable() : NodeProperty[] {
         return Person.getKeysForTable();
     }
+
+    private getYearDiff(date1 : Date, date2 : Date) : number{
+      
+        // Get the years of the input dates
+        const year1 = date1.getFullYear();
+        const year2 = date2.getFullYear();
+      
+        // Calculate the difference in years
+        let yearDifference = year2 - year1;
+      
+        if (date2 < date1) {
+            if (date2.getMonth() < date1.getMonth() || (date2.getMonth() === date1.getMonth() && date2.getDate() < date1.getDate())) {
+            yearDifference--;
+            }
+        }
+      
+        return yearDifference;
+      }
 }
 
 export default Person;

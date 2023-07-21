@@ -116,7 +116,7 @@ async function getDataAjax() {
             var kommuneObj = kommune.obj;
             // console.log(key);
             // console.log(kommune);
-            var kommuneNode = new Kommune(kommuneObj.id, kommuneObj.navn, 'FYLKETESTHERE');
+            var kommuneNode = new Kommune(kommuneObj.id, kommuneObj.navn);
             fylkeNode.addChild(kommuneNode);
             
             // Innslag
@@ -124,14 +124,16 @@ async function getDataAjax() {
                 var innslag = kommune.children[key];
                 var innslagObj = innslag.obj;
 
-                var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type, innslagObj.sesong);
+                // console.log(innslagObj);
+
+                var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
                 kommuneNode.addChild(innslagNode);
-            
+                
                 for(var key of Object.keys(innslag.children)) {
                     var person = innslag.children[key];
-                    var personObj = innslag.obj;
+                    console.log(person);
                     
-                    innslagNode.addChild(new Person(personObj.id, personObj.navn, personObj.alder, personObj.mobil, personObj.epost));
+                    innslagNode.addChild(new Person(person.id, (person.fornavn + ' ' + person.etternavn), person.fodselsdato, person.mobil, person.epost));
                 }
             }
 
@@ -143,8 +145,6 @@ async function getDataAjax() {
         rootNodes = repo.getRootNodes();
 
     }
-
-    // rootNodes = repo.getRootNodes();
     
 
 }

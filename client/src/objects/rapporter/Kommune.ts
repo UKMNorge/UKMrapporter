@@ -10,8 +10,7 @@ class Kommune extends NodeObj {
     public static hasUnique : Boolean = false;
 
     private static properties : NodeProperty[] = [
-        new NodeProperty('getNavn', 'Kommune navn', true),
-        new NodeProperty('getFylkeNavn', 'Fylke'),
+        new NodeProperty('getNavn', 'Kommune navn', true)
     ];
 
     static className = 'Kommune';
@@ -54,12 +53,10 @@ class Kommune extends NodeObj {
     // Class attributes
     public className = 'Kommune';
     private navn : string;
-    private fylkeNavn : string;
     
-    constructor(id : string, navn : string, fylkeNavn : string) {
+    constructor(id : string, navn : string) {
         super(id);
         this.navn = navn;
-        this.fylkeNavn = fylkeNavn;
 
 
         // Making variables reactive on static
@@ -71,10 +68,6 @@ class Kommune extends NodeObj {
 
     public getNavn() {
         return this.navn;
-    }
-
-    public getFylkeNavn() {
-        return this.fylkeNavn;
     }
 
     public getData() {
