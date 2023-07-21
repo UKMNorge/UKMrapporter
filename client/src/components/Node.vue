@@ -174,7 +174,7 @@ function getChildNode(node : NodeObj) : NodeObj|null {
     .rapport-meny .item {
         background: var(--color-primary-grey-lightest);
         box-shadow: none;
-        width: auto;
+        width: 31%;
     }
     .rapport-meny .item .attributes {
         display: flex;
