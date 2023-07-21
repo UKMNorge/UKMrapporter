@@ -66,6 +66,10 @@ abstract class NodeObj {
         return this.id;
     }
 
+    public getUniqueId() : string {
+        return this.id;
+    }
+
     public getNavn() : string {
         return this.getRepresentativeName();
     }

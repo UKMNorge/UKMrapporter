@@ -9,10 +9,14 @@ class Repo {
     public root : NodeObj;
     
     private refs = {};
+    public antall = ref(false);
+    public telling = ref(false);
+
 
     constructor(root : NodeObj) {
         this.root = root;
 
+        this
 
         // Adding parent to all nodes on the tree
         this.addParents(this.root);
@@ -20,7 +24,7 @@ class Repo {
         // Defining ref
         this.refs = {
             groupingNode : ref(RootNode),
-            rootNodes : ref([this.root])
+            rootNodes : ref([this.root]),
         }
     }
 
@@ -100,6 +104,11 @@ class Repo {
         if (!(node instanceof RootNode)) {
             (<any>leafNodes)[(<any>node.constructor).name] = node;
         }
+    }
+
+    public tableCallback(antall : Boolean, telling : Boolean) : void {
+        (<any>this.antall.value) = antall;
+        (<any>this.telling.value) = telling;
     }
 }
 

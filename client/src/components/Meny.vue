@@ -2,10 +2,11 @@
     <div class="as-container container">
         <div class="rapport-meny-components nop as-card-1 as-padding-space-3">
             <NodeVue :root="root" />
-        <div class="filter-grouping-div col-xs-3 nop">
-            <FilterVue :root="root" />
-            <GroupingVue :root="root" :gruppingUpdateCallback="gruppingUpdateCallback" />
-        </div>
+            <div class="filter-grouping-div col-xs-3 nop">
+                <FilterVue :root="root" />
+                <GroupingVue :root="root" :gruppingUpdateCallback="gruppingUpdateCallback" />
+                <TableFilterVue :tableCallback="tableCallback"  />
+            </div>
         </div>
     </div>
 </template>
@@ -15,16 +16,15 @@
 import NodeVue from './Node.vue';
 import FilterVue from './Filter.vue';
 import GroupingVue from './Grouping.vue';
+import TableFilterVue from './TableFilter.vue';
 import RootNode from '../objects/RootNode';
 import NodeObj from '../objects/NodeObj';
-
-
 
 const props = defineProps<{
     root: RootNode|null,
     gruppingUpdateCallback : (n : NodeObj)=>void,
+    tableCallback : (antall : Boolean, telling : Boolean)=>void,
 }>();
-
 
 
 // Accepts filtering
@@ -42,8 +42,6 @@ const props = defineProps<{
         border-radius: var(--radius-medium);
     }
     .filter-grouping-div {
-        display: flex;
-        flex-wrap: wrap;
-        float: revert;
+        display: block;
     }
 </style>

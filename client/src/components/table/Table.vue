@@ -3,7 +3,6 @@
         <div v-if="root.getNavn()" class="as-margin-bottom-space-2">
             <h4>{{ root.getNavn() }}</h4>
         </div>
-
         <div class="as-padding-space-4 as-padding-top-space-2 as-padding-bottom-space-2 as-card-1">
             <!-- Phantom loading -->
             <div v-show="loading">
@@ -56,8 +55,13 @@
                     </tr>
                 </tbody>
             </table>
-    
+
+          
+            <div v-if="visAntall" class="antall-leafs as-margin-top-space-2">
+                <h5>Antall: {{ countLeafNodesItems() }}</h5>
+            </div>
         </div>
+        
     </div>
 </template>
 
@@ -72,13 +76,22 @@
     // var values!: any[];
     // var loading!: boolean;
 
+
     const props = defineProps<{
         keys: {node : Object, value : NodeProperty[]}[],
         loading: boolean,
         root: RootNode,
+        visAntall : any,
+        visTelling : any,
     }>();
 
     var values : any = ref([]);
+
+    var visAntall = ref(props.visAntall);
+
+    function getValTest() {
+        return props.visAntall;
+    }
 
      // Watch changes of the root
      watchEffect(() => {
@@ -129,6 +142,27 @@
                 }
             }
         }
+    }
+
+    function countLeafNodesItems() : Number {
+        if(values.value.length < 1) {
+            return 0;
+        }
+
+        var arrObj : any = {};
+        var isUnique = values.value[0].constructor.getUnique();
+
+        // Doesnt count unique
+        if(!isUnique) {
+            return values.value.length;
+        }
+        
+        // It count unique
+        for(var node of values.value) {
+            arrObj[(<NodeObj>node).getUniqueId()] = node;
+        }
+
+        return Object.keys(arrObj).length;
     }
 
     function removeProperty(nodeProp : NodeProperty) {

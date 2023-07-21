@@ -1,6 +1,6 @@
 <template>
     <div class="rapport-meny">
-        <div class="object item as-card-2 as-padding-space-2 as-margin-space-1">
+        <div class="object item as-card-2 as-padding-space-2 as-margin-space-1 as-margin-top-space-2">
             <h4>Gruppering</h4>
 
             <div class="attributes as-margin-top-space-2">
