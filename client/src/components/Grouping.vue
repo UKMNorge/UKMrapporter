@@ -64,7 +64,7 @@ function getGroupingNodes(node : NodeObj, leafNodes : {}) {
     }
 
     // Add all nodes that are not leaf and root
-    if (true || node.children.length > 0 && !(node instanceof RootNode)) {
+    if (node.children.length > 0) {
         (<any>leafNodes)[(<any>node.constructor).name] = node;
     }
 }
