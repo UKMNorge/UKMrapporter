@@ -6,13 +6,13 @@
             <div class="attributes as-margin-top-space-2">
                 
                 <div>
-                    <div @click="toggleAntall()" :class="visAntall ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
+                    <div @click="toggleAntall()" :class="visAntall ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-padding-space-2 as-padding-top-space-1 as-padding-bottom-space-1 as-btn-hover-default">
                         <span>Antall</span>
                     </div>
                 </div>
 
                 <div>
-                    <div @click="toglleTelling()" :class="visTelling ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
+                    <div @click="toglleTelling()" :class="visTelling ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-padding-space-2 as-padding-top-space-1 as-padding-bottom-space-1 as-btn-hover-default">
                         <span>Telling</span>
                     </div>
                 </div>
@@ -104,14 +104,15 @@ function toglleTelling() {
         min-width: 200px;
     }
     .rapport-meny .item .attributes .attribute {
-        background: var(--color-primary-bla-50);
-        border-radius: var(--radius-minimum);
+        border-radius: 20px;
         font-weight: 300;
         letter-spacing: 1px;
         display: flex;
         height: 100%;
         min-width: 40px;
         min-height: 35px;
+        background: #fff;
+        border: solid 1px var(--color-primary-grey-medium);
     }
     .rapport-meny .item .attributes .attribute.new svg {
         margin: auto;
@@ -121,10 +122,11 @@ function toglleTelling() {
     }
 
     .rapport-meny .item .attributes .attribute.toggle-function {
-        background: var(--color-primary-grey-light);
+        background: #fff;
     }
     .rapport-meny .item .attributes .attribute.toggle-function.active {
         background: var(--color-primary-bla-500) !important;
+        border-color: var(--color-primary-bla-500) !important;
         color: #fff;
     }
     .rapport-meny .item .attributes .attribute.toggle-function.active span {
