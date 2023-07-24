@@ -22,11 +22,23 @@
     
             <table v-show="!loading" class="table ukm-vue-table-row">
                 <thead>
-                    <tr>
+                    <tr class="col">
+                        <th v-if="visTelling">
+                            <div class="inner-div">
+                                <button class="sort-button">
+                                    #
+                                </button>
+                                <button class="remove-row ukm-botton-style not-correct-button not-visible">
+                                    <svg class="remove-icon close-selector" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="close-selector" d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </th>
                         <template v-for="keyObj in keys">
                             <template v-for="key in keyObj.value">
                                 <th v-if="key.active" scope="col">
-                                    <div  class="inner-div">
+                                    <div class="inner-div">
                                         <button @click="sortBy(key)" class="sort-button">
                                             <span class="title">{{ key.navn }}</span>
                                             <div class="indicators">
@@ -50,13 +62,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="value in getItems()">
+                    <tr v-for="(value, key) in getItems()" :key="key">
+                        <td v-if="visTelling">{{ key+1 }}</td>
                         <td class="as-padding-space-4" v-for="item in value">{{ item }}</td>
                     </tr>
                 </tbody>
             </table>
 
-          
             <div v-if="visAntall" class="antall-leafs as-margin-top-space-2">
                 <h5>Antall{{ uniqueCount ? ' unike' : '' }}: {{ countLeafNodesItems() }}</h5>
             </div>
@@ -89,6 +101,7 @@
     var uniqueCount : any = ref(false);
 
     var visAntall = ref(props.visAntall);
+    var visTelling = ref(props.visTelling);
 
     function getValTest() {
         return props.visAntall;
@@ -230,6 +243,9 @@
         padding: 4px 3px;
         border: solid 1px #00000040 !important;
         background: #fff !important;
+    }
+    .ukm-vue-table-row thead tr th button.remove-row.not-visible {
+        visibility: hidden !important;
     }
     .ukm-vue-table-row thead tr th:hover button.remove-row {
         visibility: visible;

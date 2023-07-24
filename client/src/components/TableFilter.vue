@@ -13,7 +13,7 @@
 
                 <div>
                     <div @click="toglleTelling()" :class="visTelling ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-padding-space-2 as-padding-top-space-1 as-padding-bottom-space-1 as-btn-hover-default">
-                        <span>Telling</span>
+                        <span>Opptelling</span>
                     </div>
                 </div>
             </div>
