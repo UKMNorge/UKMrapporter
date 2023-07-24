@@ -6,7 +6,7 @@
             <div class="attributes as-margin-top-space-1">
                 
                 <div class="as-padding-top-space-1">
-                    <div v-if="hasUnique(node)" @click="toggleFunction(node)" :class="getUnique(node) ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
+                    <div v-if="hasUnique(node)" @click="toggleFunction(node)" :class="uniqueNodeValue ? 'active' : ''" class="attribute toggle-function as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
                         <span>Unike</span>
                     </div>
                 </div>
@@ -80,6 +80,8 @@ const props = defineProps<{
 
 var selectorPopup : any = ref('');
 
+var uniqueNodeValue : any = ref(false);
+
 function openSelector(name : string) {
     selectorPopup.value = name;
 }
@@ -99,6 +101,7 @@ var showSelector = false;
 function toggleFunction(node : NodeObj) {
     var classNode = (<any>node.constructor);
     classNode.setUnique(!classNode.getUnique());
+    uniqueNodeValue.value = classNode.getUnique();
 }
 
 function hasUnique(node : NodeObj) {
@@ -150,7 +153,10 @@ function getActiveProperties(node : NodeObj) : NodeProperty[] {
 }
 
 function getUnique(node : NodeObj) : Boolean {
-    return (<any>node.constructor).getUnique();
+    console.log((<any>node.constructor));
+    var unique = (<any>node.constructor).getUnique();
+
+    return unique;
 }
 
 // Get child Nodeobj which is an extend of NodeObj

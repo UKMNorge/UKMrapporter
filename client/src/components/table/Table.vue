@@ -58,7 +58,7 @@
 
           
             <div v-if="visAntall" class="antall-leafs as-margin-top-space-2">
-                <h5>Antall: {{ countLeafNodesItems() }}</h5>
+                <h5>Antall{{ uniqueCount ? ' unike' : '' }}: {{ countLeafNodesItems() }}</h5>
             </div>
         </div>
         
@@ -86,6 +86,7 @@
     }>();
 
     var values : any = ref([]);
+    var uniqueCount : any = ref(false);
 
     var visAntall = ref(props.visAntall);
 
@@ -154,7 +155,11 @@
 
         // Doesnt count unique
         if(!isUnique) {
+            uniqueCount.value = false;
             return values.value.length;
+        }
+        else {
+            uniqueCount.value = true;
         }
         
         // It count unique
