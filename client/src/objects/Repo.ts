@@ -11,12 +11,12 @@ class Repo {
     private refs = {};
     public antall = ref(false);
     public telling = ref(false);
+    private uniqueNodeObjects : any[] = [];
 
 
-    constructor(root : NodeObj) {
+    constructor(root : NodeObj, uniqueNodeObjects : any[]) {
         this.root = root;
-
-        this
+        this.uniqueNodeObjects = uniqueNodeObjects;
 
         // Adding parent to all nodes on the tree
         this.addParents(this.root);
@@ -78,32 +78,17 @@ class Repo {
     }
 
     public getTableKeys() : {node : NodeObj, value : NodeProperty[]}[] {
-        var obj = {};
         var retObj : {node : NodeObj, value : NodeProperty[]}[] = [];
-        this.uniqueNodesObjects(this.root, obj);
+    
 
-        for(var key of Object.keys(obj)) {
-            var objectNode = (<any>obj)[key];
+        for(var objectNode of this.uniqueNodeObjects) {
             retObj.push({
-                node : objectNode.constructor,
-                value : objectNode.constructor.getKeysForTable(),
+                node : objectNode,
+                value : objectNode.getKeysForTable(),
             })
 
         }
-
         return retObj;
-    }
-
-    // Recursive function to get all unqiue objects
-    private uniqueNodesObjects(node : NodeObj, leafNodes : {}) {
-        for (var i = 0; i < node.children.length; i++) {
-            this.uniqueNodesObjects(node.children[i], leafNodes);
-        }
-
-        // Add all nodes that are not root
-        if (!(node instanceof RootNode)) {
-            (<any>leafNodes)[(<any>node.constructor).name] = node;
-        }
     }
 
     public tableCallback(antall : Boolean, telling : Boolean) : void {

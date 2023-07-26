@@ -122,19 +122,26 @@ function addNodeProperty(nodeProp : NodeProperty) {
 
 // Going through all NodeObj and getting object extending NodeObj
 function getNodes() : NodeObj[] {
-    var root = props.root;
-    var nodeTypes : NodeObj[] = [];
+    var obj : any = {};
+    var retArr : NodeObj[] = [];
+    getUniqueNodes((<NodeObj>props.root), obj);
     
-    while(root != null) {
-        var newNode = getChildNode(root);
-        if(newNode) {
-            nodeTypes.push(newNode);
-        }
-        
-        root = newNode;
+    for(var key of Object.keys(obj)) {
+        retArr.push((<any>obj)[key]);
     }
 
-    return nodeTypes;
+    return retArr;
+}
+
+// Get object nodes for each subclass of NodeObj
+function getUniqueNodes(node : NodeObj, nodesObj : any) {
+    if(!(node instanceof RootNode) && nodesObj[node.getRepresentativeName()] === undefined) {
+        nodesObj[node.getRepresentativeName()] = node;
+    }
+
+    for (var i = 0; i < node.children.length; i++) {
+        getUniqueNodes(node.children[i], nodesObj);
+    }
 }
 
 function getAllProperties(node : NodeObj) : NodeProperty[] {

@@ -91,6 +91,7 @@
 
     const props = defineProps<{
         keys: {node : Object, value : NodeProperty[]}[],
+        leafNode: NodeObj,
         loading: boolean,
         root: RootNode,
         visAntall : any,
@@ -137,7 +138,7 @@
     function getItems() {
         var items : any[] = [];
         for(var node of values.value) { 
-            if(node.isActive()){ 
+            if(node.isActive() && node instanceof (<any>props.leafNode)){ 
                 items.push(_getProperty(node));
             }
         }
@@ -146,8 +147,7 @@
     }
 
     function getLeafNodes(node : NodeObj, leafNodes : any[]) {
-        if (node.children.length === 0) {
-            console.log('yyy');
+        if (node.children.length === 0 && node instanceof (<any>props.leafNode)) {
             leafNodes.push(node);
         } else {
             for (var i = 0; i < node.children.length; i++) {

@@ -5,7 +5,7 @@
         <div class="container as-container">
             <div v-for="(r, key) in rootNodes" :key="key">
                 <div class="as-margin-top-space-7" >
-                    <Table :leafNode="Person" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
+                    <Table :leafNode="Leder" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
                 </div>
             </div>
         </div>
@@ -18,9 +18,9 @@ import Table from '../components/table/Table.vue'
 import { ref } from 'vue';
 import MenyVue from '../components/Meny.vue';
 import Person from '../objects/rapporter/Person';
-import Kommune from '../objects/rapporter/Kommune';
+import Arrangement from '../objects/rapporter/Arrangement';
+import Leder from '../objects/rapporter/Leder';
 import Fylke from '../objects/rapporter/Fylke';
-import Innslag from '../objects/rapporter/Innslag';
 import RootNode from '../objects/RootNode';
 import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
@@ -38,17 +38,20 @@ Person.hasUnique = true;
 getDataAjax();
 
 var root = new RootNode();
-var repo = new Repo(root);
+var repo = new Repo(root, [Leder, Arrangement, Fylke]);
 var rootNodes : any = repo.getRootNodes();
 
 
 async function getDataAjax() {
     var data = {
         action: 'UKMrapporter_ajax',
-        controller: 'rapport_alleDeltakere',
+        controller: 'rapport_ledereOversikt',
     };
 
     var response = await spaInteraction.runAjaxCall('/', 'POST', data);
+    
+    console.log(response);
+    
     var fylker = (<any>response.root.children);
     
     // Fylker
@@ -57,33 +60,29 @@ async function getDataAjax() {
         var fylkeNode = new Fylke(fylke.obj.id, fylke.obj.navn);
         root.addChild(fylkeNode);
         
-        // Kommuner
+        // Arrangementer
         for(var key of Object.keys(fylke.children)) {
-            var kommune = fylke.children[key];
-            var kommuneObj = kommune.obj;
+            var arrangement = fylke.children[key];
+            var arrangementObj = arrangement.obj;
 
-            var kommuneNode = new Kommune(kommuneObj.id, kommuneObj.navn);
-            fylkeNode.addChild(kommuneNode);
+            var arrangementNode = new Arrangement(arrangementObj.id, arrangementObj.navn, arrangementObj.type, arrangementObj.sted);
+            fylkeNode.addChild(arrangementNode);
             
-            // Innslag
-            for(var key of Object.keys(kommune.children)) {
-                var innslag = kommune.children[key];
-                var innslagObj = innslag.obj;
-
-                var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
-                kommuneNode.addChild(innslagNode);
+            // Leder
+            if(Object.keys(arrangement.children)) {
                 
-                for(var key of Object.keys(innslag.children)) {
-                    var person = innslag.children[key];
-                    console.log(person);
-                    
-                    innslagNode.addChild(new Person(person.id, (person.fornavn + ' ' + person.etternavn), person.fodselsdato, person.mobil, person.epost));
-                }
+            }
+            for(var key of Object.keys(arrangement.children)) {
+                var leder = arrangement.children[key];
+                var lederObj = leder.obj;
+
+                var lederNode = new Leder(lederObj.id, lederObj.navn, lederObj.type, lederObj.mobil, lederObj.epost);
+                arrangementNode.addChild(lederNode);
             }
 
         }
         
-        repo = new Repo(root);
+        repo = new Repo(root, [Leder, Arrangement, Fylke]);
         loading.value = false;
         dataFetched.value = true;
         rootNodes = repo.getRootNodes();
