@@ -10,7 +10,7 @@ class Arrangement extends NodeObj {
     public static hasUnique : Boolean = false;
 
     private static properties : NodeProperty[] = [
-        new NodeProperty('getArrangementNavn', 'Arrangement navn', false),
+        new NodeProperty('getNavn', 'Arrangement navn', false),
         new NodeProperty('getType', 'Type', true),
         new NodeProperty('getSted', 'Sted', false),
     ];
@@ -72,7 +72,7 @@ class Arrangement extends NodeObj {
         });
     }
 
-    public getArrangementNavn() {
+    public getNavn() {
         return this.navn;
     }
     

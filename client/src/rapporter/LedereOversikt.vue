@@ -34,11 +34,12 @@ var dataFetched = ref(false);
 
 Person.hasUnique = true;
 
+const nodeStructure = [Fylke, Arrangement, Leder].reverse();
 
 getDataAjax();
 
 var root = new RootNode();
-var repo = new Repo(root, [Leder, Arrangement, Fylke]);
+var repo = new Repo(root, nodeStructure);
 var rootNodes : any = repo.getRootNodes();
 
 
@@ -65,6 +66,7 @@ async function getDataAjax() {
             var arrangement = fylke.children[key];
             var arrangementObj = arrangement.obj;
 
+            console.log(arrangementObj.navn);
             var arrangementNode = new Arrangement(arrangementObj.id, arrangementObj.navn, arrangementObj.type, arrangementObj.sted);
             fylkeNode.addChild(arrangementNode);
             
@@ -82,7 +84,7 @@ async function getDataAjax() {
 
         }
         
-        repo = new Repo(root, [Leder, Arrangement, Fylke]);
+        repo = new Repo(root, nodeStructure);
         loading.value = false;
         dataFetched.value = true;
         rootNodes = repo.getRootNodes();
