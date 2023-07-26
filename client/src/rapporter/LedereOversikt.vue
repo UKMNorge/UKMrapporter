@@ -17,7 +17,6 @@
 import Table from '../components/table/Table.vue'
 import { ref } from 'vue';
 import MenyVue from '../components/Meny.vue';
-import Person from '../objects/rapporter/Person';
 import Arrangement from '../objects/rapporter/Arrangement';
 import Leder from '../objects/rapporter/Leder';
 import Fylke from '../objects/rapporter/Fylke';
@@ -32,7 +31,7 @@ const spaInteraction = new SPAInteraction(null, ajaxurl);
 var loading = ref(true);
 var dataFetched = ref(false);
 
-Person.hasUnique = true;
+Leder.hasUnique = true;
 
 const nodeStructure = [Fylke, Arrangement, Leder].reverse();
 

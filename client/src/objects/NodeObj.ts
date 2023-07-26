@@ -66,6 +66,10 @@ abstract class NodeObj {
         return this.id;
     }
 
+    /* 
+        This method can be implemented by subclasses to get the right representation of uniqueness for specific object
+        Example: Person can have unique id as name+surname+mobil    
+    */
     public getUniqueId() : string {
         return this.id;
     }
