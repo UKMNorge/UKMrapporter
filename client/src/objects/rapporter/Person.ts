@@ -60,8 +60,8 @@ class Person extends NodeObj implements TableItemInterface {
     private alder : number;
     private mobil : string;
     private epost : string;
-    private listeIntoleranser : string;
-    private tekstIntoleranser : string;
+    private listeIntoleranser : string = '';
+    private tekstIntoleranser : string = '';
 
     constructor(id : string, navn : string, alder : number, mobil : string, epost : string) {
         super(id);

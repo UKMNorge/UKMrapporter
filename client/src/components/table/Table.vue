@@ -146,9 +146,30 @@
         return items;
     }
 
+    /* 
+    Returns true or false if the node is added.
+    uniqueId is used to determine the value
+    */
+    function _checkUniqueAdding(node : NodeObj) : Boolean {
+        // Unique is not activated
+        if((<any>node.constructor).getUnique() == false) {
+            return true;
+        }
+
+        // Checking all added nodes for the same uniqueId, if it is found, the method returns false
+        for(var n of values.value) { 
+            if(n.getUniqueId() == node.getUniqueId()) return false;
+        }
+        
+        return true;
+    }
+
     function getLeafNodes(node : NodeObj, leafNodes : any[]) {
+
         if (node.children.length === 0 && node instanceof (<any>props.leafNode)) {
-            leafNodes.push(node);
+            if(_checkUniqueAdding(node)) {
+                leafNodes.push(node);
+            }
         } else {
             for (var i = 0; i < node.children.length; i++) {
                 if((node instanceof RootNode) || toRaw(node).isActive()) {
