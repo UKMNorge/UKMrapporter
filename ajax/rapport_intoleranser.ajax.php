@@ -41,15 +41,12 @@ foreach( $til->getInnslag()->getAll() as $innslag ) {
     }
 
     foreach( $innslag->getPersoner()->getAll() as $person ) {
-
-        $fylke_gruppe_id = $innslag->getFylke()->getNavn() . '-' . $innslag->getFylke()->getId();
         if( $person->getSensitivt()->getIntoleranse()->har() ) {
-            
             $personObj = [
                 'id' => $person->getId(),
                 'alder' => $person->getFodselsdato(),
                 'mobil' => $person->getMobil(),
-                'navn' => "PERSON " . $person->getNavn(),
+                'navn' =>  $person->getNavn(),
                 'epost' => $person->getEpost(),
                 'listeIntoleranser' => $person->getSensitivt()->getIntoleranse()->getListeHuman(true),
                 'tekstIntoleranser' => $person->getSensitivt()->getIntoleranse()->getTekst(),
@@ -58,7 +55,6 @@ foreach( $til->getInnslag()->getAll() as $innslag ) {
             // Adding Person
             $nodeLeder = new Node('Person', $personObj);
             $arrangementer[$til->getId()]->addChild($person->getId(), $nodeLeder);
-
         }
     }
 }
