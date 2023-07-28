@@ -10,7 +10,7 @@ class Person extends NodeObj implements TableItemInterface {
     private static unique: Boolean = false;
     public static hasUnique : Boolean = false;
 
-    private static properties : NodeProperty[] = [
+    public static properties : NodeProperty[] = [
         new NodeProperty('getNavn', 'Navn', true),
         new NodeProperty('getAlder', 'Alder', true),
         new NodeProperty('getMobil', 'Mobil', false),
@@ -60,6 +60,8 @@ class Person extends NodeObj implements TableItemInterface {
     private alder : number;
     private mobil : string;
     private epost : string;
+    private listeIntoleranser : string;
+    private tekstIntoleranser : string;
 
     constructor(id : string, navn : string, alder : number, mobil : string, epost : string) {
         super(id);
@@ -91,6 +93,22 @@ class Person extends NodeObj implements TableItemInterface {
 
     public getEpost() : string {
         return this.epost;
+    }
+
+    public setListeIntoleranser(listeIntoleranser : string) {
+        this.listeIntoleranser = listeIntoleranser;
+    }
+
+    public getListeIntoleranser() {
+        return this.listeIntoleranser;
+    }
+
+    public setTekstIntoleranser(tekstIntoleranser : string) {
+        this.tekstIntoleranser = tekstIntoleranser;
+    }
+
+    public getTekstIntoleranser() {
+        return this.tekstIntoleranser;
     }
 
     // Returnerer data fra static

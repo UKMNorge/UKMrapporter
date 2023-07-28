@@ -42,7 +42,7 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
             $leder->getArrangementFra();
             // $fylkeLedere[$fylke->getId()]['ledere'][] = $leder;
             
-            // Adding innslag
+            // Adding leder
             $nodeLeder = new Node('Leder', $leder);
             $arrangementer[$fra->getId()]->addChild($leder->getId(), $nodeLeder);
         

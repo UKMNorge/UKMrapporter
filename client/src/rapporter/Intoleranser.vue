@@ -2,10 +2,10 @@
     <div v-if="dataFetched">
         <div class="as-container container">
             <div class="as-margin-top-space-8 as-margin-bottom-space-8">
-                <h1 class="">Alle deltakere</h1>
+                <h1 class="">Ledere Oversikt</h1>
             </div>
         </div>
-
+        
         <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
 
         <div class="container as-container">
@@ -23,11 +23,11 @@
 import Table from '../components/table/Table.vue'
 import { ref } from 'vue';
 import MenyVue from '../components/Meny.vue';
-import Person from '../objects/rapporter/Person';
-import Kommune from '../objects/rapporter/Kommune';
+import Arrangement from '../objects/rapporter/Arrangement';
 import Fylke from '../objects/rapporter/Fylke';
-import Innslag from '../objects/rapporter/Innslag';
+import Person from '../objects/rapporter/Person';
 import RootNode from '../objects/RootNode';
+import NodeProperty from './../objects/NodeProperty';
 import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
 
@@ -39,8 +39,11 @@ var loading = ref(true);
 var dataFetched = ref(false);
 
 Person.hasUnique = true;
+// Adding property tekstIntoleranser and listeIntoleranser
+Person.properties.push(new NodeProperty('getListeIntoleranser', 'Intoleranser', true))
+Person.properties.push(new NodeProperty('getTekstIntoleranser', 'Melding Intoleranser', true))
 
-var nodeStructure = [Fylke, Kommune, Innslag, Person].reverse();
+const nodeStructure = [Fylke, Arrangement, Person].reverse();
 
 getDataAjax();
 
@@ -52,10 +55,11 @@ var rootNodes : any = repo.getRootNodes();
 async function getDataAjax() {
     var data = {
         action: 'UKMrapporter_ajax',
-        controller: 'rapport_alleDeltakere',
+        controller: 'rapport_intoleranser',
     };
 
     var response = await spaInteraction.runAjaxCall('/', 'POST', data);
+    
     var fylker = (<any>response.root.children);
     
     // Fylker
@@ -64,28 +68,27 @@ async function getDataAjax() {
         var fylkeNode = new Fylke(fylke.obj.id, fylke.obj.navn);
         root.addChild(fylkeNode);
         
-        // Kommuner
+        // Arrangementer
         for(var key of Object.keys(fylke.children)) {
-            var kommune = fylke.children[key];
-            var kommuneObj = kommune.obj;
+            var arrangement = fylke.children[key];
+            var arrangementObj = arrangement.obj;
 
-            var kommuneNode = new Kommune(kommuneObj.id, kommuneObj.navn);
-            fylkeNode.addChild(kommuneNode);
+            console.log(arrangementObj.navn);
+            var arrangementNode = new Arrangement(arrangementObj.id, arrangementObj.navn, arrangementObj.type, arrangementObj.sted);
+            fylkeNode.addChild(arrangementNode);
             
-            // Innslag
-            for(var key of Object.keys(kommune.children)) {
-                var innslag = kommune.children[key];
-                var innslagObj = innslag.obj;
+            // Person
+            for(var key of Object.keys(arrangement.children)) {
+                var person = arrangement.children[key];
+                var personObj = person.obj;
 
-                var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
-                kommuneNode.addChild(innslagNode);
+                var personNode = new Person(personObj.id, personObj.navn, personObj.alder, personObj.mobil, personObj.epost)
                 
-                for(var key of Object.keys(innslag.children)) {
-                    var person = innslag.children[key];
-                    console.log(person);
-                    
-                    innslagNode.addChild(new Person(person.id, (person.fornavn + ' ' + person.etternavn), person.fodselsdato, person.mobil, person.epost));
-                }
+                // Those values are activatated at Person statically by adding NodeProperty
+                personNode.setTekstIntoleranser(personObj.tekstIntoleranser);
+                personNode.setListeIntoleranser(personObj.listeIntoleranser);
+                
+                arrangementNode.addChild(personNode);
             }
 
         }
@@ -94,10 +97,7 @@ async function getDataAjax() {
         loading.value = false;
         dataFetched.value = true;
         rootNodes = repo.getRootNodes();
-
     }
-    
-
 }
 
 </script>

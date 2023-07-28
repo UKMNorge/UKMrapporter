@@ -1,5 +1,10 @@
 <template> 
     <div v-if="dataFetched">
+        <div class="as-container container">
+            <div class="as-margin-top-space-8 as-margin-bottom-space-8">
+                <h1 class="">Ledere Oversikt</h1>
+            </div>
+        </div>
         <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
 
         <div class="container as-container">
