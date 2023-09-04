@@ -6,6 +6,8 @@
             </div>
         </div>
 
+        <DownloadsVue :repo="repo" />
+
         <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
 
         <div class="container as-container">
@@ -23,6 +25,7 @@
 import Table from '../components/table/Table.vue'
 import { ref } from 'vue';
 import MenyVue from '../components/Meny.vue';
+import DownloadsVue from '../components/Downloads.vue';
 import Person from '../objects/rapporter/Person';
 import Kommune from '../objects/rapporter/Kommune';
 import Fylke from '../objects/rapporter/Fylke';
@@ -96,8 +99,6 @@ async function getDataAjax() {
         rootNodes = repo.getRootNodes();
 
     }
-    
-
 }
 
 </script>
