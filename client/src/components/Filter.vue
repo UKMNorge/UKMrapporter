@@ -1,7 +1,8 @@
 <template>
-    <div class="rapport-meny">
-        <div class="object item as-card-2 as-padding-space-2 as-margin-space-1">
-            <h4>Filtrering etter {{ getNodeName(selectedNode) }}</h4>
+    <div class="rapport-meny ">
+        <div class="object item as-card-2 as-padding-space-2">
+            <h4 v-if="root && selectedNode.className == root.className">Ingen filtrering</h4>
+            <h4 v-else>Filtrering etter {{ getNodeName(selectedNode) }}</h4>
             <div class="attributes as-margin-top-space-1">
                 <div v-for="(node, key) in getProperties()" :key="key" class="attribute-outer as-padding-top-space-1">
                     <div @click="deactivateNode(node)" :key="key" v-if="node.isActive()" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
@@ -38,13 +39,22 @@
 
                         <div class="attributes as-margin-top-space-2">
                             <div class="container nop buttons-selector">
-                                <div class="" v-for="(n, key) in filterNodes" :key="key">
-                                    <button class="btn" @click="selectNode(n)" >{{ getNodeName(n) }}</button>
+                                <div class="button-div" v-for="(n, key) in filterNodes" :key="key">
+                                    <button class="as-btn-default as-btn-hover-default" :class="selectedNode.className == n.className ? 'active-node' : ''" @click="selectNode(n)" >
+                                        <span>{{ getNodeName(n) }}</span>
+                                    </button>
+                                </div>
+                                <div class="button-div">
+                                    <button class="as-btn-default as-btn-hover-default" :class="root && selectedNode.className == root.className ? 'active-node' : ''" @click="selectNode(root)" >
+                                        <span>Ingen</span>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="prop as-margin-top-space-1" v-for="(node, key) in getProperties()" :key="key">
-                                <div @click="activateNode(node)" v-if="!node.isActive()" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
-                                    <span>{{ node.getNavn() }}</span>
+                            <div v-for="(node, key) in getProperties()" :key="key">
+                                <div v-if="!node.isActive()" class="prop as-margin-top-space-1">
+                                    <div @click="activateNode(node)" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
+                                        <span>{{ node.getNavn() }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -88,7 +98,13 @@ onMounted(() => {
     }
 })
 
-function selectNode(node : NodeObj) {
+function selectNode(node : RootNode|null) {
+    /* Aktiver alle noder før man selekterer en ny node
+    Dette gjøres slik at filtrering på andre nivå fjernes */
+    for(var n of getProperties()) {
+        activateNode(n);
+    }
+    // Velg ny node
     selectedNode.value = node;
 }
 
@@ -244,5 +260,17 @@ function getAllNodesAtLevel(node : NodeObj, filteredNodes : NodeObj[], filterNod
     }
     .buttons-selector {
         display: flex;
+    }
+    .buttons-selector .button-div {
+        margin-right: 10px;
+    }
+    .buttons-selector .button-div button {
+        border: none;
+    }
+    .buttons-selector .button-div button.active-node {
+        background: var(--color-primary-bla-500)!important;
+    }
+    .buttons-selector .button-div button.active-node span {
+        color: #fff !important;
     }
 </style>
