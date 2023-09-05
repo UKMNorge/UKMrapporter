@@ -1,24 +1,41 @@
 import RootNode from "../objects/RootNode";
 import { read, utils, writeFileXLSX } from 'xlsx';
 import NodeObj from './../objects/NodeObj';
+import Repo from "./Repo";
 
 
 
 class Excel {
     private nodes : RootNode[] = [];
-    private root;
+    private root : NodeObj;
     private leafNode : NodeObj;
+    private repo : Repo;
 
-    constructor(root : RootNode, leafNode : NodeObj) {
-        this.root = root;
-        this.leafNode = leafNode;
+    constructor(repo : Repo) {
+        this.root = repo.root;
+        this.leafNode = repo.leafNode;
+        this.repo = repo;
     }
 
     public generateFile() {
+        // HUSK: det burkes kun leafNode for hente unike informasjon om unike er aktivert
+        var isLeafUnique = (<any>this.leafNode).getUnique();
+        
         this.updateNodes();
         var date = new Date();
-        var nodes = this.getItems();
-        const ws = utils.json_to_sheet(nodes);
+        var lines = this.getItems();
+
+        // Antall inkludering unike
+        if(this.repo.antall.value == true) {
+            var antall = lines.length;
+            var antallKey = isLeafUnique ? 'Antall unike' : 'Antall';
+            var antalObj : any = {};
+            antalObj[antallKey] = antall;
+
+            lines.push(antalObj);
+        }
+        
+        const ws = utils.json_to_sheet(lines);
         const wb = utils.book_new();
         utils.book_append_sheet(wb, ws, "Data");
         writeFileXLSX(wb,  'rapport_' + date.toLocaleTimeString() + ".xlsx");
