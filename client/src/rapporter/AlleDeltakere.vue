@@ -48,7 +48,7 @@ var nodeStructure = [Fylke, Kommune, Innslag, Person].reverse();
 getDataAjax();
 
 var root = new RootNode();
-var repo = new Repo(root, nodeStructure);
+var repo = new Repo(root, nodeStructure, Person);
 var rootNodes : any = repo.getRootNodes();
 
 
@@ -93,7 +93,7 @@ async function getDataAjax() {
 
         }
         
-        repo = new Repo(root, nodeStructure);
+        repo = new Repo(root, nodeStructure, Person);
         loading.value = false;
         dataFetched.value = true;
         rootNodes = repo.getRootNodes();

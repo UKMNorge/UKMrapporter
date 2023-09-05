@@ -14,11 +14,13 @@ class Repo {
     public telling = ref(false);
     private uniqueNodeObjects : any[] = [];
     private excel : Excel;
+    private leafNode : NodeObj;
 
-    constructor(root : NodeObj, uniqueNodeObjects : any[]) {
+    constructor(root : NodeObj, uniqueNodeObjects : any[], leafNode : any) {
         this.root = root;
         this.uniqueNodeObjects = uniqueNodeObjects;
-        this.excel = new Excel(root);
+        this.leafNode = leafNode;
+        this.excel = new Excel(root, leafNode);
 
         // Adding parent to all nodes on the tree
         this.addParents(this.root);

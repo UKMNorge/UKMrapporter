@@ -5,6 +5,8 @@
                 <h1 class="">Intoleranse / allergi</h1>
             </div>
         </div>
+
+        <DownloadsVue :repo="repo" />
         
         <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
 
@@ -24,6 +26,7 @@ import Table from '../components/table/Table.vue'
 import { ref } from 'vue';
 import MenyVue from '../components/Meny.vue';
 import Arrangement from '../objects/rapporter/Arrangement';
+import DownloadsVue from '../components/Downloads.vue';
 import Fylke from '../objects/rapporter/Fylke';
 import Person from '../objects/rapporter/Person';
 import RootNode from '../objects/RootNode';
@@ -48,7 +51,7 @@ const nodeStructure = [Fylke, Arrangement, Person].reverse();
 getDataAjax();
 
 var root = new RootNode();
-var repo = new Repo(root, nodeStructure);
+var repo = new Repo(root, nodeStructure, Person);
 var rootNodes : any = repo.getRootNodes();
 
 
@@ -93,7 +96,7 @@ async function getDataAjax() {
 
         }
         
-        repo = new Repo(root, nodeStructure);
+        repo = new Repo(root, nodeStructure, Person);
         loading.value = false;
         dataFetched.value = true;
         rootNodes = repo.getRootNodes();

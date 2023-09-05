@@ -5,6 +5,9 @@
                 <h1 class="">Ledere Oversikt</h1>
             </div>
         </div>
+
+        <DownloadsVue :repo="repo" />
+
         <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
 
         <div class="container as-container">
@@ -22,6 +25,7 @@
 import Table from '../components/table/Table.vue'
 import { ref } from 'vue';
 import MenyVue from '../components/Meny.vue';
+import DownloadsVue from '../components/Downloads.vue';
 import Arrangement from '../objects/rapporter/Arrangement';
 import Leder from '../objects/rapporter/Leder';
 import Fylke from '../objects/rapporter/Fylke';
@@ -43,7 +47,7 @@ const nodeStructure = [Fylke, Arrangement, Leder].reverse();
 getDataAjax();
 
 var root = new RootNode();
-var repo = new Repo(root, nodeStructure);
+var repo = new Repo(root, nodeStructure, Leder);
 var rootNodes : any = repo.getRootNodes();
 
 
@@ -88,7 +92,7 @@ async function getDataAjax() {
 
         }
         
-        repo = new Repo(root, nodeStructure);
+        repo = new Repo(root, nodeStructure, Leder);
         loading.value = false;
         dataFetched.value = true;
         rootNodes = repo.getRootNodes();
