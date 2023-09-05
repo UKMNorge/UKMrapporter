@@ -82,17 +82,23 @@ class Excel {
     // Get all items from the classes sendt as array of values
     private getItems() {
         var items : any[] = [];
+        var count = 0;
         for(var node of this.nodes) { 
             if(node.isActive() && node instanceof (<any>this.leafNode)){ 
-                items.push(this._getProperty(node));
+                items.push(this._getProperty(node, count++));
             }
         }
         return items;
     }
 
     // Get properties including properties on parents 
-    private _getProperty(node : RootNode) : any[] {
-        var objProperies : any = []          
+    private _getProperty(node : RootNode, count : number) : any[] {
+        var objProperies : any = [];
+
+        if(this.repo.telling.value == true) {
+            objProperies['#'] = ++count;
+        }
+
         for(var activeProp of node.getActiveProperties()) {
             try {
                 objProperies[activeProp.navn] = (<any>node)[activeProp.method]();
