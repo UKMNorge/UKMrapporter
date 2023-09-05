@@ -1,20 +1,24 @@
 import RootNode from "../objects/RootNode";
 import { read, utils, writeFileXLSX } from 'xlsx';
-import { toRaw } from 'vue';
+import NodeObj from './../objects/NodeObj';
+
 
 
 class Excel {
     private nodes : RootNode[] = [];
     private root;
+    private leafNode : NodeObj;
 
-    constructor(root : RootNode) {
+    constructor(root : RootNode, leafNode : NodeObj) {
         this.root = root;
+        this.leafNode = leafNode;
     }
 
     public generateFile() {
         this.updateNodes();
         var date = new Date();
-        const ws = utils.json_to_sheet(this.getItems());
+        var nodes = this.getItems();
+        const ws = utils.json_to_sheet(nodes);
         const wb = utils.book_new();
         utils.book_append_sheet(wb, ws, "Data");
         writeFileXLSX(wb,  'rapport_' + date.toLocaleTimeString() + ".xlsx");
@@ -27,7 +31,7 @@ class Excel {
 
     private getLeafNodes(node : RootNode, leafNodes : any[]) {
 
-        if (node.children.length === 0 /*&& node instanceof (<any>props.leafNode)*/) {
+        if (node.children.length === 0 && node instanceof (<any>this.leafNode)) {
             if(this._checkUniqueAdding(node)) {
                 leafNodes.push(node);
             }
@@ -62,7 +66,7 @@ class Excel {
     private getItems() {
         var items : any[] = [];
         for(var node of this.nodes) { 
-            if(node.isActive() /*&& node instanceof (<any>props.leafNode)*/){ 
+            if(node.isActive() && node instanceof (<any>this.leafNode)){ 
                 items.push(this._getProperty(node));
             }
         }
