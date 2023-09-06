@@ -2,11 +2,13 @@ import RootNode from "../objects/RootNode";
 import { read, utils, writeFileXLSX } from 'xlsx';
 import NodeObj from './../objects/NodeObj';
 import Repo from "./Repo";
+import { toRaw } from 'vue';
+
 
 
 
 class Excel {
-    private nodes : RootNode[] = [];
+    private nodes : NodeObj[] = [];
     private root : NodeObj;
     private leafNode : NodeObj;
     private repo : Repo;
@@ -18,27 +20,56 @@ class Excel {
     }
 
     public generateFile() {
+        var grupperingNode = this.repo.getGroupingNode();
+        var grupperingNodes : NodeObj[] = [];
+        this.getAllNodesAtLevel(this.root, grupperingNodes, grupperingNode);
+
+        // Grouping is used
+        if(grupperingNodes.length > 0) {
+            var originalRoot = this.root;
+            var allLines = [];
+            for (var node of grupperingNodes) {
+                this.root = node;
+                this.updateNodes();
+                allLines.push([node.getNavn(), this.getItems()]);
+
+            }
+            this.downloadFile(allLines);
+            this.root = originalRoot;
+        }
+        else {
+            this.updateNodes();
+            var lines = this.getItems();
+            this.downloadFile([['Side 1', lines]]);
+        }
+    }
+
+    private downloadFile(pages : any[]) {
         // HUSK: det burkes kun leafNode for hente unike informasjon om unike er aktivert
         var isLeafUnique = (<any>this.leafNode).getUnique();
-        
-        this.updateNodes();
         var date = new Date();
-        var lines = this.getItems();
 
-        // Antall inkludering unike
-        if(this.repo.antall.value == true) {
-            var antall = lines.length;
-            var antallKey = isLeafUnique ? 'Antall unike' : 'Antall';
-            var antalObj : any = {};
-            antalObj[antallKey] = antall;
-
-            lines.push(antalObj);
+        // Gruppering
+        var wb = utils.book_new();
+        for(var page of pages) {
+            var lines = page[1];
+            // Antall inkludering unike
+            if(this.repo.antall.value == true) {
+                var antall = lines.length;
+                var antallKey = isLeafUnique ? 'Antall unike' : 'Antall';
+                var antalObj : any = {};
+                antalObj[antallKey] = antall;
+    
+                lines.push(antalObj);
+            }
+            
+            const ws = utils.json_to_sheet(lines);
+            utils.book_append_sheet(wb, ws, page[0]);
         }
-        
-        const ws = utils.json_to_sheet(lines);
-        const wb = utils.book_new();
-        utils.book_append_sheet(wb, ws, "Data");
-        writeFileXLSX(wb,  'rapport_' + date.toLocaleTimeString() + ".xlsx");
+
+        if(wb) {
+            writeFileXLSX(wb,  'rapport_' + date.toLocaleTimeString() + ".xlsx");
+        }
     }
 
     public updateNodes() {
@@ -46,7 +77,7 @@ class Excel {
         this.getLeafNodes(this.root, this.nodes);
     }
 
-    private getLeafNodes(node : RootNode, leafNodes : any[]) {
+    private getLeafNodes(node : NodeObj, leafNodes : any[]) {
 
         if (node.children.length === 0 && node instanceof (<any>this.leafNode)) {
             if(this._checkUniqueAdding(node)) {
@@ -65,7 +96,7 @@ class Excel {
     Returns true or false if the node is added.
     uniqueId is used to determine the value
     */
-    private _checkUniqueAdding(node : RootNode) : Boolean {
+    private _checkUniqueAdding(node : NodeObj) : Boolean {
         // Unique is not activated
         if((<any>node.constructor).getUnique() == false) {
             return true;
@@ -120,6 +151,16 @@ class Excel {
         }
 
         return objProperies;
+    }
+
+    public getAllNodesAtLevel(node : NodeObj, filteredNodes : NodeObj[], filterNode : NodeObj) {
+        if ((<NodeObj>node).className === (<any>(<any>filterNode).value).className) {
+            filteredNodes.push(node);
+        } else {
+            for (var i = 0; i < node.children.length; i++) {
+                this.getAllNodesAtLevel(node.children[i], filteredNodes, filterNode);
+            }
+        }
     }
 }
 
