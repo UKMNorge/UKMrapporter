@@ -51,6 +51,7 @@ class Excel {
 
         // Gruppering
         var wb = utils.book_new();
+        var count = 0;
         for(var page of pages) {
             var lines = page[1];
             // Antall inkludering unike
@@ -64,7 +65,7 @@ class Excel {
             }
             
             const ws = utils.json_to_sheet(lines);
-            utils.book_append_sheet(wb, ws, page[0]);
+            utils.book_append_sheet(wb, ws, (++count + '. ' + page[0]));
         }
 
         if(wb) {
