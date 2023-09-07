@@ -3,6 +3,7 @@ import NodeProperty from "./NodeProperty";
 import RootNode from "./RootNode";
 import { ref } from 'vue';
 import Excel from './Excel';
+import PDF from './PDF';
 
 
 
@@ -15,12 +16,15 @@ class Repo {
     public telling = ref(false);
     private uniqueNodeObjects : any[] = [];
     private excel : Excel;
+    private pdf : PDF;
 
     constructor(root : NodeObj, uniqueNodeObjects : any[], leafNode : any) {
         this.root = root;
         this.uniqueNodeObjects = uniqueNodeObjects;
         this.leafNode = leafNode;
         this.excel = new Excel(this);
+        this.pdf = new PDF(this);
+
 
         // Adding parent to all nodes on the tree
         this.addParents(this.root);
@@ -34,6 +38,10 @@ class Repo {
 
     public generateExcel() {
         this.excel.generateFile();
+    }
+
+    public generatePDF() {
+        this.pdf.generateFile();
     }
 
     public getGroupingNode() : any {
