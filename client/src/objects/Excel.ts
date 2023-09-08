@@ -3,20 +3,15 @@ import { read, utils, writeFileXLSX } from 'xlsx';
 import NodeObj from './../objects/NodeObj';
 import Repo from "./Repo";
 import { toRaw } from 'vue';
+import FileGenerator from "./FileGenerator";
 
 
 
 
-class Excel {
-    private nodes : NodeObj[] = [];
-    private root : NodeObj;
-    private leafNode : NodeObj;
-    private repo : Repo;
-
+class Excel extends FileGenerator {
+    
     constructor(repo : Repo) {
-        this.root = repo.root;
-        this.leafNode = repo.leafNode;
-        this.repo = repo;
+        super(repo);        
     }
 
     public generateFile() {
@@ -70,97 +65,6 @@ class Excel {
 
         if(wb) {
             writeFileXLSX(wb,  'rapport_' + date.toLocaleTimeString() + ".xlsx");
-        }
-    }
-
-    public updateNodes() {
-        this.nodes = [];
-        this.getLeafNodes(this.root, this.nodes);
-    }
-
-    private getLeafNodes(node : NodeObj, leafNodes : any[]) {
-
-        if (node.children.length === 0 && node instanceof (<any>this.leafNode)) {
-            if(this._checkUniqueAdding(node)) {
-                leafNodes.push(node);
-            }
-        } else {
-            for (var i = 0; i < node.children.length; i++) {
-                if((node instanceof RootNode) || (<any>node).isActive()) {
-                    this.getLeafNodes(node.children[i], leafNodes);
-                }
-            }
-        }
-    }
-
-    /* 
-    Returns true or false if the node is added.
-    uniqueId is used to determine the value
-    */
-    private _checkUniqueAdding(node : NodeObj) : Boolean {
-        // Unique is not activated
-        if((<any>node.constructor).getUnique() == false) {
-            return true;
-        }
-
-        // Checking all added nodes for the same uniqueId, if it is found, the method returns false
-        for(var n of this.nodes) {
-            if(n.getUniqueId() == node.getUniqueId()) return false;
-        }
-        
-        return true;
-    }
-
-    // Get all items from the classes sendt as array of values
-    private getItems() {
-        var items : any[] = [];
-        var count = 0;
-        for(var node of this.nodes) { 
-            if(node.isActive() && node instanceof (<any>this.leafNode)){ 
-                items.push(this._getProperty(node, count++));
-            }
-        }
-        return items;
-    }
-
-    // Get properties including properties on parents 
-    private _getProperty(node : RootNode, count : number) : any[] {
-        var objProperies : any = [];
-
-        if(this.repo.telling.value == true) {
-            objProperies['#'] = ++count;
-        }
-
-        for(var activeProp of node.getActiveProperties()) {
-            try {
-                objProperies[activeProp.navn] = (<any>node)[activeProp.method]();
-            } catch (e: unknown) {
-                console.error('Method: ' + activeProp.method + ' does not exist on ' + node.getRepresentativeName() + '. Please check the properties and methods');
-            }
-        }
-
-        var parent = node.parent;
-        while(parent) {
-            for(var activeProp of parent.getActiveProperties()) {
-                try {
-                    objProperies[activeProp.navn] = (<any>parent)[activeProp.method]();
-                } catch (e: unknown) {
-                    console.error('Method: ' + activeProp.method + ' does not exist on ' + node.getRepresentativeName() + '. Please check the properties and methods');
-                }
-            }
-            parent = parent.parent;
-        }
-
-        return objProperies;
-    }
-
-    public getAllNodesAtLevel(node : NodeObj, filteredNodes : NodeObj[], filterNode : NodeObj) {
-        if ((<NodeObj>node).className === (<any>(<any>filterNode).value).className) {
-            filteredNodes.push(node);
-        } else {
-            for (var i = 0; i < node.children.length; i++) {
-                this.getAllNodesAtLevel(node.children[i], filteredNodes, filterNode);
-            }
         }
     }
 }

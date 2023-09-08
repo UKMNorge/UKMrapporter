@@ -2,7 +2,7 @@
     <div v-if="dataFetched">
         <div class="as-container container">
             <div class="as-margin-top-space-8 as-margin-bottom-space-8">
-                <h1 class="">Ledere Oversikt</h1>
+                <h1 class="">{{ rapportName }}</h1>
             </div>
         </div>
 
@@ -39,6 +39,7 @@ var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 const spaInteraction = new SPAInteraction(null, ajaxurl);
 var loading = ref(true);
 var dataFetched = ref(false);
+var rapportName = 'Ledere Oversikt';
 
 Leder.hasUnique = true;
 
@@ -47,7 +48,7 @@ const nodeStructure = [Fylke, Arrangement, Leder].reverse();
 getDataAjax();
 
 var root = new RootNode();
-var repo = new Repo(root, nodeStructure, Leder);
+var repo = new Repo(root, nodeStructure, Leder, rapportName);
 var rootNodes : any = repo.getRootNodes();
 
 
@@ -92,7 +93,7 @@ async function getDataAjax() {
 
         }
         
-        repo = new Repo(root, nodeStructure, Leder);
+        repo = new Repo(root, nodeStructure, Leder, rapportName);
         loading.value = false;
         dataFetched.value = true;
         rootNodes = repo.getRootNodes();

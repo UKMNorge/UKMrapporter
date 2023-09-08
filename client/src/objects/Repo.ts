@@ -17,13 +17,15 @@ class Repo {
     private uniqueNodeObjects : any[] = [];
     private excel : Excel;
     private pdf : PDF;
+    private rapportName : string;
 
-    constructor(root : NodeObj, uniqueNodeObjects : any[], leafNode : any) {
+    constructor(root : NodeObj, uniqueNodeObjects : any[], leafNode : any, rapportName : string) {
         this.root = root;
         this.uniqueNodeObjects = uniqueNodeObjects;
         this.leafNode = leafNode;
         this.excel = new Excel(this);
         this.pdf = new PDF(this);
+        this.rapportName = rapportName;
 
 
         // Adding parent to all nodes on the tree
@@ -42,6 +44,10 @@ class Repo {
 
     public generatePDF() {
         this.pdf.generateFile();
+    }
+
+    public getRapportName() : string {
+        return this.rapportName;
     }
 
     public getGroupingNode() : any {
