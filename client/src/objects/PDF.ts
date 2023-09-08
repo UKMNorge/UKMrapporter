@@ -14,33 +14,64 @@ class PDF extends FileGenerator {
 
     public generateFile() {
         this.updateNodes();
-        var items = this.getItems();
         var data = [];
         var keys : any[] = [];
 
-        for(var item of items) {
-            if(keys.length < 1) {
-                keys = Object.keys(item);
+        var grupperingNode = this.repo.getGroupingNode();
+        var grupperingNodes : NodeObj[] = [];
+        this.getAllNodesAtLevel(this.root, grupperingNodes, grupperingNode);
+
+        var allItems : any[] = [];
+        // Grouping is used
+        if(grupperingNodes.length > 0) {
+            var originalRoot = this.root;
+
+            for (var node of grupperingNodes) {
+                this.root = node;
+                this.updateNodes();
+                allItems.push([node.getNavn(), this.getItems()]);
             }
-            data.push((<any>Object).values(item));
+
+            this.root = originalRoot;
+        }
+        else {
+            this.updateNodes();
+            allItems.push([this.repo.getRapportName(), this.getItems()]);
         }
 
-        // Grouping
-
-        const pdf = new this.jsPDF();
         
-        pdf.setFontSize(20); // Set the font size to 12 points
-        pdf.text(this.repo.getRapportName(), 15, 20);
+        // Grouping
+        const pdf = new this.jsPDF();
 
-        // Create the table using the autoTable plugin
-        pdf.autoTable({
-            startY: 30,
-            head: [keys], // Keys
-            body: data, // array of data
-        });
+        var allItems = allItems.filter((a : any) => a[1].length > 0)
+        var count = 0;
+        for(var item of allItems) {
+            var data : any[] = [];
+            pdf.setFontSize(20); // Set the font size to 12 points
+            pdf.text(item[0], 15, 20);
+
+            for(var innerItem of item[1]) {
+                if(keys.length < 1) {
+                    keys = Object.keys(innerItem);
+                }
+                data.push((<any>Object).values(innerItem));
+            }
+            
+            // Create the table using the autoTable plugin
+            pdf.autoTable({
+                startY: 30,
+                head: [keys], // Keys
+                body: data, // array of data
+            });
+
+            if(++count < allItems.length) {
+                pdf.addPage(); // Add a new page for the next table
+            }
+        }
+        
     
         // Save or open the PDF
-        pdf.save('table.pdf');
+        pdf.save(this.repo.getRapportName().toLowerCase() + '.pdf');
     }
 }
 
