@@ -1,6 +1,6 @@
 <template>
     <div class="rapport-meny ">
-        <div class="object item as-card-2 as-padding-space-2">
+        <div class="object item as-card-2 as-padding-space-2 as-margin-space-1">
             <h4 v-if="root && selectedNode.className == root.className">Ingen filtrering</h4>
             <h4 v-else>Filtrering etter {{ getNodeName(selectedNode) }}</h4>
             <div class="attributes as-margin-top-space-1">
