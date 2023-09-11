@@ -6,6 +6,9 @@ abstract class NodeObj {
     protected id: string;
     public className: string = '';
     private active : Boolean = true;
+    private ascSort = true;
+    private sortPosition = -1;
+    private sortActivated = false;
 
     // Pointer to the next array of Node
     public children : NodeObj[] = [];
@@ -21,7 +24,10 @@ abstract class NodeObj {
 
         // Making reactive values outside static
         this.refs = ref({
-            active : this.active
+            active : this.active,
+            ascSort : this.ascSort,
+            sortPosition : this.sortPosition,
+            sortActivated : this.sortActivated
         })
     }
 
@@ -33,6 +39,31 @@ abstract class NodeObj {
         });
 
         return subclass.getAllProperies()
+    }
+    
+    public setAscSort(ascSort : boolean) {
+        this.refs.ascSort = ascSort;
+    }
+
+    public getAscSort() : boolean {
+        return this.refs.ascSort != undefined ? this.refs.ascSort : this.refs.value.ascSort;
+    }
+
+    public setSortPosition(pos : number) {
+        this.refs.sortPosition = pos;
+    }
+
+    public getSortPosition() : number {
+        return this.refs.sortPosition != undefined ? this.refs.sortPosition : this.refs.value.sortPosition;
+    }
+
+    public setSortActivated(activated : boolean) {
+        this.refs.sortActivated = activated;
+    }
+
+    public getSortActivated() : boolean {
+        return this.refs.sortActivated != undefined ? this.refs.sortActivated : this.refs.value.sortActivated;
+
     }
 
     public addChildren(children : NodeObj[]) {

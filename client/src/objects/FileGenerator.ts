@@ -56,6 +56,8 @@ abstract class FileGenerator {
 
     // Get all items from the classes sendt as array of values
     protected getItems() {
+        var sortActivated = this.root.getSortActivated();
+
         var items : any[] = [];
         var count = 0;
         for(var node of this.nodes) { 
@@ -63,7 +65,23 @@ abstract class FileGenerator {
                 items.push(this._getProperty(node, count++));
             }
         }
-        return items;
+        return sortActivated ? this.sortBy(items) : items;  
+    }
+
+    // Sort items
+    private sortBy(items : any[]) {
+        console.log('sortBy()');
+        var sortPosition = this.root.getSortPosition();
+        var ascSort = this.root.getAscSort();
+
+        var pos = sortPosition;
+        var sortedItems = items.sort((a : any, b : any) => {
+            a = (<any>Object).values(a);
+            b = (<any>Object).values(b);
+            return a[pos] > b[pos] ? 1 : (a[pos] < b[pos] ? -1 : 0)
+        });
+
+        return ascSort == true ? sortedItems : sortedItems.reverse();
     }
 
     // Get properties including properties on parents 
