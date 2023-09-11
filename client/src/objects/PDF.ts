@@ -47,7 +47,7 @@ class PDF extends FileGenerator {
         var count = 0;
         for(var item of allItems) {
             var data : any[] = [];
-            pdf.setFontSize(20); // Set the font size to 12 points
+            pdf.setFontSize(20);
             pdf.text(item[0], 15, 20);
 
             for(var innerItem of item[1]) {
@@ -63,6 +63,15 @@ class PDF extends FileGenerator {
                 head: [keys], // Keys
                 body: data, // array of data
             });
+
+            // Antall
+            if(this.repo.antall.value == true) {
+                var isLeafUnique = (<any>this.leafNode).getUnique();
+                var antall = data.length;
+                var antallKey = isLeafUnique ? 'Antall unike' : 'Antall';
+                pdf.setFontSize(12);
+                pdf.text(antallKey + ': ' + antall, 15, pdf.autoTable.previous.finalY + 20);
+            }
 
             if(++count < allItems.length) {
                 pdf.addPage(); // Add a new page for the next table
