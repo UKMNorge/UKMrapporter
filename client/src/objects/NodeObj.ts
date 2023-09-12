@@ -6,9 +6,12 @@ abstract class NodeObj {
     protected id: string;
     public className: string = '';
     private active : Boolean = true;
+    
     private ascSort = true;
     private sortPosition = -1;
     private sortActivated = false;
+    private sortProperty : NodeProperty|null = null;
+    
 
     // Pointer to the next array of Node
     public children : NodeObj[] = [];
@@ -27,7 +30,8 @@ abstract class NodeObj {
             active : this.active,
             ascSort : this.ascSort,
             sortPosition : this.sortPosition,
-            sortActivated : this.sortActivated
+            sortActivated : this.sortActivated,
+            sortProperty : this.sortProperty,
         })
     }
 
@@ -63,7 +67,22 @@ abstract class NodeObj {
 
     public getSortActivated() : boolean {
         return this.refs.sortActivated != undefined ? this.refs.sortActivated : this.refs.value.sortActivated;
+    }
 
+    public setSortProperty(sortProp : NodeProperty) {
+        this.refs.sortProperty = sortProp;
+    }
+
+    public getSortProperty() : NodeProperty {
+        return this.refs.sortProperty != undefined ? this.refs.sortProperty : this.refs.value.sortProperty;
+    }
+
+    // Reset sorting for this node
+    public resetSorting() {
+        this.refs.ascSort = true;
+        this.refs.sortPosition = -1;
+        this.refs.sortActivated = false;
+        this.refs.sortProperty = null;
     }
 
     public addChildren(children : NodeObj[]) {

@@ -70,7 +70,15 @@ abstract class FileGenerator {
 
     // Sort items
     private sortBy(items : any[]) {
-        console.log('sortBy()');
+        var nodeProp = this.root.getSortProperty();
+
+        // If NodeProperty is not defined or it is not active, then return items without sorting 
+        if(nodeProp == null || nodeProp.active == false) {
+            // Reset sorting
+            this.root.resetSorting();
+            return items;
+        }
+
         var sortPosition = this.root.getSortPosition();
         var ascSort = this.root.getAscSort();
 

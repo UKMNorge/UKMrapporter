@@ -39,7 +39,7 @@
                             <template v-for="(key, pos) in getActiveKeys()" :key="pos">
                                 <th v-if="key.active" scope="col">
                                     <div class="inner-div">
-                                        <button :class="{'active-sort' : root.getSortActivated() && root.getSortPosition() == pos}" @click="setSort(pos)" class="sort-button">
+                                        <button :class="{'active-sort' : root.getSortActivated() && root.getSortPosition() == pos}" @click="setSort(pos, key)" class="sort-button">
                                             <span class="title">{{ key.navn }}</span>
                                             <div class="indicators">
                                                 <div>
@@ -146,7 +146,9 @@
         return ret;
     }
 
-    function setSort(sortPos : number) {
+    function setSort(sortPos : number, nodeProp : NodeProperty) {
+        props.root.setSortProperty(nodeProp);
+
         var sortPosition = props.root.getSortPosition();
         var sortActivated = props.root.getSortActivated();
         var ascSort = props.root.getAscSort();
@@ -169,11 +171,18 @@
 
 
         props.root.setSortPosition(sortPos);
-
     }
 
     // Sort items
     function sortBy(items : any[]) {
+        var nodeProp = props.root.getSortProperty();
+        
+        // If NodeProperty is not defined or it is not active, then return items without sorting
+        if(nodeProp == null || nodeProp.active == false) {
+            // Reset sorting
+            props.root.resetSorting();
+            return items;
+        }
         var sortPosition = props.root.getSortPosition();
         var ascSort = props.root.getAscSort();
 
@@ -182,10 +191,6 @@
         var sortedItems = items.sort((a : any, b : any) => {return a[pos] > b[pos] ? 1 : (a[pos] < b[pos] ? -1 : 0)});
 
         return ascSort == true ? sortedItems : sortedItems.reverse();
-    }
-
-    function getSortPosition() : Number {
-        return 0;
     }
 
     // Get all items from the classes sendt as array on values
