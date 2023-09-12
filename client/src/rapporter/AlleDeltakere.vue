@@ -40,7 +40,7 @@ var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 const spaInteraction = new SPAInteraction(null, ajaxurl);
 var loading = ref(true);
 var dataFetched = ref(false);
-var rapportName = 'Alle deltakere';
+var rapportName = 'Alle Deltakere';
 
 Person.hasUnique = true;
 
