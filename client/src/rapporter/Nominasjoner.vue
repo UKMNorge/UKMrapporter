@@ -27,9 +27,8 @@ import { ref } from 'vue';
 import MenyVue from '../components/Meny.vue';
 import DownloadsVue from '../components/Downloads.vue';
 import Nominasjon from '../objects/rapporter/Nominasjon';
-import Fylke from '../objects/rapporter/Fylke';
 import Arrangement from '../objects/rapporter/Arrangement';
-import Innslag from '../objects/rapporter/Innslag';
+import DefaultNode from '../objects/rapporter/DefaultNode';
 import RootNode from '../objects/RootNode';
 import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
@@ -42,9 +41,7 @@ var loading = ref(true);
 var dataFetched = ref(false);
 var rapportName = 'Nominasjoner';
 
-// Nominasjon.hasUnique = true;
-
-var nodeStructure = [Arrangement, Nominasjon].reverse();
+var nodeStructure = [DefaultNode, Arrangement, Nominasjon].reverse();
 
 getDataAjax();
 
@@ -60,32 +57,50 @@ async function getDataAjax() {
     };
 
     var response = await spaInteraction.runAjaxCall('/', 'POST', data);
-    var arrangementer = (<any>response.root.children);
+    var innslagTyper = (<any>response.root.children);
     
-    // Arrangementer
-    for(var key of Object.keys(arrangementer)) {
-        var arrangement = arrangementer[key];
-        var arrangementObj = arrangementer[key];
+    // Innslag type (brukes DefaultNode)
+    for(var key of Object.keys(innslagTyper)) {
+        var type = innslagTyper[key];
+        var typeObj = type.obj;
 
-        var arrangementNode = new Arrangement(arrangementObj.id, arrangementObj.navn, arrangementObj.type, arrangementObj.sted);
+        var typeNode = new DefaultNode(typeObj.id, typeObj.name);
+        typeNode.className = 'Type';
+        root.addChild(typeNode);
 
-        root.addChild(arrangementNode);
         
-        // Kommuner
-        for(var key of Object.keys(arrangement.children)) {
-            var nominasjon = arrangement.children[key];
-            var nominasjonObj = nominasjon.obj;
-
-
-            var nominasjonNode = new Nominasjon(nominasjonObj.id, nominasjonObj.navn, nominasjonObj.voksenskjema, nominasjonObj.deltakerskjema, nominasjonObj.videresendt);
-            arrangementNode.addChild(nominasjonNode);
+        // Arrangementer
+        for(var key of Object.keys(type.children)) {
+            var arrangement = type.children[key];
+            var arrangementObj = arrangement.obj;
+    
+            var arrangementNode = new Arrangement(arrangementObj.id, arrangementObj.navn, arrangementObj.type, arrangementObj.sted);
+    
+            typeNode.addChild(arrangementNode);
+            
+            // Nominasjoner
+            for(var key of Object.keys(arrangement.children)) {
+                var nominasjon = arrangement.children[key];
+                var nominasjonObj = nominasjon.obj;
+    
+    
+                var nominasjonNode = new Nominasjon(nominasjonObj.id, nominasjonObj.navn, nominasjonObj.voksenskjema, nominasjonObj.deltakerskjema, nominasjonObj.videresendt);
+                arrangementNode.addChild(nominasjonNode);
+            }
+            
+            repo = new Repo(root, nodeStructure, Nominasjon, rapportName);
+            loading.value = false;
+            dataFetched.value = true;
+            rootNodes = repo.getRootNodes();
+    
         }
-        
-        repo = new Repo(root, nodeStructure, Nominasjon, rapportName);
-        loading.value = false;
-        dataFetched.value = true;
-        rootNodes = repo.getRootNodes();
+    }
 
+    // Change property name at Arrangement
+    for(var prop of Arrangement.getAllProperies()) {
+        if(prop.method == 'getNavn') {
+            prop.navn = 'Avsender';
+        }
     }
 }
 

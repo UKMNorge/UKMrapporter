@@ -10,7 +10,7 @@ class Nominasjon extends NodeObj {
     public static hasUnique : Boolean = false;
 
     private static properties : NodeProperty[] = [
-        new NodeProperty('getNavn', 'Nominasjon navn', true),
+        new NodeProperty('getNominasjonNavn', 'Navn', true),
         new NodeProperty('harVoksenskjema', 'Voksenskjema', true),
         new NodeProperty('harDeltakerskjema', 'Deltakerskjema', true),
         new NodeProperty('erVideresendt', 'Videresendt', true),
@@ -75,7 +75,7 @@ class Nominasjon extends NodeObj {
         });
     }
 
-    public getNavn() {
+    public getNominasjonNavn() {
         return this.navn;
     }
 

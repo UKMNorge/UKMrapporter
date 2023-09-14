@@ -2,50 +2,53 @@ import { ref } from 'vue';
 import NodeObj from './../NodeObj';
 import NodeProperty from './../NodeProperty';
 
+/*
+DefaultNode uses for nodes that do not have clear definition but the use of a node is necessary.
+An example is when grouping is needed and a node between 2 nodes on the tree must be used.
+*/
 
-class Arrangement extends NodeObj {
+
+class DefaultNode extends NodeObj {
 
     /* -- Static start -- */
     private static unique: Boolean = false;
     public static hasUnique : Boolean = false;
 
     private static properties : NodeProperty[] = [
-        new NodeProperty('getNavn', 'Arrangement navn', true),
-        new NodeProperty('getType', 'Type', false),
-        new NodeProperty('getSted', 'Sted', false),
+        new NodeProperty('getNavn', 'Navn', false),
     ];
 
-    static className = 'Arrangement';
+    static className = 'DefaultNode';
 
     // Using for reactivity on Vue
     protected static staticRefs : any;
     
     // Mutual methods
     public getActiveProperties() : NodeProperty[] {
-        return Arrangement.getActiveProperties();
+        return DefaultNode.getActiveProperties();
     }
 
     public static getAllProperies() : NodeProperty[] {
-        return super.getAllProperies(Arrangement);
+        return super.getAllProperies(DefaultNode);
     }
     
     public static getActiveProperties() : NodeProperty[] {
-        return super.getActiveProperties(Arrangement);
+        return super.getActiveProperties(DefaultNode);
     }
     public static getUnique() : Boolean {
-        return super.getUnique(Arrangement);
+        return super.getUnique(DefaultNode);
     }
 
     public static usesUnique() : Boolean {
-        return super.usesUnique(Arrangement);
+        return super.usesUnique(DefaultNode);
     }
 
     public static setUnique(boolVal : Boolean) {
-        return super.setUnique(Arrangement, boolVal);
+        return super.setUnique(DefaultNode, boolVal);
     }
 
     public static getKeysForTable() : NodeProperty[] {
-        return super.getKeysForTable(Arrangement);
+        return super.getKeysForTable(DefaultNode);
     }
     /* -- Static end -- */
 
@@ -53,22 +56,18 @@ class Arrangement extends NodeObj {
     
     
     // Class attributes
-    public className = 'Arrangement';
+    public className = 'DefaultNode';
     private navn : string;
-    private type : string;
-    private sted : string;
     
-    constructor(id : string, navn : string, type : string, sted : string ) {
+    constructor(id : string, navn : string) {
         super(id);
         this.navn = navn;
-        this.type = type;
-        this.sted = sted;
 
 
         // Making variables reactive on static
-        Arrangement.staticRefs = ref({
-            unique : Arrangement.unique,
-            properties : Arrangement.properties,
+        DefaultNode.staticRefs = ref({
+            unique : DefaultNode.unique,
+            properties : DefaultNode.properties,
         });
     }
 
@@ -76,18 +75,10 @@ class Arrangement extends NodeObj {
         return this.navn;
     }
     
-    public getType() {
-        return this.type;
-    }
-    
-    public getSted() {
-        return this.sted;
-    }
-
     public getData() {
 
     }
 
 }
 
-export default Arrangement;
+export default DefaultNode;
