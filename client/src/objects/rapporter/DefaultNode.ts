@@ -71,6 +71,11 @@ class DefaultNode extends NodeObj {
         });
     }
 
+    public setClassName(name : string) {
+        DefaultNode.className = name;
+        this.className = name;
+    }
+
     public getNavn() {
         return this.navn;
     }

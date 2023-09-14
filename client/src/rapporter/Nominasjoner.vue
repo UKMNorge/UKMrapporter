@@ -65,7 +65,7 @@ async function getDataAjax() {
         var typeObj = type.obj;
 
         var typeNode = new DefaultNode(typeObj.id, typeObj.name);
-        typeNode.className = 'Type';
+        typeNode.setClassName('Type');
         root.addChild(typeNode);
 
         
@@ -100,6 +100,13 @@ async function getDataAjax() {
     for(var prop of Arrangement.getAllProperies()) {
         if(prop.method == 'getNavn') {
             prop.navn = 'Avsender';
+        }
+    }
+
+    // Change property name at DefaultNode
+    for(var prop of DefaultNode.getAllProperies()) {
+        if(prop.method == 'getNavn') {
+            prop.navn = 'Innslag type';
         }
     }
 }
