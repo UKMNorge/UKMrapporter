@@ -4,7 +4,7 @@
             <NodeVue :root="root" />
             <div class="filter-grouping-div col-xs-3 nop">
                 <FilterVue :root="root" />
-                <GroupingVue :root="root" :gruppingUpdateCallback="gruppingUpdateCallback" />
+                <GroupingVue :root="root" :groupingNode="groupingNode" :gruppingUpdateCallback="gruppingUpdateCallback" />
                 <TableFilterVue :tableCallback="tableCallback"  />
             </div>
         </div>
@@ -19,12 +19,27 @@ import GroupingVue from './Grouping.vue';
 import TableFilterVue from './TableFilter.vue';
 import RootNode from '../objects/RootNode';
 import NodeObj from '../objects/NodeObj';
+import type { PropType } from 'vue';
 
-const props = defineProps<{
-    root: RootNode|null,
-    gruppingUpdateCallback : (n : NodeObj)=>void,
-    tableCallback : (antall : Boolean, telling : Boolean)=>void,
-}>();
+const props = defineProps({
+    root: {
+        type: Object as () => RootNode | null,
+        required: true,
+
+    },
+    gruppingUpdateCallback: {
+        type: Function as PropType<(n: NodeObj) => void>,
+        required: true,
+    },
+    tableCallback: {
+        type: Function as PropType<(antall: Boolean, telling: Boolean) => void>,
+        required: true,
+    },
+    groupingNode: {
+        type: Object as () => NodeObj,
+        default: null, // Set a default value of null
+    },
+});
 
 
 // Accepts filtering

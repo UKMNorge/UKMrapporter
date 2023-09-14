@@ -19,12 +19,29 @@ import NodeObj from "../objects/NodeObj";
 import RootNode from "../objects/RootNode";
 import { ref } from 'vue';
 import { onUpdated, onMounted } from 'vue';
+import type { PropType } from 'vue';
 
 
-const props = defineProps<{
-    root: RootNode|null,
-    gruppingUpdateCallback : (n : NodeObj)=>void,
-}>();
+
+// const props = defineProps<{
+//     root: RootNode|null,
+//     gruppingUpdateCallback : (n : NodeObj)=>void,
+// }>();
+
+const props = defineProps({
+    root: {
+        type: Object as () => RootNode | null,
+        required: true,
+    },
+    gruppingUpdateCallback: {
+        type: Function as PropType<(n: NodeObj) => void>,
+        required: true,
+    },
+    groupingNode: {
+        type: Object as () => NodeObj,
+        default: null, // Set a default value of null
+    },
+});
 
 var selectorPopup : any = ref(false);
 var filterNodes : any = ref([]);
@@ -41,7 +58,11 @@ onMounted(() => {
         var val = (<any>keyValueNode.value)[key];
         filterNodes.value.push(val);
     }
-    console.warn(filterNodes.value);
+    
+    if(props.groupingNode) {
+        selectedNode = props.groupingNode;
+        props.gruppingUpdateCallback(props.groupingNode);
+    }
 })
 
 function changeNode(event : any) {
