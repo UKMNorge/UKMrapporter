@@ -91,6 +91,13 @@ class Nominasjon extends NodeObj {
         return this.videresendt;
     }
 
+    /**
+     * @override
+     */
+    public getUniqueId() : string {
+        return this.navn;
+    }
+
     public getData() {
 
     }

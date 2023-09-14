@@ -49,6 +49,8 @@ var root = new RootNode();
 var repo = new Repo(root, nodeStructure, Nominasjon, rapportName);
 var rootNodes : any = repo.getRootNodes();
 
+Nominasjon.hasUnique = true;
+
 
 async function getDataAjax() {
     var data = {
