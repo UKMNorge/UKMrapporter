@@ -45,13 +45,22 @@ foreach($arrTyper as $type) {
             $person = $innslag->getPersoner()->getSingle();
 
             if($nominasjon->erNominert()) {
+                $status = '';
+                if($nominasjon->harVoksenSkjema() && $nominasjon->harDeltakerskjema()) {
+                    $status = "Nominert";
+                }
+                else {
+                    $status = "Nominert, men mangler skjema";
+                }
+                
+                $videresendt = $innslag->erVideresendtTil($til);
                 $nominasjonObj = [
                     'id' => $nominasjon->getId(),
                     'navn' => $innslag->getNavn(),
                     'voksenskjema' => $nominasjon->harVoksenskjema(),
                     'deltakerskjema' => $nominasjon->harDeltakerskjema(),
-                    'videresendt' =>  $innslag->erVideresendtTil($til),
-                    'status' => !$nominasjon->erAnswered() ? 'Ikke besvart' : ($nominasjon->erGodkjent() ? 'Godkjent' : 'Ikke godkjent')
+                    'videresendt' =>  $videresendt,
+                    'status' => $videresendt ? 'Videresendt' : '' . ($status . ' (' . (!$nominasjon->erAnswered() ? 'ikke besvart' : ($nominasjon->erGodkjent() ? 'godkjent' : 'ikke godkjent')) . ')')
                 ];
 
                 $nodeNominasjon = new Node('Nominasjon', $nominasjonObj);
