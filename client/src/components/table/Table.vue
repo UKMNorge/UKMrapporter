@@ -176,7 +176,7 @@
     // Sort items
     function sortBy(items : any[]) {
         var nodeProp = props.root.getSortProperty();
-        
+
         // If NodeProperty is not defined or it is not active, then return items without sorting
         if(nodeProp == null || nodeProp.active == false) {
             // Reset sorting
@@ -273,7 +273,12 @@
         var objProperies = []          
         for(var activeProp of node.getActiveProperties()) {
             try {
-                objProperies.push((<any>node)[activeProp.method]());
+                var value = (<any>node)[activeProp.method]();
+
+                if(typeof value == "boolean") {
+                    value = value ? 'Ja' : 'Nei';
+                }
+                objProperies.push(value);
             } catch (e: unknown) {
                 console.error('Method: ' + activeProp.method + ' does not exist on ' + node.getRepresentativeName() + '. Please check the properties and methods');
             }
