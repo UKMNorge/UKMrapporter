@@ -14,6 +14,7 @@ class Nominasjon extends NodeObj {
         new NodeProperty('harVoksenskjema', 'Voksenskjema', true),
         new NodeProperty('harDeltakerskjema', 'Deltakerskjema', true),
         new NodeProperty('erVideresendt', 'Videresendt', true),
+        new NodeProperty('getStatus', 'Status', true),
     ];
 
     static className = 'Nominasjon';
@@ -59,14 +60,15 @@ class Nominasjon extends NodeObj {
     private voksenskjema : boolean;
     private deltakerskjema : boolean;
     private videresendt : boolean;
+    private status : string;
     
-    constructor(id : string, navn : string, voksenskjema : boolean, deltakerskjema : boolean, videresendt : boolean) {
+    constructor(id : string, navn : string, voksenskjema : boolean, deltakerskjema : boolean, videresendt : boolean, status : string) {
         super(id);
         this.navn = navn;
         this.voksenskjema = voksenskjema;
         this.deltakerskjema = deltakerskjema;
         this.videresendt = videresendt;
-
+        this.status = status;
 
         // Making variables reactive on static
         Nominasjon.staticRefs = ref({
@@ -89,6 +91,10 @@ class Nominasjon extends NodeObj {
 
     public erVideresendt() : boolean {
         return this.videresendt;
+    }
+
+    public getStatus() : string {
+        return this.status;
     }
 
     /**

@@ -25,7 +25,6 @@ $innslagTyper = [];
 $arrangementer = [];
 
 $retObj = [];
-$counter = 0;
 foreach($arrTyper as $type) {
     foreach($avsenderArrangementer as $fra) {
         foreach($fra->getInnslag()->getAllByType($type) as $innslag) {
@@ -46,13 +45,13 @@ foreach($arrTyper as $type) {
             $person = $innslag->getPersoner()->getSingle();
 
             if($nominasjon->erNominert()) {
-                $counter++;
                 $nominasjonObj = [
                     'id' => $nominasjon->getId(),
                     'navn' => $innslag->getNavn(),
                     'voksenskjema' => $nominasjon->harVoksenskjema(),
                     'deltakerskjema' => $nominasjon->harDeltakerskjema(),
                     'videresendt' =>  $innslag->erVideresendtTil($til),
+                    'status' => !$nominasjon->erAnswered() ? 'Ikke besvart' : ($nominasjon->erGodkjent() ? 'Godkjent' : 'Ikke godkjent')
                 ];
 
                 $nodeNominasjon = new Node('Nominasjon', $nominasjonObj);

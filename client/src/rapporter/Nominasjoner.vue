@@ -86,7 +86,13 @@ async function getDataAjax() {
                 var nominasjonObj = nominasjon.obj;
     
     
-                var nominasjonNode = new Nominasjon(nominasjonObj.id, nominasjonObj.navn, nominasjonObj.voksenskjema, nominasjonObj.deltakerskjema, nominasjonObj.videresendt);
+                var nominasjonNode = new Nominasjon(
+                    nominasjonObj.id, 
+                    nominasjonObj.navn, 
+                    nominasjonObj.voksenskjema, 
+                    nominasjonObj.deltakerskjema, 
+                    nominasjonObj.videresendt, 
+                    nominasjonObj.status);
                 arrangementNode.addChild(nominasjonNode);
             }
             
