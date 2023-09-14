@@ -21,26 +21,32 @@ $arrData = [];
 
 
 $root = new Node('Root', null);
+$innslagTyper = [];
 $arrangementer = [];
 
 $retObj = [];
-
+$counter = 0;
 foreach($arrTyper as $type) {
     foreach($avsenderArrangementer as $fra) {
         foreach($fra->getInnslag()->getAllByType($type) as $innslag) {
             
+            // Adding type
+            if(!key_exists($type->getNavn(), $innslagTyper)) {
+                $innslagTyper[$type->getNavn()] = new Node('Type', $type);
+                $root->addChild($type->getNavn(), $innslagTyper[$type->getNavn()]);
+            }
+            
             // Adding arrangement
             $fraArrangement = new Arrangement($fra->getPlId());
-            if(!key_exists($fra->getId(), $arrangementer)) {
-                $arrangementer[$fra->getId()] = new Node('Arrangement', $fraArrangement);
-                $root->addChild($fra->getId(), $arrangementer[$fra->getId()]);
-            }
+            $arrangementer[$fraArrangement->getId()] = new Node('Arrangement', $fraArrangement);
+            $innslagTyper[$type->getNavn()]->addChild($fraArrangement->getId(), $arrangementer[$fraArrangement->getId()]);
 
             $nominert = $innslag->getNominasjoner()->harTil($til->getId());
             $nominasjon = $nominert ? $innslag->getNominasjoner()->getTil($til->getId()) : false;
             $person = $innslag->getPersoner()->getSingle();
 
             if($nominasjon->erNominert()) {
+                $counter++;
                 $nominasjonObj = [
                     'id' => $nominasjon->getId(),
                     'navn' => $innslag->getNavn(),
@@ -50,7 +56,7 @@ foreach($arrTyper as $type) {
                 ];
 
                 $nodeNominasjon = new Node('Nominasjon', $nominasjonObj);
-                $arrangementer[$fra->getId()]->addChild($nominasjon->getId(), $nodeNominasjon);
+                $arrangementer[$fraArrangement->getId()]->addChild($nominasjon->getId(), $nodeNominasjon);
             }
         }
     }
