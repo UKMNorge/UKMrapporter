@@ -1,7 +1,3 @@
-<div id="app">
-
-</div>
-
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-xs-12 col-md-12 col-lg-12 col-xl-12 ">
@@ -16,13 +12,13 @@
                         {% if current_admin.getAntallOmrader('fylke') == 1 %}
                             Velg "<a href="?page=UKMnettverket_fylke">{{ (current_admin.getOmrader('fylke')|first).getNavn() }}</a>" i menyen til venstre, 
                         {% else  %}
-                            Velg "Dine fylker" i menyen til venstre,
+                            Velg "Mine fylker" i menyen til venstre,
                         {% endif %}
                     {% elseif current_admin.erAdmin('kommune') %}
                         {% if current_admin.getAntallOmrader('kommune') == 1 %}
                             Velg "<a href="?page=UKMnettverket_fylke">{{ (current_admin.getOmrader('kommune')|first).getNavn() }}</a>" i menyen til venstre, 
                         {% else  %}
-                            Velg "Dine kommuner" i menyen til venstre,
+                            Velg "Mine kommuner" i menyen til venstre,
                         {% endif %}
                     {% endif %}
                     og deretter trykk deg inn på arrangementet for å finne disse.
