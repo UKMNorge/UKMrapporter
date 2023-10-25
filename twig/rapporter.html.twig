@@ -6,7 +6,7 @@
 
                 <p class="lead">
                     De fleste rapportene er knyttet til et arrangement, og tilgjengelig fra arrangement-systemet.
-                    Velg ditt fylke eller din kommune fra menyen til venstre, og trykk deg inn på arrangementet.
+                    Velg ditt fylke eller din kommune fra menyen til venstre, og trykk deg inn på arrangementet,
 
                     {% if current_admin.erAdmin('fylke') %}
                         {% if current_admin.getAntallOmrader('fylke') == 1 %}
@@ -21,7 +21,7 @@
                             Velg "Dine kommuner" i menyen til venstre,
                         {% endif %}
                     {% endif %}
-                    og deretter trykk deg inn på arrangementet for å finne disse.
+                    og trykk deg deretter inn på det arrangementet du vil hente ut rapporter fra.
                 </p>
 			{% elseif aktivt_senter == 'network' %}
                 <h1>Nasjonale rapporter</h1>

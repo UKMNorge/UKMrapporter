@@ -3,6 +3,7 @@
 namespace UKMNorge\Rapporter;
 
 use UKMnettverket;
+use UKMNorge\Nettverk\Omrade;
 use UKMNorge\Rapporter\CustomItems\Administrator;
 use UKMNorge\Rapporter\Framework\Gruppe;
 use UKMNorge\Rapporter\Framework\UserRapport;
@@ -22,6 +23,13 @@ class Lokalkontakter extends UserRapport
      * @return Array<Omrade>
      */
     public function getOmrader() {
+        $retArr = [];
+        if(sizeof(UKMnettverket::getCurrentAdmin()->getOmrader('fylke')) < 1) {
+            foreach (UKMnettverket::getCurrentAdmin()->getOmrader('kommune') as $kommune) {
+                $retArr[] = Omrade::getByFylke($kommune->getFylke()->getId());
+            }
+            return $retArr;
+        }
         return UKMnettverket::getCurrentAdmin()->getOmrader('fylke');
     }
 
