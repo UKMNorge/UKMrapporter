@@ -26,7 +26,7 @@ class Lokalkontakter extends UserRapport
         $retArr = [];
         if(sizeof(UKMnettverket::getCurrentAdmin()->getOmrader('fylke')) < 1) {
             foreach (UKMnettverket::getCurrentAdmin()->getOmrader('kommune') as $kommune) {
-                $retArr[] = Omrade::getByFylke($kommune->getFylke()->getId());
+                $retArr[$kommune->getFylke()->getId()] = Omrade::getByFylke($kommune->getFylke()->getId());
             }
             return $retArr;
         }
