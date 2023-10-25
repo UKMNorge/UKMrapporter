@@ -12,7 +12,7 @@ class Lokalkontakter extends UserRapport
 {
     public $kategori_id = 'user_kontakt';
     public $ikon = 'dashicons-universal-access';
-    public $navn = 'Lokalkontakter';
+    public $navn = 'Lokalkontakter i fylke';
     public $beskrivelse = 'Kontaktinfo til alle dine lokalkontakter';
     public $har_excel = false;
     public $har_epost = true;
