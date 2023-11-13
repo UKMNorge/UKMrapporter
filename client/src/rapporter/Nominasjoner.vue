@@ -1,19 +1,24 @@
 <template> 
     <div v-if="dataFetched">
-        <div class="as-container container">
-            <div class="as-margin-top-space-8 as-margin-bottom-space-8">
-                <h1 class="">{{ rapportName }}</h1>
-            </div>
+        <div v-if="alleInnslagTyper.length < 1" class="no-data">
+            <NoData />
         </div>
-
-        <DownloadsVue :repo="repo" />
-
-        <MenyVue :root="root" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
-
-        <div class="container as-container">
-            <div v-for="(r, key) in rootNodes" :key="key">
-                <div class="as-margin-top-space-7" >
-                    <Table :leafNode="Nominasjon" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
+        <div v-else>
+            <div class="as-container container">
+                <div class="as-margin-top-space-8 as-margin-bottom-space-8">
+                    <h1 class="">{{ rapportName }}</h1>
+                </div>
+            </div>
+    
+            <DownloadsVue :repo="repo" />
+    
+            <MenyVue :root="root" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+    
+            <div class="container as-container">
+                <div v-for="(r, key) in rootNodes" :key="key">
+                    <div class="as-margin-top-space-7" >
+                        <Table :leafNode="Nominasjon" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -25,6 +30,7 @@
 import Table from '../components/table/Table.vue'
 import { ref } from 'vue';
 import MenyVue from '../components/Meny.vue';
+import NoData from '../components/NoData.vue';
 import DownloadsVue from '../components/Downloads.vue';
 import Nominasjon from '../objects/rapporter/Nominasjon';
 import Arrangement from '../objects/rapporter/Arrangement';
@@ -39,6 +45,7 @@ var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 const spaInteraction = new SPAInteraction(null, ajaxurl);
 var loading = ref(true);
 var dataFetched = ref(false);
+var alleInnslagTyper = ref([]);
 var rapportName = 'Nominasjoner';
 
 var nodeStructure = [DefaultNode, Arrangement, Nominasjon].reverse();
@@ -60,6 +67,13 @@ async function getDataAjax() {
 
     var response = await spaInteraction.runAjaxCall('/', 'POST', data);
     var innslagTyper = (<any>response.root.children);
+    
+    alleInnslagTyper = innslagTyper;
+
+    if(innslagTyper.length < 1) {
+        dataFetched.value = true;
+        return;
+    }
     
     // Innslag type (brukes DefaultNode)
     for(var key of Object.keys(innslagTyper)) {
@@ -98,9 +112,7 @@ async function getDataAjax() {
             
             repo = new Repo(root, nodeStructure, Nominasjon, rapportName);
             loading.value = false;
-            dataFetched.value = true;
             rootNodes = repo.getRootNodes();
-    
         }
     }
 
@@ -116,6 +128,10 @@ async function getDataAjax() {
         if(prop.method == 'getNavn') {
             prop.navn = 'Innslag type';
         }
+    }
+
+    if(innslagTyper) {
+        dataFetched.value = true;
     }
 }
 

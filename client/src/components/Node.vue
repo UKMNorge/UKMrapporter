@@ -238,7 +238,8 @@ function getChildNode(node : NodeObj) : NodeObj|null {
     }
     .node-floating-selector .box {
         margin: auto;
-        min-width: 400px;
+        min-width: 300px;
+        max-width: 600px;
         position: relative;
     }
     .node-floating-selector .box button.close-btn {
@@ -265,7 +266,7 @@ function getChildNode(node : NodeObj) : NodeObj|null {
         display: flex;
     }
     .box.selector .attributes {
-        display: block;
+        display: flex;
     }
     .box.selector .attributes .prop {
         display: flex;

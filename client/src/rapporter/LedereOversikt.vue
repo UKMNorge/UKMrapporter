@@ -1,19 +1,24 @@
 <template> 
     <div v-if="dataFetched">
-        <div class="as-container container">
-            <div class="as-margin-top-space-8 as-margin-bottom-space-8">
-                <h1 class="">{{ rapportName }}</h1>
-            </div>
+        <div v-if="alleFylker.length < 1" class="no-data">
+            <NoData />
         </div>
+        <div v-else>
+            <div class="as-container container">
+                <div class="as-margin-top-space-8 as-margin-bottom-space-8">
+                    <h1 class="">{{ rapportName }}</h1>
+                </div>
+            </div>
 
-        <DownloadsVue :repo="repo" />
+            <DownloadsVue :repo="repo" />
 
-        <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+            <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
 
-        <div class="container as-container">
-            <div v-for="(r, key) in rootNodes" :key="key">
-                <div class="as-margin-top-space-7" >
-                    <Table :leafNode="Leder" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
+            <div class="container as-container">
+                <div v-for="(r, key) in rootNodes" :key="key">
+                    <div class="as-margin-top-space-7" >
+                        <Table :leafNode="Leder" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -25,6 +30,7 @@
 import Table from '../components/table/Table.vue'
 import { ref } from 'vue';
 import MenyVue from '../components/Meny.vue';
+import NoData from '../components/NoData.vue';
 import DownloadsVue from '../components/Downloads.vue';
 import Arrangement from '../objects/rapporter/Arrangement';
 import Leder from '../objects/rapporter/Leder';
@@ -39,6 +45,7 @@ var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 const spaInteraction = new SPAInteraction(null, ajaxurl);
 var loading = ref(true);
 var dataFetched = ref(false);
+var alleFylker = ref([]);
 var rapportName = 'Ledere Oversikt';
 
 Leder.hasUnique = true;
@@ -60,10 +67,10 @@ async function getDataAjax() {
 
     var response = await spaInteraction.runAjaxCall('/', 'POST', data);
     
-    console.log(response);
-    
     var fylker = (<any>response.root.children);
-    
+
+    alleFylker.value = fylker;
+
     // Fylker
     for(var key of Object.keys(fylker)) {
         var fylke = fylker[key];
@@ -95,12 +102,12 @@ async function getDataAjax() {
         
         repo = new Repo(root, nodeStructure, Leder, rapportName);
         loading.value = false;
-        dataFetched.value = true;
         rootNodes = repo.getRootNodes();
-
+        
     }
-    
-
+    if(fylker) {
+        dataFetched.value = true;
+    }
 }
 
 </script>
