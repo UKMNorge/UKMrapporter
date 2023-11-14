@@ -4,6 +4,7 @@
         <LedereOversikt v-if="getRapportId() == 'ledereOversikt'" />
         <Intoleranser v-if="getRapportId() == 'intoleranser'" />
         <Nominasjoner v-if="getRapportId() == 'nominasjoner'" /> 
+        <Personvern v-if="getRapportId() == 'personvern'" /> 
     </div>
 </template>
 
@@ -12,6 +13,7 @@ import AlleDeltakere from './rapporter/AlleDeltakere.vue'
 import LedereOversikt from './rapporter/LedereOversikt.vue'
 import Intoleranser from './rapporter/Intoleranser.vue';
 import Nominasjoner from './rapporter/Nominasjoner.vue';
+import Personvern from './rapporter/Personvern.vue';
 import { ref, onMounted } from 'vue'
 
 

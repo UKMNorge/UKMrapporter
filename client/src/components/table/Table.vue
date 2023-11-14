@@ -69,10 +69,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(value, key) in getItems()" :key="key">
-                        <td v-if="visTelling">{{ key+1 }}</td>
-                        <td class="as-padding-space-4" v-for="item in value">{{ item }}</td>
-                    </tr>
+                    <template v-for="(value, key) in getItems()">
+                        <tr :class="values[key].getSubnodes().length > 0 ? 'has-subnodes' : ''">
+                            <td v-if="visTelling">{{ key+1 }}</td>
+                            <td class="as-padding-space-4" v-for="item in value">
+                                <p>{{ item }}</p>
+                            </td>
+                        </tr>
+                        <tr v-for="subnode in values[key].getSubnodes()" class="subnode-no-top-line">
+                            <td class="subnode-td" colspan="100%">
+                                <div v-for="subnodeItem in subnode.getItems()">
+                                    <span class="muted bold">{{ subnodeItem.getKey() }}: </span>
+                                    <span class="muted">{{ subnodeItem.getValue() }}</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
                 </tbody>
             </table>
 
@@ -392,5 +404,16 @@
     }
     button.close-btn.remove-prop .icon svg {
         display: flex;
+    }
+    .subnode-td {
+        padding-left: 20px;
+        padding-top: 0;
+    }
+    .subnode-no-top-line {
+        border-bottom: none;
+        border-top: solid 2px white !important;
+    }
+    .table th, .table tr.has-subnodes td {
+        padding-bottom: 0px;
     }
 </style>

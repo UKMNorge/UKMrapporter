@@ -1,5 +1,7 @@
 import { ref } from 'vue';
 import NodeProperty from './NodeProperty';
+import Subnode from './Subnode';
+import SubnodeItem from './SubnodeItem';
 // import NodeProperty from './NodeProperty';
 
 abstract class NodeObj {
@@ -12,6 +14,7 @@ abstract class NodeObj {
     private sortActivated = false;
     private sortProperty : NodeProperty|null = null;
     
+    protected subnodes : Subnode[];
 
     // Pointer to the next array of Node
     public children : NodeObj[] = [];
@@ -32,7 +35,17 @@ abstract class NodeObj {
             sortPosition : this.sortPosition,
             sortActivated : this.sortActivated,
             sortProperty : this.sortProperty,
-        })
+        });
+
+        this.subnodes = [];
+    }
+
+    public addSubnode(subnode : Subnode) {
+        this.subnodes.push(subnode)
+    }
+
+    public getSubnodes() : Subnode[] {
+        return this.subnodes;
     }
 
     public static getKeysForTable(subclass : any) : NodeProperty[] {
