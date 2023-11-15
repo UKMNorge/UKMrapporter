@@ -38,6 +38,8 @@ import RootNode from '../objects/RootNode';
 import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
 import Innslag from '../objects/rapporter/Innslag';
+import Subnode from '../objects/Subnode';
+import SubnodeItem from '../objects/SubnodeItem';
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
@@ -90,6 +92,17 @@ async function getDataAjax() {
             var innslagObj = innslag.obj;
 
             var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
+
+            if(innslagObj['alle_personer']) {
+                var personerSubnode = new Subnode();
+                for(var person of innslagObj['alle_personer']) {
+                    var personText = (person['kategori'] == 'u15' ? 'under 15 år - ' : '');
+                    personText += person['status'];
+                    personText += (person['kategori'] == 'u15' ? ' (foresatt: ' + person['foresatt'] + ' ' + (person['foresatt_mobil'] ? person['foresatt_mobil'] : '') + ' | foresatt svar: ' + person['foresatt_status'] + ')' : '');
+                    personerSubnode.addItem(new SubnodeItem(person['navn'], personText));
+                }
+                innslagNode.addSubnode(personerSubnode);
+            }
 
             hendelseNode.addChild(innslagNode);
         }

@@ -24,7 +24,26 @@ foreach( $arrangement->getProgram()->getAbsoluteAll() as $hendelse ) {
     }
 
     foreach($hendelse->getInnslag()->getAll() as $innslag) {
-        $innslags[$innslag->getId()] = new Node('Innslag', $innslag);
+        $innslagObj = $innslag;
+        
+        foreach($innslag->getSamtykke()->getAll() as $person) {
+            $personObj = [
+                'id' => $person->getId(),
+                'navn' => $person->getNavn(),
+                'status' => $person->getStatus()->getId() != "ikke_godkjent" ? "OK" : "Ikke godkjent samtykke",
+                'foresatt' => null,
+                'foresatt_mobil' => null,
+                'kategori' => $person->getKategori()->getId(),
+            ];
+            // Personen er under 15 og derfor er det foresatt som skal utføre godkjenning
+            if($person->getKategori()->getId() == 'u15') {
+                $personObj['foresatt'] = $person->getForesatt()->getNavn();
+                $personObj['foresatt_mobil'] = $person->getForesatt()->getMobil();
+                $personObj['foresatt_status'] = $person->getForesatt()->getStatus()->getId() != "ikke_godkjent" ? "OK" : "Ikke godkjent samtykke";
+            }
+            $innslagObj->alle_personer[] = $personObj;
+        }
+        $innslags[$innslag->getId()] = new Node('Innslag', $innslagObj);
         $hendelser[$hendelse->getId()]->addChild($innslag->getId(), $innslags[$innslag->getId()]);
     }
 }
