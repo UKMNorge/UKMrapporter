@@ -63,6 +63,14 @@ abstract class FileGenerator {
         for(var node of this.nodes) { 
             if(node.isActive() && node instanceof (<any>this.leafNode)){ 
                 items.push(this._getProperty(node, count++));
+                // Node has subnodes
+                if(node.getSubnodes().length > 0) {
+                    for(var subnode of node.getSubnodes()) {
+                        for(var subnodeItem of subnode.getItems()) {
+                            items.push(['   ' + subnodeItem.getKey() + ' ' + subnodeItem.getValue()]);
+                        }
+                    }
+                }
             }
         }
         return sortActivated ? this.sortBy(items) : items;  
