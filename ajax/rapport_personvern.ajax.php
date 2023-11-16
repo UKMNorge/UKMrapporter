@@ -43,6 +43,15 @@ foreach( $arrangement->getProgram()->getAbsoluteAll() as $hendelse ) {
             }
             $innslagObj->alle_personer[] = $personObj;
         }
+        
+        try {
+            foreach($innslag->getTitler()->getAll() as $tittel) {
+                $innslagObj->alle_titler[] = $tittel;
+            }
+        } catch(Exception $e) {
+            // Tittel kan ikke opprettes. Mest sannsynlig finnes det ikke klasse per noen innslag typer som kan ikke ha titler
+        }
+
         $innslags[$innslag->getId()] = new Node('Innslag', $innslagObj);
         $hendelser[$hendelse->getId()]->addChild($innslag->getId(), $innslags[$innslag->getId()]);
     }

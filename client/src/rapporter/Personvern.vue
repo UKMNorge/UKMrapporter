@@ -93,6 +93,17 @@ async function getDataAjax() {
 
             var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
 
+            // adding subnodes
+            if(innslagObj['alle_titler']) {
+                var tittelSubnode = new Subnode();
+                var tittelText = '';
+                for(var tittel of innslagObj['alle_titler']) {
+                    tittelText += tittel['tittel'] + ' ';
+                }
+                tittelSubnode.addItem(new SubnodeItem('Titler', tittelText));
+                innslagNode.addSubnode(tittelSubnode);
+            }
+
             if(innslagObj['alle_personer']) {
                 var personerSubnode = new Subnode();
                 for(var person of innslagObj['alle_personer']) {
