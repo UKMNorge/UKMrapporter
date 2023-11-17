@@ -411,7 +411,7 @@
         padding-bottom: 0;
     }
     .subnode-no-top-line .subnode-td {
-        padding-top: 4px;
+        padding-top: 0px;
         padding-bottom: 4px;
     }
     .has-subnodes td p {
