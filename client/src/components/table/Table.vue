@@ -408,6 +408,17 @@
     .subnode-td {
         padding-left: 20px;
         padding-top: 0;
+        padding-bottom: 0;
+    }
+    .subnode-no-top-line .subnode-td {
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+    .has-subnodes td p {
+        font-weight: bold;
+    }
+    .has-subnodes td {
+        padding-bottom: 4px !important;
     }
     .subnode-no-top-line {
         border-bottom: none;
