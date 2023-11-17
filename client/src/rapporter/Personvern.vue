@@ -106,12 +106,19 @@ async function getDataAjax() {
 
             if(innslagObj['alle_personer']) {
                 var personerSubnode = new Subnode();
-                for(var person of innslagObj['alle_personer']) {
-                    var personText = (person['kategori'] == 'u15' ? 'under 15 år - ' : '');
+                var personText = '';
+                for(var i = 0; i < innslagObj['alle_personer'].length; i++) {
+                    var person = innslagObj['alle_personer'][i];
+                    personText += person['navn'] + ' ';
+                    personText += (person['kategori'] == 'u15' ? 'under 15 år - ' : '');
                     personText += person['status'];
                     personText += (person['kategori'] == 'u15' ? ' (foresatt: ' + person['foresatt'] + ' ' + (person['foresatt_mobil'] ? person['foresatt_mobil'] : '') + ' | foresatt svar: ' + person['foresatt_status'] + ')' : '');
-                    personerSubnode.addItem(new SubnodeItem(person['navn'], personText));
+
+                    if(i < innslagObj['alle_personer'].length) {
+                        personText += ', ';
+                    }
                 }
+                personerSubnode.addItem(new SubnodeItem('Personer', personText));
                 innslagNode.addSubnode(personerSubnode);
             }
 
