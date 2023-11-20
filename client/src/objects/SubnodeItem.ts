@@ -1,19 +1,19 @@
 class SubnodeItem {
 
     public key : String = '';
-    public value : String = '';
+    public values : String[] = [];
 
-    constructor(key : String, value : String) {
+    constructor(key : String, value : String[]) {
         this.key = key;
-        this.value = value;
+        this.values = value;
     }
 
     public getKey() {
         return this.key;
     }
 
-    public getValue() {
-        return this.value;
+    public getValues() : String|String[] {
+        return this.values;
     }
 }
 

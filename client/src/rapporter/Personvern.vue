@@ -100,15 +100,16 @@ async function getDataAjax() {
                 for(var tittel of innslagObj['alle_titler']) {
                     tittelText += tittel['tittel'] + ' ';
                 }
-                tittelSubnode.addItem(new SubnodeItem('Titler', tittelText));
+                tittelSubnode.addItem(new SubnodeItem('Titler', [tittelText]));
                 innslagNode.addSubnode(tittelSubnode);
             }
 
             if(innslagObj['alle_personer']) {
                 var personerSubnode = new Subnode();
-                var personText = '';
+                var personer = [];
                 for(var i = 0; i < innslagObj['alle_personer'].length; i++) {
                     var person = innslagObj['alle_personer'][i];
+                    var personText = '';
                     personText += person['navn'] + ' ';
                     personText += (person['kategori'] == 'u15' ? '(under 15 år) - ' : '');
                     personText += person['status'];
@@ -117,8 +118,9 @@ async function getDataAjax() {
                     if(i+1 < innslagObj['alle_personer'].length) {
                         personText += ', ';
                     }
+                    personer.push(personText)
                 }
-                personerSubnode.addItem(new SubnodeItem('Personer', personText));
+                personerSubnode.addItem(new SubnodeItem('Personer', personer));
                 innslagNode.addSubnode(personerSubnode);
             }
 

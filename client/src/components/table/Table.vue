@@ -79,7 +79,8 @@
                         <!-- Subnodes -->
                         <tr v-if="value[1].length > 0" class="subnode-no-top-line" v-for="(subnode, key) in value[0].getSubnodes()" :key="key">
                             <td class="subnode-td" v-for="(subnodeItem, subnodeItemKey) in subnode.getItems()" :key="subnodeItemKey">
-                                <p><b>{{ subnodeItem.getKey() }}</b>: {{ subnodeItem.getValue() }}</p>
+                                <p><b>{{ subnodeItem.getKey() }}</b>:</p>
+                                <p v-for="itemValue in subnodeItem.getValues()">{{ itemValue }}</p>
                             </td>
                         </tr>
                     </template>
