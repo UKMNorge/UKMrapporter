@@ -114,7 +114,7 @@ async function getDataAjax() {
                     personText += person['status'];
                     personText += (person['kategori'] == 'u15' ? ' (foresatt: ' + person['foresatt'] + ' ' + (person['foresatt_mobil'] ? person['foresatt_mobil'] : '') + ' | foresatt svar: ' + person['foresatt_status'] + ')' : '');
 
-                    if(i < innslagObj['alle_personer'].length) {
+                    if(i+1 < innslagObj['alle_personer'].length) {
                         personText += ', ';
                     }
                 }

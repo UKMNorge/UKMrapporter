@@ -70,18 +70,15 @@
                 </thead>
                 <tbody>
                     <template v-for="(value, key) in getItems()">
-                        <tr :class="values[key].getSubnodes().length > 0 ? 'has-subnodes' : ''">
-                            <td v-if="visTelling">{{ key+1 }}</td>
-                            <td class="as-padding-space-4" v-for="item in value">
+                        <tr :class="value[0].getSubnodes().length > 0 ? 'has-subnodes' : ''">
+                            <td class="as-padding-space-4" v-for="item in value[1]">
                                 <p>{{ item }}</p>
                             </td>
                         </tr>
-                        <tr v-for="subnode in values[key].getSubnodes()" class="subnode-no-top-line">
-                            <td class="subnode-td" colspan="100%">
-                                <div v-for="subnodeItem in subnode.getItems()">
-                                    <span class="muted bold">{{ subnodeItem.getKey() }}: </span>
-                                    <span class="muted">{{ subnodeItem.getValue() }}</span>
-                                </div>
+                        <!-- Subnodes -->
+                        <tr class="subnode-no-top-line" v-for="(subnode, key) in value[0].getSubnodes()" :key="key">
+                            <td class="subnode-td" v-for="(subnodeItem, subnodeItemKey) in subnode.getItems()" :key="subnodeItemKey">
+                                <p><b>{{ subnodeItem.getKey() }}</b> - {{ subnodeItem.getValue() }}</p>
                             </td>
                         </tr>
                     </template>
@@ -92,7 +89,6 @@
                 <h5>Antall{{ uniqueCount ? ' unike' : '' }}: {{ countLeafNodesItems() }}</h5>
             </div>
         </div>
-               
     </div>
 </template>
 
@@ -211,7 +207,7 @@
         var items : any[] = [];
         for(var node of values.value) { 
             if(node.isActive() && node instanceof (<any>props.leafNode)){ 
-                items.push(_getProperty(node));
+                items.push([node, _getProperty(node)]);
             }
         }
 
@@ -406,16 +402,14 @@
         display: flex;
     }
     .subnode-td {
-        padding-left: 20px;
-        padding-top: 0;
-        padding-bottom: 0;
-    }
-    .subnode-no-top-line .subnode-td {
         padding-top: 0px;
         padding-bottom: 4px;
+        padding-left: calc(var(--initial-space-box)*3);
+        color: var(--color-primary-grey-dark);
     }
     .has-subnodes td p {
         font-weight: bold;
+        font-size: 14px;
     }
     .has-subnodes td {
         padding-bottom: 4px !important;
