@@ -67,7 +67,7 @@ abstract class FileGenerator {
                 if(node.getSubnodes().length > 0) {
                     for(var subnode of node.getSubnodes()) {
                         for(var subnodeItem of subnode.getItems()) {
-                            items.push(['   ' + subnodeItem.getKey() + ' ' + subnodeItem.getValue()]);
+                            items.push(['   ' + subnodeItem.getKey() + ': ' + subnodeItem.getValue()]);
                         }
                     }
                 }

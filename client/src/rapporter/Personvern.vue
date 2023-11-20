@@ -110,7 +110,7 @@ async function getDataAjax() {
                 for(var i = 0; i < innslagObj['alle_personer'].length; i++) {
                     var person = innslagObj['alle_personer'][i];
                     personText += person['navn'] + ' ';
-                    personText += (person['kategori'] == 'u15' ? 'under 15 år - ' : '');
+                    personText += (person['kategori'] == 'u15' ? '(under 15 år) - ' : '');
                     personText += person['status'];
                     personText += (person['kategori'] == 'u15' ? ' (foresatt: ' + person['foresatt'] + ' ' + (person['foresatt_mobil'] ? person['foresatt_mobil'] : '') + ' | foresatt svar: ' + person['foresatt_status'] + ')' : '');
 
