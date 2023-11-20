@@ -71,6 +71,7 @@
                 <tbody>
                     <template v-for="(value, key) in getItems()">
                         <tr :class="value[0].getSubnodes().length > 0 ? 'has-subnodes' : ''">
+                            <td v-if="visTelling">{{ key+1 }}</td>
                             <td class="as-padding-space-4" v-for="item in value[1]">
                                 <p>{{ item }}</p>
                             </td>
