@@ -25,6 +25,10 @@ class Node {
         $this->children[] = $child;
     }
 
+    public function prependChild($id, $child) {
+        array_unshift($this->children, $child);
+    }
+
     public function getChildren() {
         return $this->children;
     }

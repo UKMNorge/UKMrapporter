@@ -9,7 +9,7 @@ class Innslag extends NodeObj {
     private static unique: Boolean = false;
     public static hasUnique : Boolean = false;
 
-    private static properties : NodeProperty[] = [
+    public static properties : NodeProperty[] = [
         new NodeProperty('getNavn', 'Innslag navn', true),
         new NodeProperty('getType', 'Type'),
         new NodeProperty('getSesong', 'Sesong'),
@@ -57,6 +57,15 @@ class Innslag extends NodeObj {
     private navn : string;
     private type : string;
     private sesong : string;
+
+    // Kan aktiveres
+    private sjanger : string = '';
+    private tid : string = '';
+    private fylke : string = '';
+    private kommune : string = '';
+    private beskrivelse : string = '';
+    private rolle : string = '';
+
     
     constructor(id : string, navn : string, type : string, sesong : string) {
         super(id);
@@ -82,6 +91,54 @@ class Innslag extends NodeObj {
 
     public getSesong() {
         return this.sesong;
+    }
+
+    public getTid() {
+        return this.tid;
+    }
+
+    public setTid(tid : string) {
+        this.tid = tid;
+    }
+
+    public getSjanger() {
+        return this.sjanger;
+    }
+
+    public setSjanger(sjanger : string) {
+        this.sjanger = sjanger;
+    }
+
+    public getFylke() {
+        return this.fylke;
+    }
+
+    public setFylke(fylke : string) {
+        this.fylke = fylke;
+    }
+
+    public getKommune() {
+        return this.kommune;
+    }
+
+    public setKommune(kommune : string) {
+        this.kommune = kommune;
+    }
+
+    public getBeskrivelse() {
+        return this.beskrivelse;
+    }
+
+    public setBeskrivelse(beskrivelse : string) {
+        this.beskrivelse = beskrivelse;
+    }
+
+    public getRolle() {
+        return this.rolle;
+    }
+
+    public setRolle(rolle : string) {
+        this.rolle = rolle;
     }
 
     public getData() {
