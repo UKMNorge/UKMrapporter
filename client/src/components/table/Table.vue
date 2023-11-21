@@ -23,7 +23,7 @@
             <table v-show="!loading" class="table ukm-vue-table-row">
                 <thead>
                     <tr class="col">
-                        <th v-if="visTelling">
+                        <th v-if="visTelling" class="nummerering-item">
                             <div class="inner-div">
                                 <button class="sort-button">
                                     #
@@ -71,14 +71,14 @@
                 <tbody>
                     <template v-for="(value, key) in getItems()">
                         <tr :class="value[0].getSubnodes().length > 0 ? 'has-subnodes' : ''">
-                            <td v-if="visTelling">{{ key+1 }}</td>
+                            <td class="nummerering-item" v-if="visTelling">{{ key+1 }}</td>
                             <td class="as-padding-space-4" v-for="item in value[1]">
                                 <p>{{ item }}</p>
                             </td>
                         </tr>
                         <!-- Subnodes -->
                         <tr v-if="value[1].length > 0" class="subnode-no-top-line" v-for="(subnode, key) in value[0].getSubnodes()" :key="key">
-                            <td class="subnode-td" v-for="(subnodeItem, subnodeItemKey) in subnode.getItems()" :key="subnodeItemKey">
+                            <td colspan="100%" class="subnode-td" v-for="(subnodeItem, subnodeItemKey) in subnode.getItems()" :key="subnodeItemKey">
                                 <p><b>{{ subnodeItem.getKey() }}</b>:</p>
                                 <p v-for="itemValue in subnodeItem.getValues()">{{ itemValue }}</p>
                             </td>
@@ -422,5 +422,9 @@
     }
     .table th, .table tr.has-subnodes td {
         padding-bottom: 0px;
+    }
+    .nummerering-item {
+        width: 5px;
+        padding-right: 0;
     }
 </style>

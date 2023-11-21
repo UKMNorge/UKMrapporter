@@ -55,7 +55,7 @@ var nodeStructure = [DefaultNode, Innslag].reverse();
 
 // Activating properies
 Innslag.properties.push(new NodeProperty('getSjanger', 'Sjanger', true));
-Innslag.properties.push(new NodeProperty('getTid', 'Tid', true));
+Innslag.properties.push(new NodeProperty('getVarighet', 'Varighet', true));
 Innslag.properties.push(new NodeProperty('getFylke', 'Fylke', false));
 Innslag.properties.push(new NodeProperty('getKommune', 'Kommune', false));
 Innslag.properties.push(new NodeProperty('getBeskrivelse', 'Beskrivelse', false));
@@ -104,7 +104,7 @@ async function getDataAjax() {
 
             // Adding extra properies
             innslagNode.setSjanger(innslagObj.sjanger ? innslagObj.sjanger : '-');
-            innslagNode.setTid(secondsToTimeFormat(innslagObj.tid));
+            innslagNode.setVarighet(secondsToTimeFormat(innslagObj.tid));
             innslagNode.setFylke(innslagObj.fylke);
             innslagNode.setKommune(innslagObj.kommune);
             innslagNode.setBeskrivelse(innslagObj.beskrivelse);

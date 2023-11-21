@@ -60,7 +60,7 @@ class Innslag extends NodeObj {
 
     // Kan aktiveres
     private sjanger : string = '';
-    private tid : string = '';
+    private varighet : string = '';
     private fylke : string = '';
     private kommune : string = '';
     private beskrivelse : string = '';
@@ -93,12 +93,12 @@ class Innslag extends NodeObj {
         return this.sesong;
     }
 
-    public getTid() {
-        return this.tid;
+    public getVarighet() {
+        return this.varighet;
     }
 
-    public setTid(tid : string) {
-        this.tid = tid;
+    public setVarighet(varighet : string) {
+        this.varighet = varighet;
     }
 
     public getSjanger() {
