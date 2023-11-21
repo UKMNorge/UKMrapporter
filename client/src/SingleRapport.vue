@@ -6,6 +6,7 @@
         <Nominasjoner v-if="getRapportId() == 'nominasjoner'" /> 
         <Personvern v-if="getRapportId() == 'personvern'" /> 
         <Kunstkatalog v-if="getRapportId() == 'kunstkatalog'" /> 
+        <Program v-if="getRapportId() == 'program'" /> 
         <div v-else>
             <p>Rapport finnes ikke</p>
         </div>
@@ -19,6 +20,7 @@ import Intoleranser from './rapporter/Intoleranser.vue';
 import Nominasjoner from './rapporter/Nominasjoner.vue';
 import Personvern from './rapporter/Personvern.vue';
 import Kunstkatalog from './rapporter/Kunstkatalog.vue';
+import Program from './rapporter/Program.vue';
 import { ref, onMounted } from 'vue'
 
 

@@ -34,6 +34,7 @@ foreach($arrangement->getProgram()->getAbsoluteAll() as $hendelse) {
             'beskrivelse' => $innslag->getBeskrivelse(),
             'rolle' => '',
             'alle_personer' => [],
+            'alle_titler' => [],
         ];
         
         foreach($innslag->getPersoner()->getAll() as $person) {
@@ -47,20 +48,16 @@ foreach($arrangement->getProgram()->getAbsoluteAll() as $hendelse) {
                $innslagObj['rolle'] = $innslag->getPersoner()->getSingle()->getRolle(); 
             }
         }
-        
+
         if($innslag->getType()->harTitler()) {
             foreach($innslag->getTitler()->getAll() as $tittel) {
-                $innslagObj['navn'] = $tittel->getTittel() .' - '. $innslag->getNavn();
-                $innslagObj['tid'] = $tittel->getVarighet()->getHumanShort();
-                
-                $innslags[$innslag->getId()] = new Node('Innslag', $innslagObj);
-                $hendelser[$hendelse->getId()]->addChild($innslag->getId(), $innslags[$innslag->getId()]);
+                $innslagObj['tid'] = $innslagObj['tid'] + $tittel->getVarighetSomSekunder();
+                $innslagObj['alle_titler'][] = $tittel;
             }
         }
-        else {
-            $innslags[$innslag->getId()] = new Node('Innslag', $innslagObj);
-            $hendelser[$hendelse->getId()]->addChild($innslag->getId(), $innslags[$innslag->getId()]);
-        }
+        
+        $innslags[$innslag->getId()] = new Node('Innslag', $innslagObj);
+        $hendelser[$hendelse->getId()]->addChild($innslag->getId(), $innslags[$innslag->getId()]);
 
     }
 }

@@ -49,14 +49,14 @@ const spaInteraction = new SPAInteraction(null, ajaxurl);
 var loading = ref(true);
 var dataFetched = ref(false);
 var alleHendelser = ref([]);
-var rapportName = 'Kunstkatalog';
+var rapportName = 'Program';
 
 var nodeStructure = [DefaultNode, Innslag].reverse();
 
 // Activating properies
 Innslag.properties.push(new NodeProperty('getSjanger', 'Sjanger', true));
 Innslag.properties.push(new NodeProperty('getTid', 'Tid', true));
-Innslag.properties.push(new NodeProperty('getFylke', 'Fylke', true));
+Innslag.properties.push(new NodeProperty('getFylke', 'Fylke', false));
 Innslag.properties.push(new NodeProperty('getKommune', 'Kommune', false));
 Innslag.properties.push(new NodeProperty('getBeskrivelse', 'Beskrivelse', false));
 Innslag.properties.push(new NodeProperty('getRolle', 'Rolle', false));
@@ -68,11 +68,10 @@ var root = new RootNode();
 var repo = new Repo(root, nodeStructure, Innslag, rapportName);
 var rootNodes : any = repo.getRootNodes();
 
-
 async function getDataAjax() {
     var data = {
         action: 'UKMrapporter_ajax',
-        controller: 'rapport_kunstkatalog',
+        controller: 'rapport_program',
     };
 
     var response = await spaInteraction.runAjaxCall('/', 'POST', data);
@@ -87,7 +86,6 @@ async function getDataAjax() {
 
     alleHendelser = hendelser;
 
-    var counter = 0;
     for(var key of Object.keys(hendelser)) {
         var hendelse = hendelser[key];
         var hendelseObj = hendelse.obj;
@@ -102,27 +100,34 @@ async function getDataAjax() {
             var innslag = hendelse.children[key];
             var innslagObj = innslag.obj;
 
-            var innslagNode = new Innslag(innslagObj.id, ++counter + '. ' + innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
+            var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
 
             // Adding extra properies
             innslagNode.setSjanger(innslagObj.sjanger ? innslagObj.sjanger : '-');
-            innslagNode.setTid(innslagObj.tid);
+            innslagNode.setTid(secondsToTimeFormat(innslagObj.tid));
             innslagNode.setFylke(innslagObj.fylke);
             innslagNode.setKommune(innslagObj.kommune);
             innslagNode.setBeskrivelse(innslagObj.beskrivelse);
             innslagNode.setRolle(innslagObj.rolle);
 
-            console.error(innslagObj['alle_personer']);
+            if(innslagObj['alle_titler'].length > 0) {
+                var titlerSubnode = new Subnode();
+                var titler = [];
+                for(var tittel of innslagObj['alle_titler']) {
+                    titler.push(tittel['tittel'] + (tittel['sekunder'] ? ' ('+ secondsToTimeFormat(tittel['sekunder']) +')' : ''));
+                }
+                titlerSubnode.addItem(new SubnodeItem('Titler', titler));
+                innslagNode.addSubnode(titlerSubnode);
+            }
+
             if(innslagObj['alle_personer']) {
                 var personerSubnode = new Subnode();
                 var personer = [];
                 for(var person of innslagObj['alle_personer']) {
-                    console.warn(person);
                     personer.push(person['fornavn'] +' '+ person['etternavn'] +' '+ person['alder'] +' - '+ person['rolle']);
                 }
                 personerSubnode.addItem(new SubnodeItem('Personer', personer));
                 innslagNode.addSubnode(personerSubnode);
-
             }
 
             hendelseNode.addChild(innslagNode);
@@ -131,12 +136,40 @@ async function getDataAjax() {
         repo = new Repo(root, nodeStructure, Innslag, rapportName);
         loading.value = false;
         rootNodes = repo.getRootNodes();
-        
+        repo.telling.value = true;
     }
 
     if(hendelser) {
         dataFetched.value = true;
     }
+}
+
+function secondsToTimeFormat(duration : number) {
+    const hrs = ~~(duration / 3600);
+    const mins = ~~((duration % 3600) / 60);
+    const secs = ~~duration % 60;
+
+    let ret = "";
+
+    if (hrs > 0) {
+        ret += "" + hrs + "t";
+        if(mins > 0) {
+            ret += " ";
+        }
+    }
+
+    if(mins > 0) {
+        ret += "" + mins + "min";
+        if(secs > 0) {
+            ret += " ";
+        }
+    }
+
+    if(secs > 0) {
+        ret += "" + secs + "sek";
+    }
+
+    return ret;
 }
 
 </script>
