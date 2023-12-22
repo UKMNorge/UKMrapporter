@@ -10,7 +10,7 @@ Author URI: http://www.ukm-norge.no
 
 use UKMNorge\Wordpress\Modul;
 
-ini_set('display_errors', true);
+// ini_set('display_errors', true);
 require_once('UKM/Autoloader.php');
 spl_autoload_register(['UKMrapporter','autoload']);
 
