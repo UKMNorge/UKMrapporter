@@ -6,7 +6,10 @@ use UKMNorge\File\Word as WordDok;
 use UKMNorge\Rapporter\Framework\Word\Formatter;
 
 class Word {
-    var $grupper;
+    public $config;
+    public $grupper;
+    public $word;
+    public $wordFormatter;
 
     public function __construct( String $filnavn, Gruppe $grupper, Config $config, Formatter $wordFormatter=null ) 
     {
@@ -18,7 +21,7 @@ class Word {
 
 
     public function render() {
-        $this->wordFormatter::gruppe( $this->word, $this->grupper );
+        $this->wordFormatter->gruppe( $this->word, $this->grupper );
     }
 
     public function writeToFile() {
