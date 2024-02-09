@@ -23,7 +23,7 @@
     
     {% if config.vis('paameldte') %}
         {% if arrangement.getSesong() > 2019 %}
-            <td>{{ arrangement.getInnslag().getAntallPersonerSimple() }}</td>
+            <td style="text-align: right; margin-left: 5px">{{ arrangement.getInnslag().getAntallPersonerSimple() }}</td>
         {% else %}
             <td>-</td>
         {% endif %}

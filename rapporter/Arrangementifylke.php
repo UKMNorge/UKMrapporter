@@ -13,8 +13,8 @@ class Arrangementifylke extends Rapport
 {
     public $kategori_id = 'user_kontakt';
     public $ikon = 'dashicons-buddicons-groups';
-    public $navn = 'Arrangement i fylket';
-    public $beskrivelse = 'Arrangement i fylket';
+    public $navn = 'Arrangementene dine';
+    public $beskrivelse = 'Arrangemener i fylker eller kommuner du har tilgang til';
     public $har_excel = false;
     public $har_epost = false;
     public $har_sms = false;
