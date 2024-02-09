@@ -36,17 +36,23 @@
 					{% if config.vis('kunn_kommende_arrangement') %}
 						{% if arrangement.start > tidNaa %}
 							{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
+
+							{% if config.vis('paameldte') and arrangement.getSesong() > 2019 %}
+								{% set totalAntall = totalAntall + arrangement.getInnslag().getAntallPersonerSimple() %}
+							{% endif %}
+							
 						{% endif %}
 					{% else %}
 						{% if (config.vis('vis_kommende') and arrangement.start > tidNaa) or config.vis("vis_sessong#{arrangement.getSesong()}") %}
 							{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
+							
+							{% if config.vis('paameldte') and arrangement.getSesong() > 2019 %}
+								{% set totalAntall = totalAntall + arrangement.getInnslag().getAntallPersonerSimple() %}
+							{% endif %}
+
 						{% endif %}
 					{% endif %}
 				
-
-					{% if config.vis('paameldte') and arrangement.getSesong() > 2019 %}
-						{% set totalAntall = totalAntall + arrangement.getInnslag().getAntallPersonerSimple() %}
-					{% endif %}
 				{% endif %}
 
 				{% endfor %}
@@ -59,16 +65,22 @@
 					{% if config.vis('kunn_kommende_arrangement') %}
 						{% if arrangement.start > tidNaa %}
 							{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
+
+							{% if config.vis('paameldte') and arrangement.getSesong() > 2019 %}
+								{% set totalAntall = totalAntall + arrangement.getInnslag().getAntallPersonerSimple() %}
+							{% endif %}
 						{% endif %}
 					{% else %}
 						{% if (config.vis('vis_kommende') and arrangement.start > tidNaa) or config.vis("vis_sessong#{arrangement.getSesong()}") %}
 							{% include "Arrangementifylke/arrangement.html.twig" with {'arrangement': arrangement, 'kommuner': arrangement.getKommuner().getAll(), 'config': config} %}
+
+							{% if config.vis('paameldte') and arrangement.getSesong() > 2019 %}
+								{% set totalAntall = totalAntall + arrangement.getInnslag().getAntallPersonerSimple() %}
+							{% endif %}
 						{% endif %}
 					{% endif %}
 
-					{% if config.vis('paameldte') and arrangement.getSesong() > 2019 %}
-						{% set totalAntall = totalAntall + arrangement.getInnslag().getAntallPersonerSimple() %}
-					{% endif %}
+					
 				{% endif %}
 
 				
