@@ -41,6 +41,8 @@ import Innslag from '../objects/rapporter/Innslag';
 import Subnode from '../objects/Subnode';
 import SubnodeItem from '../objects/SubnodeItem';
 import SubnodeStringItem from '../objects/SubnodeStringItem';
+import SubnodePerson from '../objects/subnodesLeafs/SubnodePerson';
+
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
@@ -110,18 +112,15 @@ async function getDataAjax() {
                 var personerStringItems = [];
                 for(var i = 0; i < innslagObj['alle_personer'].length; i++) {
                     var person = innslagObj['alle_personer'][i];
+
                     var personText = '';
-                    personText += person['navn'] + ' ';
                     personText += (person['kategori'] == 'u15' ? '(under 15 år) - ' : '');
                     personText += person['status'];
                     personText += (person['kategori'] == 'u15' ? ' (foresatt: ' + person['foresatt'] + ' ' + (person['foresatt_mobil'] ? person['foresatt_mobil'] : '') + ' | foresatt svar: ' + person['foresatt_status'] + ')' : '');
 
-                    if(i+1 < innslagObj['alle_personer'].length) {
-                        personText += ', ';
-                    }
 
                     let DOMClass = person['godkjent'] ? 'success-subnode-item' : 'danger-subnode-item';
-                    let persStringItem = new SubnodeStringItem(personText);
+                    let persStringItem = new SubnodePerson(personText, person['fornavn'], person['etternavn'], person['mobil'], person['epost']);
                     persStringItem.setDOMClass(DOMClass);
                     personerStringItems.push(persStringItem);
 

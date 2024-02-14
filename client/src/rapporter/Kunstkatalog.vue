@@ -41,7 +41,7 @@ import Innslag from '../objects/rapporter/Innslag';
 import Subnode from '../objects/Subnode';
 import SubnodeItem from '../objects/SubnodeItem';
 import NodeProperty from './../objects/NodeProperty';
-import SubnodeStringItem from '../objects/SubnodeStringItem';
+import SubnodePerson from '../objects/subnodesLeafs/SubnodePerson';
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
@@ -119,7 +119,7 @@ async function getDataAjax() {
                 var personer = [];
                 for(var person of innslagObj['alle_personer']) {
                     console.warn(person);
-                    personer.push(new SubnodeStringItem(person['fornavn'] +' '+ person['etternavn'] +' '+ person['alder'] +' - '+ person['rolle']));
+                    personer.push(new SubnodePerson('rolle: ' + person['rolle'], person['fornavn'], person['etternavn'], person['mobil'], person['epost']));
                 }
                 personerSubnode.addItem(new SubnodeItem('Personer', personer));
                 innslagNode.addSubnode(personerSubnode);

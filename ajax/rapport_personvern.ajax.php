@@ -27,10 +27,14 @@
             $innslagObj = $innslag;
             
             foreach($innslag->getSamtykke()->getAll() as $person) {
+                $innslagPerson = $person->getPerson();
                 $personObj = [
                     'id' => $person->getId(),
-                    'navn' => $person->getNavn(),
-                    'status' => $person->getStatus()->getId() != "ikke_godkjent" ? "- Godkjent samtykke" : "Ikke godkjent samtykke",
+                    'fornavn' => $innslagPerson->getFornavn(),
+                    'etternavn' => $innslagPerson->getEtternavn(),
+                    'mobil' => $innslagPerson->getMobil(),
+                    'epost' => $innslagPerson->getEpost(),
+                    'status' => $person->getStatus()->getId() != "ikke_godkjent" ? "Godkjent samtykke" : "Ikke godkjent samtykke",
                     'foresatt' => null,
                     'foresatt_mobil' => null,
                     'kategori' => $person->getKategori()->getId(),
@@ -40,7 +44,7 @@
                 if($person->getKategori()->getId() == 'u15') {
                     $personObj['foresatt'] = $person->getForesatt()->getNavn();
                     $personObj['foresatt_mobil'] = $person->getForesatt()->getMobil();
-                    $personObj['foresatt_status'] = $person->getForesatt()->getStatus()->getId() != "ikke_godkjent" ? "- Godkjent samtykke" : "Ikke godkjent samtykke";
+                    $personObj['foresatt_status'] = $person->getForesatt()->getStatus()->getId() != "ikke_godkjent" ? "Godkjent samtykke" : "Ikke godkjent samtykke";
                 }
                 $innslagObj->alle_personer[] = $personObj;
             }

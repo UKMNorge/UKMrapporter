@@ -1,21 +1,8 @@
-class SubnodeStringItem {
-    public value : String;
-    public DOMClassName : string = '';
+import SubnodeLeaf from './SubnodeLeaf';
 
+class SubnodeStringItem extends SubnodeLeaf{
     constructor(value : string) {
-        this.value = value;
-    }
-
-    public getValue() : String {
-        return this.value;
-    }
-    
-    public setDOMClass(DOMClassName : string) {
-        this.DOMClassName = DOMClassName;
-    }
-
-    public getDOMClass() : string {
-        return this.DOMClassName;
+        super(value);
     }
 }
 

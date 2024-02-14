@@ -80,7 +80,7 @@
                         <tr v-if="value[1].length > 0" class="subnode-no-top-line" v-for="(subnode, key) in value[0].getSubnodes()" :key="key">
                             <td colspan="100%" class="subnode-td" v-for="(subnodeItem, subnodeItemKey) in subnode.getItems()" :key="subnodeItemKey">
                                 <p><b>{{ subnodeItem.getKey() }}</b>:</p>
-                                <p v-for="subnodeStringItem in subnodeItem.getValues()" :class="subnodeStringItem.DOMClassName">{{ subnodeStringItem.value }}</p>
+                                <p v-for="subnodeStringItem in subnodeItem.getValues()" :class="subnodeStringItem.getDOMClass()">{{ subnodeStringItem.toString() }}</p>
                             </td>
                         </tr>
                     </template>
