@@ -1,12 +1,26 @@
 <template>
     <div>
-        <AlleDeltakere v-if="getRapportId() == 'alleDeltakere'" />
-        <LedereOversikt v-if="getRapportId() == 'ledereOversikt'" />
-        <Intoleranser v-if="getRapportId() == 'intoleranser'" />
-        <Nominasjoner v-if="getRapportId() == 'nominasjoner'" /> 
-        <Personvern v-if="getRapportId() == 'personvern'" /> 
-        <Kunstkatalog v-if="getRapportId() == 'kunstkatalog'" /> 
-        <Program v-if="getRapportId() == 'program'" /> 
+        <div v-if="getRapportId() == 'alleDeltakere'">
+            <AlleDeltakere />
+        </div>
+        <div v-else-if="getRapportId() == 'ledereOversikt'">
+            <LedereOversikt />
+        </div>
+        <div v-else-if="getRapportId() == 'intoleranser'">
+            <Intoleranser />
+        </div>
+        <div v-else-if="getRapportId() == 'nominasjoner'">
+            <Nominasjoner />
+        </div>
+        <div v-else-if="getRapportId() == 'personvern'">
+            <Personvern />
+        </div>
+        <div v-else-if="getRapportId() == 'kunstkatalog'">
+            <Kunstkatalog />
+        </div>
+        <div v-else-if="getRapportId() == 'program'">
+            <Program />
+        </div>
         <div v-else>
             <p>Rapport finnes ikke</p>
         </div>
