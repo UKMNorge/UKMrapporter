@@ -65,6 +65,7 @@ class Innslag extends NodeObj {
     private kommune : string = '';
     private beskrivelse : string = '';
     private rolle : string = '';
+    private tid : string = '';
 
     
     constructor(id : string, navn : string, type : string, sesong : string) {
@@ -139,6 +140,10 @@ class Innslag extends NodeObj {
 
     public setRolle(rolle : string) {
         this.rolle = rolle;
+    }
+
+    public setTid(tid : string) {
+        this.tid = tid;
     }
 
     public getData() {

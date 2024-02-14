@@ -11,6 +11,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
+    "downlevelIteration": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

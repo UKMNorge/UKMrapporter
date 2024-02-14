@@ -15,7 +15,7 @@ class Subnode {
         this.items.push(item);
     }
     
-    public getItems() {
+    public getItems() : SubnodeItem[] {
         return this.items;
     }
     
