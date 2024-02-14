@@ -80,7 +80,7 @@
                         <tr v-if="value[1].length > 0" class="subnode-no-top-line" v-for="(subnode, key) in value[0].getSubnodes()" :key="key">
                             <td colspan="100%" class="subnode-td" v-for="(subnodeItem, subnodeItemKey) in subnode.getItems()" :key="subnodeItemKey">
                                 <p><b>{{ subnodeItem.getKey() }}</b>:</p>
-                                <p v-for="itemValue in subnodeItem.getValues()">{{ itemValue }}</p>
+                                <p v-for="subnodeStringItem in subnodeItem.getValues()" :class="subnodeStringItem.DOMClassName">{{ subnodeStringItem.value }}</p>
                             </td>
                         </tr>
                     </template>
@@ -426,5 +426,11 @@
     .nummerering-item {
         width: 5px;
         padding-right: 0;
+    }
+    .danger-subnode-item {
+        color: var(--as-color-primary-danger)
+    }
+    .success-subnode-item {
+        color: var(--as-color-primary-success)
     }
 </style>

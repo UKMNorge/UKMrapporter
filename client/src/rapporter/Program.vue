@@ -41,6 +41,7 @@ import Innslag from '../objects/rapporter/Innslag';
 import Subnode from '../objects/Subnode';
 import SubnodeItem from '../objects/SubnodeItem';
 import NodeProperty from './../objects/NodeProperty';
+import SubnodeStringItem from '../objects/SubnodeStringItem';
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
@@ -114,7 +115,7 @@ async function getDataAjax() {
                 var titlerSubnode = new Subnode();
                 var titler = [];
                 for(var tittel of innslagObj['alle_titler']) {
-                    titler.push(tittel['tittel'] + (tittel['sekunder'] ? ' ('+ secondsToTimeFormat(tittel['sekunder']) +')' : ''));
+                    titler.push(new SubnodeStringItem(tittel['tittel'] + (tittel['sekunder'] ? ' ('+ secondsToTimeFormat(tittel['sekunder']) +')' : '')));
                 }
                 titlerSubnode.addItem(new SubnodeItem('Titler', titler));
                 innslagNode.addSubnode(titlerSubnode);
@@ -124,7 +125,7 @@ async function getDataAjax() {
                 var personerSubnode = new Subnode();
                 var personer = [];
                 for(var person of innslagObj['alle_personer']) {
-                    personer.push(person['fornavn'] +' '+ person['etternavn'] +' '+ person['alder'] +' - '+ person['rolle']);
+                    personer.push(new SubnodeStringItem(person['fornavn'] +' '+ person['etternavn'] +' '+ person['alder'] +' - '+ person['rolle']));
                 }
                 personerSubnode.addItem(new SubnodeItem('Personer', personer));
                 innslagNode.addSubnode(personerSubnode);

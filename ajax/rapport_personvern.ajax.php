@@ -34,6 +34,7 @@
                     'foresatt' => null,
                     'foresatt_mobil' => null,
                     'kategori' => $person->getKategori()->getId(),
+                    'godkjent' => $person->getStatus()->getId() != 'ikke_godkjent' ? true : false
                 ];
                 // Personen er under 15 og derfor er det foresatt som skal utføre godkjenning
                 if($person->getKategori()->getId() == 'u15') {

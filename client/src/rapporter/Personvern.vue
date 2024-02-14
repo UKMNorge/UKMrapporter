@@ -40,6 +40,7 @@ import Repo from '../objects/Repo';
 import Innslag from '../objects/rapporter/Innslag';
 import Subnode from '../objects/Subnode';
 import SubnodeItem from '../objects/SubnodeItem';
+import SubnodeStringItem from '../objects/SubnodeStringItem';
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
@@ -100,13 +101,13 @@ async function getDataAjax() {
                 for(var tittel of innslagObj['alle_titler']) {
                     tittelText += tittel['tittel'] + ' ';
                 }
-                tittelSubnode.addItem(new SubnodeItem('Titler', [tittelText]));
+                tittelSubnode.addItem(new SubnodeItem('Titler', [new SubnodeStringItem(tittelText)]));
                 innslagNode.addSubnode(tittelSubnode);
             }
 
             if(innslagObj['alle_personer']) {
                 var personerSubnode = new Subnode();
-                var personer = [];
+                var personerStringItems = [];
                 for(var i = 0; i < innslagObj['alle_personer'].length; i++) {
                     var person = innslagObj['alle_personer'][i];
                     var personText = '';
@@ -118,9 +119,14 @@ async function getDataAjax() {
                     if(i+1 < innslagObj['alle_personer'].length) {
                         personText += ', ';
                     }
-                    personer.push(personText)
+
+                    let DOMClass = person['godkjent'] ? 'success-subnode-item' : 'danger-subnode-item';
+                    let persStringItem = new SubnodeStringItem(personText);
+                    persStringItem.setDOMClass(DOMClass);
+                    personerStringItems.push(persStringItem);
+
                 }
-                personerSubnode.addItem(new SubnodeItem('Personer', personer));
+                personerSubnode.addItem(new SubnodeItem('Personer', personerStringItems));
                 innslagNode.addSubnode(personerSubnode);
             }
 
