@@ -11,11 +11,11 @@
     </div> -->
     <div class="as-container">
         <div class="rapporter-tabs container nop as-margin-top-space-4">
-            <button @click="openTab('0')" :class="activeTab == 0 ? 'active' : ''" class="tab as-padding-space-1">Personer</button>
-            <button @click="openTab('1')" :class="activeTab == 1 ? 'active' : ''" class="tab as-padding-space-1">Program</button>
-            <button @click="openTab('2')" :class="activeTab == 2 ? 'active' : ''" class="tab as-padding-space-1">Videresending</button>
-            <button @click="openTab('3')" :class="activeTab == 3 ? 'active' : ''" class="tab as-padding-space-1">Statistikk</button>
-            <button @click="openTab('4')" :class="activeTab == 4 ? 'active' : ''" class="tab as-padding-space-1">UKM-festivalen</button>
+            <button @click="openTab('0')" :class="activeTab == '0' ? 'active' : ''" class="tab as-padding-space-1">Personer</button>
+            <button @click="openTab('1')" :class="activeTab == '1' ? 'active' : ''" class="tab as-padding-space-1">Program</button>
+            <button @click="openTab('2')" :class="activeTab == '2' ? 'active' : ''" class="tab as-padding-space-1">Videresending</button>
+            <button @click="openTab('3')" :class="activeTab == '3' ? 'active' : ''" class="tab as-padding-space-1">Statistikk</button>
+            <button @click="openTab('4')" :class="activeTab == '4' ? 'active' : ''" class="tab as-padding-space-1">UKM-festivalen</button>
         </div>
         
         <div class="tab-spaces as-margin-top-space-8 container">

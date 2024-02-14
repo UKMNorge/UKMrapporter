@@ -12,7 +12,8 @@
 </template>
 <script setup lang="ts">
     import { ref } from 'vue';
-    let imgNoData = "https://assets."+ UKM_HOSTNAME +"/img/rapporter/no-data-for-rapport.png";
+    const ukmHostname = (<any>window).UKM_HOSTNAME;
+    let imgNoData = "https://assets."+ ukmHostname +"/img/rapporter/no-data-for-rapport.png";
 </script>
 
 <style scoped>
