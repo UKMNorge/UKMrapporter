@@ -1,6 +1,8 @@
 import SubnodeLeaf from "../SubnodeLeaf";
+import type SMS from "../interfaces/sms";
+import type Epost from "../interfaces/epost";
 
-class SubnodePerson extends SubnodeLeaf {
+class SubnodePerson extends SubnodeLeaf implements SMS, Epost {
     protected fornavn: string;
     protected etternavn: string;
 
@@ -21,7 +23,7 @@ class SubnodePerson extends SubnodeLeaf {
         return this.etternavn;
     }
 
-    public toString(): String {
+    public toString(): string {
         return this.fornavn + ' ' + 
         this.etternavn + 
         (this.hasMobil() ? ' - ' + this.getMobil() + '' : '') + 

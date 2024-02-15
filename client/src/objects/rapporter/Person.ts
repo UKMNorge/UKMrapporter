@@ -2,9 +2,11 @@ import { ref } from 'vue';
 import NodeObj from './../NodeObj';
 import NodeProperty from './../NodeProperty';
 import type TableItemInterface from './../table/TableInterface';
+import type SMS from '../interfaces/sms';
+import type Epost from '../interfaces/epost';
 
 
-class Person extends NodeObj implements TableItemInterface {
+class Person extends NodeObj implements TableItemInterface, SMS, Epost {
 
     /* -- Static start -- */
     private static unique: Boolean = false;
@@ -87,8 +89,16 @@ class Person extends NodeObj implements TableItemInterface {
         return this.getYearDiff(date, new Date());
     }
 
+    public hasMobil() : boolean {
+        return this.mobil !== null && this.mobil !== '';
+    }
+
     public getMobil() : string {
         return this.mobil;
+    }
+
+    public hasEpost() : boolean {
+        return this.epost !== null && this.epost !== '';
     }
 
     public getEpost() : string {
