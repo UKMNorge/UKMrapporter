@@ -64,6 +64,7 @@ class Person extends NodeObj implements TableItemInterface, SMS, Epost {
     private epost : string;
     private listeIntoleranser : string = '';
     private tekstIntoleranser : string = '';
+    private svar : string = '';
 
     constructor(id : string, navn : string, alder : number, mobil : string, epost : string) {
         super(id);
@@ -119,6 +120,14 @@ class Person extends NodeObj implements TableItemInterface, SMS, Epost {
 
     public getTekstIntoleranser() {
         return this.tekstIntoleranser;
+    }
+
+    public setSvar(svar : string) {
+        this.svar = svar;
+    }
+
+    public getSvar() {
+        return this.svar;
     }
 
     // Returnerer data fra static

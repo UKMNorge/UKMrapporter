@@ -28,7 +28,7 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
     }
 
     // Adding arrangement
-    if(!key_exists($fra->getId(), $fra)) {
+    if(!key_exists($fra->getId(), $arrangementer)) {
         $arrangementer[$fra->getId()] = new Node('Arrangement', $fra);
         $fylker[$fylke->getId()]->addChild($fra->getId(), $arrangementer[$fra->getId()]);
     }

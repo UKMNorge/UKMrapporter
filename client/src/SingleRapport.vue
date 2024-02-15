@@ -18,6 +18,9 @@
         <div v-else-if="getRapportId() == 'kunstkatalog'">
             <Kunstkatalog />
         </div>
+        <div v-else-if="getRapportId() == 'deltakerSkjema'">
+            <DeltakerSkjema />
+        </div>
         <div v-else-if="getRapportId() == 'program'">
             <Program />
         </div>
@@ -35,6 +38,8 @@ import Nominasjoner from './rapporter/Nominasjoner.vue';
 import Personvern from './rapporter/Personvern.vue';
 import Kunstkatalog from './rapporter/Kunstkatalog.vue';
 import Program from './rapporter/Program.vue';
+import DeltakerSkjema from './rapporter/DeltakerSkjema.vue';
+
 import { ref, onMounted } from 'vue'
 
 
