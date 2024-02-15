@@ -46,6 +46,11 @@ import RootNode from '../objects/RootNode';
 import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
 import NodeProperty from './../objects/NodeProperty';
+import SubnodePerson from '../objects/subnodesLeafs/SubnodePerson';
+import Subnode from '../objects/Subnode';
+import SubnodeItem from '../objects/SubnodeItem';
+
+
 
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
@@ -98,7 +103,19 @@ async function getDataAjax() {
             var personObj = person.obj;
             
             var personNode = new Person(personObj.id, personObj.fornavn + ' ' + personObj.etternavn, personObj.fodselsdato, personObj.mobil, personObj.epost);
-            personNode.setSvar(personObj.svar);
+            
+
+            // Deltakerskjema har en spesiell type som heter kontakt
+            if(question.obj.type == 'kontakt' && personObj.svar != 'Ikke besvart') {
+                let subnode = new Subnode();
+
+                let personerSubnode = [new SubnodePerson('', personObj.svar['navn'], '', personObj.svar['mobil'], personObj.svar['epost'])]
+                subnode.addItem(new SubnodeItem('Personer', personerSubnode));
+                personNode.addSubnode(subnode);
+            }
+            else {
+                personNode.setSvar(personObj.svar);
+            }
             questionNode.addChild(personNode);
 
         }
