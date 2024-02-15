@@ -22,10 +22,11 @@ $deltakerskjema = $arrangement->getDeltakerSkjema();
 
 foreach( $deltakerskjema->getSporsmalPerOverskrift() as $sporsmal ) {
     foreach( $sporsmal->getAll() as $question ) {
+        // var_dump($question);
         $questionObj = [
             'id' => $question->getId(),
-            'overskrift' => $sporsmal->getOverskrift(),
-            'sporsmal' => $question->getTekst(),
+            'overskrift' => $question->getTittel(),
+            'sporsmal' => $question->getTittel(),
             'type' => $question->getType(),
         ];
 
@@ -33,6 +34,7 @@ foreach( $deltakerskjema->getSporsmalPerOverskrift() as $sporsmal ) {
         $root->addChild($question->getId(), $questions[$question->getId()]);
 
         foreach( $deltakerskjema->getRespondenter()->getAllPameldt($arrangement) as $respondent ) {            
+            $svar = $respondent->getSvar()->get( $question->getId() )->getValue();
             $respondentObj = [
                 'id' => $respondent->getId(),
                 'fornavn' => $respondent->getPerson()->getFornavn(),
@@ -40,7 +42,7 @@ foreach( $deltakerskjema->getSporsmalPerOverskrift() as $sporsmal ) {
                 'epost' => $respondent->getPerson()->getEpost(),
                 'fodselsdato' => $respondent->getPerson()->getFodselsdato(),
                 'mobil' => $respondent->getPerson()->getMobil(),
-                'svar' => $respondent->getSvar()->get( $question->getId() )->getValue()
+                'svar' => $svar ? $svar : 'Ikke besvart',
             ];
 
             $respondenter[$respondent->getId()] = new Node('Person', $respondentObj);
