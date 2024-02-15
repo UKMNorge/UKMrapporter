@@ -11,7 +11,10 @@
                 </div>
             </div>
     
-            <DownloadsVue :repo="repo" />
+            <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
+                <DownloadsVue :repo="repo" />
+                <ToOldRapport :redirectLink="'?page=UKMrapporter&action=rapport&rapport=Deltakere'" />
+            </div>
     
             <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
     
@@ -33,6 +36,7 @@ import { ref } from 'vue';
 import MenyVue from '../components/Meny.vue';
 import NoData from '../components/NoData.vue';
 import DownloadsVue from '../components/Downloads.vue';
+import ToOldRapport from '../components/ToOldRapport.vue';
 import Person from '../objects/rapporter/Person';
 import Kommune from '../objects/rapporter/Kommune';
 import Fylke from '../objects/rapporter/Fylke';
