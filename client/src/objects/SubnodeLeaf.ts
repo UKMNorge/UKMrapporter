@@ -11,6 +11,10 @@ class SubnodeLeaf {
     public getValue() : String {
         return this.value;
     }
+
+    public getNavn() : string {
+        return '';
+    }
     
     public setDOMClass(DOMClassName : string) {
         this.DOMClassName = DOMClassName;
