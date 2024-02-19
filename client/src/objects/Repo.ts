@@ -92,11 +92,12 @@ class Repo {
     /**
      * Public method to get all nodes in the tree.
      * It initializes an empty array and passes it along with the root node to the private recursive method.
+     * @param {boolean} absoluteAll - If true, it will return all nodes in the tree, including the the filtered nodes.
      * @returns {NodeObj[]} An array of all nodes in the tree.
      */
-    public getAllNodes(): NodeObj[] { 
+    public getAllNodes(absoluteAll = false): NodeObj[] { 
         var allNodes : NodeObj[] = [];
-        return this._getAllNodes(this.root, allNodes);
+        return this._getAllNodes(this.root, allNodes, absoluteAll);
     }
 
     /**
@@ -106,11 +107,17 @@ class Repo {
      * @param {NodeObj[]} nodes - The array of nodes.
      * @returns {NodeObj[]} The array of nodes.
      */
-    private _getAllNodes(node: NodeObj, nodes: NodeObj[] = []): NodeObj[] {
+    private _getAllNodes(node: NodeObj, nodes: NodeObj[] = [], absoluteAll : boolean): NodeObj[] {
+        if(absoluteAll) {
+            if(!node.isActive()) {
+                return nodes;
+            }
+        }
+
         nodes.push(node);
     
         for (let child of node.children) {
-            this._getAllNodes(child, nodes);
+            this._getAllNodes(child, nodes, absoluteAll);
         }
     
         return nodes;
