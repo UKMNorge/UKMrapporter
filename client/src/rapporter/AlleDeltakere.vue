@@ -37,6 +37,7 @@ import MenyVue from '../components/Meny.vue';
 import NoData from '../components/NoData.vue';
 import DownloadsVue from '../components/Downloads.vue';
 import ToOldRapport from '../components/ToOldRapport.vue';
+import SendSMS from '../components/SMSDialog.vue';
 import Person from '../objects/rapporter/Person';
 import Kommune from '../objects/rapporter/Kommune';
 import Fylke from '../objects/rapporter/Fylke';

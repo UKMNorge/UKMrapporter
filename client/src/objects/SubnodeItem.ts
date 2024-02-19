@@ -1,12 +1,12 @@
-import SubnodeStringItem from './SubnodeStringItem';
+import SubnodeLeaf from './SubnodeLeaf';
 
 class SubnodeItem {
 
     public key : String = '';
-    public values : SubnodeStringItem[] = [];
+    public values : SubnodeLeaf[] = [];
     private className : string = '';
 
-    constructor(key : String, value : SubnodeStringItem[]) {
+    constructor(key : String, value : SubnodeLeaf[]) {
         this.key = key;
         this.values = value;
     }
@@ -15,7 +15,7 @@ class SubnodeItem {
         return this.key;
     }
 
-    public getValues() : SubnodeStringItem[] {
+    public getValues() : SubnodeLeaf[] {
         return this.values;
     }
     

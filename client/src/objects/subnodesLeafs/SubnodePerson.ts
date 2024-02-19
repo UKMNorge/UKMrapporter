@@ -15,6 +15,11 @@ class SubnodePerson extends SubnodeLeaf implements SMS, Epost {
         this.epost = epost;
     }
 
+    public getNavn() {
+        console.log(this.fornavn, this.etternavn);
+        return this.fornavn + ' ' + this.etternavn;
+    }
+
     public getFornavn() {
         return this.fornavn;
     }

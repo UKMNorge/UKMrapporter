@@ -129,6 +129,10 @@ abstract class NodeObj {
         return this.id;
     }
 
+    public hasMobil() : boolean {
+        return false;
+    }
+
     /* 
         This method can be implemented by subclasses to get the right representation of uniqueness for specific object
         Example: Person can have unique id as name+surname+mobil    

@@ -13,6 +13,7 @@
             <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
                 <DownloadsVue :repo="repo" />
                 <ToOldRapport :redirectLink="'?page=UKMrapporter&action=rapport&rapport=Personvern'" />
+                <SendSMSButton @sendSMS="smsDialogOpen" />
             </div>
     
             <MenyVue :root="root" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
@@ -23,6 +24,10 @@
                         <Table :leafNode="Innslag" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
                     </div>
                 </div>
+                
+                <div>
+                    <SMSDialog ref="smsDialogRef" :repo="repo" />
+                </div>
             </div>
         </div>
     </div>
@@ -31,11 +36,12 @@
 <script setup lang="ts">
 // Fra pakke UKM Komponenter
 import Table from '../components/table/Table.vue'
-import { ref } from 'vue';
+import { ref, provide } from 'vue';
 import MenyVue from '../components/Meny.vue';
 import NoData from '../components/NoData.vue';
 import DownloadsVue from '../components/Downloads.vue';
 import ToOldRapport from '../components/ToOldRapport.vue';
+import SendSMSButton from '../components/SendSMSButton.vue';
 import Arrangement from '../objects/rapporter/Arrangement';
 import DefaultNode from '../objects/rapporter/DefaultNode';
 import RootNode from '../objects/RootNode';
@@ -46,6 +52,7 @@ import Subnode from '../objects/Subnode';
 import SubnodeItem from '../objects/SubnodeItem';
 import SubnodeStringItem from '../objects/SubnodeStringItem';
 import SubnodePerson from '../objects/subnodesLeafs/SubnodePerson';
+import SMSDialog from '../components/SMSDialog.vue';
 
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
@@ -58,6 +65,19 @@ var alleHendelser = ref([]);
 var rapportName = 'Personvern';
 
 var nodeStructure = [DefaultNode, Innslag].reverse();
+
+const smsDialogRef = ref();
+
+
+function smsDialogOpen() {
+  // Check if the SMSDialog component is available
+  if (smsDialogRef.value && typeof smsDialogRef.value.openSMSDialog === 'function') {
+    // Call the method in the SMSDialog component
+    smsDialogRef.value.openSMSDialog();
+  } else {
+    console.error('SMSDialog or openSMSDialog method not found.');
+  }
+}
 
 getDataAjax();
 
