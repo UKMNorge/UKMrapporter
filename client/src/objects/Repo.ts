@@ -88,6 +88,33 @@ class Repo {
         this.getRootNodes().value = rootNodesArr;
     
     }
+    
+    /**
+     * Public method to get all nodes in the tree.
+     * It initializes an empty array and passes it along with the root node to the private recursive method.
+     * @returns {NodeObj[]} An array of all nodes in the tree.
+     */
+    public getAllNodes(): NodeObj[] { 
+        var allNodes : NodeObj[] = [];
+        return this._getAllNodes(this.root, allNodes);
+    }
+
+    /**
+     * Private recursive method to get all nodes in the tree.
+     * It pushes the current node to the array and calls itself for each child of the current node.
+     * @param {NodeObj} node - The current node.
+     * @param {NodeObj[]} nodes - The array of nodes.
+     * @returns {NodeObj[]} The array of nodes.
+     */
+    private _getAllNodes(node: NodeObj, nodes: NodeObj[] = []): NodeObj[] {
+        nodes.push(node);
+    
+        for (let child of node.children) {
+            this._getAllNodes(child, nodes);
+        }
+    
+        return nodes;
+    }
 
     public getAllNodesAtLevel(node : NodeObj, filteredNodes : NodeObj[], filterNode : NodeObj) {
         if (node.constructor.name === (<any>filterNode).name) {
