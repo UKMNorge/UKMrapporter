@@ -108,7 +108,7 @@ class Repo {
      * @returns {NodeObj[]} The array of nodes.
      */
     private _getAllNodes(node: NodeObj, nodes: NodeObj[] = [], absoluteAll : boolean): NodeObj[] {
-        if(absoluteAll) {
+        if(!absoluteAll) {
             if(!node.isActive()) {
                 return nodes;
             }
