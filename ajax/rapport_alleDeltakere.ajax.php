@@ -22,7 +22,13 @@ foreach( $arrangement->getInnslag()->getAll() as $innslag ) {
     $fylke = $innslag->getFylke();
     $kommune = $innslag->getKommune();
 
-    // Adding fylke
+    // Fylke kan være null
+    if($fylke == null) {
+        $fylke = new stdClass();
+        $fylke->getId = function() { return 0; };
+        $fylke->getNavn = function() { return 'Ukjent fylke'; };
+    }
+
     if(!key_exists($fylke->getId(), $fylker)) {
         $fylker[$fylke->getId()] = new Node('Fylke', $fylke);
         $root->addChild($fylke->getId(), $fylker[$fylke->getId()]);
