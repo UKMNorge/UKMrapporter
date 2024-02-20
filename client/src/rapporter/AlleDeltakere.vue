@@ -14,6 +14,7 @@
             <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
                 <DownloadsVue :repo="repo" />
                 <ToOldRapport :redirectLink="'?page=UKMrapporter&action=rapport&rapport=Deltakere'" />
+                <SendSMS :repo="repo" />
             </div>
     
             <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
@@ -37,7 +38,6 @@ import MenyVue from '../components/Meny.vue';
 import NoData from '../components/NoData.vue';
 import DownloadsVue from '../components/Downloads.vue';
 import ToOldRapport from '../components/ToOldRapport.vue';
-import SendSMS from '../components/SMSDialog.vue';
 import Person from '../objects/rapporter/Person';
 import Kommune from '../objects/rapporter/Kommune';
 import Fylke from '../objects/rapporter/Fylke';
@@ -45,6 +45,9 @@ import Innslag from '../objects/rapporter/Innslag';
 import RootNode from '../objects/RootNode';
 import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
+import SendSMS from '../components/SendSMS.vue';
+import SMSDialog from '../components/SMSDialog.vue';
+
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
@@ -65,6 +68,7 @@ var root = new RootNode();
 var repo = new Repo(root, nodeStructure, Person, rapportName);
 var rootNodes : any = repo.getRootNodes();
 
+const smsDialogRef = ref();
 
 async function getDataAjax() {
     var data = {

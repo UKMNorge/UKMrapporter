@@ -117,11 +117,10 @@ defineExpose({
 <style scoped>
 .rapport-contact-sms-div {
     position: fixed;
+    padding: 0 30px 0 0;
     margin: auto;
-    padding: 0;
-    margin: 0;
-    margin: auto;
-    padding-right: 30px;
+    bottom: 190px;
+    width: auto;
 }
 .selected-contacts {
     display: flex;

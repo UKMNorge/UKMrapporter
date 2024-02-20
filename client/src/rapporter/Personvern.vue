@@ -13,7 +13,7 @@
             <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
                 <DownloadsVue :repo="repo" />
                 <ToOldRapport :redirectLink="'?page=UKMrapporter&action=rapport&rapport=Personvern'" />
-                <SendSMSButton :smsDialogRef="smsDialogRef" />
+                <SendSMS :repo="repo" />
             </div>
     
             <MenyVue :root="root" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
@@ -25,9 +25,6 @@
                     </div>
                 </div>
                 
-                <div>
-                    <SMSDialog ref="smsDialogRef" :repo="repo" />
-                </div>
             </div>
         </div>
     </div>
@@ -41,7 +38,7 @@ import MenyVue from '../components/Meny.vue';
 import NoData from '../components/NoData.vue';
 import DownloadsVue from '../components/Downloads.vue';
 import ToOldRapport from '../components/ToOldRapport.vue';
-import SendSMSButton from '../components/SendSMSButton.vue';
+import SendSMS from '../components/SendSMS.vue';
 import Arrangement from '../objects/rapporter/Arrangement';
 import DefaultNode from '../objects/rapporter/DefaultNode';
 import RootNode from '../objects/RootNode';
