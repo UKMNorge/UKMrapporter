@@ -255,7 +255,7 @@ defineExpose({
     min-width: 400px;
     position: relative;
     max-height: 80vh;
-    overflow: scroll;
+    overflow: auto;
 }
 .node-floating-selector .box button.close-btn {
     position: absolute;
