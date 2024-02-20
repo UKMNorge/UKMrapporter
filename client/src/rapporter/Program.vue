@@ -1,7 +1,7 @@
 <template> 
     <div v-if="dataFetched">
         <div v-if="alleHendelser.length < 1" class="no-data">
-            <NoData />
+            <NoData :oldRapportLenke="oldRapportLenke" />
         </div>
         <div v-else>
             <div class="as-container container">
@@ -12,7 +12,7 @@
     
             <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
                 <DownloadsVue :repo="repo" />
-                <ToOldRapport :redirectLink="'?page=UKMrapporter&action=rapport&rapport=Program'" />
+                <ToOldRapport :redirectLink="oldRapportLenke" />
                 <SendSMS :repo="repo" />
             </div>
     
@@ -56,6 +56,7 @@ var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
 
 const spaInteraction = new SPAInteraction(null, ajaxurl);
+const oldRapportLenke = '?page=UKMrapporter&action=rapport&rapport=Program';
 var loading = ref(true);
 var dataFetched = ref(false);
 var alleHendelser = ref([]);

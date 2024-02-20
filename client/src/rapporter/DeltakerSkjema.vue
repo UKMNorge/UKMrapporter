@@ -1,19 +1,13 @@
 <template>
     <div v-if="dataFetched">
-        <div v-if="alleQuestions.length < 1" class="no-data">
-            <div class="as-container buttons as-margin-space-4 as-display-flex">
-                <div class="as-margin-auto">
-                    <ToOldRapport :redirectLink="'?page=UKMrapporter&action=rapport&rapport=Deltakerskjema'" />
-                </div>
-            </div>
-            
+        <div v-if="alleQuestions.length < 1" class="no-data">            
             <div class="as-display-flex">
                 <h5 class="as-margin-auto">
                     Du må <a href="index.php">lage et skjema med ekstra spørsmål til deltakerne</a> for å få noe utav denne rapporten.
                 </h5>
             </div>
 
-            <NoData />
+            <NoData :oldRapportLenke="oldRapportLenke" />
         </div>
         
         <div v-else>
@@ -25,7 +19,7 @@
     
             <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
                 <DownloadsVue :repo="repo" />
-                <ToOldRapport :redirectLink="'?page=UKMrapporter&action=rapport&rapport=Deltakerskjema'" />
+                <ToOldRapport :redirectLink="oldRapportLenke" />
             </div>
     
             <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
@@ -66,6 +60,7 @@ var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
 
 const spaInteraction = new SPAInteraction(null, ajaxurl);
+const oldRapportLenke = '?page=UKMrapporter&action=rapport&rapport=Deltakerskjema';
 var loading = ref(true);
 var dataFetched = ref(false);
 var alleQuestions = ref([]);
