@@ -1,9 +1,18 @@
 <template>
     <div v-if="dataFetched">
         <div v-if="alleQuestions.length < 1" class="no-data">
-            <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
-                <ToOldRapport :redirectLink="'?page=UKMrapporter&action=rapport&rapport=Deltakerskjema'" />
+            <div class="as-container buttons as-margin-space-4 as-display-flex">
+                <div class="as-margin-auto">
+                    <ToOldRapport :redirectLink="'?page=UKMrapporter&action=rapport&rapport=Deltakerskjema'" />
+                </div>
             </div>
+            
+            <div class="as-display-flex">
+                <h5 class="as-margin-auto">
+                    Du må <a href="index.php">lage et skjema med ekstra spørsmål til deltakerne</a> for å få noe utav denne rapporten.
+                </h5>
+            </div>
+
             <NoData />
         </div>
         
@@ -85,7 +94,16 @@ async function getDataAjax() {
         controller: 'rapport_deltakerSkjema',
     };
 
-    var response = await spaInteraction.runAjaxCall('/', 'POST', data);
+    try {
+       var response = await spaInteraction.runAjaxCall('/', 'POST', data);
+       dataFetched.value = true;
+    // The Promise was fulfilled, you can use the response here.
+    } catch (error) {
+        // The Promise was rejected, you can handle the error here.
+        console.error(error);
+        alert('error');
+    }
+
     var questions = (<any>response.root.children);
     alleQuestions.value = questions;
     
@@ -124,9 +142,6 @@ async function getDataAjax() {
         loading.value = false;
         rootNodes = repo.getRootNodes();
         
-    }
-    if(questions) {
-        dataFetched.value = true;
     }
 }
 
