@@ -21,17 +21,26 @@ $retObj = [];
 foreach( $arrangement->getInnslag()->getAll() as $innslag ) {
     $fylke = $innslag->getFylke();
     $kommune = $innslag->getKommune();
+    $hasFylke = $fylke != null;
 
-    // Fylke kan være null
+    // Fylke kan 
     if($fylke == null) {
         $fylke = new stdClass();
-        $fylke->getId = function() { return 0; };
+        $fylke->getId = function() { return 'undefinedfylke'; };
         $fylke->getNavn = function() { return 'Ukjent fylke'; };
     }
 
-    if(!key_exists($fylke->getId(), $fylker)) {
-        $fylker[$fylke->getId()] = new Node('Fylke', $fylke);
-        $root->addChild($fylke->getId(), $fylker[$fylke->getId()]);
+    $fylkeId = $hasFylke ? $fylke->getId() : ($fylke->getId)();
+    $fylkeNavn = $hasFylke ? $fylke->getNavn() : ($fylke->getNavn)();
+
+    if(!key_exists($fylkeId, $fylker)) {
+        $fylkeObj = [
+            'id' => $fylkeId,
+            'navn' => $fylkeNavn,
+        ];
+
+        $fylker[$fylkeId] = new Node('Fylke', $fylkeObj);
+        $root->addChild($fylkeId, $fylker[$fylkeId]);
     }
     
 
@@ -40,7 +49,7 @@ foreach( $arrangement->getInnslag()->getAll() as $innslag ) {
     if(!key_exists($kommune->getId(), $kommuner)) {
         $kommuneObj = ['id' => $kommune->getId(), 'navn' => $kommune->getNavn()];
         $kommuner[$kommune->getId()] = new Node('Kommune', $kommuneObj);
-        $fylker[$fylke->getId()]->addChild($kommune->getId(), $kommuner[$kommune->getId()]);
+        $fylker[$fylkeId]->addChild($kommune->getId(), $kommuner[$kommune->getId()]);
     }
     
     // Adding innslag
