@@ -52,7 +52,7 @@ var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
 
 const spaInteraction = new SPAInteraction(null, ajaxurl);
-const oldRapportLenke = '?page=UKMrapporter&action=rapport&rapport=AlleDeltakere';
+const oldRapportLenke = '?page=UKMrapporter&action=rapport&rapport=Deltakere';
 var loading = ref(true);
 var dataFetched = ref(false);
 var alleFylker = ref([]);
