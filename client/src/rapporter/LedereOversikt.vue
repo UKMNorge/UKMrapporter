@@ -13,6 +13,7 @@
             <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
                 <DownloadsVue :repo="repo" />
                 <ToOldRapport :redirectLink="'?page=UKMrapporter&action=rapport&rapport=LedereOversikt'" />
+                <SendSMS :repo="repo" />
             </div>
 
             <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
@@ -42,6 +43,8 @@ import Fylke from '../objects/rapporter/Fylke';
 import RootNode from '../objects/RootNode';
 import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
+import SendSMS from '../components/SendSMS.vue';
+
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
