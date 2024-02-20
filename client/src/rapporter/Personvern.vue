@@ -13,7 +13,7 @@
             <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
                 <DownloadsVue :repo="repo" />
                 <ToOldRapport :redirectLink="'?page=UKMrapporter&action=rapport&rapport=Personvern'" />
-                <SendSMSButton @sendSMS="smsDialogOpen" />
+                <SendSMSButton :smsDialogRef="smsDialogRef" />
             </div>
     
             <MenyVue :root="root" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
@@ -67,17 +67,6 @@ var rapportName = 'Personvern';
 var nodeStructure = [DefaultNode, Innslag].reverse();
 
 const smsDialogRef = ref();
-
-
-function smsDialogOpen() {
-  // Check if the SMSDialog component is available
-  if (smsDialogRef.value && typeof smsDialogRef.value.openSMSDialog === 'function') {
-    // Call the method in the SMSDialog component
-    smsDialogRef.value.openSMSDialog();
-  } else {
-    console.error('SMSDialog or openSMSDialog method not found.');
-  }
-}
 
 getDataAjax();
 
