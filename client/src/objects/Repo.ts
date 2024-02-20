@@ -54,6 +54,15 @@ class Repo {
         return (<any>this.refs).groupingNode;
     }
 
+    public isGroupingActive() : boolean {
+        console.log(this.getGroupingNode().value.className);
+        return this.getGroupingNode().value.className != 'Root';
+    }
+
+    public isFilteringActive() : boolean {
+        return this.getAllNodes().length != this.getAllNodes(true).length;
+    }
+
     // Get root nodes that uses for grouping
     public getRootNodes() : any {
         return (<any>this.refs).rootNodes;
