@@ -2,7 +2,7 @@
     <div>
         <div>
             <button class="as-btn-simple as-btn-hover-default btn-with-icon" @click="openSelector()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 2C6.486 2 2 5.589 2 10c0 2.908 1.897 5.516 5 6.934V22l5.34-4.004C17.697 17.852 22 14.32 22 10c0-4.411-4.486-8-10-8zm-2.5 9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path></svg>
+                <svg class="as-margin-right-space-1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 2C6.486 2 2 5.589 2 10c0 2.908 1.897 5.516 5 6.934V22l5.34-4.004C17.697 17.852 22 14.32 22 10c0-4.411-4.486-8-10-8zm-2.5 9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path></svg>
                 <span>Send SMS</span>
             </button>
         </div>
@@ -21,22 +21,43 @@
 
                 <h4>Send SMS</h4>
 
-                <div class="attributes as-margin-top-space-2">
-                    <div class="as-margin-bottom-space-6">
+                <!-- Beskjeder -->
+                <div v-if="isFilteringActive" class="sms-beskjed nosh-impt as-card-2 as-padding-space-2 as-margin-bottom-space-2 as-margin-top-space-2">
+                    <h5 class="as-padding-bottom-space-1">SMS vil kun inkludere kontakter som er tilpasset dine innstillinger</h5>
+                    <span class="nop">På grunn av filtreringen du anvender, kan noen kontakter være utilgjengelige</span>
+                </div>
+
+                <div class="attributes as-margin-top-space-3">
+                    <div v-if="allContacts.length != activeContacts.length" class="as-margin-bottom-space-2">
                         <button class="as-btn-default as-btn-hover-default" @click="selectAll">Velg alle</button>
                     </div>
-                    <div v-show="activeContacts.length > 0" class="selected-contacts object item as-card-2 as-padding-space-3 as-padding-bottom-space-2">
+
+                    <div v-show="allContacts.length > activeContacts.length " class="showed-contacts object item as-card-2 as-padding-space-3 as-padding-bottom-space-2 as-margin-bottom-space-4">
+                        <div v-for="contact in filteredContacts">
+                            <div v-if="typeof contact.getMobil === 'function' && typeof contact.getMobil === 'function'" @click="addToActive(contact)">
+                                <div class="contact not-selected attribute as-padding-space-1 as-margin-right-space-1 as-margin-bottom-space-1 as-btn-hover-default">
+                                    <span>{{ contact.getNavn() }} - <b>{{ contact.getMobil() }}</b></span>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <div v-show="activeContacts.length > 0" class="showed-contacts object item as-card-2 as-padding-space-3 as-padding-bottom-space-2">
+                        <div class="info-contacts as-margin-bottom-space-2">
+                            <h5>Sender sms til:</h5>
+                        </div>
                         <div v-for="contact in activeContacts">
-                            <div v-if="typeof contact.getMobil === 'function' && typeof contact.getMobil === 'function'" @click="removeContact(contact.getMobil())">
+                            <div v-if="typeof contact.getMobil === 'function' && typeof contact.getMobil === 'function'" @click="removeContactFromActive(contact)">
                                 <div class="contact attribute as-padding-space-1 as-margin-right-space-1 as-margin-bottom-space-1 as-btn-hover-default">
                                     <span>{{ contact.getNavn() }} - <b>{{ contact.getMobil() }}</b></span>
-                                    <div data-v-1e2d8299="" class="icon"><svg data-v-1e2d8299="" class="remove-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path data-v-1e2d8299="" d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"></path></svg></div>
+                                    <div class="icon"><svg class="remove-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"></path></svg></div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="as-margin-top-space-4 send-btn-div">
-                        <button class="as-btn-simple as-btn-hover-default success">Send</button>
+                        <button @click="sendSMS()" :disabled="activeContacts.length < 1" class="as-btn-simple as-btn-hover-default success">Send</button>
                     </div>
                 </div>
 
@@ -47,11 +68,12 @@
 
 <script setup lang="ts">
 import Repo from '../objects/Repo';
-import { ref, defineExpose } from 'vue';
+import { ref, defineExpose, computed } from 'vue';
 import { defineProps } from 'vue';
 import NodeObj from '../objects/NodeObj';
 import SubnodeLeaf from '../objects/SubnodeLeaf';
 import MobilContact from '../objects/MobilContact';
+import { post } from 'jquery';
 
 
 
@@ -74,6 +96,37 @@ var selectorPopupSMS : any = ref(false);
 
 
 
+/**
+ * Sends an SMS to the active contacts.
+ */
+function sendSMS() {
+    // Create a form element
+    const form = document.createElement('form');
+    form.method = 'post';
+    form.action = '?page=UKMSMS_gui'; // Set the destination URL
+
+    // Convert mobile contacts to a comma-separated string
+    const mobilContacts = activeContacts.value.map(contact => contact.getMobil()).join(',');
+
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'UKMSMS_recipients'; // The name of the input field
+    input.value = mobilContacts; // The comma-separated string of mobile contacts
+    form.appendChild(input);
+
+    document.body.appendChild(form);
+
+    form.submit();
+}
+
+
+
+const isFilteringActive = computed(() => {
+    // Filter the contacts that are in allContacts but not in activeContacts
+    console.log(props.repo.isFilteringActive());
+    return props.repo.isFilteringActive()
+});
+
 // popup
 function openSelector() {
     selectorPopupSMS.value = true;
@@ -86,12 +139,13 @@ function closeSelector(event : any) {
 }
 
 
-function removeContact(mobil : string|number) {
-    for(var contact of activeContacts.value) {
-        if(contact.getMobil() == mobil) {
-            activeContacts.value.splice(activeContacts.value.indexOf(contact), 1);
-        }
-    }
+function removeContactFromActive(contact : any) {
+    // Remove contact from activeContacts
+    activeContacts.value = activeContacts.value.filter((c : any) => c.getMobil() != contact.getMobil());
+}
+
+function addToActive(contact : any) {
+    activeContacts.value.push(contact);
 }
 
 function selectAll() {
@@ -122,8 +176,7 @@ function _getAllContacts() {
                         const mobil = subnodeLeaf.getMobil();
 
                         if (typeof navn === "string" && (typeof mobil === "string" || typeof mobil === "number")) {
-                            activeContacts.value.push(new MobilContact(mobil, navn));
-                            allContacts.value.push(new MobilContact(mobil, navn));
+                            _addContact(new MobilContact(mobil, navn));
                         }
                     }
                 }
@@ -131,19 +184,30 @@ function _getAllContacts() {
         }
         if(node.hasMobil()) {
             const navn = node.getNavn();
-            const mobil = '';
+            let mobil = '';
 
             if (typeof (node as any).getMobil === 'function') {
+                mobil = (node as any).getMobil();
                 if (typeof navn === "string" && (typeof mobil === "string" || typeof mobil === "number")) {
-                    activeContacts.value.push(new MobilContact(mobil, navn));
-                    allContacts.value.push(new MobilContact(mobil, navn));
+                    _addContact(new MobilContact(mobil, navn));
                 }
             }
         }
     }
+}
 
-    console.log(activeContacts.value.length);
-    console.log(allContacts.value.length);
+const filteredContacts = computed(() => {
+    // Filter the contacts that are in allContacts but not in activeContacts
+    return allContacts.value.filter(contact => !activeContacts.value.includes(contact));
+});
+
+
+function _addContact(contact : MobilContact) {
+    // Add if contact.getMobil() does not it doesnt exist
+    if(activeContacts.value.filter((c) => c.getMobil() == contact.getMobil()).length < 1) {
+        activeContacts.value.push(contact);
+        allContacts.value.push(contact);
+    }
 }
 
 // Expose the method to the parent component
@@ -160,12 +224,13 @@ defineExpose({
     bottom: 190px;
     width: auto;
 }
-.selected-contacts {
+.showed-contacts {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: left;
     background: var(--color-primary-grey-lightest);
+    box-shadow: none !important;
 }
 .contact {
     background: var(--color-primary-bla-50);
@@ -176,6 +241,9 @@ defineExpose({
     height: 100%;
     min-width: 40px;
     min-height: 35px;
+}
+.contact.not-selected {
+    background: var(--color-primary-grey-light);
 }
 .contact .icon {
     display: flex;
@@ -190,8 +258,14 @@ defineExpose({
 .send-btn-div button {
     margin: auto
 }
+.info-contacts {
+    width: 100%;
+}
+.sms-beskjed {
+    background: var(--as-color-primary-warning-lightest);
+    border: solid 2px var(--as-color-primary-warning-light);
 
-
+}
 
 
 
