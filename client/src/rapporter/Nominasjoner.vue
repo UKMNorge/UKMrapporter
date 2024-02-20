@@ -13,6 +13,7 @@
             <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
                 <DownloadsVue :repo="repo" />
                 <ToOldRapport :redirectLink="'?page=UKMrapporter&action=rapport&rapport=Nominasjoner'" />
+                <SendSMS :repo="repo" />
             </div>
     
             <MenyVue :root="root" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
@@ -42,6 +43,8 @@ import DefaultNode from '../objects/rapporter/DefaultNode';
 import RootNode from '../objects/RootNode';
 import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
+import SendSMS from '../components/SendSMS.vue';
+
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
@@ -110,7 +113,10 @@ async function getDataAjax() {
                     nominasjonObj.voksenskjema, 
                     nominasjonObj.deltakerskjema, 
                     nominasjonObj.videresendt, 
-                    nominasjonObj.status);
+                    nominasjonObj.status,
+                    nominasjonObj.mobil,
+                    nominasjonObj.epost
+                );
                 arrangementNode.addChild(nominasjonNode);
             }
             

@@ -57,6 +57,8 @@ foreach($arrTyper as $type) {
                 $nominasjonObj = [
                     'id' => $nominasjon->getId(),
                     'navn' => $innslag->getNavn(),
+                    'mobil' => $innslag->getPerson()->getMobil(),
+                    'epost' => $innslag->getPerson()->getEpost(),
                     'voksenskjema' => $nominasjon->harVoksenskjema(),
                     'deltakerskjema' => $nominasjon->harDeltakerskjema(),
                     'videresendt' =>  $videresendt,

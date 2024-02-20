@@ -1,9 +1,11 @@
 import { ref } from 'vue';
 import NodeObj from './../NodeObj';
 import NodeProperty from './../NodeProperty';
+import type Epost from '../interfaces/epost';
+import type SMS from '../interfaces/epost';
 
 
-class Nominasjon extends NodeObj {
+class Nominasjon extends NodeObj implements SMS, Epost {
 
     /* -- Static start -- */
     private static unique: Boolean = false;
@@ -11,6 +13,8 @@ class Nominasjon extends NodeObj {
 
     private static properties : NodeProperty[] = [
         new NodeProperty('getNominasjonNavn', 'Navn', true),
+        new NodeProperty('getMobil', 'Mobil', false),
+        new NodeProperty('getEpost', 'Epost', false),
         new NodeProperty('harVoksenskjema', 'Voksenskjema', true),
         new NodeProperty('harDeltakerskjema', 'Deltakerskjema', true),
         new NodeProperty('erVideresendt', 'Videresendt', true),
@@ -61,14 +65,18 @@ class Nominasjon extends NodeObj {
     private deltakerskjema : boolean;
     private videresendt : boolean;
     private status : string;
+    private mobil : string | number;
+    private epost : string;
     
-    constructor(id : string, navn : string, voksenskjema : boolean, deltakerskjema : boolean, videresendt : boolean, status : string) {
+    constructor(id : string, navn : string, voksenskjema : boolean, deltakerskjema : boolean, videresendt : boolean, status : string, mobil : string, epost : string) {
         super(id);
         this.navn = navn;
         this.voksenskjema = voksenskjema;
         this.deltakerskjema = deltakerskjema;
         this.videresendt = videresendt;
         this.status = status;
+        this.mobil = mobil;
+        this.epost = epost;
 
         // Making variables reactive on static
         Nominasjon.staticRefs = ref({
@@ -78,6 +86,10 @@ class Nominasjon extends NodeObj {
     }
 
     public getNominasjonNavn() {
+        return this.navn;
+    }
+
+    public getNavn() : string {
         return this.navn;
     }
 
@@ -95,6 +107,20 @@ class Nominasjon extends NodeObj {
 
     public getStatus() : string {
         return this.status;
+    }
+
+    public hasMobil(): boolean {
+        return this.mobil !== null && this.mobil !== '';
+    }
+    public getMobil() : string|number {
+        return this.mobil;
+    }
+
+    public hasEpost(): boolean {
+        return this.epost !== null && this.epost !== '';
+    }
+    public getEpost() : string {
+        return this.epost;
     }
 
     /**
