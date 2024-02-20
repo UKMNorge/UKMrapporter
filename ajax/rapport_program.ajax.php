@@ -28,7 +28,7 @@ foreach($arrangement->getProgram()->getAbsoluteAll() as $hendelse) {
             'type' => $innslag->getType(),
             'sesong' => $innslag->getSesong(),
             'sjanger' => $innslag->getType()->getNavn() . ($innslag->getSjanger() ? ' - ' . $innslag->getSjanger() : ''),
-            'fylke' => $innslag->getFylke() ? $innslag->getFylke()->getNavn() : '-',
+            'fylke' => $innslag->getFylke() ? $innslag->getFylke()->getNavn() : 'Ukjent fylke',
             'kommuneId' => $innslag->getKommune()->getId(),
             'kommuneNavn' => $innslag->getKommune()->getNavn(),
             'beskrivelse' => $innslag->getBeskrivelse(),
