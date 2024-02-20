@@ -49,7 +49,6 @@ import Subnode from '../objects/Subnode';
 import SubnodeItem from '../objects/SubnodeItem';
 import SubnodeStringItem from '../objects/SubnodeStringItem';
 import SubnodePerson from '../objects/subnodesLeafs/SubnodePerson';
-import SMSDialog from '../components/SMSDialog.vue';
 
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global

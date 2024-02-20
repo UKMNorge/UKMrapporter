@@ -46,7 +46,6 @@ import RootNode from '../objects/RootNode';
 import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
 import SendSMS from '../components/SendSMS.vue';
-import SMSDialog from '../components/SMSDialog.vue';
 
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
