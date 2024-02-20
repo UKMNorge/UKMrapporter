@@ -25,7 +25,7 @@
                     <div class="as-margin-bottom-space-6">
                         <button class="as-btn-default as-btn-hover-default" @click="selectAll">Velg alle</button>
                     </div>
-                    <div v-if="activeContacts.length > 0" class="selected-contacts object item as-card-2 as-padding-space-3 as-padding-bottom-space-2">
+                    <div v-show="activeContacts.length > 0" class="selected-contacts object item as-card-2 as-padding-space-3 as-padding-bottom-space-2">
                         <div v-for="contact in activeContacts">
                             <div v-if="typeof contact.getMobil === 'function' && typeof contact.getMobil === 'function'" @click="removeContact(contact.getMobil())">
                                 <div class="contact attribute as-padding-space-1 as-margin-right-space-1 as-margin-bottom-space-1 as-btn-hover-default">
@@ -41,7 +41,7 @@
                 </div>
 
             </div>
-        </div>        
+        </div> 
     </div>
 </template>
 
@@ -80,17 +80,10 @@ function openSelector() {
     openSMSDialog();
 }
 function closeSelector(event : any) {
-    // Remove fetched persons
-    activeContacts.value = [];
-    allContacts.value = [];
-
     if((<any>window).jQuery(event.target).hasClass('close-selector')) {
         selectorPopupSMS.value = false;
     }
 }
-
-
-
 
 
 function removeContact(mobil : string|number) {
@@ -105,13 +98,10 @@ function selectAll() {
     activeContacts.value = [];
     allContacts.value = [];
     _getAllContacts();
-}   
-
-
+}
 
 function openSMSDialog() {
-    smsDialog.value = true;
-    _getAllContacts();
+    selectAll();
 }
 
 /**
@@ -121,7 +111,7 @@ function openSMSDialog() {
  */
 function _getAllContacts() {
     if(allContacts.value.length > 0) {
-        return;
+        // return;
     }
     for(var node of props.repo.getAllNodes()) {
         for(var sunode of node.getSubnodes()) {
@@ -151,6 +141,9 @@ function _getAllContacts() {
             }
         }
     }
+
+    console.log(activeContacts.value.length);
+    console.log(allContacts.value.length);
 }
 
 // Expose the method to the parent component
