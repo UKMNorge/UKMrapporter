@@ -241,6 +241,8 @@ function getChildNode(node : NodeObj) : NodeObj|null {
         min-width: 300px;
         max-width: 600px;
         position: relative;
+        max-height: 80vh;
+        overflow: scroll;
     }
     .node-floating-selector .box button.close-btn {
         position: absolute;
