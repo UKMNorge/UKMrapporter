@@ -1,6 +1,13 @@
 <template> 
     <div v-if="dataFetched">
         <div v-if="alleHendelser.length < 1" class="no-data">
+            <div class="as-display-flex as-margin-top-space-4">
+                <div class="as-margin-auto container">
+                    <h5 class="as-margin-bottom-space-2 as-text-center">Program krever at du har opprettet minst én hendelse</h5>
+                    <button href="?page=UKMprogram" @click="goToProgram()" class="as-margin-auto as-btn-simple as-btn-hover-default btn-with-icon as-margin-right-space-2">Gå til program</button>
+                </div>
+            </div>
+            
             <NoData :oldRapportLenke="oldRapportLenke" />
         </div>
         <div v-else>
@@ -153,6 +160,10 @@ async function getDataAjax() {
     if(hendelser) {
         dataFetched.value = true;
     }
+}
+
+function goToProgram() {
+    window.location.href = '?page=UKMprogram';
 }
 
 function secondsToTimeFormat(duration : number) {

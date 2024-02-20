@@ -1,7 +1,7 @@
 <template>
     <div v-if="dataFetched">
         <div v-if="alleQuestions.length < 1" class="no-data">            
-            <div class="as-display-flex">
+            <div class="as-display-flex as-margin-top-space-4">
                 <h5 class="as-margin-auto">
                     Du må <a href="index.php">lage et skjema med ekstra spørsmål til deltakerne</a> for å få noe utav denne rapporten.
                 </h5>
