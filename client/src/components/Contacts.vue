@@ -123,9 +123,10 @@ function sendEmail(activeContacts: Contact[], sendType? : string): void {
         // Checking if the contact has a method called getEpost
         if (typeof (contact as any).getEpost === 'function') {
             console.log((contact as any).getEpost());
-            return (contact as any).getEpost()
+            return decodeURIComponent((contact as any).getEpost()).trim();
         }
     }).join(separationChar);
+    
 
     // open native app to send email
     window.location.href = `mailto:${emailContacts}`;
