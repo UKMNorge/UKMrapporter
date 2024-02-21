@@ -49,10 +49,15 @@
                     </div>
 
                     <div class="as-margin-top-space-4 send-btn-div">
-                        <button @click="send()" :disabled="activeContacts.length < 1" class="as-btn-simple as-btn-hover-default success">Send</button>
+                        <div class="as-margin-auto">
+                            <button @click="send()" :disabled="activeContacts.length < 1" class="as-btn-simple as-btn-hover-default success">Send</button>
+                            <div class="as-margin-top-space-2">
+                                <button v-if="sendButton1 !== undefined" @click="send1()" :disabled="activeContacts.length < 1" class="as-btn-simple as-btn-hover-default success under as-btn-simple-small">{{ sendButton1.name }}</button>
+                                <button v-if="sendButton2 !== undefined" @click="send2()" :disabled="activeContacts.length < 1" class="as-btn-simple as-btn-hover-default success under as-btn-simple-small">{{ sendButton2.name }}</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div> 
     </div>
@@ -77,8 +82,11 @@ const props = defineProps<{
     repo: Repo,
     getAllContacts : (contactComponentName : string, allContacts : Contact[], activeContacts : Contact[]) => void,
     contactComponentName: string,
-    send: (activeContacts : Contact[]) => void
+    send: (activeContacts : Contact[], sendType? : string) => void,
+    sendButton1?: {name : string, method : (activeContacts : Contact[], sendType? : string) => void},
+    sendButton2?: {name : string, method : (activeContacts : Contact[], sendType? : string) => void},
 }>();
+
 
 var smsDialog = ref(false);
 
@@ -151,6 +159,16 @@ function addContact(contact : MobilContact) {
 function send() {
     props.send(activeContacts.value);
 }
+function send1() {
+    if(props.sendButton1) {
+        props.sendButton1.method(activeContacts.value, props.sendButton1.name);
+    }
+}
+function send2() {
+    if(props.sendButton2){
+        props.sendButton2.method(activeContacts.value, props.sendButton2.name);
+    }
+}
 
 // Expose the method to the parent component
 defineExpose({
@@ -200,6 +218,9 @@ defineExpose({
 }
 .send-btn-div button {
     margin: auto
+}
+.send-btn-div button.under {
+    margin-top: var(--initial-space-box);
 }
 .info-contacts {
     width: 100%;
