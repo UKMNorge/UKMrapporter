@@ -18,10 +18,10 @@
 
         <div>
             <!-- Send SMS to contacts -->
-            <SendToContacts ref="smsComponent" :repo="repo" :getAllContacts="getContacts" :send="sendSMS" :contactComponentName="'SMS'" />
+            <ContactContacts ref="smsComponent" :repo="repo" :getAllContacts="getContacts" :send="sendSMS" :contactComponentName="'SMS'" />
             
             <!-- Send email to contacts -->
-            <SendToContacts ref="emailComponent" :repo="repo" :getAllContacts="getContacts" :send="sendEmail" :contactComponentName="'epost'" />
+            <ContactContacts ref="emailComponent" :repo="repo" :getAllContacts="getContacts" :send="sendEmail" :contactComponentName="'epost'" />
         </div>
 
     </div>
@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Repo from '../objects/Repo';
-import SendToContacts from './SendToContacts.vue';
+import ContactContacts from './ContactContacts.vue';
 import type Contact from '../objects/interfaces/Contact';
 import MobilContact from '../objects/MobilContact';
 import EmailContact from '../objects/EmailContact';
