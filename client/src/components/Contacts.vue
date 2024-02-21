@@ -21,9 +21,9 @@
             <ContactContacts ref="smsComponent" :repo="repo" :getAllContacts="getContacts" :send="sendSMS" :contactComponentName="'SMS'" />
             
             <!-- Send email to contacts -->
-            <ContactContacts ref="emailComponent" :repo="repo" :getAllContacts="getContacts" :send="sendEmail" :contactComponentName="'epost'" />
+            <ContactContacts ref="emailComponent" :repo="repo" :getAllContacts="getContacts" :send="sendEmail" :sendButton1="{name : 'Send (Windows eller Oulook)', method : sendEmail}" :sendButton2="{name : 'Send (Mac)', method : sendEmail}" :contactComponentName="'epost'" />
         </div>
-
+        
     </div>
 </template>
 
@@ -56,7 +56,7 @@ function getContacts(contactComponentName : string, allContacts : Contact[], act
                     const navn = subnodeLeaf.getNavn();
 
                     if(contactComponentName == 'epost') {
-                        if (typeof subnodeLeaf.hasEpost === 'function') {
+                        if (typeof subnodeLeaf.hasEpost === 'function' && (<any>subnodeLeaf).hasEpost()) {
                             const epost = subnodeLeaf.getEpost();
 
                             if (typeof navn === "string" && typeof epost === "string") {
@@ -78,7 +78,7 @@ function getContacts(contactComponentName : string, allContacts : Contact[], act
             }
         }
         if(contactComponentName == 'epost') {
-            if (typeof (node as any).getEpost === 'function') {
+            if (typeof (node as any).hasEpost === 'function' && (<any>node).hasEpost()) {
                 const epost = (node as any).getEpost();
                 const navn = node.getNavn();
 
@@ -111,16 +111,24 @@ function getContacts(contactComponentName : string, allContacts : Contact[], act
  * @param {Contact[]} activeContacts - The active contacts to send the email to.
  * @returns {void}
  */
-function sendEmail(activeContacts: Contact[]): void {
+function sendEmail(activeContacts: Contact[], sendType? : string): void {
+    console.log(sendType);
+    if(sendType == undefined) {
+        var separationChar = detectOS() == 'Windows' ? ';' : ',';
+    } else {
+        var separationChar = sendType == 'Send (Windows eller Oulook)' ? ';' : ',';
+    }
     // Convert email contacts to a comma-separated string
     const emailContacts = activeContacts.map(contact => {
         // Checking if the contact has a method called getEpost
         if (typeof (contact as any).getEpost === 'function') {
-            (contact as any).getEpost()
+            console.log((contact as any).getEpost());
+            return (contact as any).getEpost()
         }
-    }).join(', ');
+    }).join(separationChar);
 
-    console.log('Sending email to: ' + emailContacts);
+    // open native app to send email
+    window.location.href = `mailto:${emailContacts}`;
 }
 
 /**
@@ -137,7 +145,7 @@ function sendSMS(activeContacts: Contact[]): void {
     const mobilContacts = activeContacts.map(contact => {
         // Checking if the contact has a method called getMobil
         if (typeof (contact as any).getMobil === 'function') {
-            (contact as any).getMobil()
+            return (contact as any).getMobil()
         }
     }).join(',');
 
@@ -172,6 +180,22 @@ function openSelector(componentName : string) {
         }
         (<any>emailComponent.value).openSelector();
     }
+}
+
+function detectOS() {
+  const userAgent = navigator.userAgent + navigator.appVersion;
+  const osArray = [
+    { os: 'Windows', pattern: /Win/ },
+    { os: 'macOS', pattern: /Mac/ },
+    { os: 'Linux', pattern: /Linux/ },
+    { os: 'Unix', pattern: /X11/ },
+    { os: 'iOS', pattern: /(iPhone|iPad)/ },
+    { os: 'Android', pattern: /Android/ },
+  ];
+
+  const detectedOS = osArray.find(osInfo => osInfo.pattern.test(userAgent));
+
+  return detectedOS ? detectedOS.os : 'Unknown';
 }
 
 </script>
