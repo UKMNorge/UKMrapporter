@@ -13,7 +13,7 @@
             <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
                 <DownloadsVue :repo="repo" />
                 <ToOldRapport :redirectLink="oldRapportLenke" />
-                <!-- <SendSMS :repo="repo" /> -->
+                <Contacts :repo="repo" />
             </div>
             
             <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
@@ -44,7 +44,7 @@ import RootNode from '../objects/RootNode';
 import NodeProperty from './../objects/NodeProperty';
 import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
-import SendSMS from '../components/SendSMS.vue';
+import Contacts from '../components/Contacts.vue';
 
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global

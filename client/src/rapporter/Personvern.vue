@@ -13,7 +13,7 @@
             <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
                 <DownloadsVue :repo="repo" />
                 <ToOldRapport :redirectLink="oldRapportLenke" />
-                <!-- <SendSMS :repo="repo" /> -->
+                <Contacts :repo="repo" />
             </div>
     
             <MenyVue :root="root" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
@@ -38,7 +38,6 @@ import MenyVue from '../components/Meny.vue';
 import NoData from '../components/NoData.vue';
 import DownloadsVue from '../components/Downloads.vue';
 import ToOldRapport from '../components/ToOldRapport.vue';
-import SendSMS from '../components/SendSMS.vue';
 import Arrangement from '../objects/rapporter/Arrangement';
 import DefaultNode from '../objects/rapporter/DefaultNode';
 import RootNode from '../objects/RootNode';
@@ -49,6 +48,7 @@ import Subnode from '../objects/Subnode';
 import SubnodeItem from '../objects/SubnodeItem';
 import SubnodeStringItem from '../objects/SubnodeStringItem';
 import SubnodePerson from '../objects/subnodesLeafs/SubnodePerson';
+import Contacts from '../components/Contacts.vue';
 
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global

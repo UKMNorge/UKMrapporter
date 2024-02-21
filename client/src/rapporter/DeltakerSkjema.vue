@@ -20,6 +20,7 @@
             <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
                 <DownloadsVue :repo="repo" />
                 <ToOldRapport :redirectLink="oldRapportLenke" />
+                <Contacts :repo="repo" />
             </div>
     
             <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
@@ -52,6 +53,8 @@ import NodeProperty from './../objects/NodeProperty';
 import SubnodePerson from '../objects/subnodesLeafs/SubnodePerson';
 import Subnode from '../objects/Subnode';
 import SubnodeItem from '../objects/SubnodeItem';
+import Contacts from '../components/Contacts.vue';
+
 
 
 
