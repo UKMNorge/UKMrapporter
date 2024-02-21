@@ -13,7 +13,7 @@
             <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
                 <DownloadsVue :repo="repo" />
                 <ToOldRapport :redirectLink="oldRapportLenke" />
-                <SendSMS :repo="repo" />
+                <!-- <SendSMS :repo="repo" /> -->
             </div>
             
             <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
