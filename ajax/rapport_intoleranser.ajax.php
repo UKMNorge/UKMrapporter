@@ -27,17 +27,28 @@ $til = new Arrangement(get_option('pl_id'));
 // Legger til Person(er) som er del av arrangementet
 foreach( $til->getInnslag()->getAll() as $innslag ) {
     $fylke = $innslag->getFylke();
+    $hasFylke = $fylke != null;
+
+    // Fylke kan være null
+    if($fylke == null) {
+        $fylke = new stdClass();
+        $fylke->getId = function() { return 'undefinedfylke'; };
+        $fylke->getNavn = function() { return 'Ukjent fylke'; };
+    }
+
+    $fylkeId = $hasFylke ? $fylke->getId() : ($fylke->getId)();
+    $fylkeNavn = $hasFylke ? $fylke->getNavn() : ($fylke->getNavn)();
 
     // Adding fylke
-    if(!key_exists($fylke->getId(), $fylker)) {
-        $fylker[$fylke->getId()] = new Node('Fylke', $fylke);
-        $root->addChild($fylke->getId(), $fylker[$fylke->getId()]);
+    if(!key_exists($fylkeId, $fylker)) {
+        $fylker[$fylkeId] = new Node('Fylke', $fylke);
+        $root->addChild($fylkeId, $fylker[$fylkeId]);
     }
 
     // Adding arrangement
     if(!key_exists($til->getId(), $arrangementer)) {
         $arrangementer[$til->getId()] = new Node('Arrangement', $til);
-        $fylker[$fylke->getId()]->addChild($til->getId(), $arrangementer[$til->getId()]);
+        $fylker[$fylkeId]->addChild($til->getId(), $arrangementer[$til->getId()]);
     }
 
     foreach( $innslag->getPersoner()->getAll() as $person ) {
@@ -64,17 +75,28 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
 
     $fra = $avsender->getArrangement();
     $fylke = $fra->getFylke();
+    $hasFylke = $fylke != null;
+
+    // Fylke kan være null
+    if($fylke == null) {
+        $fylke = new stdClass();
+        $fylke->getId = function() { return 'undefinedfylke'; };
+        $fylke->getNavn = function() { return 'Ukjent fylke'; };
+    }
+
+    $fylkeId = $hasFylke ? $fylke->getId() : ($fylke->getId)();
+    $fylkeNavn = $hasFylke ? $fylke->getNavn() : ($fylke->getNavn)();
     
     // Adding fylke
-    if(!key_exists($fylke->getId(), $fylker)) {
-        $fylker[$fylke->getId()] = new Node('Fylke', $fylke);
-        $root->addChild($fylke->getId(), $fylker[$fylke->getId()]);
+    if(!key_exists($fylkeId, $fylker)) {
+        $fylker[$fylkeId] = new Node('Fylke', $fylke);
+        $root->addChild($fylkeId, $fylker[$fylkeId]);
     }
 
     // Adding arrangement
     if(!key_exists($fra->getId(), $arrangementer)) {
         $arrangementer[$fra->getId()] = new Node('Arrangement', $fra);
-        $fylker[$fylke->getId()]->addChild($fra->getId(), $arrangementer[$fra->getId()]);
+        $fylker[$fylkeId]->addChild($fra->getId(), $arrangementer[$fra->getId()]);
     }
 
 
