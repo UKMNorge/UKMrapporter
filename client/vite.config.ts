@@ -12,6 +12,7 @@ export default defineConfig({
     },
   },
   build: {
+    chunkSizeWarningLimit : 1000, // size in KB
     rollupOptions: {
         output: {
             dir: './dist/assets/',
