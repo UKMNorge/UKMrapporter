@@ -14,7 +14,7 @@
                 <h4>Send {{ contactComponentName }}</h4>
 
                 <!-- Notifications -->
-                <PermanentNotification v-if="isFilteringActive" :typeNotification="'warning'" :tittel="'SMS vil kun inkludere kontakter som er tilpasset dine innstillinger'" :description="'På grunn av filtreringen du anvender, kan noen kontakter være utilgjengelige'" />
+                <PermanentNotification v-if="isFilteringActive" typeNotification="warning" :tittel="`${contactComponentName.charAt(0).toUpperCase() + contactComponentName.slice(1)} vil kun inkludere kontakter som er tilpasset dine innstillinger`" :description="'På grunn av filtreringen du anvender, kan noen kontakter være utilgjengelige'" />
 
                 <div class="attributes as-margin-top-space-3">
                     <div v-if="allContacts.length != activeContacts.length" class="as-margin-bottom-space-2">
@@ -64,10 +64,6 @@
 import Repo from '../objects/Repo';
 import { ref, defineExpose, computed } from 'vue';
 import { defineProps } from 'vue';
-import NodeObj from '../objects/NodeObj';
-import SubnodeLeaf from '../objects/SubnodeLeaf';
-import MobilContact from '../objects/MobilContact';
-import EmailContact from '../objects/EmailContact';
 import type Contact from '../objects/interfaces/Contact';
 import { PermanentNotification } from 'ukm-components-vue3';
 
@@ -145,7 +141,7 @@ const filteredContacts = computed(() => {
 });
 
 
-function addContact(contact : MobilContact) {
+function addContact(contact : Contact) {
     // Add if contact.getMobil() does not it doesnt exist
     if(activeContacts.value.filter((c) => c.getId() == contact.getId()).length < 1) {
         activeContacts.value.push(contact);
