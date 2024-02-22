@@ -17,7 +17,7 @@
                 </div>
             </div>
     
-            <div class="as-container buttons container as-margin-bottom-space-8 as-display-flex">
+            <div class="as-container buttons container as-margin-bottom-space-6 as-display-flex">
                 <DownloadsVue :repo="repo" />
                 <ToOldRapport :redirectLink="oldRapportLenke" />
                 <Contacts :repo="repo" />
