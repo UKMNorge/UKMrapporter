@@ -1,9 +1,9 @@
 <template>
     <div>
         <!-- Popup -->
-        <div @click="closeSelector($event)" v-if="selectorPopupSMS" class="node-floating-selector close-selector">
-            <div class="box selector as-card-1 as-padding-space-5">
-                <button class="close-selector close-btn as-btn-hover-default">
+        <div @click="closeSelector($event)" v-if="selectorPopupSMS" class="as-popup-fixed close-selector">
+            <div class="as-popup-box selector as-card-1 as-padding-space-5">
+                <button @click="closeSelector($event)" class="close-selector as-popup-btn as-btn-hover-default">
                     <div class="icon close-selector">
                         <svg class="remove-icon close-selector" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path class="close-selector" d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"/>
@@ -13,11 +13,8 @@
 
                 <h4>Send {{ contactComponentName }}</h4>
 
-                <!-- Beskjeder -->
-                <div v-if="isFilteringActive" class="sms-beskjed nosh-impt as-card-2 as-padding-space-2 as-margin-bottom-space-2 as-margin-top-space-2">
-                    <h5 class="as-padding-bottom-space-1">SMS vil kun inkludere kontakter som er tilpasset dine innstillinger</h5>
-                    <span class="nop">På grunn av filtreringen du anvender, kan noen kontakter være utilgjengelige</span>
-                </div>
+                <!-- Notifications -->
+                <PermanentNotification v-if="isFilteringActive" :typeNotification="'warning'" :tittel="'SMS vil kun inkludere kontakter som er tilpasset dine innstillinger'" :description="'På grunn av filtreringen du anvender, kan noen kontakter være utilgjengelige'" />
 
                 <div class="attributes as-margin-top-space-3">
                     <div v-if="allContacts.length != activeContacts.length" class="as-margin-bottom-space-2">
@@ -72,7 +69,7 @@ import SubnodeLeaf from '../objects/SubnodeLeaf';
 import MobilContact from '../objects/MobilContact';
 import EmailContact from '../objects/EmailContact';
 import type Contact from '../objects/interfaces/Contact';
-import { post } from 'jquery';
+import { PermanentNotification } from 'ukm-components-vue3';
 
 
 
@@ -206,12 +203,6 @@ defineExpose({
 .contact.not-selected {
     background: var(--color-primary-grey-light);
 }
-.contact .icon {
-    display: flex;
-}
-.contact .icon svg {
-    margin: auto -3px auto 3px;
-}
 .send-btn-div {
     display: flex;
     width: 100%;
@@ -225,14 +216,6 @@ defineExpose({
 .info-contacts {
     width: 100%;
 }
-.sms-beskjed {
-    background: var(--as-color-primary-warning-lightest);
-    border: solid 2px var(--as-color-primary-warning-light);
-
-}
-
-
-
 
 .attributes {
     min-width: 200px;
@@ -240,7 +223,7 @@ defineExpose({
     flex-wrap: wrap;
     max-width: 60vw;
 }
-    .attributes .attribute {
+.attributes .attribute {
     font-weight: 300;
     letter-spacing: 1px;
     display: flex;
@@ -248,90 +231,22 @@ defineExpose({
     min-width: 40px;
     min-height: 35px;
 }
-    .attributes .attribute.new svg {
+.attributes .attribute.new svg {
     margin: auto;
 }
-    .attributes .attribute.new svg path {
+.attributes .attribute.new svg path {
     fill: var(--color-primary-black) !important;
 }
 
-    .attributes .attribute.toggle-function {
+.attributes .attribute.toggle-function {
     background: var(--color-primary-grey-light);
 }
-    .attributes .attribute.toggle-function.active {
+.attributes .attribute.toggle-function.active {
     background: var(--color-primary-bla-500) !important;
     color: #fff;
 }
-    .attributes .attribute.toggle-function.active span {
+.attributes .attribute.toggle-function.active span {
     color: #fff !important;
 }
-    .attributes .attribute .icon {
-    display: flex;
-}
-    .attributes .attribute .icon svg.remove-icon {
-    margin: auto -3px auto 3px
-}
-.node-floating-selector {
-    position: fixed;
-    z-index: 99999;
-    background: #65656527;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    display: flex;
-}
-.node-floating-selector .box {
-    margin: auto;
-    min-width: 400px;
-    position: relative;
-    max-height: 80vh;
-    overflow: auto;
-}
-.node-floating-selector .box button.close-btn {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    border: none;
-    border-radius: 50%;
-    height: 35px;
-    width: 35px;
-    display: flex;
-    background: transparent;
-}
-.node-floating-selector .box button.close-btn:hover {
-    background: var(--color-primary-grey-light) !important;
-}
-.node-floating-selector .box button.close-btn:hover .icon svg path {
-    fill: var(--color-primary-grey-dark) !important;
-}
-.node-floating-selector .box button.close-btn .icon {
-    margin: auto
-}
-.node-floating-selector .box button.close-btn .icon svg {
-    display: flex;
-}
-    /* .box.selector .attributes {
-        display: block;
-    }
-    .box.selector .attributes .prop {
-        display: flex;
-    }
-    .buttons-selector {
-        display: flex;
-    }
-    .buttons-selector .button-div {
-        margin-right: 10px;
-    }
-    .buttons-selector .button-div button {
-        border: none;
-    }
-    .buttons-selector .button-div button.active-node {
-        background: var(--color-primary-bla-500)!important;
-    }
-    .buttons-selector .button-div button.active-node span {
-        color: #fff !important;
-    }
- */
 
 </style>
