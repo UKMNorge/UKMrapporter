@@ -13,6 +13,9 @@ hljs.registerLanguage("xml", xml);
 hljs.registerLanguage("javascript", javascript);
 hljs.registerLanguage("css", css);
 
+// Import CSS for ukm-components-vue3
+import "../node_modules/ukm-components-vue3/dist/style.css";
+
 const app = createApp(UKMrapporter);
 
 // Make Director global
