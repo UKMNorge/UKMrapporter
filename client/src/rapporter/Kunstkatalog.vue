@@ -16,7 +16,7 @@
                 <Contacts :repo="repo" />
             </div>
     
-            <MenyVue :root="root" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+            <MenyVue :root="root" :filteringNode="filteringNode" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
     
             <div class="container as-container">
                 <div v-for="(r, key) in rootNodes" :key="key">
@@ -62,6 +62,8 @@ var rapportName = 'Kunstkatalog';
 
 var nodeStructure = [DefaultNode, Hendelse, Innslag].reverse();
 
+const filteringNode = DefaultNode
+
 // Activating properies
 Innslag.properties.push(new NodeProperty('getSjanger', 'Sjanger', true));
 Innslag.properties.push(new NodeProperty('getTid', 'Tid', true));
@@ -88,7 +90,6 @@ async function getDataAjax() {
     
     var rootHendelser = (<any>response.root.children);
 
-    console.log(rootHendelser);
     if(rootHendelser.length < 1) {
         dataFetched.value = true;
         return;
@@ -99,9 +100,14 @@ async function getDataAjax() {
     var counter = 0;
     for(var key of Object.keys(rootHendelser)) {
         var hendelser = rootHendelser[key];
-
+        
         var rootHendelseNode = new DefaultNode(hendelser.obj.id, hendelser.obj.navn);
-        rootHendelseNode.setClassName('Type');
+
+        if(hendelser.obj.id != 'utstillingHendelser') {
+            rootHendelseNode.setActive(false)
+        }
+
+        rootHendelseNode.setClassName('Innslag type');
         root.addChild(rootHendelseNode);
 
         console.log(hendelser.children);
