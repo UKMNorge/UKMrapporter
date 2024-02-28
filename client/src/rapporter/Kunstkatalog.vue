@@ -16,7 +16,7 @@
                 <Contacts :repo="repo" />
             </div>
     
-            <MenyVue :root="root" :filteringNode="filteringNode" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+            <MenyVue :root="root" :visTelling="true" :filteringNode="filteringNode" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
     
             <div class="container as-container">
                 <div v-for="(r, key) in rootNodes" :key="key">
@@ -99,7 +99,6 @@ async function getDataAjax() {
 
     alleHendelser = rootHendelser;
 
-    var counter = 0;
     for(var key of Object.keys(rootHendelser)) {
         var hendelser = rootHendelser[key];
         
@@ -127,7 +126,7 @@ async function getDataAjax() {
                 var innslag = hendelse.children[key];
                 var innslagObj = innslag.obj;
 
-                var innslagNode = new Innslag(innslagObj.id, ++counter + '. ' + innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
+                var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
 
                 // Adding extra properies
                 innslagNode.setSjanger(innslagObj.sjanger ? innslagObj.sjanger : '-');
@@ -159,6 +158,8 @@ async function getDataAjax() {
             
         }
     }
+
+    repo.telling.value = true;
 
     if(hendelser) {
         dataFetched.value = true;
