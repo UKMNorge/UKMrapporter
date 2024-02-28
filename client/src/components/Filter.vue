@@ -76,17 +76,26 @@ import Kommune from '../objects/rapporter/Kommune';
 
 
 
-const props = defineProps<{
-    root: RootNode|null,
-}>();
+const props = defineProps({
+    root: {
+        type: Object as () => RootNode | null,
+        required: true,
+    },
+    filteringNode : {
+        type: Object as () => NodeObj | null,
+        required: false,
+        default: null
+    }
+});
+
 
 var selectorPopup : any = ref(false);
 var filterNodes : any = ref([]);
-var selectedNode : any = ref(props.root ? props.root.constructor : null)
+var selectedNode : any = ref(props.filteringNode ? props.filteringNode : (props.root ? props.root.constructor : null));
 
 
 onMounted(() => {
-    selectedNode.value = props.root;
+    selectedNode.value = props.filteringNode ? props.filteringNode : props.root;
     var arrTest : {} = [];
     if(props.root) {
         getFilterNodes(props.root, arrTest);
