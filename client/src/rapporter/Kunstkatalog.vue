@@ -39,6 +39,7 @@ import DownloadsVue from '../components/Downloads.vue';
 import ToOldRapport from '../components/ToOldRapport.vue';
 import Arrangement from '../objects/rapporter/Arrangement';
 import DefaultNode from '../objects/rapporter/DefaultNode';
+import Hendelse from '../objects/rapporter/Hendelse';
 import RootNode from '../objects/RootNode';
 import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
@@ -59,7 +60,7 @@ var dataFetched = ref(false);
 var alleHendelser = ref([]);
 var rapportName = 'Kunstkatalog';
 
-var nodeStructure = [DefaultNode, DefaultNode, Innslag].reverse();
+var nodeStructure = [DefaultNode, Hendelse, Innslag].reverse();
 
 // Activating properies
 Innslag.properties.push(new NodeProperty('getSjanger', 'Sjanger', true));
@@ -110,10 +111,8 @@ async function getDataAjax() {
             var hendelseObj = hendelse.obj;
 
             console.log(hendelse)
-            var hendelseNode = new DefaultNode(hendelseObj.id, hendelseObj.navn);
-            hendelseNode.setClassName('Hendelse');
+            var hendelseNode = new Hendelse(hendelseObj.id, hendelseObj.navn);
             rootHendelseNode.addChild(hendelseNode);
-            
 
             // Innslag
             for(var key of Object.keys(hendelse.children)) {
