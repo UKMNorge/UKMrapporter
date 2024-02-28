@@ -3,7 +3,7 @@
         <div class="rapport-meny-components nop as-card-1 as-padding-space-3">
             <NodeVue :root="root" />
             <div class="filter-grouping-div col-xs-3 nop">
-                <FilterVue :root="root" />
+                <FilterVue :root="root" :filteringNode="filteringNode" />
                 <GroupingVue :root="root" :groupingNode="groupingNode" :gruppingUpdateCallback="gruppingUpdateCallback" />
                 <TableFilterVue :tableCallback="tableCallback"  />
             </div>
@@ -25,7 +25,6 @@ const props = defineProps({
     root: {
         type: Object as () => RootNode | null,
         required: true,
-
     },
     gruppingUpdateCallback: {
         type: Function as PropType<(n: NodeObj) => void>,
@@ -37,6 +36,11 @@ const props = defineProps({
     },
     groupingNode: {
         type: Object as () => NodeObj,
+        default: null, // Set a default value of null
+    },
+    filteringNode: {
+        type: Object as () => NodeObj,
+        required: false,
         default: null, // Set a default value of null
     },
 });
