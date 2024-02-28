@@ -66,12 +66,14 @@ const filteringNode = DefaultNode
 
 // Activating properies
 Innslag.properties.push(new NodeProperty('getSjanger', 'Sjanger', true));
-Innslag.properties.push(new NodeProperty('getTid', 'Tid', true));
-Innslag.properties.push(new NodeProperty('getFylke', 'Fylke', true));
+Innslag.properties.push(new NodeProperty('getTid', 'Tid', false));
+Innslag.properties.push(new NodeProperty('getFylke', 'Fylke', false));
 Innslag.properties.push(new NodeProperty('getKommune', 'Kommune', false));
 Innslag.properties.push(new NodeProperty('getBeskrivelse', 'Beskrivelse', false));
 Innslag.properties.push(new NodeProperty('getRolle', 'Rolle', false));
 // Person.properties.push(new NodeProperty('getTekstIntoleranser', 'Melding Intoleranser', true))
+Hendelse.properties = [];
+Hendelse.properties.push(new NodeProperty('getHendelseNavn', 'Hendelse navn', false));
 
 getDataAjax();
 
