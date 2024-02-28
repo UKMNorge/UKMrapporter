@@ -59,7 +59,7 @@ var dataFetched = ref(false);
 var alleHendelser = ref([]);
 var rapportName = 'Kunstkatalog';
 
-var nodeStructure = [DefaultNode, Innslag].reverse();
+var nodeStructure = [DefaultNode, DefaultNode, Innslag].reverse();
 
 // Activating properies
 Innslag.properties.push(new NodeProperty('getSjanger', 'Sjanger', true));
@@ -85,66 +85,79 @@ async function getDataAjax() {
 
     var response = await spaInteraction.runAjaxCall('/', 'POST', data);
     
-    var hendelser = (<any>response.root.children);
+    var rootHendelser = (<any>response.root.children);
 
-    console.log(hendelser);
-    if(hendelser.length < 1) {
+    console.log(rootHendelser);
+    if(rootHendelser.length < 1) {
         dataFetched.value = true;
         return;
     }
 
-    alleHendelser = hendelser;
+    alleHendelser = rootHendelser;
 
     var counter = 0;
-    for(var key of Object.keys(hendelser)) {
-        var hendelse = hendelser[key];
-        var hendelseObj = hendelse.obj;
+    for(var key of Object.keys(rootHendelser)) {
+        var hendelser = rootHendelser[key];
 
-        var hendelseNode = new DefaultNode(hendelseObj.id, hendelseObj.navn);
-        hendelseNode.setClassName('Hendelse');
-        root.addChild(hendelseNode);
-        
+        var rootHendelseNode = new DefaultNode(hendelser.obj.id, hendelser.obj.navn);
+        rootHendelseNode.setClassName('Type');
+        root.addChild(rootHendelseNode);
 
-        // Innslag
-        for(var key of Object.keys(hendelse.children)) {
-            var innslag = hendelse.children[key];
-            var innslagObj = innslag.obj;
+        console.log(hendelser.children);
 
-            var innslagNode = new Innslag(innslagObj.id, ++counter + '. ' + innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
+        for(var key of Object.keys(hendelser.children)) {
+            var hendelse = hendelser.children[key];
+            var hendelseObj = hendelse.obj;
 
-            // Adding extra properies
-            innslagNode.setSjanger(innslagObj.sjanger ? innslagObj.sjanger : '-');
-            innslagNode.setTid(innslagObj.tid);
-            innslagNode.setFylke(innslagObj.fylke);
-            innslagNode.setKommune(innslagObj.kommune);
-            innslagNode.setBeskrivelse(innslagObj.beskrivelse);
-            innslagNode.setRolle(innslagObj.rolle);
+            console.log(hendelse)
+            var hendelseNode = new DefaultNode(hendelseObj.id, hendelseObj.navn);
+            hendelseNode.setClassName('Hendelse');
+            rootHendelseNode.addChild(hendelseNode);
+            
 
-            console.error(innslagObj['alle_personer']);
-            if(innslagObj['alle_personer']) {
-                var personerSubnode = new Subnode();
-                var personer = [];
-                for(var person of innslagObj['alle_personer']) {
-                    console.warn(person);
-                    personer.push(new SubnodePerson('rolle: ' + person['rolle'], person['fornavn'], person['etternavn'], person['mobil'], person['epost']));
+            // Innslag
+            for(var key of Object.keys(hendelse.children)) {
+                var innslag = hendelse.children[key];
+                var innslagObj = innslag.obj;
+
+                var innslagNode = new Innslag(innslagObj.id, ++counter + '. ' + innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
+
+                // Adding extra properies
+                innslagNode.setSjanger(innslagObj.sjanger ? innslagObj.sjanger : '-');
+                innslagNode.setTid(innslagObj.tid);
+                innslagNode.setFylke(innslagObj.fylke);
+                innslagNode.setKommune(innslagObj.kommune);
+                innslagNode.setBeskrivelse(innslagObj.beskrivelse);
+                innslagNode.setRolle(innslagObj.rolle);
+
+                console.error(innslagObj['alle_personer']);
+                if(innslagObj['alle_personer']) {
+                    var personerSubnode = new Subnode();
+                    var personer = [];
+                    for(var person of innslagObj['alle_personer']) {
+                        console.warn(person);
+                        personer.push(new SubnodePerson('rolle: ' + person['rolle'], person['fornavn'], person['etternavn'], person['mobil'], person['epost']));
+                    }
+                    personerSubnode.addItem(new SubnodeItem('Personer', personer));
+                    innslagNode.addSubnode(personerSubnode);
+
                 }
-                personerSubnode.addItem(new SubnodeItem('Personer', personer));
-                innslagNode.addSubnode(personerSubnode);
 
+                hendelseNode.addChild(innslagNode);
             }
 
-            hendelseNode.addChild(innslagNode);
+            repo = new Repo(root, nodeStructure, Innslag, rapportName);
+            loading.value = false;
+            rootNodes = repo.getRootNodes();
+            
         }
-
-        repo = new Repo(root, nodeStructure, Innslag, rapportName);
-        loading.value = false;
-        rootNodes = repo.getRootNodes();
-        
     }
 
     if(hendelser) {
         dataFetched.value = true;
     }
+
+    console.log(root);
 }
 
 </script>

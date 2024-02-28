@@ -10,15 +10,37 @@ $handleCall = new HandleAPICall([], [], ['GET', 'POST'], false);
 $arrangement = new Arrangement(get_option('pl_id'));
 
 $root = new Node('Root', null);
+$rootHendelserType = [];
 $hendelser = [];
+$utstillingHendelser = [];
 $innslags = [];
+
+
+$alleHendelserObj = [
+    'id' => 'alleHendelser',
+    'navn' => 'Alle hendelser',
+];
+$utstillingHendelserObj = [
+    'id' => 'utstillingHendelser',
+    'navn' => 'Utstilling hendelser',
+];
+
+$rootHendelserType['alleHendelser'] = new Node('Alle hendelser', $alleHendelserObj);
+$rootHendelserType['utstillingHendelser'] = new Node('Utstilling hendelser', $utstillingHendelserObj);
+
+
+$root->prependChild('alleHendelsers', $rootHendelserType['alleHendelser']);
+$root->prependChild('utstillingHendelser', $rootHendelserType['utstillingHendelser']);
 
 $retObj = [];
 
 foreach($arrangement->getProgram()->getAbsoluteAll() as $hendelse) {
     if(!key_exists($hendelse->getId(), $hendelser)) {
         $hendelser[$hendelse->getId()] = new Node('Hendelse', $hendelse);
-        $root->prependChild($hendelse->getId(), $hendelser[$hendelse->getId()]);
+        $utstillingHendelser[$hendelse->getId()] = new Node('Utstilling Hendelse', $hendelse);
+
+        $rootHendelserType['alleHendelser']->prependChild($hendelse->getId(), $hendelser[$hendelse->getId()]);
+        $rootHendelserType['utstillingHendelser']->prependChild($hendelse->getId(), $utstillingHendelser[$hendelse->getId()]);
     }
 
     foreach($hendelse->getInnslag()->getAll() as $innslag) {
@@ -55,11 +77,17 @@ foreach($arrangement->getProgram()->getAbsoluteAll() as $hendelse) {
                 
                 $innslags[$innslag->getId()] = new Node('Innslag', $innslagObj);
                 $hendelser[$hendelse->getId()]->addChild($innslag->getId(), $innslags[$innslag->getId()]);
+                if($innslag->getType()->getKey() == 'utstilling') {
+                    $utstillingHendelser[$hendelse->getId()]->addChild($innslag->getId(), $innslags[$innslag->getId()]);
+                }
             }
         }
         else {
             $innslags[$innslag->getId()] = new Node('Innslag', $innslagObj);
             $hendelser[$hendelse->getId()]->addChild($innslag->getId(), $innslags[$innslag->getId()]);
+            if($innslag->getType()->getKey() == 'utstilling') {
+                $utstillingHendelser[$hendelse->getId()]->addChild($innslag->getId(), $innslags[$innslag->getId()]);
+            }
         }
 
     }
