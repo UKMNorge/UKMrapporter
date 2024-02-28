@@ -30,12 +30,25 @@ import { ref } from 'vue';
 import { onUpdated, onMounted } from 'vue';
 
 
-const props = defineProps<{
-    tableCallback : (antall : Boolean, telling : Boolean)=>void
-}>();
+const props = defineProps({
+    tableCallback: {
+        type : Object as () => (antall : Boolean, telling : Boolean)=>void,
+        required: true,
+    },
+    visAntall: {
+        type: Boolean,
+        default: false,
+        required: false,
+    },
+    visTelling: {
+        type: Boolean,
+        default: false,
+        required: false,
+    }
+});
 
-var visAntall = ref(false);
-var visTelling = ref(false);
+var visAntall = ref(props.visAntall ? props.visAntall : false);
+var visTelling = ref(props.visTelling ? props.visTelling : false);
 
 function callback() {
     props.tableCallback((<Boolean>visAntall.value), (<Boolean>visTelling.value));
