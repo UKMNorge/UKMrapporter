@@ -5,7 +5,7 @@
             <div class="filter-grouping-div col-xs-3 nop">
                 <FilterVue :root="root" :filteringNode="filteringNode" />
                 <GroupingVue :root="root" :groupingNode="groupingNode" :gruppingUpdateCallback="gruppingUpdateCallback" />
-                <TableFilterVue :tableCallback="tableCallback"  />
+                <TableFilterVue :tableCallback="tableCallback" :visAntall="visAntall" :visTelling="visTelling"  />
             </div>
         </div>
     </div>
@@ -43,6 +43,16 @@ const props = defineProps({
         required: false,
         default: null, // Set a default value of null
     },
+    visAntall: {
+        type: Boolean,
+        default: false,
+        required: false,
+    },
+    visTelling: {
+        type: Boolean,
+        default: false,
+        required: false,
+    }
 });
 
 
