@@ -10,7 +10,7 @@ class Hendelse extends NodeObj {
     public static hasUnique : Boolean = false;
 
     private static properties : NodeProperty[] = [
-        new NodeProperty('getHendelseNavn', 'Navn', true)
+        new NodeProperty('getHendelseNavn', 'Hendelse navn', true)
     ];
 
     static className = 'Hendelse';
