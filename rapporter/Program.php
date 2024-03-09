@@ -40,6 +40,7 @@ class Program extends Rapport
             
             $grupper->getGruppe( $gruppe_id )->setInnslag( $hendelse->getInnslag()->getAll());
         }
+        $grupper->sorted_data = true;
         return $grupper;
     }
 }
