@@ -21,7 +21,9 @@ class FormatterDiplom extends Formatter
     {
         $tabell = $word->tabell();
 
-        $row = $tabell->addRow($word::mmToTwips(235));
+        $bottomPositon = intval(static::$config->get('diplom_positon')->getValue());
+        
+        $row = $tabell->addRow($word::mmToTwips(240-$bottomPositon));
         $celle = $row->addCell(10000);
 
         $word->tekst(
