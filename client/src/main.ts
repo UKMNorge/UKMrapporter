@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import UKMrapporter from "./UKMrapporter.vue";
 import Singlerapport from "./SingleRapport.vue";
+import DiplomApp from "./DiplomApp.vue";
 
 import hljs from "highlight.js/lib/core";
 import javascript from "highlight.js/lib/languages/javascript";
@@ -33,3 +34,7 @@ app.mount("#rapporterApp");
 const app2 = createApp(Singlerapport);
 app2.use(hljsVuePlugin);
 app2.mount("#singleRapport");
+
+const diplomApp = createApp(DiplomApp);
+diplomApp.use(hljsVuePlugin);
+diplomApp.mount("#diplomAppVue");
