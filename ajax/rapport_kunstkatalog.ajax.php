@@ -34,7 +34,13 @@ $root->prependChild('utstillingHendelser', $rootHendelserType['utstillingHendels
 
 $retObj = [];
 
-foreach($arrangement->getProgram()->getAbsoluteAll() as $hendelse) {
+$alleHendelserProgram = $arrangement->getProgram()->getAbsoluteAll();
+
+usort($alleHendelserProgram, function($a, $b) {
+    return $a->getStart() < $b->getStart();
+});
+
+foreach($alleHendelserProgram as $hendelse) {
     if(!key_exists($hendelse->getId(), $hendelser)) {
         $hendelser[$hendelse->getId()] = new Node('Hendelse', $hendelse);
         $utstillingHendelser[$hendelse->getId()] = new Node('Utstilling Hendelse', $hendelse);

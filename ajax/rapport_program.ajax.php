@@ -15,7 +15,13 @@ $innslags = [];
 
 $retObj = [];
 
-foreach($arrangement->getProgram()->getAbsoluteAll() as $hendelse) {
+$alleHendelser = $arrangement->getProgram()->getAbsoluteAll();
+
+usort($alleHendelser, function($a, $b) {
+    return $a->getStart() < $b->getStart();
+});
+
+foreach($alleHendelser as $hendelse) {
     if(!key_exists($hendelse->getId(), $hendelser)) {
         $hendelser[$hendelse->getId()] = new Node('Hendelse', $hendelse);
         $root->prependChild($hendelse->getId(), $hendelser[$hendelse->getId()]);
