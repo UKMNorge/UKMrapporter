@@ -409,10 +409,10 @@
         padding-left: calc(var(--initial-space-box)*3);
         color: var(--color-primary-grey-dark);
     }
-    .has-subnodes td p {
+    /* .has-subnodes td p {
         font-weight: bold;
         font-size: 14px;
-    }
+    } */
     .has-subnodes td {
         padding-bottom: 4px !important;
     }
