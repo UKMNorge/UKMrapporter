@@ -108,6 +108,6 @@ export default {
     border: dashed 1px var(--color-primary-grey-light);
 }
 .space-message {
-    min-height: 50px;
+    min-height: 130px;
 }
 </style>
