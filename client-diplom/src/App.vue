@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div class="as-container container">
+        <div class="as-container container space-message">
             <PermanentNotification v-if="bottomPosition < -4 || bottomPosition > 250" typeNotification="danger" :tittel="'Teksten kan flytte utenfor siden'" :description="'På grunn av margininnstillinger kan teksten flytte utenfor siden. For å løse dette, kan du justere margin i Word-dokumentet.'" />
         </div>
     </div>
@@ -106,5 +106,8 @@ export default {
 .margin-on-page.bottom-margin {
     bottom: calc(10mm);
     border: dashed 1px var(--color-primary-grey-light);
+}
+.space-message {
+    min-height: 50px;
 }
 </style>
