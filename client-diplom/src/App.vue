@@ -16,7 +16,7 @@
         <div class="input-position">
             <div>
                 <input type="range" v-model="bottomPosition" min="-30" max="275" step="1" />
-                <input type="number" class="form-group input-bottom-value" name="diplom_positon" :value="bottomPosition" id="diplom_positon" >
+                <input type="number" class="form-group input-bottom-value" name="diplom_positon" :value="bottomPosition" id="diplom_positon" readonly >
                 <span> millimeter</span>
             </div>
         </div>
