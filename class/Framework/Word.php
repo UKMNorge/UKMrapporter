@@ -18,7 +18,7 @@ class Word {
 
 
     public function render() {
-        $this->wordFormatter::gruppe( $this->word, $this->grupper );
+        $this->wordFormatter->gruppe( $this->word, $this->grupper );
     }
 
     public function writeToFile() {
