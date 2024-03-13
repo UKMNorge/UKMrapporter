@@ -5,10 +5,12 @@
         </div>
 
         <div class="aFourPageDiv as-margin-top-space-4 as-margin-bottom-space-4">
+            <div class="margin-on-page top-margin"></div>
             <div class="person" :style="{ bottom: (bottomPosition*0.6) + 'mm' }">
                 <h4>Nora Normann</h4>
                 <span>UKM-Festivalen</span>
             </div>
+            <div class="margin-on-page bottom-margin"></div>
         </div>
 
         <div class="input-position">
@@ -17,6 +19,10 @@
                 <input type="number" class="form-group input-bottom-value" name="diplom_positon" :value="bottomPosition" id="diplom_positon" >
                 <span> millimeter</span>
             </div>
+        </div>
+
+        <div class="as-container container">
+            <PermanentNotification v-if="bottomPosition < -4 || bottomPosition > 250" typeNotification="danger" :tittel="'Teksten kan flytte utenfor siden'" :description="'På grunn av margininnstillinger kan teksten flytte utenfor siden. For å løse dette, kan du justere margin i Word-dokumentet.'" />
         </div>
     </div>
 </template>
@@ -85,5 +91,20 @@ export default {
     width: 55px;
     text-align: center;
     margin-left: 10px;
+}
+.margin-on-page {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    right: 0;
+    height: 2px;
+}
+.margin-on-page.top-margin {
+    top: calc(10mm);
+    border: dashed 1px var(--color-primary-grey-light);
+}
+.margin-on-page.bottom-margin {
+    bottom: calc(10mm);
+    border: dashed 1px var(--color-primary-grey-light);
 }
 </style>
