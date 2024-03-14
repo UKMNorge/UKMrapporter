@@ -5,6 +5,7 @@ use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Arrangement\Videresending\Ledere\Ledere;
 use UKMNorge\Arrangement\UKMFestival;
 use UKMNorge\Geografi\Fylker;
+Use UKMNorge\Rapporter\Template\Node;
 
 
 
@@ -12,11 +13,11 @@ $handleCall = new HandleAPICall([], [], ['GET', 'POST'], false);
 
 $til = new Arrangement(get_option('pl_id'));
 
-$arrangementer = [];
-$netter = [];
-$kommentarer = [];
-$alleGyldigeNetter = [];
-$alleLedere = 0;
+// $arrangementer = [];
+// $netter = [];
+// $kommentarer = [];
+// $alleGyldigeNetter = [];
+// $alleLedere = 0;
 
 
 if($til->getEierType() == 'land') {
@@ -51,8 +52,13 @@ $selectedFylker = [];
 //     }
 // }
 
-$arrangementer = [];
+
+$root = new Node('Root', null);
 $netter = [];
+$fylker = [];
+$ledereArr = [];
+
+$arrangementer = [];
 $kommentarer = [];
 $alleGyldigeNetter = [];
 $alleLedere = 0;
@@ -68,8 +74,7 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
     $kommentarer[$fra->getFylke()->getId()][$fra->getId()] = $fra->getMetaValue('kommentar_overnatting_til_' . $til->getId());
     
     // For alle fylker som ble valgt
-    foreach($selectedFylker as $fylke) {
-        $fylker[$fylke->getId()] = $fylke;                
+    foreach($selectedFylker as $fylke) {              
 
         // Hvis $fra (arrangement som ble videresendt) er fra fylke som er valgt
         if($fylke->getId() == $fra->getFylke()->getId()) {
@@ -82,9 +87,31 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
                 foreach($leder->getNetter()->getAll() as $natt) {
                     // Hvis natten er del av gyldige netter for 'til' arrangementet og sted er hotell
                     if($alleGyldigeNetter[$natt->getId()] && $natt->getSted() == 'hotell') {
-                        // Bare ledere som overnatter i landsbyen skal bli med i rapporten
-                        $netter[$natt->getId()]['fylker'][$fylke->getId()][$fra->getId()][] = $leder;
-                        $alleLedere++;
+
+                        $nattObject = [
+                            'id' => $natt->getId(),
+                            // 'dato' => $natt->format('d_m'),
+                            // 'sted' => $natt->getSted(),
+                        ];
+                        
+
+                        // Adding netter
+                        if(!key_exists($natt->getId(), $netter)) {
+                            $netter[$natt->getId()] = new Node('Natt', $natt);
+                            $root->addChild($natt->getId(), $netter[$natt->getId()]);
+                        }
+                        
+                        // Adding fylke
+                        if(!key_exists($fylke->getId(), $fylker)) {
+                            $fylker[$fylke->getId()] = new Node('Fylke', $fylker);
+                            $netter[$natt->getId()]->addChild($fylke->getId(), $fylker[$fylke->getId()]);
+                        }
+
+                        // Adding leder
+                        if(!key_exists($leder->getId(), $ledereArr)) {
+                            $ledereArr[$leder->getId()] = new Node('Leder', $leder);
+                            $fylker[$fylke->getId()]->addChild($leder->getId(), $ledereArr[$leder->getId()]);
+                        }
                     }
                 }
             }
@@ -92,5 +119,10 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
     }
 }
 
-var_dump($netter);
-?>
+$arrRes = [
+    'root' => $root,
+    'status' => true,
+];
+
+$handleCall->sendToClient($arrRes);
+

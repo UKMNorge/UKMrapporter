@@ -4,7 +4,7 @@
             <PhantomLoading :rapportName="rapportName" />
         </div>
         <div v-else>
-            <div v-if="alleArrangementer.length < 1" class="no-data">            
+            <div v-if="alleNetter.length < 1" class="no-data">            
                 <div class="as-display-flex as-margin-top-space-4">
                     <h5 class="as-margin-auto">
                         Du må <a href="index.php">lage et skjema med ekstra spørsmål til deltakerne</a> for å få noe utav denne rapporten.
@@ -32,7 +32,7 @@
                 <div class="container as-container">
                     <div v-for="(r, key) in rootNodes" :key="key">
                         <div class="as-margin-top-space-7" >
-                            <Table :leafNode="DefaultNode" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
+                            <Table :leafNode="Leder" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
                         </div>
                     </div>
                 </div>
@@ -55,12 +55,13 @@ import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
 import NodeProperty from './../objects/NodeProperty';
 import Contacts from '../components/Contacts.vue';
-import Sporsmaal from '../objects/rapporter/Sporsmaal';
+import Fylke from '../objects/rapporter/Fylke';
 import Arrangement from '../objects/rapporter/Arrangement';
 import Subnode from '../objects/Subnode';
 import SubnodeItem from '../objects/SubnodeItem';
 import SubnodePerson from '../objects/subnodesLeafs/SubnodePerson';
 import PhantomLoading from '../components/PhantomLoading.vue';
+import Leder from '../objects/rapporter/Leder';
 
 
 
@@ -71,7 +72,7 @@ const spaInteraction = new SPAInteraction(null, ajaxurl);
 const oldRapportLenke = '?page=UKMrapporter&action=rapport&rapport=Infoskjema';
 var loading = ref(true);
 var dataFetched = ref(false);
-var alleArrangementer = ref([]);
+var alleNetter = ref([]);
 var rapportName = 'Hotellbestillinger';
 
 
@@ -84,12 +85,12 @@ Arrangement.properties = [
     new NodeProperty('getSted', 'Sted', false),
 ];
 
-var nodeStructure = [Arrangement, Sporsmaal, DefaultNode].reverse();
+var nodeStructure = [DefaultNode, Fylke, Leder].reverse();
 
 getDataAjax();
 
 var root = new RootNode();
-var repo = new Repo(root, nodeStructure, DefaultNode, rapportName);
+var repo = new Repo(root, nodeStructure, Leder, rapportName);
 var rootNodes : any = repo.getRootNodes();
 
 
@@ -109,62 +110,36 @@ async function getDataAjax() {
         alert('error');
     }
 
-    var arrangementer = (<any>response.root.children);
-    alleArrangementer.value = arrangementer;
+    var netter = (<any>response.root.children);
+    alleNetter.value = netter;
     
     
-    // Spørsmål
-    for(var key of Object.keys(arrangementer)) {
-        var arrangement = arrangementer[key];
+    // Netter
+    for(var key of Object.keys(netter)) {
+        var natt = netter[key];
 
-        var arrangementNode = new Arrangement(arrangement.obj.id, arrangement.obj.navn, arrangement.obj.type, arrangement.obj.sted);
-        root.addChild(arrangementNode);
+        var nattNode = new DefaultNode(natt.obj.id, natt.obj.navn);
+        root.addChild(nattNode);
         
-        // Questions
-        for(var key of Object.keys(arrangement.children)) {
-            var question = arrangement.children[key];
-            var questionObj = question.obj;
+        // Fylker
+        for(var key of Object.keys(natt.children)) {
+            var fylke = natt.children[key];
+            var fylkeObj = fylke.obj;
             
-            var questionNode = new Sporsmaal(questionObj.id, questionObj.name, questionObj.type);
-            arrangementNode.addChild(questionNode);
+            var fylkeNode = new Fylke(fylkeObj.id, fylkeObj.navn);
+            nattNode.addChild(fylkeNode);
             
-            // Answers
-            for(var key of Object.keys(question.children)) {
-                var svar = question.children[key];
-                var svarObj = svar.obj;
-
-
-                var svar = svarObj.svar;
-                if(svarObj.type == 'kontakt') {
-                    svar = 'Kontakt';
-                }
-                else if(svarObj.type == 'janei') {
-                    svar = svarObj.svar == true || svarObj.svar == 'true' ? 'Ja' : 'Nei';
-                }
-
-                var svarNode = new DefaultNode(svarObj.id, svar);
-                svarNode.setClassName('Svar');
-                questionNode.addChild(svarNode);
-
-                // Add person as subnode if type is 'kontakt'
-                if(svarObj.type == 'kontakt') {
-                    // Add person as subnode
-                    var subnode = new Subnode();
-                    
-                    var person = {
-                        navn: svarObj.svar.navn,
-                        mobil: svarObj.svar.mobil,
-                        epost: svarObj.svar.epost,
-                    };
-
-                    var personSubnode = new SubnodePerson('', person['navn'], '', person['mobil'], person['epost']);
-                    subnode.addItem(new SubnodeItem('Person', [personSubnode]));
-                    svarNode.addSubnode(subnode);
-                }
+            // Ledere
+            for(var key of Object.keys(fylke.children)) {
+                var leder = fylke.children[key];
+                var lederObj = leder.obj;
+                
+                var lederNode = new Leder(lederObj.id, lederObj.navn, lederObj.type, lederObj.mobil, lederObj.epost);
+                fylkeNode.addChild(lederNode);
             }
         }
         
-        repo = new Repo(root, nodeStructure, DefaultNode, rapportName);
+        repo = new Repo(root, nodeStructure, Leder, rapportName);
         loading.value = false;
         rootNodes = repo.getRootNodes();
         
