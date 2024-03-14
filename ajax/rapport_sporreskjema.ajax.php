@@ -21,7 +21,7 @@ foreach($arrangement->getVideresending()->getAvsendere() as $arrangAvsender) {
     $fraArrangement = $arrangAvsender->getArrangement();
     try{
         $skjemaFra = $fraArrangement->getSkjema();
-        $svarsett[] = SvarSett::getPlaceholder('arrangement', $fraArrangement->getId(), $skjemaFra->getId());
+        $svarsett[$fraArrangement->getId()] = SvarSett::getPlaceholder('arrangement', $fraArrangement->getId(), $skjemaFra->getId());
         $alleArrangementer[] = $fraArrangement;
     }catch(Exception $e) {
         if($e->getCode() == 151002) {
@@ -30,6 +30,7 @@ foreach($arrangement->getVideresending()->getAvsendere() as $arrangAvsender) {
         }
     }
 }
+
 
 $skjema = $arrangement->getSkjema();
 foreach($alleArrangementer as $arrangement) {
@@ -56,18 +57,17 @@ foreach($alleArrangementer as $arrangement) {
             $sporsmalNode = new Node('Sporsmal', $spormaalObject);
             $arrangementNode->addChild($sporsmal->getId(), $sporsmalNode);
 
-            foreach ($svarsett as $respondent) {
-                $type =  $sporsmal->getType();
-                $svar =  $respondent->get($sporsmal->getId())->getValue();
-                
-                $svarObject = [
-                    'id' => $respondent->getId(),
-                    'svar' => $svar,
-                    'type' => $type
-                ];
-                
-                $sporsmalNode->addChild($respondent->getId(), new Node('Svar', $svarObject));
-            }
+            $respondent = $svarsett[$arrangement->getId()];
+            $type =  $sporsmal->getType();
+            $svar =  $respondent->get($sporsmal->getId())->getValue();
+            
+            $svarObject = [
+                'id' => $respondent->getId(),
+                'svar' => $svar,
+                'type' => $type
+            ];
+            
+            $sporsmalNode->addChild($respondent->getId(), new Node('Svar', $svarObject));
 
         }
     }
