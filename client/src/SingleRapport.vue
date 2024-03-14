@@ -27,6 +27,9 @@
         <div v-else-if="getRapportId() == 'sporreskjema'">
             <Sporreskjema />
         </div>
+        <div v-else-if="getRapportId() == 'hotellbestillinger'">
+            <Hotellbestillinger />
+        </div>
         <div v-else>
             <p>Rapport finnes ikke</p>
         </div>
@@ -43,6 +46,7 @@ import Kunstkatalog from './rapporter/Kunstkatalog.vue';
 import Program from './rapporter/Program.vue';
 import DeltakerSkjema from './rapporter/DeltakerSkjema.vue';
 import Sporreskjema from './rapporter/Sporreskjema.vue';
+import Hotellbestillinger from './rapporter/Hotellbestillinger.vue';
 
 import { ref, onMounted } from 'vue'
 
