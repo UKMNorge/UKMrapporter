@@ -43,7 +43,7 @@ class Excel extends FileGenerator {
         // HUSK: det burkes kun leafNode for hente unike informasjon om unike er aktivert
         var isLeafUnique = (<any>this.leafNode).getUnique();
         var date = new Date();
-
+    
         // Gruppering
         var wb = utils.book_new();
         var count = 0;
@@ -58,11 +58,29 @@ class Excel extends FileGenerator {
     
                 lines.push(antalObj);
             }
-            
+    
             const ws = utils.json_to_sheet(lines);
-            utils.book_append_sheet(wb, ws, (++count + '. ' + page[0]));
+    
+            // Adjust column widths based on cell content length
+            const columnWidths = lines.reduce((acc: any, row: any) => {
+                Object.keys(row).forEach((key: string) => {
+                    const length = String(row[key]).length;
+                    acc[key] = Math.max(acc[key] || 0, length);
+                });
+                return acc;
+            }, {});
+    
+            const wsCols = Object.keys(columnWidths).map((key: string) => ({
+                wch: columnWidths[key] + 2 // Add extra padding
+            }));
+    
+            ws['!cols'] = wsCols;
+    
+            let sheetName = (++count + '. ' + page[0]);
+            sheetName = sheetName.replace(/[:\\/?*[\]]/g, ''); // remove invalid characters because \ / ? * [ ] are not allowed in sheet names
+            utils.book_append_sheet(wb, ws, sheetName);
         }
-
+    
         if(wb) {
             writeFileXLSX(wb,  'rapport_' + date.toLocaleTimeString() + ".xlsx");
         }
