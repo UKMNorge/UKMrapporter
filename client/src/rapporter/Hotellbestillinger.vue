@@ -27,7 +27,7 @@
                     <Contacts :repo="repo" />
                 </div>
         
-                <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :groupingNode="Arrangement" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+                <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :groupingNode="DefaultNode" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
         
                 <div class="container as-container">
                     <div v-for="(r, key) in rootNodes" :key="key">
@@ -56,10 +56,6 @@ import Repo from '../objects/Repo';
 import NodeProperty from './../objects/NodeProperty';
 import Contacts from '../components/Contacts.vue';
 import Fylke from '../objects/rapporter/Fylke';
-import Arrangement from '../objects/rapporter/Arrangement';
-import Subnode from '../objects/Subnode';
-import SubnodeItem from '../objects/SubnodeItem';
-import SubnodePerson from '../objects/subnodesLeafs/SubnodePerson';
 import PhantomLoading from '../components/PhantomLoading.vue';
 import Leder from '../objects/rapporter/Leder';
 
@@ -77,13 +73,7 @@ var rapportName = 'Hotellbestillinger';
 
 
 DefaultNode.properties = [];
-DefaultNode.properties.push(new NodeProperty('getNavn', 'Svar', true));
-
-Arrangement.properties = [
-    new NodeProperty('getNavn', 'Arrangement navn', false),
-    new NodeProperty('getType', 'Type', false),
-    new NodeProperty('getSted', 'Sted', false),
-];
+DefaultNode.properties.push(new NodeProperty('getNavn', 'Natt', true));
 
 var nodeStructure = [DefaultNode, Fylke, Leder].reverse();
 
@@ -118,7 +108,7 @@ async function getDataAjax() {
         var natt = netter[key];
 
         var nattNode = new DefaultNode(natt.obj.id, natt.obj.navn);
-        nattNode.setClassName('Svar');
+        nattNode.setClassName('Natt');
         root.addChild(nattNode);
         
         // Fylker
