@@ -78,6 +78,7 @@ class Excel extends FileGenerator {
     
             let sheetName = (++count + '. ' + page[0]);
             sheetName = sheetName.replace(/[:\\/?*[\]]/g, ''); // remove invalid characters because \ / ? * [ ] are not allowed in sheet names
+            sheetName = sheetName.substring(0, 30); // limit sheetName to maximum 30 characters
             utils.book_append_sheet(wb, ws, sheetName);
         }
     
