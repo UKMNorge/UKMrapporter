@@ -64,11 +64,11 @@ var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
 
 const spaInteraction = new SPAInteraction(null, ajaxurl);
-const oldRapportLenke = '?page=UKMrapporter&action=rapport&rapport=Deltakerskjema';
+const oldRapportLenke = '?page=UKMrapporter&action=rapport&rapport=Infoskjema';
 var loading = ref(true);
 var dataFetched = ref(false);
 var alleArrangementer = ref([]);
-var rapportName = 'Deltakerskjema';
+var rapportName = 'Spørreskjema';
 
 
 DefaultNode.properties = [];
@@ -124,11 +124,20 @@ async function getDataAjax() {
                 var svar = question.children[key];
                 var svarObj = svar.obj;
 
-                var svarNode = new DefaultNode(svarObj.id, svarObj.type == 'kontakt' ? 'Kontakt' : svarObj.svar);
+
+                var svar = svarObj.svar;
+                if(svarObj.type == 'kontakt') {
+                    svar = 'Kontakt';
+                }
+                else if(svarObj.type == 'janei') {
+                    svar = svarObj.svar == true || svarObj.svar == 'true' ? 'Ja' : 'Nei';
+                }
+
+                var svarNode = new DefaultNode(svarObj.id, svar);
                 svarNode.setClassName('Svar');
                 questionNode.addChild(svarNode);
 
-                // Add person as subnode
+                // Add person as subnode if type is 'kontakt'
                 if(svarObj.type == 'kontakt') {
                     var personerSubnode = new Subnode();
 

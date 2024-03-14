@@ -23,7 +23,7 @@
             <div class="rapport-side-tab">
                 <div v-for="btn in tabsButtons[activeTab]" :key="btn.title" class="outer col-xs-6 nop as-margin-bottom-space-4">
                     <a :href="btn.link">
-                        <div class="rapport-button as-padding-space-2 as-box-shadow-card">
+                        <div class="rapport-button as-padding-space-2">
                             <div class="left as-margin-right-space-2">
                                 <div class="icon as-padding-space-1 as-margin-right-space-2" v-html="btn.icon">
                                 </div>
@@ -79,7 +79,7 @@ var tabsButtons : any = {
     ],
     // tab 2
     [2]: [
-        {title: 'Spørreskjema NEW', description: 'Svar på spørreskjema til de som videresender', link: "?page=UKMrapporter&action=rapportVue&rapportId=sporreskjema", icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #fff;transform: ;msFilter:;"><path d="M12 4C9.243 4 7 6.243 7 9h2c0-1.654 1.346-3 3-3s3 1.346 3 3c0 1.069-.454 1.465-1.481 2.255-.382.294-.813.626-1.226 1.038C10.981 13.604 10.995 14.897 11 15v2h2v-2.009c0-.024.023-.601.707-1.284.32-.32.682-.598 1.031-.867C15.798 12.024 17 11.1 17 9c0-2.757-2.243-5-5-5zm-1 14h2v2h-2z"></path></svg>'},
+        {title: 'Spørreskjema', description: 'Svar på spørreskjema til de som videresender', link: "?page=UKMrapporter&action=rapportVue&rapportId=sporreskjema", icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #fff;transform: ;msFilter:;"><path d="M12 4C9.243 4 7 6.243 7 9h2c0-1.654 1.346-3 3-3s3 1.346 3 3c0 1.069-.454 1.465-1.481 2.255-.382.294-.813.626-1.226 1.038C10.981 13.604 10.995 14.897 11 15v2h2v-2.009c0-.024.023-.601.707-1.284.32-.32.682-.598 1.031-.867C15.798 12.024 17 11.1 17 9c0-2.757-2.243-5-5-5zm-1 14h2v2h-2z"></path></svg>'},
     ],
     // tab 3
     [3]: [
