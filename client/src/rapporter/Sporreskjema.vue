@@ -74,6 +74,11 @@ var rapportName = 'Spørreskjema';
 DefaultNode.properties = [];
 DefaultNode.properties.push(new NodeProperty('getNavn', 'Svar', true));
 
+Arrangement.properties = [
+    new NodeProperty('getNavn', 'Arrangement navn', false),
+    new NodeProperty('getType', 'Type', false),
+    new NodeProperty('getSted', 'Sted', false),
+];
 
 var nodeStructure = [Arrangement, Sporsmaal, DefaultNode].reverse();
 
@@ -139,8 +144,6 @@ async function getDataAjax() {
 
                 // Add person as subnode if type is 'kontakt'
                 if(svarObj.type == 'kontakt') {
-                    var personerSubnode = new Subnode();
-
                     // Add person as subnode
                     var subnode = new Subnode();
                     

@@ -10,7 +10,7 @@ class Sporsmaal extends NodeObj {
     public static hasUnique : Boolean = false;
 
     public static properties : NodeProperty[] = [
-        new NodeProperty('getNavn', 'Spørsmål', false),
+        new NodeProperty('getNavn', 'Spørsmål', true),
         new NodeProperty('getType', 'Type', false),
     ];
 

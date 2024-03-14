@@ -9,7 +9,7 @@ class Arrangement extends NodeObj {
     private static unique: Boolean = false;
     public static hasUnique : Boolean = false;
 
-    private static properties : NodeProperty[] = [
+    public static properties : NodeProperty[] = [
         new NodeProperty('getNavn', 'Arrangement navn', true),
         new NodeProperty('getType', 'Type', false),
         new NodeProperty('getSted', 'Sted', false),
