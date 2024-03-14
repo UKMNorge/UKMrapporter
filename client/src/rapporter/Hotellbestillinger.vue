@@ -107,7 +107,8 @@ async function getDataAjax() {
     for(var key of Object.keys(netter)) {
         var natt = netter[key];
 
-        var nattNode = new DefaultNode(natt.obj.natt_id, natt.obj.dato);
+        console.log(natt);
+        var nattNode = new DefaultNode(natt.obj.natt_id, natt.obj.dato+'aa-');
         nattNode.setClassName('Natt');
         root.addChild(nattNode);
         
