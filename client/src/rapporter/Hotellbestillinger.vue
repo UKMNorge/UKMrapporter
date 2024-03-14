@@ -107,7 +107,6 @@ async function getDataAjax() {
     } catch (error) {
         // The Promise was rejected, you can handle the error here.
         console.error(error);
-        alert('error');
     }
 
     var netter = (<any>response.root.children);
@@ -119,6 +118,7 @@ async function getDataAjax() {
         var natt = netter[key];
 
         var nattNode = new DefaultNode(natt.obj.id, natt.obj.navn);
+        nattNode.setClassName('Svar');
         root.addChild(nattNode);
         
         // Fylker
