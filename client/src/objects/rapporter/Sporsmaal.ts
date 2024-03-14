@@ -9,8 +9,8 @@ class Sporsmaal extends NodeObj {
     private static unique: Boolean = false;
     public static hasUnique : Boolean = false;
 
-    private static properties : NodeProperty[] = [
-        new NodeProperty('getNavn', 'Spørsmål', true),
+    public static properties : NodeProperty[] = [
+        new NodeProperty('getNavn', 'Spørsmål', false),
         new NodeProperty('getType', 'Type', false),
     ];
 
