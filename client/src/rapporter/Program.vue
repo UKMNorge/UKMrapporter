@@ -1,34 +1,39 @@
 <template> 
-    <div v-if="dataFetched">
-        <div v-if="alleHendelser.length < 1" class="no-data">
-            <div class="as-display-flex as-margin-top-space-4">
-                <div class="as-margin-auto container">
-                    <h5 class="as-margin-bottom-space-2 as-text-center">Program krever at du har opprettet minst én hendelse</h5>
-                    <button href="?page=UKMprogram" @click="goToProgram()" class="as-margin-auto as-btn-simple as-btn-hover-default btn-with-icon as-margin-right-space-2">Gå til program</button>
-                </div>
-            </div>
-            
-            <NoData :oldRapportLenke="oldRapportLenke" />
+    <div>
+        <div v-if="!dataFetched">
+            <PhantomLoading />
         </div>
         <div v-else>
-            <div class="as-container container">
-                <div class="as-margin-top-space-8 as-margin-bottom-space-8">
-                    <h1 class="">{{ rapportName }}</h1>
+            <div v-if="alleHendelser.length < 1" class="no-data">
+                <div class="as-display-flex as-margin-top-space-4">
+                    <div class="as-margin-auto container">
+                        <h5 class="as-margin-bottom-space-2 as-text-center">Program krever at du har opprettet minst én hendelse</h5>
+                        <button href="?page=UKMprogram" @click="goToProgram()" class="as-margin-auto as-btn-simple as-btn-hover-default btn-with-icon as-margin-right-space-2">Gå til program</button>
+                    </div>
                 </div>
+                
+                <NoData :oldRapportLenke="oldRapportLenke" />
             </div>
-    
-            <div class="as-container buttons container as-margin-bottom-space-6 as-display-flex">
-                <DownloadsVue :repo="repo" />
-                <ToOldRapport :redirectLink="oldRapportLenke" />
-                <Contacts :repo="repo" />
-            </div>
-    
-            <MenyVue :root="root" :visTelling="true" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
-    
-            <div class="container as-container">
-                <div v-for="(r, key) in rootNodes" :key="key">
-                    <div class="as-margin-top-space-7" >
-                        <Table :leafNode="Innslag" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
+            <div v-else>
+                <div class="as-container container">
+                    <div class="as-margin-top-space-8 as-margin-bottom-space-8">
+                        <h1 class="">{{ rapportName }}</h1>
+                    </div>
+                </div>
+        
+                <div class="as-container buttons container as-margin-bottom-space-6 as-display-flex">
+                    <DownloadsVue :repo="repo" />
+                    <ToOldRapport :redirectLink="oldRapportLenke" />
+                    <Contacts :repo="repo" />
+                </div>
+        
+                <MenyVue :root="root" :visTelling="true" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+        
+                <div class="container as-container">
+                    <div v-for="(r, key) in rootNodes" :key="key">
+                        <div class="as-margin-top-space-7" >
+                            <Table :leafNode="Innslag" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -38,6 +43,7 @@
   
 <script setup lang="ts">
 // Fra pakke UKM Komponenter
+import PhantomLoading from '../components/PhantomLoading.vue';
 import Table from '../components/table/Table.vue'
 import { ref } from 'vue';
 import MenyVue from '../components/Meny.vue';

@@ -1,27 +1,32 @@
 <template> 
-    <div v-if="dataFetched">
-        <div v-if="alleInnslagTyper.length < 1" class="no-data">
-            <NoData :oldRapportLenke="oldRapportLenke" />
+    <div>
+        <div v-if="!dataFetched">
+            <PhantomLoading />
         </div>
         <div v-else>
-            <div class="as-container container">
-                <div class="as-margin-top-space-8 as-margin-bottom-space-8">
-                    <h1 class="">{{ rapportName }}</h1>
+            <div v-if="alleInnslagTyper.length < 1" class="no-data">
+                <NoData :oldRapportLenke="oldRapportLenke" />
+            </div>
+            <div v-else>
+                <div class="as-container container">
+                    <div class="as-margin-top-space-8 as-margin-bottom-space-8">
+                        <h1 class="">{{ rapportName }}</h1>
+                    </div>
                 </div>
-            </div>
-    
-            <div class="as-container buttons container as-margin-bottom-space-6 as-display-flex">
-                <DownloadsVue :repo="repo" />
-                <ToOldRapport :redirectLink="oldRapportLenke" />
-                <Contacts :repo="repo" />
-            </div>
-    
-            <MenyVue :root="root" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
-    
-            <div class="container as-container">
-                <div v-for="(r, key) in rootNodes" :key="key">
-                    <div class="as-margin-top-space-7" >
-                        <Table :leafNode="Nominasjon" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
+        
+                <div class="as-container buttons container as-margin-bottom-space-6 as-display-flex">
+                    <DownloadsVue :repo="repo" />
+                    <ToOldRapport :redirectLink="oldRapportLenke" />
+                    <Contacts :repo="repo" />
+                </div>
+        
+                <MenyVue :root="root" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+        
+                <div class="container as-container">
+                    <div v-for="(r, key) in rootNodes" :key="key">
+                        <div class="as-margin-top-space-7" >
+                            <Table :leafNode="Nominasjon" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -44,6 +49,7 @@ import RootNode from '../objects/RootNode';
 import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
 import Contacts from '../components/Contacts.vue';
+import PhantomLoading from '../components/PhantomLoading.vue';
 
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
