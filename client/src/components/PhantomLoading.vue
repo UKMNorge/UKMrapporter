@@ -1,7 +1,7 @@
 <template>
     <div class="as-container container">
         <div class="as-margin-top-space-8 as-margin-bottom-space-8">
-            <span style="font-size: 25px" class="phantom-loading">Rapport tittel</span>
+            <h4 style="font-size: 25px">{{ rapportTittel }}</h4>
         </div>
 
         <div class="as-container buttons container nop as-margin-bottom-space-6 as-display-flex">
@@ -36,7 +36,9 @@
 </template>
 
 <script setup lang="ts">
-
+    const props = defineProps<{
+        rapportTittel: string,
+    }>();
 </script>
 
 

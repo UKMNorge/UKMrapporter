@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!dataFetched">
-            <PhantomLoading />
+            <PhantomLoading :rapportName="rapportName" />
         </div>
         <div v-else>
             <div v-if="alleFylker.length < 1" class="no-data">
