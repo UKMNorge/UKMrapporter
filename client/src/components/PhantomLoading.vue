@@ -1,7 +1,7 @@
 <template>
     <div class="as-container container">
         <div class="as-margin-top-space-8 as-margin-bottom-space-8">
-            <h4 style="font-size: 25px">{{ rapportTittel }}</h4>
+            <h1>{{ rapportName }}</h1>
         </div>
 
         <div class="as-container buttons container nop as-margin-bottom-space-6 as-display-flex">
@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
     const props = defineProps<{
-        rapportTittel: string,
+        rapportName: string,
     }>();
 </script>
 
