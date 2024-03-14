@@ -23,7 +23,7 @@
                 <Contacts :repo="repo" />
             </div>
     
-            <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :groupingNode="Sporsmaal" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+            <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :groupingNode="Arrangement" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
     
             <div class="container as-container">
                 <div v-for="(r, key) in rootNodes" :key="key">
