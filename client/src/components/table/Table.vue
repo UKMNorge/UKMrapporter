@@ -198,7 +198,7 @@
 
 
         var pos = sortPosition;
-        var sortedItems = items.sort((a : any, b : any) => {return a[pos] > b[pos] ? 1 : (a[pos] < b[pos] ? -1 : 0)});
+        var sortedItems = items.sort((a : any, b : any) => {console.log(a); console.log(b); console.log('---'); return a[1][pos] > b[1][pos] ? 1 : (a[1][pos] < b[1][pos] ? -1 : 0)});
 
         return ascSort == true ? sortedItems : sortedItems.reverse();
     }
@@ -329,6 +329,12 @@
     }
     .ukm-vue-table-row thead tr th .inner-div .indicators div svg.sort-indicator.not-active{
         fill: #bebebe !important;
+    }
+    .sort-button .indicators {
+        display: none;
+    }
+    .sort-button.active-sort .indicators {
+        display: inline;
     }
         
     .ukm-vue-table-row thead tr th button.remove-row {
