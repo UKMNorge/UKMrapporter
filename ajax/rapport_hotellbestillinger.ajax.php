@@ -55,7 +55,7 @@ $selectedFylker = [];
 
 $root = new Node('Root', null);
 $netter = [];
-$fylker = [];
+$fylkerArr = [];
 $ledereArr = [];
 
 $arrangementer = [];
@@ -75,49 +75,55 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
     
     // For alle fylker som ble valgt
     foreach($selectedFylker as $fylke) {              
-
         // Hvis $fra (arrangement som ble videresendt) er fra fylke som er valgt
-        if($fylke->getId() == $fra->getFylke()->getId()) {
-            $arrangementer[$fra->getId()] = $fra;
-            
+        if($fylke->getId() == $fra->getFylke()->getId()) {            
             $ledere = new Ledere($fra->getId(), $til->getId());
-
             foreach($ledere->getAll() as $leder) {
-            
                 foreach($leder->getNetter()->getAll() as $natt) {
                     // Hvis natten er del av gyldige netter for 'til' arrangementet og sted er hotell
                     if($alleGyldigeNetter[$natt->getId()] && $natt->getSted() == 'hotell') {
-
-                        $nattObject = [
-                            'id' => $natt->getId(),
-                            // 'dato' => $natt->format('d_m'),
-                            // 'sted' => $natt->getSted(),
-                        ];
+                        // $arr = ['natt' => $natt, 'fylke' => $fylke, 'leder' => $leder];
                         
+                        // Object
+                        $stdclass = new \stdClass();
+                        $stdclass->natt = $natt;
+                        $stdclass->fylke = $fylke;
+                        $stdclass->leder = $leder;
 
-                        // Adding netter
-                        if(!key_exists($natt->getId(), $netter)) {
-                            $netter[$natt->getId()] = new Node('Natt', $natt);
-                            $root->addChild($natt->getId(), $netter[$natt->getId()]);
-                        }
-                        
-                        // Adding fylke
-                        if(!key_exists($fylke->getId(), $fylker)) {
-                            $fylker[$fylke->getId()] = new Node('Fylke', $fylker);
-                            $netter[$natt->getId()]->addChild($fylke->getId(), $fylker[$fylke->getId()]);
-                        }
-
-                        // Adding leder
-                        if(!key_exists($leder->getId(), $ledereArr)) {
-                            $ledereArr[$leder->getId()] = new Node('Leder', $leder);
-                            $fylker[$fylke->getId()]->addChild($leder->getId(), $ledereArr[$leder->getId()]);
-                        }
+                        $nattFylLedArr[$natt->getId()][] = $stdclass;
                     }
                 }
             }
         }
     }
 }
+
+
+foreach($nattFylLedArr as $nattFylLed) {
+    foreach($nattFylLed as $ntf) {
+        $natt = $ntf->natt;
+        $fylke = $ntf->fylke;
+        $leder = $ntf->leder;
+        
+        if($natt == null) {
+            var_dump($natt);
+        }
+        
+        if(!key_exists($natt->getId(), $netter)) {
+            $nattNode = new Node('Natt', $natt);
+            $root->addChild($natt->getId(), $nattNode);
+        }
+    
+        if(!key_exists($fylke->getId(), $fylkerArr)) {
+            $fylkeNode = new Node('Fylke', $fylke);
+            $netter[$natt->getId()]->addChild($fylke->getId(), $fylkeNode);
+        }
+
+        $lederNode = new Node('Leder', $leder);
+        $fylkerArr[$fylke->getId()]->addChild($leder->getId(), $lederNode);    
+    }
+}
+
 
 $arrRes = [
     'root' => $root,

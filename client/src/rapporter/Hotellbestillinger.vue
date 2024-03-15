@@ -112,22 +112,15 @@ async function getDataAjax() {
         nattNode.setClassName('Natt');
         root.addChild(nattNode);
         
-        // Fylker
+            
+        // Ledere
         for(var key of Object.keys(natt.children)) {
-            var fylke = natt.children[key];
-            var fylkeObj = fylke.obj;
+
+            var leder = natt.children[key];
+            var lederObj = leder.obj;
             
-            var fylkeNode = new Fylke(fylkeObj.id, fylkeObj.navn);
-            nattNode.addChild(fylkeNode);
-            
-            // Ledere
-            for(var key of Object.keys(fylke.children)) {
-                var leder = fylke.children[key];
-                var lederObj = leder.obj;
-                
-                var lederNode = new Leder(lederObj.id, lederObj.navn, lederObj.type, lederObj.mobil, lederObj.epost);
-                fylkeNode.addChild(lederNode);
-            }
+            var lederNode = new Leder(lederObj.id, lederObj.navn, lederObj.type, lederObj.mobil, lederObj.epost);
+            nattNode.addChild(lederNode);
         }
         
         repo = new Repo(root, nodeStructure, Leder, rapportName);
