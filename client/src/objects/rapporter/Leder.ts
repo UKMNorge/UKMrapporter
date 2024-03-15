@@ -12,11 +12,12 @@ class Leder extends NodeObj implements TableItemInterface, SMS, Epost {
     private static unique: Boolean = false;
     public static hasUnique : Boolean = false;
 
-    private static properties : NodeProperty[] = [
+    public static properties : NodeProperty[] = [
         new NodeProperty('getNavn', 'Navn', true),
         new NodeProperty('getType', 'Type', true),
         new NodeProperty('getMobil', 'Mobil', false),
         new NodeProperty('getEpost', 'Epost', false),
+        new NodeProperty('getFylke', 'Leder Fylke', false),
     ];
 
     // Using for reactivity on Vue
@@ -62,14 +63,16 @@ class Leder extends NodeObj implements TableItemInterface, SMS, Epost {
     private type : string;
     private mobil : string;
     private epost : string;
+    private fylke : string;
 
-    constructor(id : string, navn : string, type : string, mobil : string, epost : string) {
+    constructor(id : string, navn : string, type : string, mobil : string, epost : string, fylke? : string) {
         super(id);
 
         this.navn = navn;
         this.type = type;
         this.mobil = mobil;
         this.epost = epost;
+        this.fylke = fylke ? fylke : '';
     }
 
 
@@ -95,6 +98,10 @@ class Leder extends NodeObj implements TableItemInterface, SMS, Epost {
 
     public getEpost() : string {
         return this.epost;
+    }
+
+    public getFylke() : string {
+        return this.fylke;
     }
 
     // Returnerer data fra static

@@ -102,25 +102,30 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
 foreach($nattFylLedArr as $nattFylLed) {
     foreach($nattFylLed as $ntf) {
         $natt = $ntf->natt;
-        $fylke = $ntf->fylke;
         $leder = $ntf->leder;
         
-        if($natt == null) {
-            var_dump($natt);
-        }
-        
         if(!key_exists($natt->getId(), $netter)) {
-            $nattNode = new Node('Natt', $natt);
-            $root->addChild($natt->getId(), $nattNode);
-        }
-    
-        if(!key_exists($fylke->getId(), $fylkerArr)) {
-            $fylkeNode = new Node('Fylke', $fylke);
-            $netter[$natt->getId()]->addChild($fylke->getId(), $fylkeNode);
+            $nattObj = [
+                'id' => $natt->getId(),
+                'dato' => $natt->getDato().'_'.$til->getSesong(),
+                'sted' => $natt->getSted(),
+            ];
+            $netter[$natt->getId()] = new Node('Natt', $nattObj);
+            $root->addChild($natt->getId(), $netter[$natt->getId()]);
         }
 
+        $lederObj = [
+            'id' => $leder->id,
+            'navn' => $leder->navn,
+            'type' => $leder->type,
+            'mobil' => $leder->mobil,
+            'epost' => $leder->epost,
+            'fylkeId' => $ntf->fylke->getId(),
+            'fylkeNavn' => $ntf->fylke->getNavn(),
+        ];
+
         $lederNode = new Node('Leder', $leder);
-        $fylkerArr[$fylke->getId()]->addChild($leder->getId(), $lederNode);    
+        $netter[$natt->getId()]->addChild($leder->getId(), $lederNode);    
     }
 }
 

@@ -75,7 +75,15 @@ var rapportName = 'Hotellbestillinger';
 DefaultNode.properties = [];
 DefaultNode.properties.push(new NodeProperty('getNavn', 'Natt', true));
 
-var nodeStructure = [DefaultNode, Fylke, Leder].reverse();
+Leder.properties = [
+    new NodeProperty('getNavn', 'Navn', true),
+    new NodeProperty('getType', 'Type', true),
+    new NodeProperty('getMobil', 'Mobil', false),
+    new NodeProperty('getEpost', 'Epost', false),
+    new NodeProperty('getFylke', 'Fylke', true),
+];
+
+var nodeStructure = [DefaultNode, Leder].reverse();
 
 getDataAjax();
 
@@ -107,8 +115,16 @@ async function getDataAjax() {
     for(var key of Object.keys(netter)) {
         var natt = netter[key];
 
-        console.log(natt);
-        var nattNode = new DefaultNode(natt.obj.natt_id, natt.obj.dato+'aa-');
+        var dateParts = natt.obj.dato.split('_');
+        var day = parseInt(dateParts[0]);
+        var month = parseInt(dateParts[1]) - 1; // Months are zero-based in JavaScript Date object
+        var monthStr = String(month);
+        if (month < 10) {
+            monthStr = '0' + String(month);
+        }
+        var year = parseInt(dateParts[2])
+
+        var nattNode = new DefaultNode(natt.obj.natt_id, (day + '.' + monthStr + '.' + year));
         nattNode.setClassName('Natt');
         root.addChild(nattNode);
         
@@ -119,7 +135,7 @@ async function getDataAjax() {
             var leder = natt.children[key];
             var lederObj = leder.obj;
             
-            var lederNode = new Leder(lederObj.id, lederObj.navn, lederObj.type, lederObj.mobil, lederObj.epost);
+            var lederNode = new Leder(lederObj.id, lederObj.navn, lederObj.type, lederObj.mobil, lederObj.epost, lederObj.fylkeNavn);
             nattNode.addChild(lederNode);
         }
         
