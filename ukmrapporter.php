@@ -91,7 +91,12 @@ class UKMrapporter extends Modul
     public static function renderAdmin()
     {
         static::addViewData('aktivt_senter', is_user_admin() ? 'bruker' : (is_network_admin() ? 'network':'arrangement'));
+        static::addRapportContextForVue();
         return parent::renderAdmin();
+    }
+
+    private static function addRapportContextForVue() {
+        echo "<script>var vueRapportContext = '". (get_option('pl_id') ? "arrangement" : "other") ."'</script>";
     }
 
     public static function nettverkMeny()
