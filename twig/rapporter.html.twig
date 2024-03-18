@@ -1,3 +1,14 @@
+{% block javascripts %}
+
+<script>
+// For å bruke det på klient siden
+var aktivt_senter = {{ aktivt_senter|json_encode|raw }};
+var is_landsfestivalen = {{ arrangement and arrangement.getEierType() == 'land' ? 'true' : 'false' }};
+</script>
+
+{% endblock %}
+
+
 <div id="rapporterApp">
 
 </div>
