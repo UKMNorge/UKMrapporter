@@ -9,6 +9,7 @@ Author URI: http://www.ukm-norge.no
 */
 
 use UKMNorge\Wordpress\Modul;
+use UKMNorge\Arrangement\Arrangement;
 
 ini_set('display_errors', true);
 require_once('UKM/Autoloader.php');
@@ -91,6 +92,10 @@ class UKMrapporter extends Modul
     public static function renderAdmin()
     {
         static::addViewData('aktivt_senter', is_user_admin() ? 'bruker' : (is_network_admin() ? 'network':'arrangement'));
+        
+        if(get_option('pl_id')) {
+            static::addViewData('arrangement', new Arrangement(get_option('pl_id')));
+        }
         return parent::renderAdmin();
     }
 
