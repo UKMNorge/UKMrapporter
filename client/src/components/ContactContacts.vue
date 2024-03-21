@@ -16,7 +16,12 @@
                 <!-- Notifications -->
                 <PermanentNotification v-if="isFilteringActive" typeNotification="warning" :tittel="`${contactComponentName.charAt(0).toUpperCase() + contactComponentName.slice(1)} vil kun inkludere kontakter som er tilpasset dine innstillinger`" :description="'På grunn av filtreringen du anvender, kan noen kontakter være utilgjengelige'" />
 
-                <div class="attributes as-margin-top-space-3">
+                <!-- Search contacts -->
+                <div class="as-container as-margin-top-space-3">
+                    <AsInput :callbackChange="searchInputChanged" />
+                </div>
+
+                <div class="attributes as-margin-top-space-2">
                     <div v-if="allContacts.length != activeContacts.length" class="as-margin-bottom-space-2">
                         <button class="as-btn-default as-btn-hover-default" @click="selectAll">Velg alle</button>
                     </div>
@@ -24,20 +29,20 @@
                     <div v-show="allContacts.length > activeContacts.length " class="showed-contacts object item as-card-2 as-padding-space-3 as-padding-bottom-space-2 as-margin-bottom-space-4">
                         <div v-for="contact in filteredContacts" :key="contact.getId()">
                             <div @click="addToActive(contact)">
-                                <div class="contact not-selected attribute as-padding-space-1 as-margin-right-space-1 as-margin-bottom-space-1 as-btn-hover-default">
+                                <div :class="{ 'active': contact.activeSearch }" class="contact not-selected attribute as-padding-space-1 as-margin-right-space-1 as-margin-bottom-space-1 as-btn-hover-default">
                                     <span>{{ contact.getNavn() }} - <b>{{ contact.getId() }}</b></span>
                                 </div>
                             </div>
                         </div>                        
                     </div>
-
+                    
                     <div v-show="activeContacts.length > 0" class="showed-contacts object item as-card-2 as-padding-space-3 as-padding-bottom-space-2">
                         <div class="info-contacts as-margin-bottom-space-2">
                             <h5>Sender {{ contactComponentName }} til:</h5>
                         </div>
                         <div v-for="contact in activeContacts" :key="contact.getId()">
                             <div @click="removeContactFromActive(contact)">
-                                <div class="contact attribute as-padding-space-1 as-margin-right-space-1 as-margin-bottom-space-1 as-btn-hover-default">
+                            <div :class="{ 'active': contact.activeSearch }" class="contact attribute as-padding-space-1 as-margin-right-space-1 as-margin-bottom-space-1 as-btn-hover-default">
                                     <span>{{ contact.getNavn() }} - <b>{{ contact.getId() }}</b></span>
                                     <div class="icon"><svg class="remove-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"></path></svg></div>
                                 </div>
@@ -62,14 +67,17 @@
 
 <script setup lang="ts">
 import Repo from '../objects/Repo';
-import { ref, defineExpose, computed } from 'vue';
+import { ref, defineExpose, computed, watch } from 'vue';
 import { defineProps } from 'vue';
 import type Contact from '../objects/interfaces/Contact';
 import { PermanentNotification } from 'ukm-components-vue3';
+import AsInput from './AsInput.vue';
 
 
 
 var selectorPopupSMS : any = ref(false);
+const search = ref('');
+
 
 const props = defineProps<{
     repo: Repo,
@@ -79,6 +87,7 @@ const props = defineProps<{
     sendButton1?: {name : string, method : (activeContacts : Contact[], sendType? : string) => void},
     sendButton2?: {name : string, method : (activeContacts : Contact[], sendType? : string) => void},
 }>();
+
 
 
 var smsDialog = ref(false);
@@ -92,7 +101,30 @@ var allContacts = ref<Contact[]>([]);
 
 var selectorPopupSMS : any = ref(false);
 
+function searchInputChanged(searchStr : string) {
+    search.value = searchStr;
+    searchContacts(searchStr);
+}
 
+function searchContacts(searchStr : string) {
+    if(searchStr.length < 1) {
+        for(var contact of allContacts.value) {
+            (<any>contact).activeSearch = true;
+        }
+        return;
+    }
+    for(var contact of allContacts.value) {
+        var navn = String(contact.getNavn());
+        var id = String(contact.getId());
+        const nameMatch = navn.toLowerCase().includes(searchStr.toLowerCase());
+        const idRes = id.includes(searchStr);
+        if(nameMatch || idRes) {
+            (<any>contact).activeSearch = true;
+        } else {
+            (<any>contact).activeSearch = false;
+        }
+    }
+}
 
 const isFilteringActive = computed(() => {
     // Filter the contacts that are in allContacts but not in activeContacts
@@ -129,6 +161,9 @@ function selectAll() {
 
 function getAllContactsFromParent() {
     props.getAllContacts(props.contactComponentName, allContacts.value, activeContacts.value);
+    for(var contact of allContacts.value) {
+        (<any>contact).activeSearch = true;
+    }
 }
 
 function openSMSDialog() {
@@ -226,7 +261,12 @@ defineExpose({
     height: 100%;
     min-width: 40px;
     min-height: 35px;
+    opacity: 0.5;
 }
+.attributes .attribute.active {
+    opacity: 1;
+}
+
 .attributes .attribute.new svg {
     margin: auto;
 }
