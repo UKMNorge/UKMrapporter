@@ -261,7 +261,7 @@ defineExpose({
     height: 100%;
     min-width: 40px;
     min-height: 35px;
-    opacity: 0.5;
+    opacity: 0.2;
 }
 .attributes .attribute.active {
     opacity: 1;
