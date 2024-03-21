@@ -19,7 +19,11 @@
                     </tbody>
                 </table>
             </div>
-    
+            
+            <div v-if="visAntall" class="antall-leafs as-padding-left-space-1 as-margin-bottom-space-2 as-margin-top-space-2">
+                <h5>Antall{{ uniqueCount ? ' unike' : '' }}: {{ countLeafNodesItems() }}</h5>
+            </div>
+
             <table v-show="!loading" class="table ukm-vue-table-row">
                 <thead>
                     <tr class="col">
@@ -86,10 +90,6 @@
                     </template>
                 </tbody>
             </table>
-
-            <div v-if="visAntall" class="antall-leafs as-margin-top-space-2">
-                <h5>Antall{{ uniqueCount ? ' unike' : '' }}: {{ countLeafNodesItems() }}</h5>
-            </div>
         </div>
     </div>
 </template>
