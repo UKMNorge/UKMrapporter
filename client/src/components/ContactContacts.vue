@@ -18,7 +18,7 @@
 
                 <!-- Search contacts -->
                 <div class="as-container as-margin-top-space-3">
-                    <AsInput :callbackChange="searchInputChanged" />
+                    <InputTextOverlay :placeholder="'Søk etter kontakter'" :callbackChange="searchInputChanged" />
                 </div>
 
                 <div class="attributes as-margin-top-space-2">
@@ -71,7 +71,8 @@ import { ref, defineExpose, computed, watch } from 'vue';
 import { defineProps } from 'vue';
 import type Contact from '../objects/interfaces/Contact';
 import { PermanentNotification } from 'ukm-components-vue3';
-import AsInput from './AsInput.vue';
+import { InputTextOverlay } from 'ukm-components-vue3';
+// import AsInput from './AsInput.vue';
 
 
 
