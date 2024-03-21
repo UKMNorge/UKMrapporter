@@ -107,6 +107,12 @@ abstract class NodeObj {
     }
 
     public getChildren() : NodeObj[] {
+        this.children.sort((a, b) => {
+            if(a.getNavn() < b.getNavn()) { return -1; }
+            if(a.getNavn() > b.getNavn()) { return 1; }
+            return 0;
+        });
+
         return this.children;
     }
 
