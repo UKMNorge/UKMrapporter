@@ -92,6 +92,13 @@ class Repo {
         if(this.root != null) {
             this.getAllNodesAtLevel(this.root, rootNodesArr, node);
         }
+
+        // Sort nodes
+        rootNodesArr.sort((a, b) => {
+            if(a.getNavn() < b.getNavn()) { return -1; }
+            if(a.getNavn() > b.getNavn()) { return 1; }
+            return 0;
+        });
     
         this.getRootNodes().value = [];
         this.getRootNodes().value = rootNodesArr;
