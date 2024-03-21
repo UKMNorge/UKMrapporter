@@ -2,7 +2,7 @@
     <div>
         <!-- Popup -->
         <div @click="closeSelector($event)" v-if="selectorPopupSMS" class="as-popup-fixed close-selector">
-            <div class="as-popup-box selector as-card-1 as-padding-space-5">
+            <div class="as-popup-box selector as-card-1 as-padding-space-5 container">
                 <button @click="closeSelector($event)" class="close-selector as-popup-btn as-btn-hover-default">
                     <div class="icon close-selector">
                         <svg class="remove-icon close-selector" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -22,11 +22,7 @@
                 </div>
 
                 <div class="attributes as-margin-top-space-2">
-                    <div v-if="allContacts.length != activeContacts.length" class="as-margin-bottom-space-2">
-                        <button class="as-btn-default as-btn-hover-default" @click="selectAll">Velg alle</button>
-                    </div>
-
-                    <div v-show="allContacts.length > activeContacts.length " class="showed-contacts object item as-card-2 as-padding-space-3 as-padding-bottom-space-2 as-margin-bottom-space-4">
+                    <div v-show="allContacts.length > activeContacts.length " class="showed-contacts object item as-card-2 as-padding-space-3 as-padding-bottom-space-2">
                         <div v-for="contact in filteredContacts" :key="contact.getId()">
                             <div @click="addToActive(contact)">
                                 <div :class="{ 'active': contact.activeSearch }" class="contact not-selected attribute as-padding-space-1 as-margin-right-space-1 as-margin-bottom-space-1 as-btn-hover-default">
@@ -35,8 +31,12 @@
                             </div>
                         </div>                        
                     </div>
+
+                    <div v-if="allContacts.length != activeContacts.length" class="as-margin-top-space-2 as-margin-bottom-space-4">
+                        <button class="as-btn-default as-btn-hover-default" @click="selectAll">Legg til alle</button>
+                    </div>
                     
-                    <div v-show="activeContacts.length > 0" class="showed-contacts object item as-card-2 as-padding-space-3 as-padding-bottom-space-2">
+                    <div class="showed-contacts object item as-card-2 as-padding-space-3 as-padding-bottom-space-2">
                         <div class="info-contacts as-margin-bottom-space-2">
                             <h5>Sender {{ contactComponentName }} til:</h5>
                         </div>
@@ -44,18 +44,23 @@
                             <div @click="removeContactFromActive(contact)">
                             <div :class="{ 'active': contact.activeSearch }" class="contact attribute as-padding-space-1 as-margin-right-space-1 as-margin-bottom-space-1 as-btn-hover-default">
                                     <span>{{ contact.getNavn() }} - <b>{{ contact.getId() }}</b></span>
-                                    <div class="icon"><svg class="remove-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"></path></svg></div>
+                                    <div class="icon as-display-flex"><svg class="remove-icon" width="15" height="15" viewBox="-2 -1 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"></path></svg></div>
                                 </div>
                             </div>
                         </div>
+                        <div v-if="activeContacts.length < 1">Ingen</div>
+                    </div>
+
+                    <div v-if="activeContacts.length > 0" class="as-margin-top-space-2">
+                        <button class="as-btn-default as-btn-hover-default" @click="deselectAll">Fjern alle</button>
                     </div>
 
                     <div class="as-margin-top-space-4 send-btn-div">
                         <div class="as-margin-auto">
-                            <button @click="send()" :disabled="activeContacts.length < 1" class="as-btn-simple as-btn-hover-default success">Send</button>
+                            <button @click="send()" :disabled="activeContacts.length < 1" :class="{'not-possible' : activeContacts.length < 1}" class="as-btn-simple button-send as-btn-hover-default success">Send</button>
                             <div class="as-margin-top-space-2">
-                                <button v-if="sendButton1 !== undefined" @click="send1()" :disabled="activeContacts.length < 1" class="as-btn-simple as-btn-hover-default success under as-btn-simple-small">{{ sendButton1.name }}</button>
-                                <button v-if="sendButton2 !== undefined" @click="send2()" :disabled="activeContacts.length < 1" class="as-btn-simple as-btn-hover-default success under as-btn-simple-small">{{ sendButton2.name }}</button>
+                                <button v-if="sendButton1 !== undefined" @click="send1()" :disabled="activeContacts.length < 1" :class="{'not-possible' : activeContacts.length < 1}" class="as-btn-simple button-send as-btn-hover-default success under as-btn-simple-small">{{ sendButton1.name }}</button>
+                                <button v-if="sendButton2 !== undefined" @click="send2()" :disabled="activeContacts.length < 1" :class="{'not-possible' : activeContacts.length < 1}" class="as-btn-simple button-send as-btn-hover-default success under as-btn-simple-small">{{ sendButton2.name }}</button>
                             </div>
                         </div>
                     </div>
@@ -160,6 +165,10 @@ function selectAll() {
     getAllContactsFromParent();
 }
 
+function deselectAll() {
+    activeContacts.value = [];
+}
+
 function getAllContactsFromParent() {
     props.getAllContacts(props.contactComponentName, allContacts.value, activeContacts.value);
     for(var contact of allContacts.value) {
@@ -250,7 +259,7 @@ defineExpose({
 }
 
 .attributes {
-    min-width: 200px;
+    min-width: 100%;
     min-height: 50px;
     flex-wrap: wrap;
     max-width: 60vw;
@@ -284,6 +293,12 @@ defineExpose({
 }
 .attributes .attribute.toggle-function.active span {
     color: #fff !important;
+}
+.button-send.not-possible, 
+.button-send.not-possible:hover,
+.button-send.not-possible:active {
+    background: var(--color-primary-grey-light) !important;
+    color: var(--color-primary-grey-dark) !important;
 }
 
 </style>
