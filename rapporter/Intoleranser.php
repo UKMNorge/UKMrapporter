@@ -35,14 +35,17 @@ class Intoleranser extends Rapport
         // UKM landsfesitvalen - grupper etter fylker
         // if($this->getArrangement()->getType() == 'land') {
         foreach( $this->getArrangement()->getInnslag()->getAll() as $innslag ) {
+            $fylkeNavn = $innslag->getFylke() ? $innslag->getFylke()->getNavn() : 'Ukjent';
+            $fylkeId = $innslag->getFylke() ? $innslag->getFylke()->getId() : 'ukjent';
+
             foreach( $innslag->getPersoner()->getAll() as $person ) {
-                $fylke_gruppe_id = $innslag->getFylke()->getNavn() . '-' . $innslag->getFylke()->getId();
+                $fylke_gruppe_id = $fylkeNavn . '-' . $fylkeId;
                 if( $person->getSensitivt()->getIntoleranse()->har() ) {
                     if (!$gruppe->harGruppe($fylke_gruppe_id)) {
                         $gruppe->addGruppe(
                             new Gruppe(
                                 $fylke_gruppe_id,
-                                $innslag->getFylke()->getNavn()
+                                $fylkeNavn
                             )
                         );
                     }
