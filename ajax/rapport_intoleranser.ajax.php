@@ -26,6 +26,8 @@ $til = new Arrangement(get_option('pl_id'));
 
 // Legger til Person(er) som er del av arrangementet
 foreach( $til->getInnslag()->getAll() as $innslag ) {
+    $innslagArrangement = $innslag->getHome();
+    
     $fylke = $innslag->getFylke();
     $hasFylke = $fylke != null;
 
@@ -46,9 +48,9 @@ foreach( $til->getInnslag()->getAll() as $innslag ) {
     }
 
     // Adding arrangement
-    if(!key_exists($til->getId(), $arrangementer)) {
-        $arrangementer[$til->getId()] = new Node('Arrangement', $til);
-        $fylker[$fylkeId]->addChild($til->getId(), $arrangementer[$til->getId()]);
+    if(!key_exists($innslagArrangement->getId(), $arrangementer)) {
+        $arrangementer[$innslagArrangement->getId()] = new Node('Arrangement', $innslagArrangement);
+        $fylker[$fylkeId]->addChild($innslagArrangement->getId(), $arrangementer[$innslagArrangement->getId()]);
     }
 
     foreach( $innslag->getPersoner()->getAll() as $person ) {
@@ -65,7 +67,7 @@ foreach( $til->getInnslag()->getAll() as $innslag ) {
     
             // Adding Person
             $nodeLeder = new Node('Person', $personObj);
-            $arrangementer[$til->getId()]->addChild($person->getId(), $nodeLeder);
+            $arrangementer[$innslagArrangement->getId()]->addChild($person->getId(), $nodeLeder);
         }
     }
 }
@@ -131,12 +133,3 @@ $arrRes = [
 ];
 
 $handleCall->sendToClient($arrRes);
-
-
-
-
-
-
-
-
-
