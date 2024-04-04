@@ -120,8 +120,8 @@ foreach($nattFylLedArr as $nattFylLed) {
             'type' => $leder->type,
             'mobil' => $leder->mobil,
             'epost' => $leder->epost,
-            'fylkeId' => '1',
-            'fylkeNavn' => 'Fylke 1',
+            'fylkeId' => $ntf->fylke->getId(),
+            'fylkeNavn' => $ntf->fylke->getNavn(),
         ];
 
         $lederNode = new Node('Leder', $lederObj);
