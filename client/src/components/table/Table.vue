@@ -47,10 +47,10 @@
                                             <span class="title">{{ key.navn }}</span>
                                             <div class="indicators">
                                                 <div>
-                                                    <svg :class="{'not-active' : root.getSortActivated() && root.getAscSort() == false}" class="sort-indicator" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 6 19 1" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"></path></svg>
+                                                    <svg :class="{'active' : root.getSortActivated() && root.getSortPosition() == pos && root.getAscSort() == false}" class="sort-indicator" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 6 19 1" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"></path></svg>
                                                 </div>
                                                 <div>
-                                                    <svg :class="{'not-active' : root.getSortActivated() && root.getAscSort() == true}" class="sort-indicator" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 7 19 18" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"></path></svg>
+                                                    <svg :class="{'active' : root.getSortActivated() && root.getSortPosition() == pos && root.getAscSort() == true}" class="sort-indicator" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 7 19 18" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"></path></svg>
                                                 </div>
                                             </div>
                                         </button>
@@ -322,16 +322,19 @@
     }
     .ukm-vue-table-row thead tr th .inner-div .indicators div {
         display: flex;
-        visibility: hidden;
+        visibility: visible;
+    }
+    .ukm-vue-table-row thead tr th .inner-div .indicators div svg {
+        fill: var(--color-primary-grey-medium) !important;
+    }
+    .ukm-vue-table-row thead tr th .inner-div .indicators div svg.active {
+        fill: #000000 !important;
     }
     .ukm-vue-table-row thead tr th .inner-div:hover .indicators div {
         visibility: visible;
     }
-    .ukm-vue-table-row thead tr th .inner-div .indicators div svg.sort-indicator.not-active{
-        fill: #bebebe !important;
-    }
     .sort-button .indicators {
-        display: none;
+        /* display: none; */
     }
     .sort-button.active-sort .indicators {
         display: inline;
