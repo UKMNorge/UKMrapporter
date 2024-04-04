@@ -48,6 +48,10 @@ class Excel extends FileGenerator {
         var wb = utils.book_new();
         var count = 0;
         for(var page of pages) {
+            if(page[1].length == 0) {
+                continue;
+            }
+            
             var lines = page[1];
             // Antall inkludering unike
             if(this.repo.antall.value == true) {
