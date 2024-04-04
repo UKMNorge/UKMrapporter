@@ -325,7 +325,7 @@
         visibility: visible;
     }
     .ukm-vue-table-row thead tr th .inner-div .indicators div svg {
-        fill: var(--color-primary-grey-medium) !important;
+        fill: #9B9B9B !important;
     }
     .ukm-vue-table-row thead tr th .inner-div .indicators div svg.active {
         fill: #000000 !important;
