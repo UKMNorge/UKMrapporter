@@ -32,7 +32,7 @@
                 <div class="container as-container">
                     <div v-for="(r, key) in rootNodes" :key="key">
                         <div class="as-margin-top-space-7" >
-                            <Table :leafNode="DefaultNode" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
+                            <Table :leafNode="Sporsmaal" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
                         </div>
                     </div>
                 </div>
@@ -85,7 +85,7 @@ Arrangement.properties = [
     new NodeProperty('getSted', 'Sted', false),
 ];
 
-var nodeStructure = [Arrangement, Sporsmaal, DefaultNode].reverse();
+var nodeStructure = [Arrangement, DefaultNode, Sporsmaal].reverse();
 
 getDataAjax();
 
@@ -126,9 +126,6 @@ async function getDataAjax() {
             var question = arrangement.children[key];
             var questionObj = question.obj;
             
-            var questionNode = new Sporsmaal(questionObj.id, questionObj.name, questionObj.type);
-            arrangementNode.addChild(questionNode);
-            
             // Answers
             for(var key of Object.keys(question.children)) {
                 var svar = question.children[key];
@@ -145,7 +142,11 @@ async function getDataAjax() {
 
                 var svarNode = new DefaultNode(svarObj.id, svar);
                 svarNode.setClassName('Svar');
-                questionNode.addChild(svarNode);
+                arrangementNode.addChild(svarNode);
+                
+                var questionNode = new Sporsmaal(questionObj.id, questionObj.name, questionObj.type);
+                svarNode.addChild(questionNode);
+
 
                 // Add person as subnode if type is 'kontakt'
                 if(svarObj.type == 'kontakt') {
