@@ -90,7 +90,7 @@ var nodeStructure = [Arrangement, DefaultNode, Sporsmaal].reverse();
 getDataAjax();
 
 var root = new RootNode();
-var repo = new Repo(root, nodeStructure, DefaultNode, rapportName);
+var repo = new Repo(root, nodeStructure, Sporsmaal, rapportName);
 var rootNodes : any = repo.getRootNodes();
 
 
@@ -166,7 +166,7 @@ async function getDataAjax() {
             }
         }
         
-        repo = new Repo(root, nodeStructure, DefaultNode, rapportName);
+        repo = new Repo(root, nodeStructure, Sporsmaal, rapportName);
         loading.value = false;
         rootNodes = repo.getRootNodes();
         
