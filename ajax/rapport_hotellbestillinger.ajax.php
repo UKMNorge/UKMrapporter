@@ -120,11 +120,11 @@ foreach($nattFylLedArr as $nattFylLed) {
             'type' => $leder->type,
             'mobil' => $leder->mobil,
             'epost' => $leder->epost,
-            'fylkeId' => $ntf->fylke->getId(),
-            'fylkeNavn' => $ntf->fylke->getNavn(),
+            'fylkeId' => '1',
+            'fylkeNavn' => 'Fylke 1',
         ];
 
-        $lederNode = new Node('Leder', $leder);
+        $lederNode = new Node('Leder', $lederObj);
         $netter[$natt->getId()]->addChild($leder->getId(), $lederNode);    
     }
 }
