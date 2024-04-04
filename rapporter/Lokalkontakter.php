@@ -3,6 +3,7 @@
 namespace UKMNorge\Rapporter;
 
 use UKMnettverket;
+use UKMNorge\Nettverk\Omrade;
 use UKMNorge\Rapporter\CustomItems\Administrator;
 use UKMNorge\Rapporter\Framework\Gruppe;
 use UKMNorge\Rapporter\Framework\UserRapport;
@@ -11,8 +12,8 @@ class Lokalkontakter extends UserRapport
 {
     public $kategori_id = 'user_kontakt';
     public $ikon = 'dashicons-universal-access';
-    public $navn = 'Lokalkontakter';
-    public $beskrivelse = 'Kontaktinfo til alle dine lokalkontakter';
+    public $navn = 'Lokalkontakter i fylke';
+    public $beskrivelse = 'Kontaktinfo til alle lokalkontakter i fylke';
     public $har_excel = false;
     public $har_epost = true;
 
@@ -22,6 +23,13 @@ class Lokalkontakter extends UserRapport
      * @return Array<Omrade>
      */
     public function getOmrader() {
+        $retArr = [];
+        if(sizeof(UKMnettverket::getCurrentAdmin()->getOmrader('fylke')) < 1) {
+            foreach (UKMnettverket::getCurrentAdmin()->getOmrader('kommune') as $kommune) {
+                $retArr[$kommune->getFylke()->getId()] = Omrade::getByFylke($kommune->getFylke()->getId());
+            }
+            return $retArr;
+        }
         return UKMnettverket::getCurrentAdmin()->getOmrader('fylke');
     }
 
