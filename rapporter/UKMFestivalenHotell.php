@@ -201,7 +201,9 @@ class UKMFestivalenHotell extends Rapport
         
 
         // Sorterer gyldige netter
-        usort($alleGyldigeNetter, function($a, $b) { return $a > $b ? 1 : ($b < $a ? -1 : 0); });
+        usort($alleGyldigeNetter, function($a, $b) {
+            return $a->getTimestamp() - $b->getTimestamp();
+        });
 
         return [
             'netter' => $netter,

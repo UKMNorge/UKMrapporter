@@ -1,0 +1,61 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-12 col-md-12 col-lg-12 col-xl-12 ">
+			{% if aktivt_senter == 'bruker' %}
+				<h1>Rapporter tilknyttet din bruker / område</h1>
+
+                <p class="lead">
+                    De fleste rapportene er knyttet til et arrangement, og tilgjengelig fra arrangement-systemet.
+                    Velg ditt fylke eller din kommune fra menyen til venstre, og trykk deg inn på arrangementet.
+
+                    {% if current_admin.erAdmin('fylke') %}
+                        {% if current_admin.getAntallOmrader('fylke') == 1 %}
+                            Velg "<a href="?page=UKMnettverket_fylke">{{ (current_admin.getOmrader('fylke')|first).getNavn() }}</a>" i menyen til venstre, 
+                        {% else  %}
+                            Velg "Mine fylker" i menyen til venstre,
+                        {% endif %}
+                    {% elseif current_admin.erAdmin('kommune') %}
+                        {% if current_admin.getAntallOmrader('kommune') == 1 %}
+                            Velg "<a href="?page=UKMnettverket_fylke">{{ (current_admin.getOmrader('kommune')|first).getNavn() }}</a>" i menyen til venstre, 
+                        {% else  %}
+                            Velg "Mine kommuner" i menyen til venstre,
+                        {% endif %}
+                    {% endif %}
+                    og deretter trykk deg inn på arrangementet for å finne disse.
+                </p>
+			{% elseif aktivt_senter == 'network' %}
+                <h1>Nasjonale rapporter</h1>
+            {% else %}
+                <h1>Rapporter</h1>
+			{% endif %}
+		</div>
+	</div>
+
+	{% for kategori in kategorier|filter( kategori => kategori.getSenter() == aktivt_senter and kategori.harRapporter())%}
+		<div class="row">
+			<div class="col-xs-12 col-md-12 col-lg-12 col-xl-12 ">
+				<h2>{{ kategori.getNavn() }}</h2>
+			</div>
+			{% for rapport in kategori.getRapporter() %}
+				<div class="col-xs-12 col-md-6 col-lg-4 col-xl-3">
+					<a href="?page={{GET('page')}}&action=rapport&rapport={{ rapport.getId() }}">
+						<div class="optionCard card" data-group="type" data-value="{{ rapport.getId() }}">
+							<div class="rapport-knapper-ikoner dashicons {{ rapport.getIkon() }}"></div>
+							<div class="cal-xs-10 rapport-knapper-innhold">
+								<div class="header">{{ rapport.getNavn() }}</div>
+								<p>{{ rapport.getBeskrivelse() }}</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			{% else %}
+				<div class="col-xs-12">
+					<p>Ingen rapporter i
+						{{ kategori.getNavn() }}</p>
+				</div>
+			{% endfor %}
+		</div>
+	{% else %}
+		<p>Beklager, du har ikke tilgang til noen rapporter.</p>
+	{% endfor %}
+</div>

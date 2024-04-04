@@ -9,6 +9,7 @@ Author URI: http://www.ukm-norge.no
 */
 
 use UKMNorge\Wordpress\Modul;
+use UKMNorge\Arrangement\Arrangement;
 
 // ini_set('display_errors', true);
 require_once('UKM/Autoloader.php');
@@ -91,6 +92,10 @@ class UKMrapporter extends Modul
     public static function renderAdmin()
     {
         static::addViewData('aktivt_senter', is_user_admin() ? 'bruker' : (is_network_admin() ? 'network':'arrangement'));
+        
+        if(get_option('pl_id')) {
+            static::addViewData('arrangement', new Arrangement(get_option('pl_id')));
+        }
         return parent::renderAdmin();
     }
 
@@ -124,6 +129,15 @@ class UKMrapporter extends Modul
 
         wp_enqueue_script('jquery');
         wp_enqueue_script('jqueryGoogleUI', '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js');
+
+        wp_enqueue_script('jsPDF', 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+        wp_enqueue_script('jsPDFTable', 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js');
+
+
+        wp_enqueue_style('UKMrapporterVueStyle', plugin_dir_url(__FILE__) . '/client/dist/assets/build.css');
+        wp_enqueue_script('UKMrapporterVueJs', plugin_dir_url(__FILE__) . '/client/dist/assets/build.js','','',true);
+
+        wp_enqueue_style('UKMvideoArrSysStyle', '//assets.' . UKM_HOSTNAME . '//css/arr-sys.css');
     }
 
     public static function autoload($class_name)
