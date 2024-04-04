@@ -141,6 +141,10 @@ class UKMFestivalenHotell extends Excel {
             $totalKvadrupeltrom = $totalKvadrupeltrom + count($antallKvadrupeltrom);    
         }
 
+        usort($alleGyldigeNetter, function($a, $b) {
+            return $a->getTimestamp() - $b->getTimestamp();
+        });
+
         $this->excel->setArk('totalt', 'Totalt');
             
         $this->rad();
