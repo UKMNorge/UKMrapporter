@@ -65,7 +65,7 @@ var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
 
 
 const spaInteraction = new SPAInteraction(null, ajaxurl);
-const oldRapportLenke = '?page=UKMrapporter&action=rapport&rapport=Infoskjema';
+const oldRapportLenke = '?page=UKMrapporter&action=rapport&rapport=Overnatting';
 var loading = ref(true);
 var dataFetched = ref(false);
 var alleNetter = ref([]);
