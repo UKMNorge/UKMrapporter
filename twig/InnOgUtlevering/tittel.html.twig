@@ -15,5 +15,8 @@
     {{ parent() }}
         <td>
             <p>Fylke: {{ innslag.getFylke().getNavn() }}</p>
+            <p>Kommune:
+                <span>{{ innslag.getKommune().getNavn() }}</span>
+            </p>
         </td>
 {% endblock %}
