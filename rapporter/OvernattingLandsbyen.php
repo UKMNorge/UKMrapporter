@@ -14,7 +14,7 @@ class OvernattingLandsbyen extends Rapport
 {
     public $kategori_id = 'ukmfestivalen';
     public $ikon = 'dashicons-groups';
-    public $navn = 'Overnatting og ansvar i landsbyen';
+    public $navn = 'Overnatting og ansvar';
     public $beskrivelse = 'Informasjon om overnatting';
     public $har_excel = false;
     public $har_sms = false;

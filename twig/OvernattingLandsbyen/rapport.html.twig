@@ -5,6 +5,7 @@
             <thead>
                 <tr>
                     <th scope="col">Fylke</th>
+                    <th scope="col">Kommune</th>
                     <th scope="col">Ledere som overnatter i landsbyen</th>
                     <th scope="col">Ansvarlig leder</th>
                 </tr>
@@ -15,6 +16,12 @@
                 <tbody>
                     <tr class="ledere-tr">                       
                         <td><b>{{ fylker[fylke_key].getNavn() }}</b> ({{ arrangementer[key_arr].getNavn() }})</td>
+                        <td>
+                            {% for kommune in arrangementer[key_arr].getKommuner() %}
+                                <span>{{ kommune.getNavn }}</span>
+                                <br>
+                            {% endfor %}
+                        </td>
                         <td><b>{{ arr_data['total'] ? arr_data['total'] : 0 }}</b> leder{{ arr_data['total'] > 1 ? 'e' : '' }} overnatter</td>
                         <td>{{ arr_data['hovedLedere'].getNavn() }} - {{ arr_data['hovedLedere'].getMobil() }}</td>
                     </tr>
@@ -32,6 +39,6 @@
         margin-bottom: 100px;
     }
     .ledere-tr td {
-        width: 33%;
+        width: 25%;
     }
 </style>
