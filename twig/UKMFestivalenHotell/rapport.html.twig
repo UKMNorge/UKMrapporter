@@ -41,13 +41,14 @@
                             {% set roomArr = roomArr|merge([leder.getRom() ? leder.getRom().getId() : leder.getNavn()]) %}
                         {% endif %}
                         <tbody>
-                            <tr class="ledere-tr-videresending {{ (arr_data|filter(led => led.getRom() and led.getRom().getId() == leder.getRom().getId())|length) > 1 ? 'same-room' : '' }} ">                       
+                            {% set delerRom = (arr_data|filter(led => led.getRom() and led.getRom().getId() == leder.getRom().getId())|length) > 1 %}
+                            <tr class="ledere-tr-videresending {{ delerRom ? 'same-room' : '' }} ">                       
                                 <td>{{ leder.getNavn() }}</td>
                                 <td>{{ leder.getMobil() }}</td>
                                 <td>{{ leder.getEpost() }}</td>
                             {% if leder.getRom() %}
-                                <td>{{ leder.getRom().getType() }}</td>
-                            {% else %}
+                                    <td>{{ leder.getRom().getType() }} {{ delerRom ? (' (deler rom ' ~ leder.getRom().getId() ~ ')') : '' }}</td>
+                                {% else %}
                                 <td>enkeltrom</td>    
                             {% endif %}
                                 <td>

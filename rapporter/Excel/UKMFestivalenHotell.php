@@ -71,7 +71,11 @@ class UKMFestivalenHotell extends Excel {
                             $kolonne = $this->celle('B', $leder->getMobil());
                             $kolonne = $this->celle('C', $leder->getEpost());
                             if($leder instanceof OvernattingPersonClass && $leder->getRom()) {
-                                $kolonne = $this->celle('D', $leder->getRom()->getType());
+                                $delerRom = count(array_filter($arr_data, function($led) use ($leder) {
+                                    return $led->getRom() && $led->getRom()->getId() == $leder->getRom()->getId();
+                                })) > 1;
+
+                                $kolonne = $this->celle('D', $leder->getRom()->getType() . ($delerRom ? ' (deler rom '. $leder->getRom()->getId() .' )' : ''));
                             }
                             else {
                                 $kolonne = $this->celle('D', 'enkeltrom');
