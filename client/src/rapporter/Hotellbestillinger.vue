@@ -27,7 +27,7 @@
                     <Contacts :repo="repo" />
                 </div>
         
-                <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :groupingNode="DefaultNode" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+                <MenyVue :root="root" :visAntall="true" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :groupingNode="DefaultNode" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
         
                 <div class="container as-container">
                     <div v-for="(r, key) in rootNodes" :key="key">
@@ -142,6 +142,7 @@ async function getDataAjax() {
         repo = new Repo(root, nodeStructure, Leder, rapportName);
         loading.value = false;
         rootNodes = repo.getRootNodes();
+        repo.antall.value = true;
         
         console.log(root);
     }
