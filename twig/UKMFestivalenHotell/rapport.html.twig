@@ -1,6 +1,5 @@
 {% set antallBestillinger = 0 %}
 {% set ledere = [] %}
-
 {% for gyldigNatt in alleGyldigeNetter %}
     {% set personerArr = [] %}
     {% set roomArr = [] %}
@@ -21,7 +20,8 @@
                         <th scope="col">Tlf</th>
                         <th scope="col">Epost</th>
                         <th scope="col">Rom</th>
-                        <th scope="col">Fylke</th>
+                        <th scope="col">Gruppe</th>
+                        {# <th scope="col">Fylke</th> #}
                     </tr>
                 </thead>
 
@@ -50,8 +50,16 @@
                             {% else %}
                                 <td>enkeltrom</td>    
                             {% endif %}
-                                
-                                <td>{{ fylker[fylke_key] ? fylker[fylke_key] : 'UKM Norge' }}</td>
+                                <td>
+                                    {% for oGruppe in overnattingGrupper %}
+                                        {% for oPerson in oGruppe %}
+                                            {% if oPerson.getId() == leder.getId() %}
+                                                {{ oGruppe.getNavn() }}
+                                            {% endif %}    
+                                        {% endfor %}
+                                    {% endfor %}
+                                </td>
+                                {# <td>{{ fylker[fylke_key] ? fylker[fylke_key] : 'UKM Norge' }}</td> #}
                             </tr>
                         </tbody>
                     {% endfor %}
