@@ -21,7 +21,7 @@
             <ContactContacts ref="smsComponent" :repo="repo" :getAllContacts="getContacts" :send="sendSMS" :contactComponentName="'SMS'" />
             
             <!-- Send email to contacts -->
-            <ContactContacts ref="emailComponent" :repo="repo" :getAllContacts="getContacts" :send="sendEmail" :sendButton1="{name : 'Send (Windows eller Oulook)', method : sendEmail}" :sendButton2="{name : 'Send (Mac)', method : sendEmail}" :contactComponentName="'epost'" />
+            <ContactContacts ref="emailComponent" :repo="repo" :getAllContacts="getContacts" :send="sendEmail" :sendButton1="{name : 'Gå videre (Windows eller Oulook)', method : sendEmail}" :sendButton2="{name : 'Gå videre (Mac)', method : sendEmail}" :contactComponentName="'epost'" />
         </div>
         
     </div>

@@ -57,7 +57,7 @@
 
                     <div class="as-margin-top-space-4 send-btn-div">
                         <div class="as-margin-auto">
-                            <button @click="send()" :disabled="activeContacts.length < 1" :class="{'not-possible' : activeContacts.length < 1}" class="as-btn-simple button-send as-btn-hover-default success">Send</button>
+                            <button @click="send()" :disabled="activeContacts.length < 1" :class="{'not-possible' : activeContacts.length < 1}" class="as-btn-simple button-send as-btn-hover-default success">Gå videre</button>
                             <div class="as-margin-top-space-2">
                                 <button v-if="sendButton1 !== undefined" @click="send1()" :disabled="activeContacts.length < 1" :class="{'not-possible' : activeContacts.length < 1}" class="as-btn-simple button-send as-btn-hover-default success under as-btn-simple-small">{{ sendButton1.name }}</button>
                                 <button v-if="sendButton2 !== undefined" @click="send2()" :disabled="activeContacts.length < 1" :class="{'not-possible' : activeContacts.length < 1}" class="as-btn-simple button-send as-btn-hover-default success under as-btn-simple-small">{{ sendButton2.name }}</button>
