@@ -85,6 +85,7 @@ Innslag.properties.push(new NodeProperty('getFylke', 'Fylke', false));
 Innslag.properties.push(new NodeProperty('getKommune', 'Kommune', false));
 Innslag.properties.push(new NodeProperty('getBeskrivelse', 'Beskrivelse', false));
 Innslag.properties.push(new NodeProperty('getRolle', 'Rolle', false));
+Innslag.properties.push(new NodeProperty('getOppmoteTid', 'Oppmøtetid', true))
 // Person.properties.push(new NodeProperty('getTekstIntoleranser', 'Melding Intoleranser', true))
 
 getDataAjax();
@@ -134,6 +135,13 @@ async function getDataAjax() {
             innslagNode.setKommune(innslagObj.kommune);
             innslagNode.setBeskrivelse(innslagObj.beskrivelse);
             innslagNode.setRolle(innslagObj.rolle);
+            if(innslagObj.oppmotetid.date == null) {
+                innslagNode.setOppmoteTid('Ikke satt');
+            }
+            else {
+                var oppmotetid = new Date(innslagObj.oppmotetid.date);    
+                innslagNode.setOppmoteTid(oppmotetid.getDate() + '. ' +  getMaaned(oppmotetid, true) + ' ' + oppmotetid.getFullYear() + ' kl. ' + (oppmotetid.getHours() < 10 ? '0' : '') + oppmotetid.getHours() + ':' + (oppmotetid.getMinutes() < 10 ? '0' : '') + oppmotetid.getMinutes());
+            }
 
             if(innslagObj['alle_titler'].length > 0) {
                 var titlerSubnode = new Subnode();
@@ -167,6 +175,20 @@ async function getDataAjax() {
     if(hendelser) {
         dataFetched.value = true;
     }
+}
+
+function getMaaned(date : Date, isShort : boolean = false) {
+    const monthNames =  ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni',
+        'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    const monthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'
+    ];
+
+    if(isShort) {
+        return monthNamesShort[date.getMonth()];
+    }
+    return monthNames[date.getMonth()];
 }
 
 function goToProgram() {

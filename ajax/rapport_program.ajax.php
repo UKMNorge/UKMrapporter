@@ -38,6 +38,7 @@ foreach($alleHendelser as $hendelse) {
             'kommuneId' => $innslag->getKommune()->getId(),
             'kommuneNavn' => $innslag->getKommune()->getNavn(),
             'beskrivelse' => $innslag->getBeskrivelse(),
+            'oppmotetid' => $hendelse->getOppmoteTid($innslag),
             'rolle' => '',
             'alle_personer' => [],
             'alle_titler' => [],

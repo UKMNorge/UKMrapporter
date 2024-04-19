@@ -66,7 +66,7 @@ class Innslag extends NodeObj {
     private beskrivelse : string = '';
     private rolle : string = '';
     private tid : string = '';
-
+    private oppmoteTid : string = '';
     
     constructor(id : string, navn : string, type : string, sesong : string) {
         super(id);
@@ -144,6 +144,14 @@ class Innslag extends NodeObj {
 
     public setTid(tid : string) {
         this.tid = tid;
+    }
+
+    public setOppmoteTid(oppmoteTid : string) {
+        this.oppmoteTid = oppmoteTid;
+    }
+
+    public getOppmoteTid() : string {
+        return this.oppmoteTid;
     }
 
     public getData() {
