@@ -85,7 +85,7 @@ Innslag.properties.push(new NodeProperty('getFylke', 'Fylke', false));
 Innslag.properties.push(new NodeProperty('getKommune', 'Kommune', false));
 Innslag.properties.push(new NodeProperty('getBeskrivelse', 'Beskrivelse', false));
 Innslag.properties.push(new NodeProperty('getRolle', 'Rolle', false));
-Innslag.properties.push(new NodeProperty('getOppmoteTid', 'Oppmøtetid', true))
+Innslag.properties.push(new NodeProperty('getOppmoteTid', 'Oppmøte-tid', false))
 // Person.properties.push(new NodeProperty('getTekstIntoleranser', 'Melding Intoleranser', true))
 
 getDataAjax();
