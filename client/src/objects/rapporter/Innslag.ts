@@ -67,6 +67,7 @@ class Innslag extends NodeObj {
     private rolle : string = '';
     private tid : string = '';
     private oppmoteTid : string = '';
+    private arrangement : string = '';
     
     constructor(id : string, navn : string, type : string, sesong : string) {
         super(id);
@@ -152,6 +153,14 @@ class Innslag extends NodeObj {
 
     public getOppmoteTid() : string {
         return this.oppmoteTid;
+    }
+
+    public setArrangement(arrangement : string) {
+        this.arrangement = arrangement;
+    }
+
+    public getArrangement() : string {
+        return this.arrangement;
     }
 
     public getData() {

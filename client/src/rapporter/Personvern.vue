@@ -4,7 +4,7 @@
             <PhantomLoading :rapportName="rapportName" />
         </div>
         <div v-else>
-            <div v-if="alleHendelser.length < 1" class="no-data">
+            <div v-if="alleInnslags.length < 1" class="no-data">
                 <NoData :oldRapportLenke="oldRapportLenke" />
             </div>
             <div v-else>
@@ -20,7 +20,7 @@
                     <Contacts :repo="repo" />
                 </div>
         
-                <MenyVue :root="root" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+                <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
         
                 <div class="container as-container">
                     <div v-for="(r, key) in rootNodes" :key="key">
@@ -43,8 +43,6 @@ import MenyVue from '../components/Meny.vue';
 import NoData from '../components/NoData.vue';
 import DownloadsVue from '../components/Downloads.vue';
 import ToOldRapport from '../components/ToOldRapport.vue';
-import Arrangement from '../objects/rapporter/Arrangement';
-import DefaultNode from '../objects/rapporter/DefaultNode';
 import RootNode from '../objects/RootNode';
 import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
@@ -53,6 +51,7 @@ import Subnode from '../objects/Subnode';
 import SubnodeItem from '../objects/SubnodeItem';
 import SubnodeStringItem from '../objects/SubnodeStringItem';
 import SubnodePerson from '../objects/subnodesLeafs/SubnodePerson';
+import NodeProperty from './../objects/NodeProperty';
 import Contacts from '../components/Contacts.vue';
 import PhantomLoading from '../components/PhantomLoading.vue';
 
@@ -64,10 +63,12 @@ const spaInteraction = new SPAInteraction(null, ajaxurl);
 const oldRapportLenke = '?page=UKMrapporter&action=rapport&rapport=Personvern';
 var loading = ref(true);
 var dataFetched = ref(false);
-var alleHendelser = ref([]);
+var alleInnslags = ref([]);
 var rapportName = 'Personvern';
 
-var nodeStructure = [DefaultNode, Innslag].reverse();
+var nodeStructure = [Innslag].reverse();
+
+Innslag.properties.push(new NodeProperty('getArrangement', 'Arrangement', false));
 
 const smsDialogRef = ref();
 
@@ -86,67 +87,60 @@ async function getDataAjax() {
 
     var response = await spaInteraction.runAjaxCall('/', 'POST', data);
     
-    var hendelser = (<any>response.root.children);
+    var innslags = (<any>response.root.children);
 
-    console.log(hendelser);
-    if(hendelser.length < 1) {
+    console.log(innslags);
+    if(innslags.length < 1) {
         dataFetched.value = true;
         return;
     }
 
-    alleHendelser = hendelser;
+    alleInnslags = innslags;
 
-    for(var key of Object.keys(hendelser)) {
-        var hendelse = hendelser[key];
-        var hendelseObj = hendelse.obj;
-
-        var hendelseNode = new DefaultNode(hendelseObj.id, hendelseObj.navn);
-        hendelseNode.setClassName('Hendelse');
-        root.addChild(hendelseNode);
-        console.log(root);
-
+    for(var key of Object.keys(innslags)) {
         // Innslag
-        for(var key of Object.keys(hendelse.children)) {
-            var innslag = hendelse.children[key];
-            var innslagObj = innslag.obj;
+        var innslag = innslags[key];
+        var innslagObj = innslag.obj;
 
-            var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
+        var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
+        console.log(innslagObj.arrangement);
+        innslagNode.setArrangement(innslagObj.arrangement);
 
-            // adding subnodes
-            if(innslagObj['alle_titler']) {
-                var tittelSubnode = new Subnode();
-                var tittelText = '';
-                for(var tittel of innslagObj['alle_titler']) {
-                    tittelText += tittel['tittel'] + ' ';
-                }
-                tittelSubnode.addItem(new SubnodeItem('Titler', [new SubnodeStringItem(tittelText)]));
-                innslagNode.addSubnode(tittelSubnode);
+        // adding subnodes
+        if(innslagObj['alle_titler']) {
+            var tittelSubnode = new Subnode();
+            var tittelText = '';
+            for(var tittel of innslagObj['alle_titler']) {
+                tittelText += tittel['tittel'] + ' ';
             }
-
-            if(innslagObj['alle_personer']) {
-                var personerSubnode = new Subnode();
-                var personerStringItems = [];
-                for(var i = 0; i < innslagObj['alle_personer'].length; i++) {
-                    var person = innslagObj['alle_personer'][i];
-
-                    var personText = '';
-                    personText += (person['kategori'] == 'u15' ? '(under 15 år) - ' : '');
-                    personText += person['status'];
-                    personText += (person['kategori'] == 'u15' ? ' (foresatt: ' + person['foresatt'] + ' ' + (person['foresatt_mobil'] ? person['foresatt_mobil'] : '') + ' | foresatt svar: ' + person['foresatt_status'] + ')' : '');
-
-
-                    let DOMClass = person['godkjent'] ? 'success-subnode-item' : 'danger-subnode-item';
-                    let persStringItem = new SubnodePerson(personText, person['fornavn'], person['etternavn'], person['mobil'], person['epost']);
-                    persStringItem.setDOMClass(DOMClass);
-                    personerStringItems.push(persStringItem);
-
-                }
-                personerSubnode.addItem(new SubnodeItem('Personer', personerStringItems));
-                innslagNode.addSubnode(personerSubnode);
-            }
-
-            hendelseNode.addChild(innslagNode);
+            tittelSubnode.addItem(new SubnodeItem('Titler', [new SubnodeStringItem(tittelText)]));
+            innslagNode.addSubnode(tittelSubnode);
         }
+
+        if(innslagObj['alle_personer']) {
+            var personerSubnode = new Subnode();
+            var personerStringItems = [];
+            for(var i = 0; i < innslagObj['alle_personer'].length; i++) {
+                var person = innslagObj['alle_personer'][i];
+
+                var personText = '';
+                personText += (person['kategori'] == 'u15' ? '(under 15 år) - ' : '');
+                personText += person['status'];
+                personText += (person['kategori'] == 'u15' ? ' (foresatt: ' + person['foresatt'] + ' ' + (person['foresatt_mobil'] ? person['foresatt_mobil'] : '') + ' | foresatt svar: ' + person['foresatt_status'] + ')' : '');
+
+
+                let DOMClass = person['godkjent'] ? 'success-subnode-item' : 'danger-subnode-item';
+                let persStringItem = new SubnodePerson(personText, person['fornavn'], person['etternavn'], person['mobil'], person['epost']);
+                persStringItem.setDOMClass(DOMClass);
+                personerStringItems.push(persStringItem);
+
+            }
+            personerSubnode.addItem(new SubnodeItem('Personer', personerStringItems));
+            innslagNode.addSubnode(personerSubnode);
+        }
+
+        root.addChild(innslagNode);
+        
 
         repo = new Repo(root, nodeStructure, Innslag, rapportName);
         loading.value = false;
@@ -154,7 +148,7 @@ async function getDataAjax() {
         
     }
 
-    if(hendelser) {
+    if(innslags) {
         dataFetched.value = true;
     }
 }
