@@ -42,8 +42,16 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
             $leder->getArrangementFra();
             // $fylkeLedere[$fylke->getId()]['ledere'][] = $leder;
             
+            $lederObj = [
+                'id' => $leder->getId(),
+                'navn' => $leder->getNavn(),
+                'type' => $leder->getTypeNavn(),
+                'mobil' => $leder->getMobil(),
+                'epost' => $leder->getEpost(),
+            ];
+
             // Adding leder
-            $nodeLeder = new Node('Leder', $leder);
+            $nodeLeder = new Node('Leder', $lederObj);
             $arrangementer[$fra->getId()]->addChild($leder->getId(), $nodeLeder);
         
         }
