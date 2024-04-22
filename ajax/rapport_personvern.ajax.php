@@ -23,6 +23,7 @@ foreach( $arrangement->getInnslag()->getAll() as $innslag ) {
         'type' => $innslag->getType()->getKey(),
         'sesong' => $innslag->getSesong(),
         'arrangement' => $innslag->getHome()->getNavn(),
+        'fylke' => $innslag->getFylke() ? $innslag->getFylke()->getNavn() : 'Ukjent fylke',
         'alle_personer' => [],
         'alle_titler' => [],
     ];

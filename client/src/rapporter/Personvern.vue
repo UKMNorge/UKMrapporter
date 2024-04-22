@@ -68,7 +68,15 @@ var rapportName = 'Personvern';
 
 var nodeStructure = [Innslag].reverse();
 
-Innslag.properties.push(new NodeProperty('getArrangement', 'Arrangement', false));
+const director = (<any>window).director;
+
+
+var is_landsfestivalen = director.getParam('isLand');
+
+if(is_landsfestivalen == 'true' || is_landsfestivalen == true) {
+    Innslag.properties.push(new NodeProperty('getArrangement', 'Arrangement', true));
+    Innslag.properties.push(new NodeProperty('getFylke', 'Fylke', true));
+}
 
 const smsDialogRef = ref();
 
@@ -103,8 +111,9 @@ async function getDataAjax() {
         var innslagObj = innslag.obj;
 
         var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
-        console.log(innslagObj.arrangement);
+
         innslagNode.setArrangement(innslagObj.arrangement);
+        innslagNode.setFylke(innslagObj.fylke);
 
         // adding subnodes
         if(innslagObj['alle_titler']) {
