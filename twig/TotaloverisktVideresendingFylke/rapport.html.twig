@@ -43,7 +43,6 @@
                         <tr class="ledere-tr">
                             <td><b>{{ typeStr }}</b></td>
                             <td>{{ innslag.getNavn() }}</td>
-                            <td>{{ innslag.getPersoner().getAntall() }}</td>
                         </tr>
 
                         {% set typeStr = '' %}
@@ -75,6 +74,7 @@
                     <th scope="col">Antall unike deltakere</th>
                     <th scope="col">Antall ledere</th>
                     <th scope="col">Antall ledsagere / turister</th>
+                    <th scope="col">Deltaker på flere innslag</th>
                 </tr>
             </thead>
 
@@ -87,6 +87,15 @@
                     <td>{{ arrangementData['antallUnikeDeltakere'] }}</td>
                     <td>{{ arrangementData['antallLedere'] }}</td>
                     <td>{{ arrangementData['antallLedsagerTurister'] }}</td>
+                    <td>
+                    {% if arrangementData['ikkeUnikeDeltakere']|length < 1 %}
+                        Ingen
+                    {% else %}
+                        {% for person in arrangementData['ikkeUnikeDeltakere'] %}
+                            <p>{{ person.getNavn() }}</p>
+                        {% endfor %}
+                    {% endif %}
+                    </td>
                 </tr>
             </tbody>
 
@@ -171,6 +180,43 @@
     </table>
 
 
+<h3 class="super-total-oversikt">Personer som er meldt på flere innslag:</h3>
+<span>OBS: kun personer som har brukt samme konto for å melde på begregnes som duplikater</span>
+
+<table class="table total-oversikt total-i-fylke">
+
+    <thead>
+        <tr>
+            <th>Navn</th>
+            <th>Arrangement</th>
+            <th>Fylke</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for personFylkeArr in alleIkkeUnikeDeltakere %}
+            <tr class="ledere-tr">                     
+            {% set fra = personFylkeArr['fra'] %}
+            {% set fylke = personFylkeArr['fylke'] %}
+            {% set person = personFylkeArr['person'] %}
+
+            <td>{{ person.getNavn() }}</td>
+            <td>{{ fra.getNavn() }}</td>
+            <td>{{ fylke.getNavn() }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{# <pre>
+    {{ dump(alleIkkeUnikeDeltakere) }}
+</pre> #}
+
+{# <pre>
+    {{ dump(alleIkkeUnikeDeltakere[0]['person'].getNavn()) }}
+    {{ dump(alleIkkeUnikeDeltakere[1]['person'].getNavn()) }}
+    {{ dump(alleIkkeUnikeDeltakere[2]['person'].getNavn()) }}
+</pre> #}
+
 <style>
     .fylke-overskrift, .super-total-oversikt {
         margin-top: 100px;
@@ -192,7 +238,7 @@
         margin-left: 50px;
     }
     .ledere-tr td {
-        width: 16.66%;
+        width: 13.33%;
     }
     .ledere-tr td h4 {
         margin: 0;

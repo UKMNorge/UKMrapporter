@@ -142,6 +142,9 @@ class TotaloverisktVideresendingFylke extends Rapport
                     $fylker[$fylke->getId()][$fra->getId()]['antallInnslag'] = $this->getAntallInnslag($fra);
                     $fylker[$fylke->getId()][$fra->getId()]['antallDeltakere'] = $this->getAntallDeltakere($fra);
                     $fylker[$fylke->getId()][$fra->getId()]['antallUnikeDeltakere'] = $this->getAntallUnikeDeltakere($fra);
+                    
+                    $fylker[$fylke->getId()][$fra->getId()]['ikkeUnikeDeltakere'] = $this->getIkkeUnikeDeltakere($fra);
+
                     $fylker[$fylke->getId()][$fra->getId()]['antallLedere'] = $this->getAntallLedere($fra);
                     $fylker[$fylke->getId()][$fra->getId()]['antallLedsagerTurister'] = $this->getAntallLedsagerTurister($fra);
                     $fylker[$fylke->getId()][$fra->getId()]['innslagIArrangement'] = $this->getVideresendtInnslag($fra);
@@ -163,6 +166,8 @@ class TotaloverisktVideresendingFylke extends Rapport
         UKMrapporter::addViewData('arrangementer', $arrangementer);
         UKMrapporter::addViewData('alleUnikePersoner', $alle_unike_personer);
         UKMrapporter::addViewData('arrangementTil', $til);
+        UKMrapporter::addViewData('alleIkkeUnikeDeltakere', $this->alleIkkeUnikeDeltakere($selectedFylker));
+
         return 'TotaloverisktVideresendingFylke/rapport.html.twig';
     }
     
@@ -204,6 +209,81 @@ class TotaloverisktVideresendingFylke extends Rapport
         }
 
         return count($unike_personer);
+    }
+
+     /**
+     * Get UNIKE deltakere i videresending
+     * 
+     * @param Arrangement $arrangement
+     * @return Int
+     */
+    private function getIkkeUnikeDeltakere($fraArrangement): array {
+        $alle_personer = [];
+        $ikke_unike_personer = [];
+        $tilArrangement = new Arrangement(get_option('pl_id'));
+
+        foreach($fraArrangement->getVideresendte($tilArrangement->getId())->getAll() as $innslag) {
+            foreach( $innslag->getPersoner()->getAll() as $person ) {
+                if(isset($alle_personer[ $person->getNavn() . $person->getMobil() ])) {
+                    $ikke_unike_personer[ $person->getNavn() . $person->getMobil() ] = $person;
+                }
+                $alle_personer[ $person->getNavn() . $person->getMobil() ] = $person;
+            }
+        }
+
+        return $ikke_unike_personer;
+    }
+
+    private function alleIkkeUnikeDeltakere(array $selectedFylker): array {
+        $personer = [];
+        $alle_personer = [];
+        $alle_ikke_unike_personer = [];
+        $til = new Arrangement(get_option('pl_id'));
+        
+        foreach($til->getVideresending()->getAvsendere() as $avsender) {
+            // For alle fylker som ble valgt
+            $fra = $avsender->getArrangement();
+
+            foreach($selectedFylker as $fylke) {
+                if($fylke->getId() == $fra->getFylke()->getId()) {                    
+                    foreach($fra->getVideresendte($til->getId())->getAll() as $innslag) {
+                        foreach( $innslag->getPersoner()->getAll() as $person ) {
+                            if(isset($personer[ $person->getNavn() . $person->getMobil() ])) {
+                                $alle_ikke_unike_personer[ $person->getNavn() . $person->getMobil() ] = [
+                                    'person' => $person,
+                                    'fra' => $fra,
+                                    'fylke' => $fylke
+                                ];
+                            }
+
+                            $personer[ $person->getNavn() . $person->getMobil() ] = [
+                                'person' => $person,
+                                'fra' => $fra,
+                                'fylke' => $fylke
+                            ];
+
+                            $alle_personer[] = [
+                                'person' => $person,
+                                'fra' => $fra,
+                                'fylke' => $fylke
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+        
+        $ret_ikke_unike = [];
+
+        foreach($alle_ikke_unike_personer as $person) {
+            foreach($alle_personer as $person2) {
+                if($person['person']->getId() == $person2['person']->getId()) {
+                    $ret_ikke_unike[] = $person;
+                }
+            }
+        }
+
+        return $ret_ikke_unike;
     }
 
     /**
