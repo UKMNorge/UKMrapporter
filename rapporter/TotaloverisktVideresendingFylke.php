@@ -286,6 +286,11 @@ class TotaloverisktVideresendingFylke extends Rapport
             }
         }
 
+        // Sort ret_ikke_unike after person name
+        usort($ret_ikke_unike, function($a, $b) {
+            return $a['person']->getNavn() <=> $b['person']->getNavn();
+        });
+
         return $ret_ikke_unike;
     }
 
