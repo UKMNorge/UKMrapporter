@@ -252,20 +252,23 @@ class TotaloverisktVideresendingFylke extends Rapport
                                 $alle_ikke_unike_personer[ $person->getNavn() . $person->getMobil() ] = [
                                     'person' => $person,
                                     'fra' => $fra,
-                                    'fylke' => $fylke
+                                    'fylke' => $fylke,
+                                    'innslag' => $innslag
                                 ];
                             }
 
                             $personer[ $person->getNavn() . $person->getMobil() ] = [
                                 'person' => $person,
                                 'fra' => $fra,
-                                'fylke' => $fylke
+                                'fylke' => $fylke,
+                                'innslag' => $innslag
                             ];
 
                             $alle_personer[] = [
                                 'person' => $person,
                                 'fra' => $fra,
-                                'fylke' => $fylke
+                                'fylke' => $fylke,
+                                'innslag' => $innslag
                             ];
                         }
                     }
@@ -275,10 +278,10 @@ class TotaloverisktVideresendingFylke extends Rapport
         
         $ret_ikke_unike = [];
 
-        foreach($alle_ikke_unike_personer as $person) {
-            foreach($alle_personer as $person2) {
+        foreach($alle_personer as $person2) {
+            foreach($alle_ikke_unike_personer as $person) {
                 if($person['person']->getId() == $person2['person']->getId()) {
-                    $ret_ikke_unike[] = $person;
+                    $ret_ikke_unike[] = $person2;
                 }
             }
         }

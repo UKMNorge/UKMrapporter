@@ -189,6 +189,7 @@
         <tr>
             <th>Navn</th>
             <th>Arrangement</th>
+            <th>Innslag</th>
             <th>Fylke</th>
         </tr>
     </thead>
@@ -197,10 +198,12 @@
             <tr class="ledere-tr">                     
             {% set fra = personFylkeArr['fra'] %}
             {% set fylke = personFylkeArr['fylke'] %}
+            {% set innslag = personFylkeArr['innslag'] %}
             {% set person = personFylkeArr['person'] %}
 
             <td>{{ person.getNavn() }}</td>
             <td>{{ fra.getNavn() }}</td>
+            <td>{{ innslag.getNavn() }} ({{innslag.getType().getNavn()}})</td>
             <td>{{ fylke.getNavn() }}</td>
             </tr>
         {% endfor %}
