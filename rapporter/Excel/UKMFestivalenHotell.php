@@ -199,7 +199,7 @@ class UKMFestivalenHotell extends Excel {
             // Lager string
             $netterStr = '';
             foreach ($netter as $n) {
-                $netterStr = $netterStr .'|'. $n->format('d.m.Y') .' ';
+                $netterStr = $netterStr .'|'. $n->format('d.m'). '->' .$n->modify('+1 day')->format('d.m') .' ';
             }
 
 
