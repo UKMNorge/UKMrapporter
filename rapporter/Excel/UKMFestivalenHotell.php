@@ -7,7 +7,7 @@ use UKMNorge\Rapporter\Framework\Excel;
 use UKMNorge\File\Excel as ExcelDok;
 use UKMNorge\Allergener\Allergener;
 use UKMNorge\UKMFestivalen\Overnatting\OvernattingPerson as OvernattingPersonClass;
-
+use DateTimeImmutable;
 
 
 
@@ -199,7 +199,15 @@ class UKMFestivalenHotell extends Excel {
             // Lager string
             $netterStr = '';
             foreach ($netter as $n) {
-                $netterStr = $netterStr .'|'. $n->format('d.m'). '->' .$n->modify('+1 day')->format('d.m') .' ';
+                // Convert DateTime object to string
+                $dateString = $n->format('d.m.Y');
+                    
+                // Create DateTimeImmutable object from string
+                $nextDay = new DateTimeImmutable($dateString);
+
+                // Add one day
+                $nextDay = $nextDay->modify('+1 day');
+                $netterStr = $netterStr .'|'. $n->format('d.m.Y') .'->'. $nextDay->format('d.m.Y') .' ';
             }
 
 
