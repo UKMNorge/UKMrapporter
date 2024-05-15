@@ -207,7 +207,7 @@ class UKMFestivalenHotell extends Excel {
 
                 // Add one day
                 $nextDay = $nextDay->modify('+1 day');
-                $netterStr = $netterStr .'|'. $n->format('d.m.Y') .'->'. $nextDay->format('d.m.Y') .' ';
+                $netterStr = $netterStr .'|'. $n->format('d.m') .'->'. $nextDay->format('d.m') .' ';
             }
 
 
