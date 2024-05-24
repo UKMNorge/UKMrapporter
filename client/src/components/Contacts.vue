@@ -146,7 +146,7 @@ function sendSMS(activeContacts: Contact[]): void {
     const mobilContacts = activeContacts.map(contact => {
         // Checking if the contact has a method called getMobil
         if (typeof (contact as any).getMobil === 'function') {
-            return (contact as any).getMobil()
+            return '[' + (contact as any).getMobil() + ', ' + (contact as any).getNavn() + ']'
         }
     }).join(',');
 
