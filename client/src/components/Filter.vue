@@ -38,7 +38,7 @@
                         <h4>Filtrering</h4>
 
                         <div class="attributes as-margin-top-space-2">
-                            <div class="container nop buttons-selector">
+                            <div class="container nop buttons-selector as-margin-bottom-space-2 as-padding-bottom-space-1">
                                 <div class="button-div" v-for="(n, key) in filterNodes" :key="key">
                                     <button class="as-btn-default as-btn-hover-default" :class="selectedNode.className == n.className ? 'active-node' : ''" @click="selectNode(n)" >
                                         <span>{{ getNodeName(n) }}</span>
@@ -58,6 +58,8 @@
                                 </div>
                             </div>
                         </div>
+                        <button v-if="getProperties().length > 0" class="as-btn-default as-margin-top-space-1 as-btn-hover-default" @click="deactivateAllNodes()">Fjern alle</button>
+
 
                     </div>
                 </div>
@@ -153,6 +155,12 @@ function deactivateNode(node : NodeObj) {
     node.setActive(false);
     console.log('Deactivated');
     console.log(node);
+}
+
+function deactivateAllNodes() {
+    for(var node of getProperties()) {
+        deactivateNode(node);
+    }
 }
 
 function closeSelector(event : any) {
@@ -272,6 +280,7 @@ function getAllNodesAtLevel(node : NodeObj, filteredNodes : NodeObj[], filterNod
     }
     .buttons-selector {
         display: flex;
+        border-bottom: solid 1px var(--color-primary-grey-light);
     }
     .buttons-selector .button-div {
         margin-right: 10px;
