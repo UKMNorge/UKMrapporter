@@ -38,7 +38,7 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
     $fylkeLedere[$fylke->getId()]['fylke'] = $fylke;
     foreach($ledere->getAll() as $leder) {
         // turist, ledsager og sykerom blir ikke med i rapporten
-        if(!in_array($leder->getType(), ['turist', 'ledsager', 'sykerom'])) {
+        // if(!in_array($leder->getType(), ['turist', 'ledsager', 'sykerom'])) {
             $leder->getArrangementFra();
             // $fylkeLedere[$fylke->getId()]['ledere'][] = $leder;
             
@@ -54,7 +54,7 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
             $nodeLeder = new Node('Leder', $lederObj);
             $arrangementer[$fra->getId()]->addChild($leder->getId(), $nodeLeder);
         
-        }
+        // }
     }
 }
 
