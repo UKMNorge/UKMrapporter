@@ -38,7 +38,7 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
     $fylkeLedere[$fylke->getId()]['fylke'] = $fylke;
     foreach($ledere->getAll() as $leder) {
         // turist, ledsager og sykerom blir ikke med i rapporten
-        if(!in_array($leder->getType(), ['turist', 'ledsager', 'sykerom'])) {
+        if(!in_array($leder->getType(), ['sykerom'])) {
             $leder->getArrangementFra();
             // $fylkeLedere[$fylke->getId()]['ledere'][] = $leder;
             
