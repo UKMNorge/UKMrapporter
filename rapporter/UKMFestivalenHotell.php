@@ -140,17 +140,17 @@ class UKMFestivalenHotell extends Rapport
         }
 
         
-        // Legg til 5 netter i forkant. Dette er definert på overnatting i UKM-festivalen på arr.sys
+        // Legg til 30 netter i forkant. Dette er definert på overnatting i UKM-festivalen på arr.sys
         $fNatt = new DateTime($forstGyldigNatt->format('Y-m-d H:i:s'));
-        for($i = 0; $i < 5; $i++) {
+        for($i = 0; $i < 30; $i++) {
             $natt = $fNatt->modify('-1 day');
             $newNatt = new DateTime($natt->format('Y-m-d H:i:s'));
             $alleGyldigeNetter[$natt->format('d_m')] = $newNatt;
         }
 
-        // Legg til 3 netter i etterkant. Dette er definert på overnatting i UKM-festivalen på arr.sys
+        // Legg til 30 netter i etterkant. Dette er definert på overnatting i UKM-festivalen på arr.sys
         $eNatt = new DateTime($sisteGyldigNatt->format('Y-m-d H:i:s'));
-        for($i = 3; $i > 0; $i--) {
+        for($i = 30; $i > 0; $i--) {
             $natt = $eNatt->modify('+1 day');
             $newNatt = new DateTime($natt->format('Y-m-d H:i:s'));
             $alleGyldigeNetter[$natt->format('d_m')] = $newNatt;
