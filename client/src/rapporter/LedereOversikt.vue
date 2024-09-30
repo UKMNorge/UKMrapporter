@@ -37,7 +37,7 @@
 <script setup lang="ts">
 // Fra pakke UKM Komponenter
 import Table from '../components/table/Table.vue'
-import { ref } from 'vue';
+import { ref, watch, defineEmits } from 'vue';
 import MenyVue from '../components/Meny.vue';
 import NoData from '../components/NoData.vue';
 import DownloadsVue from '../components/Downloads.vue';
@@ -72,6 +72,14 @@ var root = new RootNode();
 var repo = new Repo(root, nodeStructure, Leder, rapportName);
 var rootNodes : any = repo.getRootNodes();
 
+const emit = defineEmits();
+const noData = ref(false);
+// Watch for changes to noData
+watch(noData, (newVal) => {
+    emit('update:noData', newVal); // Emit an event when noData changes
+});
+
+defineExpose({ noData });
 
 async function getDataAjax() {
     var data = {
@@ -119,6 +127,11 @@ async function getDataAjax() {
         rootNodes = repo.getRootNodes();
         
     }
+
+    if(fylker.length > 0) {
+        noData.value = false;
+    }
+
     if(fylker) {
         dataFetched.value = true;
     }

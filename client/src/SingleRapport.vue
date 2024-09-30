@@ -1,37 +1,42 @@
 <template>
     <div>
         <div v-if="getRapportId() == 'alleDeltakere'">
-            <AlleDeltakere />
+            <AlleDeltakere @update:noData="handleNoDataUpdate" />
         </div>
         <div v-else-if="getRapportId() == 'ledereOversikt'">
-            <LedereOversikt />
+            <LedereOversikt @update:noData="handleNoDataUpdate" />
         </div>
         <div v-else-if="getRapportId() == 'intoleranser'">
-            <Intoleranser />
+            <Intoleranser @update:noData="handleNoDataUpdate" />
         </div>
         <div v-else-if="getRapportId() == 'nominasjoner'">
-            <Nominasjoner />
+            <Nominasjoner @update:noData="handleNoDataUpdate" />
         </div>
         <div v-else-if="getRapportId() == 'personvern'">
-            <Personvern />
+            <Personvern @update:noData="handleNoDataUpdate" />
         </div>
         <div v-else-if="getRapportId() == 'kunstkatalog'">
-            <Kunstkatalog />
+            <Kunstkatalog @update:noData="handleNoDataUpdate" />
         </div>
         <div v-else-if="getRapportId() == 'deltakerSkjema'">
-            <DeltakerSkjema />
+            <DeltakerSkjema @update:noData="handleNoDataUpdate" />
         </div>
         <div v-else-if="getRapportId() == 'program'">
-            <Program />
+            <Program @update:noData="handleNoDataUpdate" />
         </div>
         <div v-else-if="getRapportId() == 'sporreskjema'">
-            <Sporreskjema />
+            <Sporreskjema @update:noData="handleNoDataUpdate" />
         </div>
         <div v-else-if="getRapportId() == 'hotellbestillinger'">
-            <Hotellbestillinger />
+            <Hotellbestillinger @update:noData="handleNoDataUpdate" />
         </div>
         <div v-else>
             <p>Rapport finnes ikke</p>
+        </div>
+
+        <!-- Show the feedback component if there is data -->
+        <div v-if="noData==false" class="as-margin-top-space-6">
+            <Feedback class="feedback" />
         </div>
     </div>
 </template>
@@ -47,14 +52,22 @@ import Program from './rapporter/Program.vue';
 import DeltakerSkjema from './rapporter/DeltakerSkjema.vue';
 import Sporreskjema from './rapporter/Sporreskjema.vue';
 import Hotellbestillinger from './rapporter/Hotellbestillinger.vue';
+import Feedback from './components/feedback/Feedback.vue';
+
+
 
 import { ref, onMounted } from 'vue'
 
+const noData = ref(true);
 
 const director = (<any>window).director;
 
 function getRapportId() : string {
     return director.getParam('rapportId');
+}
+
+function handleNoDataUpdate(noDataValue: boolean) {
+    noData.value = noDataValue;
 }
 
 </script>

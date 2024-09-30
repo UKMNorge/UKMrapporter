@@ -38,7 +38,7 @@
 <script setup lang="ts">
 // Fra pakke UKM Komponenter
 import Table from '../components/table/Table.vue'
-import { ref, provide } from 'vue';
+import { ref, watch, defineEmits } from 'vue';
 import MenyVue from '../components/Meny.vue';
 import NoData from '../components/NoData.vue';
 import DownloadsVue from '../components/Downloads.vue';
@@ -86,6 +86,14 @@ var root = new RootNode();
 var repo = new Repo(root, nodeStructure, Innslag, rapportName);
 var rootNodes : any = repo.getRootNodes();
 
+const emit = defineEmits();
+const noData = ref(false);
+// Watch for changes to noData
+watch(noData, (newVal) => {
+    emit('update:noData', newVal); // Emit an event when noData changes
+});
+
+defineExpose({ noData });
 
 async function getDataAjax() {
     var data = {
@@ -97,7 +105,6 @@ async function getDataAjax() {
     
     var innslags = (<any>response.root.children);
 
-    console.log(innslags);
     if(innslags.length < 1) {
         dataFetched.value = true;
         return;
@@ -155,6 +162,10 @@ async function getDataAjax() {
         loading.value = false;
         rootNodes = repo.getRootNodes();
         
+    }
+    
+    if(innslags.length > 0) {
+        noData.value = false;
     }
 
     if(innslags) {
