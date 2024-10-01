@@ -35,8 +35,8 @@
         </div>
 
         <!-- Show the feedback component if there is data -->
-        <div v-if="noData==false" class="as-margin-top-space-6">
-            <Feedback class="feedback" />
+        <div v-if="noData==false" class="as-margin-top-space-8">
+            <Feedback class="as-padding-top-space-2 feedback" />
         </div>
     </div>
 </template>
