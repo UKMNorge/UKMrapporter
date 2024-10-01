@@ -67,7 +67,7 @@ function getRapportId() : string {
 
 function handleNoDataUpdate(noDataValue: boolean) {
     noData.value = noDataValue;
-    console.log('a');
+    console.log(noDataValue);
 }
 
 </script>
