@@ -83,7 +83,7 @@ DefaultNode.properties = [];
 DefaultNode.properties.push(new NodeProperty('getNavn', 'Spørsmål', true));
 
 const emit = defineEmits();
-const noData = ref(false);
+const noData = ref(true);
 // Watch for changes to noData
 watch(noData, (newVal) => {
     emit('update:noData', newVal); // Emit an event when noData changes

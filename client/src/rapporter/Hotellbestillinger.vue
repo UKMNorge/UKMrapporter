@@ -92,7 +92,7 @@ var repo = new Repo(root, nodeStructure, Leder, rapportName);
 var rootNodes : any = repo.getRootNodes();
 
 const emit = defineEmits();
-const noData = ref(false);
+const noData = ref(true);
 // Watch for changes to noData
 watch(noData, (newVal) => {
     emit('update:noData', newVal); // Emit an event when noData changes
