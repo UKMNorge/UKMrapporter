@@ -39,15 +39,12 @@ export default {
     methods: {
         async _fetchFeedback(campaignId : number) {
             var data : any = {
-                action: 'UKMSMS_ajax',
-                SMSaction: 'hasUserAnsweredFeedback',
-                campaignId: campaignId,
+                action: 'UKMrapporter_ajax',
+                controller: '/feedback/hasUserAnsweredFeedback',
             };
             
-
-
             var response = await this.spaInteraction.runAjaxCall('/', 'POST', data);
-            this.answered = response.hasAnswered ? false : false;
+            this.answered = response.hasAnswered == true ? true : false;
         },
         getFeedbackAnswers() : Array<{id : String, text : String, iconClass : String}> {
             return [
@@ -61,8 +58,8 @@ export default {
         saveFeedback(answer : {id : String, text : String, iconClass : String}, question : String, campaignId : String) {
             // Save to server
             var data : any = {
-                action: 'UKMSMS_ajax',
-                SMSaction: 'saveFeedback',
+                action: 'UKMrapporter_ajax',
+                controller: 'feedback/saveFeedback',
                 campaignId: campaignId,
                 question : question,
                 answerId : answer.id,
