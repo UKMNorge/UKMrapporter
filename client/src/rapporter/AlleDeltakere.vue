@@ -38,7 +38,7 @@
 <script setup lang="ts">
 // Fra pakke UKM Komponenter
 import Table from '../components/table/Table.vue'
-import { ref } from 'vue';
+import { ref, watch, defineEmits } from 'vue';
 import MenyVue from '../components/Meny.vue';
 import NoData from '../components/NoData.vue';
 import DownloadsVue from '../components/Downloads.vue';
@@ -55,6 +55,15 @@ import PhantomLoading from '../components/PhantomLoading.vue';
 
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
+
+const emit = defineEmits();
+const noData = ref(true);
+// Watch for changes to noData
+watch(noData, (newVal) => {
+    emit('update:noData', newVal); // Emit an event when noData changes
+});
+
+defineExpose({ noData });
 
 
 const spaInteraction = new SPAInteraction(null, ajaxurl);
@@ -86,7 +95,7 @@ async function getDataAjax() {
     var fylker = (<any>response.root.children);
     alleFylker.value = fylker;
     
-    console.log(alleFylker.value.length);
+    
     // Fylker
     for(var key of Object.keys(fylker)) {
         var fylke = fylker[key];
@@ -123,6 +132,9 @@ async function getDataAjax() {
         loading.value = false;
         rootNodes = repo.getRootNodes();
         
+    }
+    if(fylker.length > 0) {
+        noData.value = false;
     }
     if(fylker) {
         dataFetched.value = true;

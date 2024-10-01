@@ -16,9 +16,10 @@
     "jquery": "^3.6.1",
     "prettier": "^2.8.4",
     "prettier-plugin-tailwindcss": "^0.2.2",
-    "ukm-components-vue3": "^1.0",
+    "ukm-components-vue3": "^1.1.3",
     "ukm-spa": "^1.0.9",
     "vue": "^3.2.47",
+    "vuetify": "^3.7.2",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.0/xlsx-0.20.0.tgz"
   },
   "devDependencies": {

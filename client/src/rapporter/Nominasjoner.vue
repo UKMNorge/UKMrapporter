@@ -37,7 +37,7 @@
 <script setup lang="ts">
 // Fra pakke UKM Komponenter
 import Table from '../components/table/Table.vue'
-import { ref } from 'vue';
+import { ref, watch, defineEmits } from 'vue';
 import MenyVue from '../components/Meny.vue';
 import NoData from '../components/NoData.vue';
 import DownloadsVue from '../components/Downloads.vue';
@@ -72,6 +72,14 @@ var rootNodes : any = repo.getRootNodes();
 
 Nominasjon.hasUnique = true;
 
+const emit = defineEmits();
+const noData = ref(false);
+// Watch for changes to noData
+watch(noData, (newVal) => {
+    emit('update:noData', newVal); // Emit an event when noData changes
+});
+
+defineExpose({ noData });
 
 async function getDataAjax() {
     var data = {
@@ -145,6 +153,10 @@ async function getDataAjax() {
         if(prop.method == 'getNavn') {
             prop.navn = 'Innslag type';
         }
+    }
+
+    if(innslagTyper.length > 0) {
+        noData.value = false;
     }
 
     if(innslagTyper) {

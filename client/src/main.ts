@@ -17,6 +17,16 @@ hljs.registerLanguage("css", css);
 // Import CSS for ukm-components-vue3
 import "../node_modules/ukm-components-vue3/dist/style.css";
 
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+
+const vuetify = createVuetify({
+    components,
+    directives,
+});
+
 const app = createApp(UKMrapporter);
 
 // Make Director global
@@ -27,14 +37,18 @@ var director = new Director();
 
 
 app.use(hljsVuePlugin);
+app.use(vuetify);
+
 
 app.mount("#rapporterApp");
 
 
 const app2 = createApp(Singlerapport);
 app2.use(hljsVuePlugin);
+app2.use(vuetify);
 app2.mount("#singleRapport");
 
 const diplomApp = createApp(DiplomApp);
 diplomApp.use(hljsVuePlugin);
+diplomApp.use(vuetify);
 diplomApp.mount("#diplomAppVue");

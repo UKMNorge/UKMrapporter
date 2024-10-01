@@ -18,7 +18,7 @@
 
                 <!-- Search contacts -->
                 <div class="as-container as-margin-top-space-3">
-                    <InputTextOverlay :placeholder="'Søk etter kontakter'" :callbackChange="searchInputChanged" />
+                    <InputTextOverlay :placeholder="'Søk etter kontakterw'" v-model="search" />
                 </div>
 
                 <div class="attributes as-margin-top-space-2">
@@ -107,9 +107,12 @@ var allContacts = ref<Contact[]>([]);
 
 var selectorPopupSMS : any = ref(false);
 
-function searchInputChanged(searchStr : string) {
-    search.value = searchStr;
-    searchContacts(searchStr);
+watch(search, (newVal, oldVal) => {
+    searchInputChanged();
+});
+
+function searchInputChanged() {
+    searchContacts(search.value);
 }
 
 function searchContacts(searchStr : string) {
