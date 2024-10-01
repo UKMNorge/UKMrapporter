@@ -55,7 +55,6 @@ import Hotellbestillinger from './rapporter/Hotellbestillinger.vue';
 import Feedback from './components/feedback/Feedback.vue';
 
 
-
 import { ref, onMounted } from 'vue'
 
 const noData = ref(true);
@@ -68,6 +67,7 @@ function getRapportId() : string {
 
 function handleNoDataUpdate(noDataValue: boolean) {
     noData.value = noDataValue;
+    console.log('a');
 }
 
 </script>

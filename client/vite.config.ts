@@ -12,6 +12,8 @@ export default defineConfig({
     },
   },
   build: {
+    minify: true,  // optional: further optimizes the build
+    sourcemap: false, // optional: disables sourcemaps
     chunkSizeWarningLimit : 1000, // size in KB
     rollupOptions: {
         output: {
@@ -22,5 +24,8 @@ export default defineConfig({
             manualChunks: undefined,
         }
     }
-}
+  },
+  define: {
+    'process.env.NODE_ENV': '"production"',  // explicitly set production mode
+  },
 });
