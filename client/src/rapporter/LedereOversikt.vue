@@ -116,7 +116,7 @@ async function getDataAjax() {
                 var leder = arrangement.children[key];
                 var lederObj = leder.obj;
 
-                var lederNode = new Leder(lederObj.id, lederObj.navn, lederObj.type, lederObj.mobil, lederObj.epost);
+                var lederNode = new Leder(lederObj.id, lederObj.navn, lederObj.type, lederObj.mobil, lederObj.epost, '', lederObj.godkjent);
                 arrangementNode.addChild(lederNode);
             }
 

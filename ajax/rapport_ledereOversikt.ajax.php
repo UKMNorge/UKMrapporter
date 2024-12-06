@@ -41,13 +41,15 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
         if(!in_array($leder->getType(), ['sykerom'])) {
             $leder->getArrangementFra();
             // $fylkeLedere[$fylke->getId()]['ledere'][] = $leder;
-            
+        
+
             $lederObj = [
                 'id' => $leder->getId(),
                 'navn' => $leder->getNavn(),
                 'type' => $leder->getTypeNavn(),
                 'mobil' => $leder->getMobil(),
                 'epost' => $leder->getEpost(),
+                'godkjent' => $leder->getGodkjent() == 1,
             ];
 
             // Adding leder

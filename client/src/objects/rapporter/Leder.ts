@@ -15,6 +15,7 @@ class Leder extends NodeObj implements TableItemInterface, SMS, Epost {
     public static properties : NodeProperty[] = [
         new NodeProperty('getNavn', 'Navn', true),
         new NodeProperty('getType', 'Type', true),
+        new NodeProperty('getGodkjent', 'Godkjent', true),
         new NodeProperty('getMobil', 'Mobil', false),
         new NodeProperty('getEpost', 'Epost', false),
         new NodeProperty('getFylke', 'Leder Fylke', false),
@@ -64,15 +65,18 @@ class Leder extends NodeObj implements TableItemInterface, SMS, Epost {
     private mobil : string;
     private epost : string;
     private fylke : string;
+    private erGodkjent : boolean;
 
-    constructor(id : string, navn : string, type : string, mobil : string, epost : string, fylke? : string) {
+    constructor(id : string, navn : string, type : string, mobil : string, epost : string, fylke? : string, erGodkjent? : boolean) {
         super(id);
 
+        console.warn(erGodkjent);
         this.navn = navn;
         this.type = type;
         this.mobil = mobil;
         this.epost = epost;
         this.fylke = fylke ? fylke : '';
+        this.erGodkjent = erGodkjent != undefined ? erGodkjent : true;
     }
 
 
@@ -102,6 +106,10 @@ class Leder extends NodeObj implements TableItemInterface, SMS, Epost {
 
     public getFylke() : string {
         return this.fylke;
+    }
+
+    public getGodkjent() : boolean {
+        return this.erGodkjent;
     }
 
     // Returnerer data fra static
