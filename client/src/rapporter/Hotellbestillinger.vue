@@ -81,6 +81,7 @@ Leder.properties = [
     new NodeProperty('getMobil', 'Mobil', false),
     new NodeProperty('getEpost', 'Epost', false),
     new NodeProperty('getFylke', 'Fylke', true),
+    new NodeProperty('getGodkjent', 'Godkjent', true),
 ];
 
 var nodeStructure = [DefaultNode, Leder].reverse();
@@ -143,7 +144,7 @@ async function getDataAjax() {
             var leder = natt.children[key];
             var lederObj = leder.obj;
             
-            var lederNode = new Leder(lederObj.id, lederObj.navn, lederObj.type, lederObj.mobil, lederObj.epost, lederObj.fylkeNavn);
+            var lederNode = new Leder(lederObj.id, lederObj.navn, lederObj.type, lederObj.mobil, lederObj.epost, lederObj.fylkeNavn, lederObj.godkjent);
             nattNode.addChild(lederNode);
         }
         

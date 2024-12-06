@@ -122,6 +122,7 @@ foreach($nattFylLedArr as $nattFylLed) {
             'epost' => $leder->epost,
             'fylkeId' => $ntf->fylke->getId(),
             'fylkeNavn' => $ntf->fylke->getNavn(),
+            'godkjent' => $leder->getGodkjent() == 1,
         ];
 
         $lederNode = new Node('Leder', $lederObj);

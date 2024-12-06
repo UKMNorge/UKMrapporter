@@ -70,13 +70,12 @@ class Leder extends NodeObj implements TableItemInterface, SMS, Epost {
     constructor(id : string, navn : string, type : string, mobil : string, epost : string, fylke? : string, erGodkjent? : boolean) {
         super(id);
 
-        console.warn(erGodkjent);
         this.navn = navn;
         this.type = type;
         this.mobil = mobil;
         this.epost = epost;
         this.fylke = fylke ? fylke : '';
-        this.erGodkjent = erGodkjent != undefined ? erGodkjent : true;
+        this.erGodkjent = erGodkjent != undefined ? erGodkjent : false;
     }
 
 
