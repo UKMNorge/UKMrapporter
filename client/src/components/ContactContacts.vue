@@ -18,7 +18,7 @@
 
                 <!-- Search contacts -->
                 <div class="as-container as-margin-top-space-3">
-                    <InputTextOverlay :placeholder="'Søk etter kontakterw'" v-model="search" />
+                    <InputTextOverlay :placeholder="'Søk etter kontakter'" v-model="search" />
                 </div>
 
                 <div class="attributes as-margin-top-space-2">
