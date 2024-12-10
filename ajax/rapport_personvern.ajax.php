@@ -36,17 +36,18 @@ foreach( $arrangement->getInnslag()->getAll() as $innslag ) {
             'etternavn' => $innslagPerson->getEtternavn(),
             'mobil' => $innslagPerson->getMobil(),
             'epost' => $innslagPerson->getEpost(),
-            'status' => $person->getStatus()->getId() != "ikke_godkjent" ? "Godkjent samtykke" : "Ikke godkjent samtykke",
+            'status' => $person->getStatus()->getId() == 'godkjent' ? "Godkjent samtykke" : "Ikke godkjent samtykke",
             'foresatt' => null,
             'foresatt_mobil' => null,
             'kategori' => $person->getKategori()->getId(),
-            'godkjent' => $person->getStatus()->getId() != 'ikke_godkjent' ? true : false,
+            'godkjent' => $person->getStatus()->getId() == 'godkjent' ? true : false,
+            'stat' => $person->getStatus()->getId(),
         ];
         // Personen er under 15 og derfor er det foresatt som skal utføre godkjenning
         if($person->getKategori()->getId() == 'u15') {
             $personObj['foresatt'] = $person->getForesatt()->getNavn();
             $personObj['foresatt_mobil'] = $person->getForesatt()->getMobil();
-            $personObj['foresatt_status'] = $person->getForesatt()->getStatus()->getId() != "ikke_godkjent" ? "Godkjent samtykke" : "Ikke godkjent samtykke";
+            $personObj['foresatt_status'] = $person->getForesatt()->getStatus()->getId() == 'ikke_sendt' ? 'Samtykke ikke sendt' : ($person->getForesatt()->getStatus()->getId() != "ikke_godkjent" ? "Godkjent samtykke" : "Ikke godkjent samtykke");
         }
         $innslagObj['alle_personer'][] = $personObj;
     }

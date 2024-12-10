@@ -140,9 +140,16 @@ async function getDataAjax() {
                 var person = innslagObj['alle_personer'][i];
 
                 var personText = '';
-                personText += (person['kategori'] == 'u15' ? '(under 15 år) - ' : '');
-                personText += person['status'];
-                personText += (person['kategori'] == 'u15' ? ' (foresatt: ' + person['foresatt'] + ' ' + (person['foresatt_mobil'] ? person['foresatt_mobil'] : '') + ' | foresatt svar: ' + person['foresatt_status'] + ')' : '');
+                if(person['kategori'] == 'u13') {
+                    personText += (person['kategori'] == 'u13' ? '(under 13 år) - ' : '');
+                    personText += person['status'];
+                    if(person['foresatt']) {
+                        personText += (person['kategori'] == 'u13' ? ' (foresatt: ' + person['foresatt'] + ' ' + (person['foresatt_mobil'] ? person['foresatt_mobil'] : '') + ' | foresatt svar: ' + person['foresatt_status'] + ')' : '');
+                    }
+                }
+                else {
+                    personText += person['status'] + (person['kategori'] == 'u15' ? ' (under 15 år)' : '');
+                }
 
 
                 let DOMClass = person['godkjent'] ? 'success-subnode-item' : 'danger-subnode-item';
