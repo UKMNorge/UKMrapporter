@@ -49,7 +49,7 @@ foreach($til->getVideresending()->getAvsendere() as $avsender) {
                 'type' => $leder->getTypeNavn(),
                 'mobil' => $leder->getMobil(),
                 'epost' => $leder->getEpost(),
-                'godkjent' => $leder->getGodkjent() == 1,
+                'godkjent' => ($til->getType() != 'land' ? true : ($leder->getGodkjent() == 1)),
             ];
 
             // Adding leder

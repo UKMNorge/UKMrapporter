@@ -15,7 +15,7 @@ class Leder extends NodeObj implements TableItemInterface, SMS, Epost {
     public static properties : NodeProperty[] = [
         new NodeProperty('getNavn', 'Navn', true),
         new NodeProperty('getType', 'Type', true),
-        new NodeProperty('getGodkjent', 'Godkjent', true),
+        new NodeProperty('getGodkjent', 'Godkjent', false),
         new NodeProperty('getMobil', 'Mobil', false),
         new NodeProperty('getEpost', 'Epost', false),
         new NodeProperty('getFylke', 'Leder Fylke', false),
