@@ -9,10 +9,20 @@
             </div>
             <div v-else>
                 <div class="as-container container">
-                    <div class="as-margin-top-space-8 as-margin-bottom-space-8">
+                    <div class="as-margin-top-space-8 ">
                         <h1 class="">{{ rapportName }}</h1>
                     </div>
+                    <div class="as-margin-top-space-4 as-margin-bottom-space-5">
+                        <div v-if="wordLink.length < 1">
+                            <span>For å se en fullstendig oversikt, inkludert <b>skjemaer</b>, kan du laste ned hele rapporten som en Word-fil.</span>
+                            <button class="as-btn-simple as-margin-top-space-2" @click="genererWord()">Generer word-fil</button>
+                        </div>
+                        <div v-else>
+                            <button @click="lastNedWord()" class="as-btn-simple success as-margin-top-space-2" target="_blank">Last ned word-fil</button>
+                        </div>
+                    </div>
                 </div>
+
         
                 <div class="as-container buttons container as-margin-bottom-space-6 as-display-flex">
                     <DownloadsVue :repo="repo" />
@@ -61,6 +71,7 @@ var loading = ref(true);
 var dataFetched = ref(false);
 var alleInnslagTyper = ref([]);
 var rapportName = 'Nominasjoner';
+var wordLink = ref('');
 
 var nodeStructure = [DefaultNode, Arrangement, Nominasjon].reverse();
 
@@ -80,6 +91,26 @@ watch(noData, (newVal) => {
 });
 
 defineExpose({ noData });
+
+function genererWord() {
+    var data = {
+        action: 'UKMrapporter_ajax',
+        controller: 'getReport',
+        format: 'word',
+        rapport: 'Nominasjoner',
+    };
+
+    spaInteraction.runAjaxCall('', 'POST', data).then((response : any) => {
+        wordLink.value = 'response.link';
+    });
+}
+
+function lastNedWord() {
+    if (wordLink.value.length > 0) {
+        // Open the link in a new tab
+        window.open(wordLink.value, '_blank');
+    }
+}
 
 async function getDataAjax() {
     var data = {

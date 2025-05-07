@@ -48,11 +48,11 @@ export default {
         },
         getFeedbackAnswers() : Array<{id : String, text : String, iconClass : String}> {
             return [
-            {id: '1', text: 'Veldig dårlig', iconClass: 'mdi-emoticon-angry-outline'},
+            {id: '1', text: '', iconClass: 'mdi-emoticon-angry-outline'},
                 {id: '2', text: '', iconClass: 'mdi-emoticon-sad-outline'},
                 {id: '3', text: '', iconClass: 'mdi-emoticon-neutral-outline'},
                 {id: '4', text: '', iconClass: 'mdi-emoticon-happy-outline'},
-                {id: '5', text: 'Veldig bra', iconClass: 'mdi-emoticon-excited-outline'},
+                {id: '5', text: '', iconClass: 'mdi-emoticon-excited-outline'},
             ];
         },
         saveFeedback(answer : {id : String, text : String, iconClass : String}, question : String, campaignId : String) {
