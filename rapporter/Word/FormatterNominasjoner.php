@@ -148,6 +148,7 @@ class FormatterNominasjoner extends Formatter
             $table->addRow();
             $celle = $table->addCell(8000);
             $word->tekst('Fylt ut av: '. $nominasjon->getVoksen()->getNavn(), $celle );
+            $word->tekst('Roller: ' . $person->getRolle(), $celle );
             $celle = $table->addCell(3500);
             $word->tekst($nominasjon->getVoksen()->getMobil(), $celle );
             
