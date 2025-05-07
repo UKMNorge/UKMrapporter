@@ -101,7 +101,7 @@ function genererWord() {
     };
 
     spaInteraction.runAjaxCall('', 'POST', data).then((response : any) => {
-        wordLink.value = 'response.link';
+        wordLink.value = response.link;
     });
 }
 
