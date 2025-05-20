@@ -158,3 +158,6 @@ Css til siden man velger hva salgs rapport man vil generer
     margin: 0;
     color: #5b5b5b !important;
 }
+td.iframe {
+    position: relative !important;
+}
