@@ -122,12 +122,6 @@
 {% endfor %}
 
 
-{# Legger til type rom #}
-{# {% for leder in ledere %}
-    
-{% endfor %} #}
-
-
 <h4>Totalt for alle netter:</h4>
 <h5>Antall enkeltrom: <b>{{ totalEnkeltrom }}</b></h5>
 <h5>Antall dobbeltrom: <b>{{ totalDobbeltrom }}</b></h5>
@@ -135,9 +129,165 @@
 <h5>Antall kvadrupeltrom: <b>{{ totalKvadrupeltrom }}</b></h5>
 
 
-
 <br>
 <span class="muted">Personer som ikke har definert romtype har blitt beregnet som enkeltrom</span>
+
+
+<br>
+<br>
+<br>
+<hr>
+<h4>Enkel versjon</h4>
+<span class="muted">Denne versjonen kan tilpasses og kopieres/lim inn i Excel-hotellfilen.</span>
+<br>
+
+
+{% set _namespace = { 'tempPersoner': {} } %}
+{% set delerRoom = [] %}
+
+{% for gyldigNatt in alleGyldigeNetter %}
+    {% set dateKey = gyldigNatt|date('d_m') %}
+    {% set natt = netter[dateKey] %}
+
+    {% if natt %}
+        {% for fylke_key, fylke_data in natt.fylker %}
+            {% for key_arr, arr_data in fylke_data %}
+                {% for leder in arr_data %}
+                    {% set lederKey = leder.getNavn() ~ '_' ~ leder.getMobil() %}
+
+                    {% if leder.getRom() %}
+                        {% set delerRom = (arr_data|filter(led => led.getRom() and led.getRom().getId() == leder.getRom().getId())|length) > 1 %}
+                    {% endif %}
+
+
+                    {# Extract current state of tempPersoner #}
+                    {% set tempPersoner = _namespace.tempPersoner %}
+
+                    {# Initialize if not exists #}
+                    {% if tempPersoner[lederKey] is not defined %}
+                        {% set tempPersoner = tempPersoner|merge({ (lederKey): [] }) %}
+                    {% endif %}
+
+                    {% set dates = tempPersoner[lederKey] %}
+
+                    {% if dateKey not in dates %}
+                        {% set dates = dates|merge([dateKey]) %}
+                        {% set tempPersoner = tempPersoner|merge({ (lederKey): dates }) %}
+                    {% endif %}
+
+                    {# Write back to _namespace #}
+                    {% set _namespace = _namespace|merge({ 'tempPersoner': tempPersoner }) %}
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+{% endfor %}
+
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Room type</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Arrival Date</th>
+            <th>Departure Date</th>
+            <th>Email/phone number</th>
+            <th>Nationality</th>
+            <th>Comments</th>
+            <th>Companions</th>
+            <th>Last name</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>First name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lederKey, dates in _namespace.tempPersoner %}
+            {% set found = false %}
+            {% set navn = '' %}
+            {% set mobil = '' %}
+            {% set epost = '' %}
+            {% set roomNr = '' %}
+            {% set kapasitet = '' %}
+            {% for leder in ledere %}
+                {% if not found and (leder.getNavn() ~ '_' ~ leder.getMobil() == lederKey) %}
+                    {% set navn = leder.getNavn() %}
+                    {% if leder.getMobil()|length > 1 %}
+                        {% set mobil = leder.getMobil() %}
+                    {% endif %}
+                    {% set epost = leder.getEpost() %}
+                    {% set kapasitet = leder.getRom().getKapasitet() ?? 1  %}
+                    
+                    {% set found = true %}
+                {% endif %}
+            {% endfor %}
+
+            {# Parse and check dates #}
+            {% set parsedDates = [] %}
+            {% for date in dates %}
+                {% set parts = date|split('_') %}
+                {% set day = parts[0] %}
+                {% set month = parts[1] %}
+                {% set year = "now"|date("Y") %}
+                {% set dateString = year ~ '-' ~ month ~ '-' ~ day %}
+                {% set parsedDates = parsedDates|merge([date(dateString)]) %}
+            {% endfor %}
+
+            {% set parsedDates = parsedDates|sort %}
+            {% set isConsecutive = true %}
+            {% for i in 1..(parsedDates|length - 1) %}
+                {% set prev = parsedDates[i - 1] %}
+                {% set current = parsedDates[i] %}
+                {% if (current|date('U') - prev|date('U')) > 86400 %}
+                    {% set isConsecutive = false %}
+                {% endif %}
+            {% endfor %}
+
+            <tr>
+                <td class="td-etternavn">{{ kapasitet < 2 ? 'Single Room' : 'Andre Type Room'}}</td>
+                <td class="td-etternavn">{{ navn|split(' ')|slice(1)|join(' ') }}</td>
+                <td class="td-fornavn">{{ navn|split(' ')[0] }}</td>
+              {% if isConsecutive %}
+                    <td class="td-start">{{ parsedDates[0]|date('d-m-Y') }}</td>
+                    <td class="td-end">{{ parsedDates[parsedDates|length - 1]|date('d-m-Y') }}</td>
+                {% elseif parsedDates|length > 1 %}
+                    <td <td class="td-sammenhengende">>
+                        Ikke sammenhengende:
+                        {% for d in parsedDates %}
+                            {{ d|date('d.m.Y') }}{{ not loop.last ? ', ' : '' }}
+                        {% endfor %}
+                    </td>
+                {% else %}
+                    <td class="td-start">{{ parsedDates[0]|date('d-m-Y') }}</td>
+                    <td class="td-end">{{ parsedDates[0]|date('d-m-Y') }}</td>
+                {% endif %}
+
+                {% if mobil|length < 1 and epost|length < 1 %}
+                    <td class="td-kontakt">-</td>
+                {% else %}
+                    <td class="td-kontakt">{{ mobil ~ ((mobil|length > 1 and epost|length > 1) ? ' / ' : '') ~ epost }}</td>
+                {% endif %}
+                <td class="td-nationality">Norwegian</td>
+                <td class="td-comment">-</td>
+                <td class="td-companion">{{ kapasitet > 1 ? 'Yes' : 'No' }}</td>
+                
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
 
 <style>
     .natt-rapport-item {
