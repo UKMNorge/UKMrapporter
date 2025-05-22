@@ -1,5 +1,7 @@
 {% set antallBestillinger = 0 %}
 {% set ledere = [] %}
+{% set lederFylker = {} %}
+
 {% for gyldigNatt in alleGyldigeNetter %}
     {% set personerArr = [] %}
     {% set roomArr = [] %}
@@ -28,6 +30,9 @@
             {% for fylke_key, fylke_data in natt['fylker'] %}
                 {% for key_arr, arr_data in fylke_data %}
                     {% for leder in arr_data %}
+                        {% set lederKey = leder.getNavn() ~ '_' ~ leder.getMobil() %}
+                        {% set lederFylker = lederFylker|merge({ (lederKey): fylker[fylke_key] ?? 'UKM Norge' }) %}
+                        
                         {% set ledere = ledere|merge([leder]) %}
 
                         {% set antallBestillinger = antallBestillinger+1 %}
@@ -271,7 +276,7 @@
                     <td class="td-kontakt">{{ mobil ~ ((mobil|length > 1 and epost|length > 1) ? ' / ' : '') ~ epost }}</td>
                 {% endif %}
                 <td class="td-nationality">Norwegian</td>
-                <td class="td-comment">-</td>
+                <td class="td-comment">{{ lederFylker[lederKey] ?? '-' }}</td>
                 <td class="td-companion">{{ kapasitet > 1 ? 'Yes' : 'No' }}</td>
                 
                 <td>-</td>
