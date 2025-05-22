@@ -257,7 +257,7 @@
                 <td class="td-fornavn">{{ navn|split(' ')[0] }}</td>
               {% if isConsecutive %}
                     <td class="td-start">{{ parsedDates[0]|date('d-m-Y') }}</td>
-                    <td class="td-end">{{ parsedDates[parsedDates|length - 1]|date('d-m-Y') }}</td>
+                    <td class="td-end">{{ parsedDates[parsedDates|length - 1]|date_modify('+1 day')|date('d-m-Y') }}</td>
                 {% elseif parsedDates|length > 1 %}
                     <td <td class="td-sammenhengende">>
                         Ikke sammenhengende:
@@ -267,7 +267,7 @@
                     </td>
                 {% else %}
                     <td class="td-start">{{ parsedDates[0]|date('d-m-Y') }}</td>
-                    <td class="td-end">{{ parsedDates[0]|date('d-m-Y') }}</td>
+                    <td class="td-end">{{ parsedDates[0]|date_modify('+1 day')|date('d-m-Y') }}</td>
                 {% endif %}
 
                 {% if mobil|length < 1 and epost|length < 1 %}
