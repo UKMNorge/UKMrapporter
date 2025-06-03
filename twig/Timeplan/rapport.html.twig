@@ -20,7 +20,9 @@
                                 <thead>
                                     <tr >
                                         <th class="col-xs-4" scope="col">Navn</th>
+                                    {% if config.show('deltakere_tel') %}
                                         <th class="col-xs-4" scope="col">Tlf</th>
+                                    {% endif %}
                                         <th class="col-xs-4" scope="col">Oppmøtetid</th>
                                     </tr>
                                 </thead>
@@ -29,7 +31,9 @@
                                 <tbody>
                                     <tr class="">
                                         <td class="col-xs-4">{{ person.getNavn() }}</td>
+                                    {% if config.show('deltakere_tel') %}
                                         <td class="col-xs-4">{{ person.getMobil() }}</td>
+                                    {% endif %}
                                         <td class="col-xs-4">{{ hendelse.getOppmoteTid(innslag)|dato('H:i') }}</td>
                                     </tr>
                                 </tbody>
