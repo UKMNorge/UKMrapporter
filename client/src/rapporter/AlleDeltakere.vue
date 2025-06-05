@@ -21,12 +21,12 @@
                     <Contacts :repo="repo" />
                 </div>
         
-                <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+                <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :groupingNode="Fylke" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
         
                 <div class="container as-container">
                     <div v-for="(r, key) in rootNodes" :key="key">
                         <div class="as-margin-top-space-7" >
-                            <Table :leafNode="Person" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
+                            <Table :sortering="[0, Person.properties[0]]" :leafNode="Person" :key="key" :loading="loading" :keys="repo.getTableKeys()" :root="r" :visAntall="repo.antall" :visTelling="repo.telling" />
                         </div>
                     </div>
                 </div>
