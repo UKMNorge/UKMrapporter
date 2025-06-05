@@ -21,7 +21,7 @@
                     <Contacts :repo="repo" />
                 </div>
         
-                <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :groupingNode="Fylke" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+                <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :groupingNode="getGruppering()" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
         
                 <div class="container as-container">
                     <div v-for="(r, key) in rootNodes" :key="key">
@@ -52,6 +52,7 @@ import { SPAInteraction } from 'ukm-spa/SPAInteraction';
 import Repo from '../objects/Repo';
 import Contacts from '../components/Contacts.vue';
 import PhantomLoading from '../components/PhantomLoading.vue';
+import NodeProperty from '../objects/NodeProperty';
 
 
 var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
@@ -82,8 +83,17 @@ getDataAjax();
 var root = new RootNode();
 var repo = new Repo(root, nodeStructure, Person, rapportName);
 var rootNodes : any = repo.getRootNodes();
+var is_landsfestivalen = (<any>window).is_landsfestivalen || false;
 
 const smsDialogRef = ref();
+
+function getGruppering() : any | null {
+    // Grupperer på fylke hvis det er landsfestivalen
+    if(is_landsfestivalen == true) {
+        return Fylke
+    }
+    return null;
+}
 
 async function getDataAjax() {
     var data = {

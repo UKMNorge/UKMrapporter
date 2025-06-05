@@ -110,7 +110,7 @@
                 if(props.sortering && props.sortering.length == 2) {
                     setSort(props.sortering[0], props.sortering[1]);
                 }
-            }, 1000);
+            }, 500);
         }
     });
 
@@ -121,7 +121,7 @@
         root: RootNode,
         visAntall : any,
         visTelling : any,
-        sortering? : [number, NodeProperty]
+        sortering? : [number, NodeProperty] | null
     }>();
 
     var values : any = ref([]);
