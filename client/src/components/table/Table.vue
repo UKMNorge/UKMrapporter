@@ -104,7 +104,11 @@
     // var keys!: {node : Object, value : NodeProperty[]}[];
     // var values!: any[];
     // var loading!: boolean;
-
+    onMounted(() => {
+        if(props.sortering) {
+            setSort(props.sortering[0], props.sortering[1]);
+        }
+    });
 
     const props = defineProps<{
         keys: {node : Object, value : NodeProperty[]}[],
@@ -113,6 +117,7 @@
         root: RootNode,
         visAntall : any,
         visTelling : any,
+        sortering? : [number, NodeProperty]
     }>();
 
     var values : any = ref([]);
