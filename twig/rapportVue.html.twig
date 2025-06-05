@@ -1,3 +1,11 @@
+{% block javascripts %}
+
+<script>
+// For å bruke det på klient siden
+var is_landsfestivalen = {{ arrangement and arrangement.getEierType() == 'land' ? 'true' : 'false' }};
+</script>
+
+{% endblock %}
 {# Vue #}
 <div id="singleRapport">
 
