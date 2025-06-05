@@ -106,7 +106,11 @@
     // var loading!: boolean;
     onMounted(() => {
         if(props.sortering) {
-            setSort(props.sortering[0], props.sortering[1]);
+            setTimeout(() => {
+                if(props.sortering && props.sortering.length == 2) {
+                    setSort(props.sortering[0], props.sortering[1]);
+                }
+            }, 1000);
         }
     });
 
