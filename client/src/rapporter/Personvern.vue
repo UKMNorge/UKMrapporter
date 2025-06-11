@@ -20,7 +20,7 @@
                     <Contacts :repo="repo" />
                 </div>
         
-                <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+                <MenyVue :root="root" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
         
                 <div class="container as-container">
                     <div v-for="(r, key) in rootNodes" :key="key">
@@ -36,8 +36,7 @@
 </template>
   
 <script setup lang="ts">
-// Fra pakke UKM Komponenter
-import Table from '../components/table/Table.vue'
+import Table from '../components/table/Table.vue';
 import { ref, watch, defineEmits } from 'vue';
 import MenyVue from '../components/Meny.vue';
 import NoData from '../components/NoData.vue';
@@ -54,10 +53,9 @@ import SubnodePerson from '../objects/subnodesLeafs/SubnodePerson';
 import NodeProperty from './../objects/NodeProperty';
 import Contacts from '../components/Contacts.vue';
 import PhantomLoading from '../components/PhantomLoading.vue';
+import DefaultNode from '../objects/rapporter/DefaultNode';
 
-
-var ajaxurl : string = (<any>window).ajaxurl; // Kommer fra global
-
+var ajaxurl : string = (<any>window).ajaxurl;
 
 const spaInteraction = new SPAInteraction(null, ajaxurl);
 const oldRapportLenke = '?page=UKMrapporter&action=rapport&rapport=Personvern';
@@ -66,10 +64,8 @@ var dataFetched = ref(false);
 var alleInnslags = ref([]);
 var rapportName = 'Personvern';
 
-var nodeStructure = [Innslag].reverse();
-
+var nodeStructure = [DefaultNode, Innslag].reverse();
 const director = (<any>window).director;
-
 
 var is_landsfestivalen = director.getParam('isLand');
 
@@ -88,9 +84,8 @@ var rootNodes : any = repo.getRootNodes();
 
 const emit = defineEmits();
 const noData = ref(true);
-// Watch for changes to noData
 watch(noData, (newVal) => {
-    emit('update:noData', newVal); // Emit an event when noData changes
+    emit('update:noData', newVal);
 });
 
 defineExpose({ noData });
@@ -102,82 +97,69 @@ async function getDataAjax() {
     };
 
     var response = await spaInteraction.runAjaxCall('/', 'POST', data);
-    
-    var innslags = (<any>response.root.children);
+    dataFetched.value = true;
+    var statusNodes = (<any>response.root.children);
 
-    if(innslags.length < 1) {
-        dataFetched.value = true;
-        return;
-    }
+    alleInnslags.value = statusNodes;
 
-    alleInnslags = innslags;
+    for(var statusKey of Object.keys(statusNodes)) {
+        var statusNodeRaw = statusNodes[statusKey];
+        var statusNode = new DefaultNode(statusNodeRaw.obj.id, statusNodeRaw.obj.navn);
+        root.addChild(statusNode);
 
-    for(var key of Object.keys(innslags)) {
-        // Innslag
-        var innslag = innslags[key];
-        var innslagObj = innslag.obj;
+        for(var key of Object.keys(statusNodeRaw.children)) {
+            var innslag = statusNodeRaw.children[key];
+            var innslagObj = innslag.obj;
 
-        var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
+            var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
+            innslagNode.setArrangement(innslagObj.arrangement);
+            innslagNode.setFylke(innslagObj.fylke);
 
-        innslagNode.setArrangement(innslagObj.arrangement);
-        innslagNode.setFylke(innslagObj.fylke);
-
-        // adding subnodes
-        if(innslagObj['alle_titler']) {
-            var tittelSubnode = new Subnode();
-            var tittelText = '';
-            for(var tittel of innslagObj['alle_titler']) {
-                tittelText += tittel['tittel'] + ' ';
+            if(innslagObj['alle_titler']) {
+                var tittelSubnode = new Subnode();
+                var tittelText = '';
+                for(var tittel of innslagObj['alle_titler']) {
+                    tittelText += tittel['tittel'] + ' ';
+                }
+                tittelSubnode.addItem(new SubnodeItem('Titler', [new SubnodeStringItem(tittelText)]));
+                innslagNode.addSubnode(tittelSubnode);
             }
-            tittelSubnode.addItem(new SubnodeItem('Titler', [new SubnodeStringItem(tittelText)]));
-            innslagNode.addSubnode(tittelSubnode);
-        }
 
-        if(innslagObj['alle_personer']) {
-            var personerSubnode = new Subnode();
-            var personerStringItems = [];
-            for(var i = 0; i < innslagObj['alle_personer'].length; i++) {
-                var person = innslagObj['alle_personer'][i];
+            if(innslagObj['alle_personer']) {
+                var personerSubnode = new Subnode();
+                var personerStringItems = [];
+                for(var i = 0; i < innslagObj['alle_personer'].length; i++) {
+                    var person = innslagObj['alle_personer'][i];
 
-                var personText = '';
-                if(person['kategori'] == 'u13') {
-                    personText += (person['kategori'] == 'u13' ? '(under 13 år) - ' : '');
-                    personText += person['status'];
-                    if(person['foresatt']) {
-                        personText += (person['kategori'] == 'u13' ? ' (foresatt: ' + person['foresatt'] + ' ' + (person['foresatt_mobil'] ? person['foresatt_mobil'] : '') + ' | foresatt svar: ' + person['foresatt_status'] + ')' : '');
+                    var personText = '';
+                    if(person['kategori'] == 'u13') {
+                        personText += '(under 13 år) - ' + person['status'];
+                        if(person['foresatt']) {
+                            personText += ' (foresatt: ' + person['foresatt'] + ' ' + (person['foresatt_mobil'] ? person['foresatt_mobil'] : '') + ' | foresatt svar: ' + person['foresatt_status'] + ')';
+                        }
+                    } else {
+                        personText += person['status'] + (person['kategori'] == 'u15' ? ' (under 15 år)' : '');
                     }
+
+                    let DOMClass = person['godkjent'] ? 'success-subnode-item' : 'danger-subnode-item';
+                    let persStringItem = new SubnodePerson(personText, person['fornavn'], person['etternavn'], person['mobil'], person['epost']);
+                    persStringItem.setDOMClass(DOMClass);
+                    personerStringItems.push(persStringItem);
                 }
-                else {
-                    personText += person['status'] + (person['kategori'] == 'u15' ? ' (under 15 år)' : '');
-                }
-
-
-                let DOMClass = person['godkjent'] ? 'success-subnode-item' : 'danger-subnode-item';
-                let persStringItem = new SubnodePerson(personText, person['fornavn'], person['etternavn'], person['mobil'], person['epost']);
-                persStringItem.setDOMClass(DOMClass);
-                personerStringItems.push(persStringItem);
-
+                personerSubnode.addItem(new SubnodeItem('Personer', personerStringItems));
+                innslagNode.addSubnode(personerSubnode);
             }
-            personerSubnode.addItem(new SubnodeItem('Personer', personerStringItems));
-            innslagNode.addSubnode(personerSubnode);
+
+            statusNode.addChild(innslagNode);
+
+            repo = new Repo(root, nodeStructure, Innslag, rapportName);
+            loading.value = false;
+            rootNodes = repo.getRootNodes();
         }
-
-        root.addChild(innslagNode);
-        
-
-        repo = new Repo(root, nodeStructure, Innslag, rapportName);
-        loading.value = false;
-        rootNodes = repo.getRootNodes();
-        
     }
-    
-    if(innslags.length > 0) {
+
+    if(Object.keys(statusNodes).length > 0) {
         noData.value = false;
     }
-
-    if(innslags) {
-        dataFetched.value = true;
-    }
 }
-
 </script>
