@@ -15,63 +15,71 @@ $statusNodes = [
 ];
 
 foreach ($arrangement->getInnslag()->getAll() as $innslag) {
+    $statusFlags = [
+        'godkjent' => false,
+        'ikke_godkjent' => false
+    ];
+
+    $innslagObj = [
+        'id' => $innslag->getId(),
+        'navn' => $innslag->getNavn(),
+        'type' => $innslag->getType()->getKey(),
+        'sesong' => $innslag->getSesong(),
+        'arrangement' => $innslag->getHome()->getNavn(),
+        'fylke' => $innslag->getFylke() ? $innslag->getFylke()->getNavn() : 'Ukjent fylke',
+        'alle_personer' => [],
+        'alle_titler' => []
+    ];
+
+    try {
+        foreach ($innslag->getTitler()->getAll() as $tittel) {
+            $innslagObj['alle_titler'][] = $tittel;
+        }
+    } catch (Exception $e) {
+        // No titles available, continue without adding to the object   
+    }
+
     foreach ($innslag->getSamtykke()->getAll() as $person) {
+        if($person->getStatus()->getId() != 'godkjent') {
+            $personStatusId = 'ikke_godkjent';
+        }
+        $statusId = $person->getStatus()->getId();
+        $statusKey = $statusId == 'godkjent' ? 'godkjent' : 'ikke_godkjent';
+        $statusFlags[$statusKey] = true;
 
-        $personStatusId = $person->getStatus()->getId() == 'godkjent' ? 'godkjent' : 'ikke_godkjent';
-        $innslagObj = [
-            'id' => $innslag->getId(),
-            'navn' => $innslag->getNavn(),
-            'type' => $innslag->getType()->getKey(),
-            'sesong' => $innslag->getSesong(),
-            'arrangement' => $innslag->getHome()->getNavn(),
-            'fylke' => $innslag->getFylke() ? $innslag->getFylke()->getNavn() : 'Ukjent fylke',
-            'alle_personer' => [],
-            'alle_titler' => []
+        $innslagPerson = $person->getPerson();
+        $personObj = [
+            'id' => $person->getId(),
+            'fornavn' => $innslagPerson->getFornavn(),
+            'etternavn' => $innslagPerson->getEtternavn(),
+            'mobil' => $innslagPerson->getMobil(),
+            'epost' => $innslagPerson->getEpost(),
+            'status' => $statusId == 'godkjent' ? "Godkjent samtykke" : "Ikke godkjent samtykke",
+            'foresatt' => null,
+            'foresatt_mobil' => null,
+            'kategori' => $person->getKategori()->getId(),
+            'godkjent' => $statusId == 'godkjent',
+            'stat' => $statusId,
         ];
-        
-        try{
-            foreach ($innslag->getTitler()->getAll() as $tittel) {
-                $innslagObj['alle_titler'][] = $tittel;
-            }
-        } catch (Exception $e) {
-            // No titles available, continue
+
+        if ($person->getKategori()->getId() == 'u15') {
+            $personObj['foresatt'] = $person->getForesatt()->getNavn();
+            $personObj['foresatt_mobil'] = $person->getForesatt()->getMobil();
+            $personObj['foresatt_status'] = $person->getForesatt()->getStatus()->getId() == 'ikke_sendt'
+                ? 'Samtykke ikke sendt'
+                : ($person->getForesatt()->getStatus()->getId() != "ikke_godkjent"
+                    ? "Godkjent samtykke"
+                    : "Ikke godkjent samtykke");
         }
 
-        foreach ($innslag->getSamtykke()->getAll() as $person) {
-            if($person->getStatus()->getId() != 'godkjent') {
-                $personStatusId = 'ikke_godkjent';
-            }
+        $innslagObj['alle_personer'][] = $personObj;
+    }
 
-            $innslagPerson = $person->getPerson();
-            $personObj = [
-                'id' => $person->getId(),
-                'fornavn' => $innslagPerson->getFornavn(),
-                'etternavn' => $innslagPerson->getEtternavn(),
-                'mobil' => $innslagPerson->getMobil(),
-                'epost' => $innslagPerson->getEpost(),
-                'status' => $person->getStatus()->getId() == 'godkjent' ? "Godkjent samtykke" : "Ikke godkjent samtykke",
-                'foresatt' => null,
-                'foresatt_mobil' => null,
-                'kategori' => $person->getKategori()->getId(),
-                'godkjent' => $person->getStatus()->getId() == 'godkjent',
-                'stat' => $person->getStatus()->getId(),
-            ];
-
-            if ($person->getKategori()->getId() == 'u15') {
-                $personObj['foresatt'] = $person->getForesatt()->getNavn();
-                $personObj['foresatt_mobil'] = $person->getForesatt()->getMobil();
-                $personObj['foresatt_status'] = $person->getForesatt()->getStatus()->getId() == 'ikke_sendt'
-                    ? 'Samtykke ikke sendt'
-                    : ($person->getForesatt()->getStatus()->getId() != "ikke_godkjent"
-                        ? "Godkjent samtykke"
-                        : "Ikke godkjent samtykke");
-            }
-
-            $innslagObj['alle_personer'][] = $personObj;
+    foreach ($statusFlags as $statusKey => $used) {
+        if ($used) {
+            $innslagNode = new Node('Innslag', $innslagObj);
+            $statusNodes[$statusKey]->addChild($innslag->getId(), $innslagNode);
         }
-
-        $innslagNode = new Node('Innslag', $innslagObj);
-        $statusNodes[$personStatusId]->addChild($innslag->getId(), $innslagNode);
     }
 }
 
