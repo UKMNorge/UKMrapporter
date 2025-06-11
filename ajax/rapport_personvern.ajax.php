@@ -15,10 +15,7 @@ $statusNodes = [
 ];
 
 foreach ($arrangement->getInnslag()->getAll() as $innslag) {
-    $statusFlags = [
-        'godkjent' => false,
-        'ikke_godkjent' => false
-    ];
+    $hasNotApproved = false;
 
     $innslagObj = [
         'id' => $innslag->getId(),
@@ -36,16 +33,14 @@ foreach ($arrangement->getInnslag()->getAll() as $innslag) {
             $innslagObj['alle_titler'][] = $tittel;
         }
     } catch (Exception $e) {
-        // No titles available, continue without adding to the object   
+        // No titles available
     }
 
     foreach ($innslag->getSamtykke()->getAll() as $person) {
-        if($person->getStatus()->getId() != 'godkjent') {
-            $personStatusId = 'ikke_godkjent';
-        }
         $statusId = $person->getStatus()->getId();
-        $statusKey = $statusId == 'godkjent' ? 'godkjent' : 'ikke_godkjent';
-        $statusFlags[$statusKey] = true;
+        if ($statusId != 'godkjent') {
+            $hasNotApproved = true;
+        }
 
         $innslagPerson = $person->getPerson();
         $personObj = [
@@ -75,12 +70,11 @@ foreach ($arrangement->getInnslag()->getAll() as $innslag) {
         $innslagObj['alle_personer'][] = $personObj;
     }
 
-    foreach ($statusFlags as $statusKey => $used) {
-        if ($used) {
-            $innslagNode = new Node('Innslag', $innslagObj);
-            $statusNodes[$statusKey]->addChild($innslag->getId(), $innslagNode);
-        }
-    }
+    $statusKey = $hasNotApproved ? 'ikke_godkjent' : 'godkjent';
+    $statusNodes[$statusKey]->addChild(
+        $innslag->getId(),
+        new Node('Innslag', $innslagObj)
+    );
 }
 
 $root->addChild('godkjent', $statusNodes['godkjent']);
