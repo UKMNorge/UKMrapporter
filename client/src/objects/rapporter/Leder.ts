@@ -66,6 +66,7 @@ class Leder extends NodeObj implements TableItemInterface, SMS, Epost {
     private epost : string;
     private fylke : string;
     private erGodkjent : boolean;
+    private sted : boolean|string = '';
 
     constructor(id : string, navn : string, type : string, mobil : string, epost : string, fylke? : string, erGodkjent? : boolean) {
         super(id);
@@ -109,6 +110,14 @@ class Leder extends NodeObj implements TableItemInterface, SMS, Epost {
 
     public getGodkjent() : boolean {
         return this.erGodkjent;
+    }
+
+    public setSted(sted: boolean|string) : void {
+        this.sted = sted;
+    }
+
+    public getSted() : boolean|string {
+        return this.sted;
     }
 
     // Returnerer data fra static

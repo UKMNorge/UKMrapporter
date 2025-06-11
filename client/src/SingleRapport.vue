@@ -30,6 +30,9 @@
         <div v-else-if="getRapportId() == 'hotellbestillinger'">
             <Hotellbestillinger @update:noData="handleNoDataUpdate" />
         </div>
+        <div v-else-if="getRapportId() == 'ledereOvernatting'">
+            <LedereOvernatting @update:noData="handleNoDataUpdate" />
+        </div>
         <div v-else>
             <p>Rapport finnes ikke</p>
         </div>
@@ -52,6 +55,7 @@ import Program from './rapporter/Program.vue';
 import DeltakerSkjema from './rapporter/DeltakerSkjema.vue';
 import Sporreskjema from './rapporter/Sporreskjema.vue';
 import Hotellbestillinger from './rapporter/Hotellbestillinger.vue';
+import LedereOvernatting from './rapporter/LedereOvernatting.vue';
 import Feedback from './components/feedback/Feedback.vue';
 
 
