@@ -20,7 +20,7 @@
                     <Contacts :repo="repo" />
                 </div>
         
-                <MenyVue :root="root" :groupingNode="DefaultNode" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
+                <MenyVue :root="root" :gruppingUpdateCallback="(n)=>{repo.gruppingUpdateCallback(n)}" :tableCallback="(antall, telling) => {repo.tableCallback(antall, telling)}"/>
         
                 <div class="container as-container">
                     <div v-for="(r, key) in rootNodes" :key="key">
@@ -111,6 +111,8 @@ async function getDataAjax() {
             var innslag = statusNodeRaw.children[key];
             var innslagObj = innslag.obj;
 
+            if (statusNode.hasChild(innslagObj.id)) continue;
+
             var innslagNode = new Innslag(innslagObj.id, innslagObj.navn, innslagObj.type.name, innslagObj.sesong);
             innslagNode.setArrangement(innslagObj.arrangement);
             innslagNode.setFylke(innslagObj.fylke);
@@ -151,12 +153,12 @@ async function getDataAjax() {
             }
 
             statusNode.addChild(innslagNode);
-
-            repo = new Repo(root, nodeStructure, Innslag, rapportName);
-            loading.value = false;
-            rootNodes = repo.getRootNodes();
         }
     }
+
+    repo = new Repo(root, nodeStructure, Innslag, rapportName);
+    loading.value = false;
+    rootNodes = repo.getRootNodes();
 
     if(Object.keys(statusNodes).length > 0) {
         noData.value = false;
