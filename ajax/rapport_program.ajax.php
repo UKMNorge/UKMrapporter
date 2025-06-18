@@ -52,7 +52,9 @@ foreach($alleHendelser as $hendelse) {
 
         if($innslag->getType()->harBeskrivelse()) {
             if($innslag->getType()->erEnkeltperson() && $innslag->getType()->harFunksjoner()) {
-               $innslagObj['rolle'] = $innslag->getPersoner()->getSingle()->getRolle(); 
+                if($innslag->getPersoner()->getSingle()) {
+                    $innslagObj['rolle'] = $innslag->getPersoner()->getSingle()->getRolle(); 
+                }
             }
         }
 
