@@ -35,8 +35,8 @@
                             </div>
                         </button>
         
-                        <h4>Filtrering</h4>
-
+                        <h4>Filtrering {{ selectedNode.className.length ? ' etter ' : '' }}{{ selectedNode.className.toLowerCase() }}</h4>
+                        
                         <div class="attributes as-margin-top-space-2">
                             <div class="container nop buttons-selector as-margin-bottom-space-2 as-padding-bottom-space-1">
                                 <div class="button-div" v-for="(n, key) in filterNodes" :key="key">
@@ -50,17 +50,27 @@
                                     </button>
                                 </div>
                             </div>
-                            <div v-for="(node, key) in getProperties()" :key="key">
-                                <div v-if="!node.isActive()" class="prop as-margin-top-space-1">
-                                    <div @click="activateNode(node)" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
-                                        <span>{{ node.getNavn() }}</span>
+                            <div v-show="selectedNode.className.length" class="filter-info as-margin-bottom-space-4">
+                                <PermanentNotification typeNotification="info" :tittel="''" :description="getFiltreringBeskrivelse()"/>
+                            </div>
+                            <div :class="{'nop-impt': countSelected() == getProperties().length}" class="item as-card-2 as-padding-space-2 as-padding-top-space-1 as-padding-bottom-space-1">
+                                <div class="item as-card-2" v-for="(node, key) in getProperties()" :key="key">
+                                    <div v-if="!node.isActive()" class="prop as-margin-top-space-1 as-margin-bottom-space-1">
+                                        <div @click="activateNode(node)" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
+                                            <span>{{ node.getNavn() }}</span>
+                                            <div class="icon">
+                                                <svg class="add-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M11.5 4.24264L10.0858 2.82843L7.25736 5.65685L4.42893 2.82843L3.01472 4.24264L5.84315 7.07107L3.01472 9.89949L4.42893 11.3137L7.25736 8.48528L10.0858 11.3137L11.5 9.89949L8.67157 7.07107L11.5 4.24264Z" fill="#9B9B9B"/>
+                                                </svg>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button v-if="getProperties().length > 0" class="as-btn-default as-margin-top-space-1 as-btn-hover-default" @click="deactivateAllNodes()">Fjern alle</button>
-
-
+                        <div class="as-margin-top-space-4">
+                            <button v-if="getProperties().length > 0 && countSelected() > 0" class="as-btn-default as-margin-top-space-1 v-btn-error" @click="deactivateAllNodes()">Fjern alle</button>
+                        </div>
                     </div>
                 </div>
 
@@ -74,6 +84,8 @@ import NodeObj from "../objects/NodeObj";
 import RootNode from "../objects/RootNode";
 import { ref } from 'vue';
 import { onUpdated, onMounted } from 'vue';
+import { PermanentNotification } from 'ukm-components-vue3';
+
 import Kommune from '../objects/rapporter/Kommune';
 
 
@@ -108,6 +120,17 @@ onMounted(() => {
         filterNodes.value.push(val.constructor);
     }
 })
+
+function getFiltreringBeskrivelse() : string {
+    let retStr = '';
+    if(countSelected() == getProperties().length) {
+        retStr = countSelected()+'';
+    }
+    else {
+        retStr = countSelected() + ' av ' + getProperties().length;
+    }
+    return retStr + ' elementer er lagt til i filtreringen. Fjern alle og/eller legg til nye ved å klikke på filterelementene.';
+}
 
 function selectNode(node : RootNode|null) {
     /* Aktiver alle noder før man selekterer en ny node
@@ -172,6 +195,16 @@ function openSelector() {
     selectorPopup.value = true;
 }
 
+function countSelected() {
+    var count = 0;
+    for(var node of getProperties()) {
+        if(node.isActive()) {
+            count++;
+        }
+    }
+    return count;
+}
+
 // Recursive
 function getAllNodesAtLevel(node : NodeObj, filteredNodes : NodeObj[], filterNode : NodeObj) {
     if (node.constructor.name === (<any>filterNode).name) {
@@ -230,6 +263,11 @@ function getAllNodesAtLevel(node : NodeObj, filteredNodes : NodeObj[], filterNod
     }
     .rapport-meny .item .attributes .attribute .icon svg.remove-icon {
         margin: auto -3px auto 3px
+    }
+    .rapport-meny .item .attributes .attribute .icon svg.add-icon {
+        margin: auto -3px auto 3px;
+        transform: rotate(45deg);
+
     }
     .node-floating-selector {
         position: fixed;
