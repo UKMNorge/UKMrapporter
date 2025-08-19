@@ -2,7 +2,7 @@
     <div class="rapport-meny ">
         <div class="object item as-card-2 as-padding-space-2 as-margin-space-1">
             <h4 v-if="root && selectedNode.className == root.className">Ingen filtrering</h4>
-            <h4 v-else>Filtrering etter {{ getNodeName(selectedNode) }}</h4>
+            <h4 v-else>Filtrering etter {{ getNodeName(selectedNode).toLowerCase() }}</h4>
             <div class="attributes as-margin-top-space-1">
                 <div v-for="(node, key) in getProperties()" :key="key" class="attribute-outer as-padding-top-space-1">
                     <div @click="deactivateNode(node)" :key="key" v-if="node.isActive()" class="attribute as-padding-space-1 as-margin-right-space-1 as-btn-hover-default">
