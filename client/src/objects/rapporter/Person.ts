@@ -16,7 +16,7 @@ class Person extends NodeObj implements TableItemInterface, SMS, Epost {
         new NodeProperty('getNavn', 'Navn', true),
         new NodeProperty('getAlder', 'Alder', true),
         new NodeProperty('getMobil', 'Mobil', false),
-        new NodeProperty('getEpost', 'Epost', false),
+        // new NodeProperty('getEpost', 'Epost', false),
     ];
 
     // Using for reactivity on Vue
