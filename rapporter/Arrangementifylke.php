@@ -81,7 +81,7 @@ class Arrangementifylke extends Rapport
                     $arrangementerIKommune = $this->getArrangementer($kommune);
                     // Sorter arrangementer innad kommune
                     if($this->getConfig()->get('sortering') == 'dato_innad_kommune') {
-                        usort($arrangementerIKommune, function($a, $b) { return $a->start > $b->start ? 1 : ($b->start < $a->start ? -1 : 0); });
+                        usort($arrangementerIKommune, function($a, $b) { return $a->start <=> $b->start; });
                     }
                     
                     $kommuner[] = [
@@ -110,7 +110,7 @@ class Arrangementifylke extends Rapport
             // Konvert til 1-dimensjonal liste
             $arrangementer = $this->flatten($arrangementer);
             // Sort ved hjelp av usort og callback funksjon. For å endre fra ASC til DESC bare bytt $a med $b i funksjonens attributer
-            usort($arrangementer, function($a, $b) { return $a->start > $b->start ? 1 : ($b->start < $a->start ? -1 : 0); });
+            usort($arrangementer, function($a, $b) { return $a->start <=> $b->start; });
         }
 
         UKMrapporter::addViewData('kommuner', $kommuner);
