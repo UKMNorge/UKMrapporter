@@ -6,7 +6,7 @@
 
         <div class="aFourPageDiv as-margin-top-space-4 as-margin-bottom-space-4">
             <div class="margin-on-page top-margin"></div>
-            <div class="person" :style="{ bottom: (bottomPosition*0.6) + 'mm' }">
+            <div class="person" :style="{ bottom: (bottomPosition*0.6) + 'mm', left: (leftPosition*0.6) + 'mm' }">
                 <h4>Ola Normann</h4>
                 <span>UKM-Festivalen</span>
             </div>
@@ -15,6 +15,16 @@
 
         <div class="input-position">
             <div>
+                <span>Vertikal posisjon</span><br>
+                <input type="range" v-model="leftPosition" min="-250" max="250" step="1" />
+                <input type="number" class="form-group input-bottom-value" name="diplom_positon" :value="leftPosition" id="diplom_positon" readonly >
+                <span> millimeter</span>
+            </div>
+        </div>
+
+        <div class="input-position">
+            <div>
+                <span>Horisontal posisjon</span><br>
                 <input type="range" v-model="bottomPosition" min="-30" max="275" step="1" />
                 <input type="number" class="form-group input-bottom-value" name="diplom_positon" :value="bottomPosition" id="diplom_positon" readonly >
                 <span> millimeter</span>
@@ -22,7 +32,7 @@
         </div>
 
         <div class="as-container container space-message">
-            <PermanentNotification v-if="bottomPosition < -4 || bottomPosition > 250" typeNotification="danger" :tittel="'Teksten kan flytte utenfor siden'" :description="'På grunn av margininnstillinger kan teksten flytte utenfor siden. For å løse dette, kan du justere margin i Word-dokumentet.'" />
+            <PermanentNotification v-if="bottomPosition < -4 || bottomPosition > 250 || leftPosition < -240 || leftPosition > 240" typeNotification="danger" :tittel="'Teksten kan flytte utenfor siden'" :description="'På grunn av margininnstillinger kan teksten flytte utenfor siden. For å løse dette, kan du justere margin i Word-dokumentet.'" />
         </div>
     </div>
 </template>
@@ -34,6 +44,7 @@ export default {
     data() {
         return {
             bottomPosition : 0 as number,
+            leftPosition: 0 as number,
         }
     },
     components : {
