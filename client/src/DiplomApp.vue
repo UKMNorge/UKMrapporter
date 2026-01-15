@@ -15,18 +15,16 @@
 
         <div class="input-position">
             <div>
-                <span>Vertikal posisjon</span><br>
                 <input type="range" v-model="leftPosition" min="-250" max="250" step="1" />
-                <input type="number" class="form-group input-bottom-value" name="diplom_positon" :value="leftPosition" id="diplom_positon" readonly >
+                <input type="number" class="form-group input-bottom-value" name="diplom_positon_y" :value="leftPosition" id="diplom_positon_y" readonly >
                 <span> millimeter</span>
             </div>
         </div>
 
         <div class="input-position">
             <div>
-                <span>Horisontal posisjon</span><br>
                 <input type="range" v-model="bottomPosition" min="-30" max="275" step="1" />
-                <input type="number" class="form-group input-bottom-value" name="diplom_positon" :value="bottomPosition" id="diplom_positon" readonly >
+                <input type="number" class="form-group input-bottom-value" name="diplom_positon_x" :value="bottomPosition" id="diplom_positon_x" readonly >
                 <span> millimeter</span>
             </div>
         </div>
