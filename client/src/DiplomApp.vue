@@ -15,7 +15,7 @@
 
         <div class="input-position">
             <div>
-                <input type="range" v-model="leftPosition" min="-275" max="275" step="1" />
+                <input type="range" v-model="leftPosition" min="-150" max="150" step="1" />
                 <input type="number" class="form-group input-bottom-value" name="diplom_positon_x" :value="leftPosition" id="diplom_positon_x" readonly >
             </div>
         </div>
@@ -28,7 +28,7 @@
         </div>
 
         <div class="as-container container space-message">
-            <PermanentNotification v-if="bottomPosition < -4 || bottomPosition > 250 || leftPosition < -240 || leftPosition > 240" typeNotification="danger" :tittel="'Teksten kan flytte utenfor siden'" :description="'På grunn av margininnstillinger kan teksten flytte utenfor siden. For å løse dette, kan du justere margin i Word-dokumentet.'" />
+            <PermanentNotification v-if="bottomPosition < -4 || bottomPosition > 250 || leftPosition < -140 || leftPosition > 140" typeNotification="danger" :tittel="'Teksten kan flytte utenfor siden'" :description="'På grunn av margininnstillinger kan teksten flytte utenfor siden. For å løse dette, kan du justere margin i Word-dokumentet.'" />
         </div>
     </div>
 </template>
@@ -40,7 +40,7 @@ export default {
     data() {
         return {
             bottomPosition : 50 as number,
-            leftPosition: -115 as number,
+            leftPosition: -140 as number,
         }
     },
     components : {

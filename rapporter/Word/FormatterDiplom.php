@@ -22,7 +22,7 @@ class FormatterDiplom extends Formatter
         $tabell = $word->tabell();
 
         $topPosition = intval(static::$config->get('diplom_positon_y')->getValue());
-        $leftPosition = intval(static::$config->get('diplom_positon_x')->getValue())*0.6;
+        $leftPosition = intval(static::$config->get('diplom_positon_x')->getValue());
         
         $row = $tabell->addRow($word::mmToTwips($topPosition));
         $celle = $row->addCell(10000);
@@ -41,7 +41,7 @@ class FormatterDiplom extends Formatter
             [
                 // 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
                 // 'spaceAfter' => $word::ptToTwips(0.5 * $word::DEFAULT_FONT_SIZE)
-                'indentation' => ['left' => $word::mmToTwips(50-$leftPosition)],
+                'indentation' => ['left' => $word::mmToTwips($leftPosition + 140)],
             ],
             [
                 'size' => 16
@@ -52,7 +52,7 @@ class FormatterDiplom extends Formatter
             $celle,
             [
                 // 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
-                'indentation' => ['left' => $word::mmToTwips(50-$leftPosition)],
+                'indentation' => ['left' => $word::mmToTwips($leftPosition + 140)],
             ],
             [
                 'size' => 16
