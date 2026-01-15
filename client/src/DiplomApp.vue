@@ -17,7 +17,6 @@
             <div>
                 <input type="range" v-model="leftPosition" min="-275" max="275" step="1" />
                 <input type="number" class="form-group input-bottom-value" name="diplom_positon_x" :value="leftPosition" id="diplom_positon_x" readonly >
-                <span> millimeter</span>
             </div>
         </div>
 
@@ -25,7 +24,6 @@
             <div>
                 <input type="range" v-model="bottomPosition" min="-30" max="275" step="1" />
                 <input type="number" class="form-group input-bottom-value" name="diplom_positon_y" :value="bottomPosition" id="diplom_positon_y" readonly >
-                <span> millimeter</span>
             </div>
         </div>
 
@@ -96,7 +94,7 @@ export default {
     margin: auto;
 }
 .input-bottom-value {
-    width: 55px;
+    width: 65px;
     text-align: center;
     margin-left: 10px;
 }
