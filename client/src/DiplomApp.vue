@@ -6,7 +6,7 @@
 
         <div class="aFourPageDiv as-margin-top-space-4 as-margin-bottom-space-4">
             <div class="margin-on-page top-margin"></div>
-            <div class="person" :style="{ top: (bottomPosition*0.6) + 'mm', left: ((leftPosition*1.3)-80) + 'mm' }">
+            <div class="person" :style="{ top: (bottomPosition*0.6) + 'mm', left: ((leftPosition*1.3)-70) + 'mm' }">
                 <h4>Ola Normann</h4>
                 <span>UKM-Festivalen</span>
             </div>
