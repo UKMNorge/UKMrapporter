@@ -6,7 +6,7 @@
 
         <div class="aFourPageDiv as-margin-top-space-4 as-margin-bottom-space-4">
             <div class="margin-on-page top-margin"></div>
-            <div class="person" :style="{ bottom: (bottomPosition*0.6) + 'mm', left: (leftPosition*0.6) + 'mm' }">
+            <div class="person" :style="{ top: (bottomPosition*0.6) + 'mm', left: (leftPosition*0.6) + 'mm' }">
                 <h4>Ola Normann</h4>
                 <span>UKM-Festivalen</span>
             </div>
@@ -41,8 +41,8 @@ import { PermanentNotification } from 'ukm-components-vue3';
 export default {
     data() {
         return {
-            bottomPosition : 0 as number,
-            leftPosition: 0 as number,
+            bottomPosition : 50 as number,
+            leftPosition: -115 as number,
         }
     },
     components : {
