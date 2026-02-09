@@ -13,12 +13,17 @@ class Diplom extends Rapport
     public $kategori_id = 'personer';
     public $ikon = 'dashicons-welcome-learn-more';
     public $navn = 'Diplomer';
-    public $beskrivelse = 'Last ned ferdig wordfil klar for utskrift.';
+    public $beskrivelse = 'Last ned ferdig PDF klar for utskrift.';
     public $krever_hendelse = false;
-    public $har_word = true;
+    public $har_word = false;
     public $har_excel = false;
     public $har_sms = false;
     public $har_epost = false;
+
+    public function getTemplate()
+    {
+        return 'Diplom/rapport.html.twig';
+    }
 
     public function getRenderData()
     {
@@ -32,6 +37,29 @@ class Diplom extends Rapport
             }
         }
         return $gruppe;
+    }
+
+    /**
+     * Data to make the diplomas preview render names client-side.
+     */
+    public function getCustomizerData()
+    {
+        $personer = [];
+
+        foreach ($this->getArrangement()->getInnslag()->getAll() as $innslag) {
+            foreach ($innslag->getPersoner()->getAll() as $person) {
+                $personer[] = [
+                    'id' => $person->getId(),
+                    'navn' => $person->getNavn(),
+                    'innslag' => $innslag->getNavn(),
+                    'type' => $innslag->getType()->getNavn(),
+                ];
+            }
+        }
+
+        return [
+            'diplomPersoner' => $personer,
+        ];
     }
 
     /**

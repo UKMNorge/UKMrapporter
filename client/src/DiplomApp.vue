@@ -1,119 +1,355 @@
 <template>
-    <div>
-        <div class="as-container container">
-            <PermanentNotification typeNotification="warning" :tittel="'Justering av diplomer'" :description="'På grunn av ulikheter i skriverinnstillinger, må diplomer ofte justeres for å passe korrekt inn i malene.'" />
+    <div class="page" v-for="person in pagesToRender" :key="person.id || person.navn || person" :style="pageStyle" :class="{ preview: !showData }">
+        <div class="content">
+            <p class="line">Navn</p>
+            <p class="line name-line" :style="nameStyle(displayName(person))">{{ displayName(person) }}</p>
+            <p class="line">Sted</p>
+            <p class="line place-line" :style="placeStyle(displayPlaceLabel)">{{ displayPlaceLabel }}</p>
+            <p class="line">År</p>
+            <p class="line season-line">{{ displaySeasonLabel }}</p>
+            <img class="logo" :class="logoClass" :src="computedLogoPath" :style="logoStyle" alt="UKM logo" />
         </div>
-
-        <div class="aFourPageDiv as-margin-top-space-4 as-margin-bottom-space-4">
-            <div class="margin-on-page top-margin"></div>
-            <div class="person" :style="{ top: (bottomPosition*0.6) + 'mm', left: ((leftPosition*1.3)-70) + 'mm' }">
-                <h4>Ola Normann</h4>
-                <span>UKM-Festivalen</span>
-            </div>
-            <div class="margin-on-page bottom-margin"></div>
-        </div>
-
-        <div class="input-position">
-            <div>
-                <input type="range" v-model="leftPosition" min="-40" max="180" step="1" />
-                <input type="number" class="form-group input-bottom-value" name="diplom_positon_x" :value="leftPosition" id="diplom_positon_x" readonly >
-            </div>
-        </div>
-
-        <div class="input-position">
-            <div>
-                <input type="range" v-model="bottomPosition" min="-30" max="275" step="1" />
-                <input type="number" class="form-group input-bottom-value" name="diplom_positon_y" :value="bottomPosition" id="diplom_positon_y" readonly >
-            </div>
-        </div>
-
-        <div class="as-container container space-message">
-            <PermanentNotification v-if="bottomPosition < -4 || bottomPosition > 250 || leftPosition < 0 || leftPosition > 140" typeNotification="danger" :tittel="'Teksten kan flytte utenfor siden'" :description="'På grunn av margininnstillinger kan teksten flytte utenfor siden. For å løse dette, kan du justere margin i Word-dokumentet.'" />
-        </div>
+        <div class="footer" :class="{ preview: !showData, pdf: showData }">Diplom</div>
     </div>
 </template>
 
 <script lang="ts">
-import { PermanentNotification } from 'ukm-components-vue3';
-
 export default {
     data() {
         return {
-            bottomPosition : 50 as number,
-            leftPosition: 0 as number,
+            // Bruk binding for å unngå at bundleren prøver å importere filen
+            logoPath: '/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogomorkbrun.svg',
+            participants: (window as any).diplomPersoner || [],
+            // Toggle populated content; defaults to preview-only view on screen
+            showData: Boolean((window as any).diplomShowData),
+            themeKey: (window as any).diplomTheme || 'purple',
+            previewOnly: Boolean((window as any).diplomPreviewOnly),
+            placeOverride: (window as any).diplomPlaceLabel || ''
+            ,
+            seasonOverride: (window as any).diplomSeasonLabel || ''
+        };
+    },
+    mounted() {
+        // Expose a controlled setter so PDF generation can toggle showing data
+        (window as any).diplomSetShowData = (value: boolean) => {
+            this.showData = Boolean(value);
+        };
+        (window as any).diplomSetTheme = (value: string) => {
+            this.themeKey = value || 'purple';
+        };
+        (window as any).diplomSetPreviewOnly = (value: boolean) => {
+            this.previewOnly = Boolean(value);
+        };
+        (window as any).diplomSetPlaceLabel = (value: string) => {
+            this.placeOverride = value || '';
+        };
+        (window as any).diplomSetSeasonLabel = (value: string) => {
+            this.seasonOverride = value || '';
+        };
+    },
+    beforeUnmount() {
+        if ((window as any).diplomSetShowData) {
+            delete (window as any).diplomSetShowData;
+        }
+        if ((window as any).diplomSetTheme) {
+            delete (window as any).diplomSetTheme;
+        }
+        if ((window as any).diplomSetPreviewOnly) {
+            delete (window as any).diplomSetPreviewOnly;
+        }
+        if ((window as any).diplomSetPlaceLabel) {
+            delete (window as any).diplomSetPlaceLabel;
+        }
+        if ((window as any).diplomSetSeasonLabel) {
+            delete (window as any).diplomSetSeasonLabel;
         }
     },
-    components : {
-        PermanentNotification : PermanentNotification
-    },
-}
+    computed: {
+        pages(): any[] {
+            if (Array.isArray(this.participants) && this.participants.length > 0) {
+                return this.participants;
+            }
+            // fallback single page
+            return [''];
+        },
+        pagesToRender(): any[] {
+            // Only show actual persons when explicitly requested (e.g. during PDF generation)
+            if (!this.showData) {
+                return [''];
+            }
+
+            return this.previewOnly ? this.pages.slice(0, 1) : this.pages;
+        },
+        logoStyle(): { marginTop: string; transform: string } {
+            return {
+                marginTop: this.showData ? '0' : '0',
+                transform: this.showData ? 'translateY(-10mm)' : 'translateY(-16mm)'
+            };
+        },
+        pageStyle(): { background: string; color: string } {
+            return {
+                background: this.theme.background,
+                color: this.theme.textColor
+            };
+        },
+        computedLogoPath(): string {
+            return this.theme.logoPath || this.logoPath;
+        },
+        theme(): { background: string; logoPath: string; textColor: string } {
+            const themes: { [key: string]: { background: string; logoPath: string; textColor: string } } = {
+                dark: {
+                    background: '#241211',
+                    logoPath: '/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogolilla.svg',
+                    textColor: '#f5eee4'
+                },
+                purple: {
+                    background: '#ad83ff',
+                    logoPath: '/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogomorkbrun.svg',
+                    textColor: '#15082a'
+                },
+                orange: {
+                    background: '#ff520e',
+                    logoPath: '/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogomorkbrun.svg',
+                    textColor: '#15082a'
+                },
+                dark_orange: {
+                    background: '#241211',
+                    logoPath: '/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogoorange.svg',
+                    textColor: '#f5eee4'
+                }
+            };
+
+            return themes[this.themeKey] || themes.purple;
+        },
+        logoClass(): { [key: string]: boolean } {
+            return {
+                'logo--pdf': this.showData,
+                'logo--preview': !this.showData
+            };
+        },
+        displayPlaceLabel(): string {
+            if (this.placeOverride && this.placeOverride.trim().length > 0) {
+                return this.stripYearFromPlace(this.placeOverride);
+            }
+
+            if (this.showData) {
+                return this.placeLabel;
+            }
+
+            const placeType = (window as any).diplomPlaceType;
+            if (placeType === 'fylke') {
+                return 'Fylkesfestival Fylke';
+            }
+
+            return 'UKM Sted';
+        },
+        displaySeasonLabel(): string {
+            if (this.seasonOverride && this.seasonOverride.trim().length > 0) {
+                return this.seasonOverride.trim();
+            }
+
+            if (this.showData) {
+                return this.seasonLabel;
+            }
+
+            return 'Sesong';
+        },
+        placeLabel(): string {
+            if (this.placeOverride && this.placeOverride.trim().length > 0) {
+                return this.stripYearFromPlace(this.placeOverride);
+            }
+
+            const director: any = (window as any).director;
+            const getParam = (key: string) => {
+                try {
+                    return director && typeof director.getParam === 'function' ? director.getParam(key) : null;
+                } catch (e) {
+                    return null;
+                }
+            };
+
+            const fylkeNavn = getParam('fylkeNavn') || getParam('fylke') || getParam('countyName');
+            const kommuneNavn = getParam('kommuneNavn') || getParam('kommune') || getParam('municipalityName');
+
+            // Kombinert etikett hvis begge finnes
+            if (kommuneNavn && fylkeNavn) {
+                return `UKM ${kommuneNavn} / Fylkesfestival ${fylkeNavn}`;
+            }
+
+            // Fylke-only
+            if (fylkeNavn) {
+                return `Fylkesfestival ${fylkeNavn}`;
+            }
+
+            // Kommune-only
+            if (kommuneNavn) {
+                return `UKM ${kommuneNavn}`;
+            }
+
+            return 'UKM';
+        },
+        seasonLabel(): string {
+            if (this.seasonOverride && this.seasonOverride.trim().length > 0) {
+                return this.seasonOverride.trim();
+            }
+
+            const director: any = (window as any).director;
+            const getParam = (key: string) => {
+                try {
+                    return director && typeof director.getParam === 'function' ? director.getParam(key) : null;
+                } catch (e) {
+                    return null;
+                }
+            };
+
+            return getParam('sesong') || getParam('season') || getParam('year') || '';
+        }
+    }
+    ,
+    methods: {
+        stripYearFromPlace(text: string): string {
+            const normalized = (text || '').trim();
+            if (!normalized) {
+                return '';
+            }
+
+            // Remove standalone 4-digit years (e.g. 2026) and tidy separators.
+            const withoutYear = normalized.replace(/\b(19|20)\d{2}\b/g, '').replace(/\s{2,}/g, ' ');
+            return withoutYear.replace(/\s*[-/|,]\s*$/g, '').trim();
+        },
+        getFontSizeFor(text: string, base: number): string {
+            const normalized = (text || '').trim();
+            const length = normalized.length;
+
+            if (length > 38) {
+                return `${Math.max(26, base - 16)}px`;
+            }
+            if (length > 30) {
+                return `${Math.max(30, base - 12)}px`;
+            }
+            if (length > 22) {
+                return `${Math.max(34, base - 8)}px`;
+            }
+
+            return `${base}px`;
+        },
+        nameStyle(text: string): { fontSize: string } {
+            return { fontSize: this.getFontSizeFor(text, 44) };
+        },
+        placeStyle(text: string): { fontSize: string } {
+            return { fontSize: this.getFontSizeFor(text, 44) };
+        },
+        displayName(person: any): string {
+            if (this.showData) {
+                return person?.navn || person?.name || person || '';
+            }
+
+            return 'Navn Navnesen';
+        }
+    }
+};
 </script>
 
 <style scoped>
-.as-container {
-    width: calc(21cm);
-    padding: 10px;
+@font-face {
+    font-family: 'TWKBurns Ultra';
+    src: url('/wp-content/plugins/UKMrapporter/client/dist/assets/fonts/TWKBurns-Ultra.woff2') format('woff2'),
+         url('/wp-content/plugins/UKMrapporter/client/dist/assets/fonts/TWKBurns-Ultra.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
 }
-.aFourPageDiv {
-    width: calc(21cm*0.6);
-    height: calc(29.7cm*0.6);
-    margin-left: auto;
-    margin-right: auto;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    border-radius: 5px;
-    border: 1px solid #e0e0e0;
+
+.page {
+    width: 210mm;
+    height: 297mm;
+    background: transparent;
+    margin: 0 auto;
     position: relative;
-    overflow: hidden;
-    font-size: 12px;
-    font-family: Arial, sans-serif;
-    color: #333;
-    line-height: 1.5;
+    padding: 15mm 0mm 15mm 0mm;
     box-sizing: border-box;
-    page-break-after: always;
-}
-.aFourPageDiv .person{
-    position: absolute;
-    font-size: 12px;
-    font-weight: bold;
-    color: #333;
-    line-height: 1.5;
-    box-sizing: border-box;
-    page-break-after: always;
-    left: 0;
-    right: 0;
-    text-align: center;
-    margin-bottom: calc(20mm*0.6); /* Dette er margin som Word har. 0.6 er scala på hele siden */
-}
-.input-position {
-    width: 100%;
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    page-break-after: always;
 }
-.input-position div {
-    margin: auto;
+
+.page.preview {
+    transform: scale(0.8);
+    transform-origin: top left;
 }
-.input-bottom-value {
-    width: 65px;
-    text-align: center;
-    margin-left: 10px;
+
+.page:last-child {
+    page-break-after: auto;
 }
-.margin-on-page {
-    position: absolute;
+
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: inherit;
+    font-family: 'TWKBurns Ultra', Arial, sans-serif;
+    font-size: 36px;
+    line-height: 1.1;
+    gap: 10px;
     width: 100%;
-    left: 0;
-    right: 0;
-    height: 2px;
+    padding-left: 12mm;
 }
-.margin-on-page.top-margin {
-    top: calc(10mm);
-    border: dashed 1px var(--color-primary-grey-light);
+
+.line {
+    margin: 0;
 }
-.margin-on-page.bottom-margin {
-    bottom: calc(10mm);
-    border: dashed 1px var(--color-primary-grey-light);
+
+.name-line {
+    font-size: 44px;
+    margin-top: -24px;
+    word-break: break-word;
 }
-.space-message {
-    min-height: 130px;
+
+.place-line {
+    font-size: 44px;
+    margin-top: -24px;
+    word-break: break-word;
+}
+
+.season-line {
+    font-size: 44px;
+    margin-top: -24px;
+}
+
+.logo {
+    margin-top: 12px;
+    max-width: none;
+    height: auto;
+    align-self: center;
+}
+
+.logo--preview {
+    width: 130%;
+}
+
+.logo--pdf {
+    width: 140%;
+}
+
+.footer {
+    position: absolute;
+    bottom: 1mm;
+    left: -5mm;
+    right: -5mm;
+    font-family: 'TWKBurns Ultra', Arial, sans-serif;
+    font-size: 200px;
+    color: inherit;
+    text-align: center;
+}
+
+.footer.pdf {
+    transform: translateY(6mm);
+}
+
+.footer.preview {
+    transform: translateY(3mm);
 }
 </style>

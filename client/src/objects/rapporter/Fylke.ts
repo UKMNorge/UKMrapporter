@@ -45,6 +45,18 @@ class Fylke extends NodeObj {
     public static getKeysForTable() : NodeProperty[] {
         return super.getKeysForTable(Fylke);
     }
+    public static setProperties(props: NodeProperty[]) {
+        Fylke.properties = props;
+
+        // Oppdater reaktiv referanse hvis den finnes
+        if (Fylke.staticRefs?.value) {
+            Fylke.staticRefs.value.properties = props;
+        }
+    }
+
+    public static getProperties(): NodeProperty[] {
+        return Fylke.properties;
+    }
     /* -- Static end -- */
 
 

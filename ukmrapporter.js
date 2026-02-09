@@ -60,6 +60,10 @@ var UKMrapporter = function(jQuery) {
         show: function(e) {
             preventDefault(e);
             jQuery(customizer.selector).slideDown();
+            if (typeof window.mountDiplomCustomizerApp === 'function') {
+                window.mountDiplomCustomizerApp();
+            }
+            jQuery(generator.selector.container).hide();
             if (!loader.visible()) {
                 loader.show();
             }
@@ -430,6 +434,7 @@ var UKMrapporter = function(jQuery) {
                         jQuery(generator.selector.loading.title).show();
                         jQuery(generator.selector.loading.html).show();
                         break;
+                    case 'pdf':
                     case 'excel':
                         jQuery(generator.selector.loading.download).show();
                         break;
@@ -469,6 +474,9 @@ var UKMrapporter = function(jQuery) {
         showHTML: function(response) {
             jQuery(generator.selector.content).html(response.html);
             jQuery(generator.selector.content).show();
+            if (typeof window.mountDiplomReportApp === 'function') {
+                window.mountDiplomReportApp();
+            }
         },
         hideHTML: function() {
             jQuery(generator.selector.download.gui).slideUp();
@@ -478,6 +486,311 @@ var UKMrapporter = function(jQuery) {
         downloadExcel: function() {
             generator.hideHTML();
             generator.show('excel');
+        },
+        downloadPdf: function() {
+            // Ikke skjul innholdet – html2canvas/jsPDF trenger synlig DOM
+            generator.actions.hide();
+            jQuery(generator.selector.loading.download).show();
+            var pdfOverlay = jQuery('#pdfGeneratingOverlay');
+            if (pdfOverlay.length) {
+                pdfOverlay.show();
+            }
+
+            var jsPdfLib = (window.jspdf || window.jsPDF);
+            var JsPDFConstructor = jsPdfLib ? jsPdfLib.jsPDF || jsPdfLib : null;
+            if (!JsPDFConstructor) {
+                alert('Fant ikke jsPDF. Oppdater siden og prøv igjen.');
+                generator.loader.hide();
+                generator.actions.show();
+                if (pdfOverlay.length) {
+                    pdfOverlay.hide();
+                }
+                return;
+            }
+
+            var contentEl = document.querySelector(generator.selector.content);
+            if (!contentEl || !contentEl.innerHTML.trim()) {
+                alert('Fant ikke rapportinnholdet. Generer rapporten først.');
+                generator.loader.hide();
+                generator.actions.show();
+                if (pdfOverlay.length) {
+                    pdfOverlay.hide();
+                }
+                return;
+            }
+
+            var title = jQuery(generator.selector.title).is(':visible') ? jQuery(generator.selector.title).text() : jQuery('#reportTitle').text();
+            var safeTitle = title && title.length ? title : 'rapport';
+
+            if (typeof window.html2canvas !== 'function') {
+                alert('Fant ikke html2canvas. Oppdater siden og prøv igjen.');
+                generator.loader.hide();
+                generator.actions.show();
+                if (pdfOverlay.length) {
+                    pdfOverlay.hide();
+                }
+                return;
+            }
+
+            // For diplomer: sørg for at data (navn/sted) vises under PDF-generering
+            var restoreDiplomData = null;
+            var isDiplom = (loader.getId && loader.getId().toLowerCase && loader.getId().toLowerCase() === 'diplom');
+            if (isDiplom && typeof window.diplomSetShowData === 'function') {
+                var previous = Boolean(window.diplomShowData);
+                window.diplomSetShowData(true);
+                restoreDiplomData = function() {
+                    window.diplomSetShowData(previous);
+                };
+            }
+
+            var pdfUnit = isDiplom ? 'mm' : 'pt';
+            var pdf = new JsPDFConstructor('p', pdfUnit, 'a4');
+
+            var proceed = function() {
+                // Klon og gjør synlig i offscreen container for stabil rendering
+                var cloned = contentEl.cloneNode(true);
+                if (isDiplom) {
+                    cloned.style.width = '210mm';
+                    cloned.style.maxWidth = '210mm';
+                } else {
+                    cloned.style.width = contentEl.offsetWidth + 'px';
+                    cloned.style.maxWidth = contentEl.offsetWidth + 'px';
+                }
+                cloned.style.display = 'block';
+
+                var container = document.createElement('div');
+                container.style.position = 'fixed';
+                container.style.left = '-9999px';
+                container.style.top = '0';
+                container.style.width = isDiplom ? '210mm' : (contentEl.offsetWidth + 'px');
+                container.appendChild(cloned);
+                document.body.appendChild(container);
+
+                var finish = function() {
+                    document.body.removeChild(container);
+                    if (restoreDiplomData) {
+                        restoreDiplomData();
+                    }
+                    generator.loader.hide();
+                    jQuery(generator.selector.loading.download).hide();
+                    if (pdfOverlay.length) {
+                        pdfOverlay.hide();
+                    }
+                    generator.actions.show();
+                };
+
+                var onError = function(err) {
+                    console.error('PDF-generering feilet', err);
+                    finish();
+                    alert('Klarte ikke lage PDF akkurat nå. Forsøk igjen eller bruk Word/Excel.');
+                };
+
+                if (isDiplom) {
+                    var pages = cloned.querySelectorAll('.page');
+                    if (!pages || pages.length < 1) {
+                        pages = [cloned];
+                    }
+
+                    var inlineSvgImages = function(root) {
+                        var images = Array.prototype.slice.call(root.querySelectorAll('img'));
+                        if (images.length < 1 || typeof fetch !== 'function') {
+                            return Promise.resolve();
+                        }
+
+                        var parser = new DOMParser();
+
+                        return Promise.all(images.map(function(img) {
+                            var src = img.getAttribute('src');
+                            if (!src || src.indexOf('.svg') === -1) {
+                                return Promise.resolve();
+                            }
+
+                            return fetch(src, { mode: 'cors', credentials: 'same-origin' })
+                                .then(function(response) {
+                                    if (!response.ok) {
+                                        throw new Error('SVG fetch failed');
+                                    }
+                                    return response.text();
+                                })
+                                .then(function(svgText) {
+                                    var doc = parser.parseFromString(svgText, 'image/svg+xml');
+                                    var svg = doc.querySelector('svg');
+                                    if (!svg) {
+                                        return;
+                                    }
+
+                                    var className = img.getAttribute('class');
+                                    if (className) {
+                                        svg.setAttribute('class', className);
+                                    }
+
+                                    var styleAttr = img.getAttribute('style');
+                                    if (styleAttr) {
+                                        svg.setAttribute('style', styleAttr);
+                                    }
+
+                                    Array.prototype.slice.call(img.attributes).forEach(function(attr) {
+                                        if (attr && attr.name && attr.name.indexOf('data-v-') === 0) {
+                                            svg.setAttribute(attr.name, attr.value);
+                                        }
+                                    });
+
+                                    svg.setAttribute('aria-label', img.getAttribute('alt') || 'logo');
+                                    img.parentNode.replaceChild(svg, img);
+                                })
+                                .catch(function() {
+                                    return Promise.resolve();
+                                });
+                        }));
+                    };
+
+                    var inlineImages = function(root) {
+                        var images = Array.prototype.slice.call(root.querySelectorAll('img'));
+                        if (images.length < 1) {
+                            return Promise.resolve();
+                        }
+
+                        return Promise.all(images.map(function(img) {
+                            var src = img.getAttribute('src');
+                            if (!src || src.indexOf('data:') === 0) {
+                                return Promise.resolve();
+                            }
+
+                            img.setAttribute('crossorigin', 'anonymous');
+
+                            if (typeof fetch !== 'function') {
+                                return Promise.resolve();
+                            }
+
+                            return fetch(src, { mode: 'cors', credentials: 'same-origin' })
+                                .then(function(response) {
+                                    if (!response.ok) {
+                                        throw new Error('Image fetch failed');
+                                    }
+                                    return response.blob();
+                                })
+                                .then(function(blob) {
+                                    return new Promise(function(resolve) {
+                                        var reader = new FileReader();
+                                        reader.onload = function() {
+                                            img.src = reader.result;
+                                            resolve();
+                                        };
+                                        reader.onerror = function() { resolve(); };
+                                        reader.readAsDataURL(blob);
+                                    });
+                                })
+                                .catch(function() {
+                                    return Promise.resolve();
+                                });
+                        }));
+                    };
+
+                    var waitForImages = function(root) {
+                        var images = Array.prototype.slice.call(root.querySelectorAll('img'));
+                        if (images.length < 1) {
+                            return Promise.resolve();
+                        }
+
+                        return Promise.all(images.map(function(img) {
+                            return new Promise(function(resolve) {
+                                if (img.complete) {
+                                    resolve();
+                                    return;
+                                }
+
+                                var done = function() { resolve(); };
+                                img.addEventListener('load', done, { once: true });
+                                img.addEventListener('error', done, { once: true });
+                            });
+                        }));
+                    };
+
+                    inlineSvgImages(cloned).then(function() {
+                        return inlineImages(cloned);
+                    }).then(function() {
+                        return waitForImages(cloned);
+                    }).then(function() {
+                        var chain = Promise.resolve();
+                        pages.forEach(function(pageEl, index) {
+                            chain = chain.then(function() {
+                                return html2canvas(pageEl, { scale: 2, useCORS: true, allowTaint: false }).then(function(canvas) {
+                                    if (index > 0) {
+                                        pdf.addPage();
+                                    }
+
+                                    var imgData = canvas.toDataURL('image/png');
+                                    pdf.addImage(imgData, 'PNG', 0, 0, 210, 297, undefined, 'FAST');
+                                });
+                            });
+                        });
+
+                        return chain.then(function() {
+                            pdf.save(safeTitle + '.pdf');
+                            finish();
+                        });
+                    }).catch(onError);
+
+                    return;
+                }
+
+                if (typeof pdf.html === 'function') {
+                    try {
+                        var htmlPromise = pdf.html(cloned, {
+                            x: 20,
+                            y: 20,
+                            html2canvas: {
+                                scale: 0.9,
+                                useCORS: true
+                            },
+                            callback: function(doc) {
+                                doc.save(safeTitle + '.pdf');
+                                finish();
+                            }
+                        });
+                        if (htmlPromise && typeof htmlPromise.catch === 'function') {
+                            htmlPromise.catch(onError);
+                        }
+                    } catch (e) {
+                        onError(e);
+                    }
+                    return;
+                }
+
+                // Fallback: screenshot via html2canvas og legg inn som bilde
+                html2canvas(cloned, { scale: 0.9, useCORS: true }).then(function(canvas) {
+                    var imgData = canvas.toDataURL('image/png');
+                    var pageWidth = pdf.internal.pageSize.getWidth() - 40; // margins 20
+                    var pageHeight = pdf.internal.pageSize.getHeight() - 40;
+                    var imgWidth = pageWidth;
+                    var imgHeight = canvas.height * imgWidth / canvas.width;
+
+                    var y = 20;
+                    var x = 20;
+                    var heightLeft = imgHeight;
+                    var position = y;
+
+                    pdf.addImage(imgData, 'PNG', x, position, imgWidth, imgHeight, undefined, 'FAST');
+                    heightLeft -= pageHeight;
+
+                    while (heightLeft > 0) {
+                        pdf.addPage();
+                        position = 20 - (imgHeight - heightLeft);
+                        pdf.addImage(imgData, 'PNG', x, position, imgWidth, imgHeight, undefined, 'FAST');
+                        heightLeft -= pageHeight;
+                    }
+
+                    pdf.save(safeTitle + '.pdf');
+                    finish();
+                }).catch(onError);
+            };
+
+            // Gi Vue-treet et kort pust for å renderes med data før vi tar snapshot
+            if (isDiplom && typeof window.requestAnimationFrame === 'function') {
+                requestAnimationFrame(function() { setTimeout(proceed, 50); });
+            } else {
+                proceed();
+            }
         },
         showDownload: function(response) {
             jQuery(generator.selector.download.link).attr('href', response.link);
@@ -574,6 +887,9 @@ var UKMrapporter = function(jQuery) {
         downloadExcel: function() {
             generator.downloadExcel();
         },
+        downloadPdf: function() {
+            generator.downloadPdf();
+        },
         downloadWord: function() {
             generator.downloadWord();
         },
@@ -597,6 +913,7 @@ var UKMrapporter = function(jQuery) {
         bind: function() {
             jQuery(document).on('click', '.printReport', self.print);
             jQuery(document).on('click', '.downloadExcel', self.downloadExcel);
+            jQuery(document).on('click', '.downloadPdf', self.downloadPdf);
             jQuery(document).on('click', '.downloadWord', self.downloadWord);
             jQuery(document).on('click', '.sendEmail', self.showEmail);
             jQuery(document).on('click', '.hideEmail', self.hideEmail);

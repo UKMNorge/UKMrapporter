@@ -121,8 +121,9 @@ class UKMrapporter extends Modul
         wp_enqueue_style('WPbootstrap3_css');
         wp_enqueue_script('TwigJS');
 
-        wp_enqueue_style('UKMrapporter_css', static::getPluginUrl() . 'ukmrapporter.css');
-        wp_enqueue_script('UKMrapporter_js', static::getPluginUrl() . 'ukmrapporter.js');
+        $asset_version = filemtime(__DIR__ . '/ukmrapporter.js');
+        wp_enqueue_style('UKMrapporter_css', static::getPluginUrl() . 'ukmrapporter.css', [], $asset_version);
+        wp_enqueue_script('UKMrapporter_js', static::getPluginUrl() . 'ukmrapporter.js', [], $asset_version);
 
         wp_enqueue_style('jquery-ui-style');
         wp_enqueue_script('GOOGLEchart', 'https://www.google.com/jsapi');
@@ -133,6 +134,7 @@ class UKMrapporter extends Modul
 
 
         wp_enqueue_script('jsPDF', 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+        wp_enqueue_script('html2canvas', 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
         wp_enqueue_script('jsPDFTable', 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js');
 
 

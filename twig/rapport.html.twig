@@ -93,6 +93,12 @@
                     Last ned word-fil
                 </button>
             {% endif %}
+            {% if rapport.harPdf() %}
+                <button type="button" class="btn btn-default btn-sm downloadPdf">
+                    <span class="dashicons dashicons-pdf"></span>
+                    Last ned pdf-fil
+                </button>
+            {% endif %}
             {% if rapport.harExcel() %}
                 <button type="button" class="btn btn-default btn-sm downloadExcel">
                     <span class="dashicons dashicons-download"></span>
@@ -139,5 +145,11 @@
                 Last ned filen
             </a>
         </p>
+    </div>
+    <div id="pdfGeneratingOverlay" style="display:none;">
+        <div class="pdf-generating-content">
+            <div class="pdf-spinner"></div>
+            <div>Vent, genererer PDF...</div>
+        </div>
     </div>
 </div>

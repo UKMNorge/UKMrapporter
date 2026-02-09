@@ -9,6 +9,13 @@ require_once('UKM/inc/twig-admin.inc.php');
 $rapport = UKMrapporter::getAktivRapport($_POST['rapport']);
 $rapport->setConfigFromString($_POST['config']);
 
+if (method_exists(get_class($rapport), 'getCustomizerData')) {
+    $data = $rapport->getCustomizerData();
+    if (is_array($data)) {
+        UKMrapporter::addResponseData($data);
+    }
+}
+
 UKMrapporter::addResponseData(
     [
         'config' => $rapport->getConfig(),

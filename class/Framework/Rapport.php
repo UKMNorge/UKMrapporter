@@ -20,6 +20,7 @@ abstract class Rapport
     public $krever_hendelse = false;
     public $har_word = false;
     public $har_excel = true;
+    public $har_pdf = true;
     public $use_excel_personer = false;
     public $har_sms = true;
     public $har_epost = true;
@@ -92,6 +93,16 @@ abstract class Rapport
     }
 
     /**
+     * Støtter rapporten pdf-utgave?
+     *
+     * @return Bool
+     */
+    public function harPdf()
+    {
+        return $this->supportPdf();
+    }
+
+    /**
      * Støtter rapporten word-utgave?
      *
      * @see harWord()
@@ -100,6 +111,16 @@ abstract class Rapport
     public function supportWord()
     {
         return $this->har_word;
+    }
+
+    /**
+     * Støtter rapporten pdf-utgave?
+     *
+     * @return Bool
+     */
+    public function supportPdf()
+    {
+        return $this->har_pdf;
     }
 
     /**

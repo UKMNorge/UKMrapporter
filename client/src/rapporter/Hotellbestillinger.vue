@@ -23,7 +23,7 @@ var dataFetched = ref(false);
 var alleFylker = ref([]);
 var rapportName = 'Hotellbestillinger';
 
-Fylke.properties = [new NodeProperty('getNavn', 'Fylke', true)];
+Fylke.setProperties([new NodeProperty('getNavn', 'Fylke', true)]);
 DefaultNode.properties = [new NodeProperty('getNavn', 'Natt', true)];
 Leder.properties = [
     new NodeProperty('getNavn', 'Navn', true),

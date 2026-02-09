@@ -1,3 +1,211 @@
-<div id="diplomAppVue">
-    {# Her kommer diplom VUE appen #}
+<div class="diplom-customizer-layout">
+    <div id="diplomCustomizerApp">
+        {# Her kommer diplom VUE appen #}
+    </div>
+
+    <div class="form-group diplom-theme-section">
+        <label>Fargevalg</label>
+        <input type="hidden" id="diplomThemeInput" name="diplom_theme" value="purple" />
+        <div class="diplom-theme-grid">
+            <button type="button" class="diplom-theme-card" data-theme="dark">
+                <img src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/diplomlillalogosvart.png" alt="Diplom tema: mørk bakgrunn, lilla logo" />
+            </button>
+            <button type="button" class="diplom-theme-card" data-theme="purple">
+                <img src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/diplomsvartlogolilla.png" alt="Diplom tema: lilla bakgrunn, svart logo" />
+            </button>
+            <button type="button" class="diplom-theme-card" data-theme="orange">
+                <img src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/diplomsvartlogoorange.png" alt="Diplom tema: orange bakgrunn, svart logo" />
+            </button>
+            <button type="button" class="diplom-theme-card" data-theme="dark_orange">
+                <img src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/diplomorangelogosvart.png" alt="Diplom tema: mørk bakgrunn, orange logo" />
+            </button>
+        </div>
+
+        <div class="diplom-place-input">
+            <label for="diplomPlaceInput">Stedstekst</label>
+            {% set _diplomPlace = '' %}
+            {% if arrangement is defined and arrangement %}
+                {% set _navn = arrangement.getNavn() %}
+                {% set _navnLower = _navn|lower %}
+                {% if arrangement.getEierType() == 'kommune' %}
+                    {% set _diplomPlace = (_navnLower starts with 'ukm') ? _navn : 'UKM ' ~ _navn %}
+                {% elseif arrangement.getEierType() == 'fylke' %}
+                    {% set _diplomPlace = (_navnLower starts with 'fylkesfestival') ? _navn : 'Fylkesfestival ' ~ _navn %}
+                {% else %}
+                    {% set _diplomPlace = _navn %}
+                {% endif %}
+            {% endif %}
+            <input
+                type="text"
+                id="diplomPlaceInput"
+                name="diplom_place_override"
+                class="form-control"
+                value="{{ _diplomPlace|e('html_attr') }}"
+            />
+        </div>
+            <div class="diplom-place-input">
+                <label for="diplomSeasonInput">År</label>
+                <input
+                    type="text"
+                    id="diplomSeasonInput"
+                    name="diplom_season_override"
+                    class="form-control"
+                    value="{% if arrangement is defined and arrangement %}{{ arrangement.getSesong()|e('html_attr') }}{% endif %}"
+                />
+            </div>
+    </div>
 </div>
+
+<style>
+.diplom-customizer-layout {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    gap: 10px !important;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#diplomCustomizerApp {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.diplom-theme-section {
+    width: 200px;
+    flex: 0 0 200px;
+    margin-top: 0;
+}
+
+.diplom-theme-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    margin-top: 6px;
+    max-width: 200px;
+}
+
+.diplom-theme-card {
+    border: 1px solid #d0d0d0;
+    padding: 0;
+    background: #ffffff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.diplom-theme-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+}
+
+.diplom-theme-card.is-selected {
+    border-color: #111111;
+    transform: translateY(-1px);
+}
+
+.diplom-place-input {
+    margin-top: 12px;
+}
+
+/* Ensure preview shows only a single diploma */
+#diplomCustomizerApp {
+    overflow: hidden;
+}
+
+#diplomCustomizerApp .page {
+    display: none;
+}
+
+#diplomCustomizerApp .page:first-of-type {
+    display: block;
+}
+</style>
+
+<script>
+    window.diplomPersoner = {{ diplomPersoner|default([])|json_encode|raw }};
+    window.diplomTheme = (document.getElementById('diplomThemeInput') && document.getElementById('diplomThemeInput').value) || 'purple';
+    window.diplomShowData = false;
+    window.diplomPreviewOnly = true;
+    {% if arrangement is defined and arrangement %}
+        {% if arrangement.getEierType() == 'kommune' %}
+    window.diplomPlaceLabel = "UKM {{ arrangement.getNavn()|e('js') }}";
+    window.diplomPlaceType = "kommune";
+        {% elseif arrangement.getEierType() == 'fylke' %}
+    window.diplomPlaceLabel = "Fylkesfestival {{ arrangement.getNavn()|e('js') }}";
+    window.diplomPlaceType = "fylke";
+        {% else %}
+    window.diplomPlaceLabel = "{{ arrangement.getNavn()|e('js') }}";
+    window.diplomPlaceType = "";
+        {% endif %}
+    window.diplomSeasonLabel = "{{ arrangement.getSesong()|e('js') }}";
+    {% endif %}
+
+    (function() {
+        var input = document.getElementById('diplomThemeInput');
+        var placeInput = document.getElementById('diplomPlaceInput');
+            var seasonInput = document.getElementById('diplomSeasonInput');
+        var cards = document.querySelectorAll('.diplom-theme-card');
+        if (!input || !cards.length) {
+            return;
+        }
+
+        var setTheme = function(theme) {
+            input.value = theme;
+            window.diplomTheme = theme;
+            cards.forEach(function(card) {
+                card.classList.toggle('is-selected', card.getAttribute('data-theme') === theme);
+            });
+            if (typeof window.diplomSetTheme === 'function') {
+                window.diplomSetTheme(theme);
+            }
+        };
+
+        cards.forEach(function(card) {
+            card.addEventListener('click', function() {
+                var theme = card.getAttribute('data-theme') || 'purple';
+                setTheme(theme);
+            });
+        });
+
+        if (placeInput && placeInput.value) {
+            window.diplomPlaceLabel = placeInput.value;
+            if (typeof window.diplomSetPlaceLabel === 'function') {
+                window.diplomSetPlaceLabel(placeInput.value);
+            }
+        }
+            if (seasonInput && seasonInput.value) {
+                window.diplomSeasonLabel = seasonInput.value;
+                if (typeof window.diplomSetSeasonLabel === 'function') {
+                    window.diplomSetSeasonLabel(seasonInput.value);
+                }
+            }
+
+        if (placeInput) {
+            placeInput.addEventListener('input', function() {
+                window.diplomPlaceLabel = placeInput.value || window.diplomPlaceLabel;
+                if (typeof window.diplomSetPlaceLabel === 'function') {
+                    window.diplomSetPlaceLabel(placeInput.value || '');
+                }
+            });
+        }
+            if (seasonInput) {
+                seasonInput.addEventListener('input', function() {
+                    window.diplomSeasonLabel = seasonInput.value || window.diplomSeasonLabel;
+                    if (typeof window.diplomSetSeasonLabel === 'function') {
+                        window.diplomSetSeasonLabel(seasonInput.value || '');
+                    }
+                });
+            }
+
+        setTheme(window.diplomTheme || 'purple');
+        if (typeof window.diplomSetShowData === 'function') {
+            window.diplomSetShowData(false);
+        }
+    })();
+</script>

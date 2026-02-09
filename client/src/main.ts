@@ -30,7 +30,7 @@ const vuetify = createVuetify({
 const app = createApp(UKMrapporter);
 
 // Make Director global
-import { Director } from 'ukm-spa/Director';
+import { Director } from 'ukm-spa/director';
 
 var director = new Director();
 (<any>window).director = director;
@@ -48,7 +48,21 @@ app2.use(hljsVuePlugin);
 app2.use(vuetify);
 app2.mount("#singleRapport");
 
-const diplomApp = createApp(DiplomApp);
-diplomApp.use(hljsVuePlugin);
-diplomApp.use(vuetify);
-diplomApp.mount("#diplomAppVue");
+const mountDiplomApp = (selector: string) => {
+    const el = document.querySelector(selector) as HTMLElement | null;
+    if (!el || (el as any).__vue_app__) {
+        return;
+    }
+
+    const diplomApp = createApp(DiplomApp);
+    diplomApp.use(hljsVuePlugin);
+    diplomApp.use(vuetify);
+    diplomApp.mount(el);
+};
+
+mountDiplomApp("#diplomCustomizerApp");
+mountDiplomApp("#diplomReportApp");
+
+// Allow late-mounting after DOM updates or AJAX-rendered content loads
+(window as any).mountDiplomCustomizerApp = () => mountDiplomApp("#diplomCustomizerApp");
+(window as any).mountDiplomReportApp = () => mountDiplomApp("#diplomReportApp");

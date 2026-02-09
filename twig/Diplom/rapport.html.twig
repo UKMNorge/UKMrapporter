@@ -1,0 +1,36 @@
+{# Diplomas render via the Vue app (DiplomApp.vue) #}
+<div id="diplomReportApp"></div>
+
+<script>
+	window.diplomPersoner = {{ diplomPersoner|default([])|json_encode|raw }};
+	window.diplomTheme = "{{ config.get('diplom_theme')|default('purple')|e('js') }}";
+	{% set _hasPlaceOverride = config.get('diplom_place_override') %}
+	{% if _hasPlaceOverride %}
+	window.diplomPlaceLabel = "{{ _hasPlaceOverride|e('js') }}";
+	{% endif %}
+	{% if config.get('diplom_season_override') %}
+	window.diplomSeasonLabel = "{{ config.get('diplom_season_override')|e('js') }}";
+	{% endif %}
+	window.diplomPreviewOnly = false;
+	{% if not _hasPlaceOverride and arrangement is defined and arrangement %}
+		{% set _navn = arrangement.getNavn() %}
+		{% set _navnLower = _navn|lower %}
+		{% if arrangement.getEierType() == 'kommune' %}
+			{% set _diplomPlace = (_navnLower starts with 'ukm') ? _navn : 'UKM ' ~ _navn %}
+	window.diplomPlaceLabel = "{{ _diplomPlace|e('js') }}";
+	window.diplomPlaceType = "kommune";
+		{% elseif arrangement.getEierType() == 'fylke' %}
+			{% set _diplomPlace = (_navnLower starts with 'fylkesfestival') ? _navn : 'Fylkesfestival ' ~ _navn %}
+	window.diplomPlaceLabel = "{{ _diplomPlace|e('js') }}";
+	window.diplomPlaceType = "fylke";
+		{% else %}
+	window.diplomPlaceLabel = "{{ _navn|e('js') }}";
+	window.diplomPlaceType = "";
+		{% endif %}
+	{% if not config.get('diplom_season_override') %}
+	window.diplomSeasonLabel = "{{ arrangement.getSesong()|e('js') }}";
+	{% endif %}
+	{% endif %}
+	// For preview we keep data hidden; PDF generation toggles it on via window.diplomSetShowData
+	window.diplomShowData = false;
+</script>
