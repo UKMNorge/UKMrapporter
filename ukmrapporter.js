@@ -461,6 +461,7 @@ var UKMrapporter = function(jQuery) {
                             case 'html':
                                 generator.showHTML(response);
                                 break;
+                            case 'pdf':
                             case 'excel':
                             case 'word':
                                 generator.showDownload(response);
@@ -488,6 +489,12 @@ var UKMrapporter = function(jQuery) {
             generator.show('excel');
         },
         downloadPdf: function() {
+            var isDiplom = (loader.getId && loader.getId().toLowerCase && loader.getId().toLowerCase() === 'diplom');
+            if (isDiplom) {
+                generator.hideHTML();
+                generator.show('pdf');
+                return;
+            }
             // Ikke skjul innholdet – html2canvas/jsPDF trenger synlig DOM
             generator.actions.hide();
             jQuery(generator.selector.loading.download).show();
@@ -534,7 +541,6 @@ var UKMrapporter = function(jQuery) {
 
             // For diplomer: sørg for at data (navn/sted) vises under PDF-generering
             var restoreDiplomData = null;
-            var isDiplom = (loader.getId && loader.getId().toLowerCase && loader.getId().toLowerCase() === 'diplom');
             if (isDiplom && typeof window.diplomSetShowData === 'function') {
                 var previous = Boolean(window.diplomShowData);
                 window.diplomSetShowData(true);
