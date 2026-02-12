@@ -1,0 +1,267 @@
+{% if arrangement is defined and arrangement %}
+    <div class="row idkort-hendelser">
+        <div class="col-12 col-sm-6 col-md-4">
+            {% include "hendelser.html.twig" %}
+        </div>
+    </div>
+    {% if idkortHendelser is defined and idkortHendelser|length %}
+        <div class="idkort-roller" id="idkort-roller-section">
+            <h4>Rolle per hendelse</h4>
+            <div class="idkort-roller-list">
+                {% for hendelse in idkortHendelser %}
+                    <div class="idkort-rolle-row" data-hendelse-id="{{ hendelse.id }}">
+                        <div class="idkort-rolle-hendelse">{{ hendelse.navn }}</div>
+                        <input
+                            type="text"
+                            class="form-control idkort-rolle-input"
+                            name="rolle_{{ hendelse.id }}"
+                            value="{{ hendelse.rolle|e('html_attr') }}"
+                            placeholder="Rolle"
+                        />
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endif %}
+
+<div class="idkort-customizer-layout">
+    <div id="idkortCustomizerApp">
+        {# Her kommer ID-kort VUE appen #}
+    </div>
+
+    <div class="form-group idkort-theme-section">
+        <label>Fargevalg</label>
+        <input type="hidden" id="idkortThemeInput" name="idkort_theme" value="purple" />
+        <div class="idkort-theme-grid">
+            <button type="button" class="idkort-theme-card" data-theme="orange">
+                <div class="idkort-theme-thumb idkort-theme-thumb--orange">
+                    <img class="idkort-theme-logo" src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogomorkbrun.svg" alt="UKM logo" />
+                    <div class="idkort-theme-name">Navn Navnesen</div>
+                    <div class="idkort-theme-role">Rolle</div>
+                </div>
+            </button>
+            <button type="button" class="idkort-theme-card" data-theme="purple">
+                <div class="idkort-theme-thumb idkort-theme-thumb--purple">
+                    <img class="idkort-theme-logo" src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogomorkbrun.svg" alt="UKM logo" />
+                    <div class="idkort-theme-name">Navn Navnesen</div>
+                    <div class="idkort-theme-role">Rolle</div>
+                </div>
+            </button>
+            <button type="button" class="idkort-theme-card" data-theme="brown">
+                <div class="idkort-theme-thumb idkort-theme-thumb--brown">
+                    <img class="idkort-theme-logo" src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogomorkbrun.svg" alt="UKM logo" />
+                    <div class="idkort-theme-name">Navn Navnesen</div>
+                    <div class="idkort-theme-role">Rolle</div>
+                </div>
+            </button>
+            <button type="button" class="idkort-theme-card" data-theme="dark_brown_orange">
+                <div class="idkort-theme-thumb idkort-theme-thumb--dark-brown">
+                    <img class="idkort-theme-logo" src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogoorange.svg" alt="UKM logo" />
+                    <div class="idkort-theme-name">Navn Navnesen</div>
+                    <div class="idkort-theme-role">Rolle</div>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.idkort-customizer-layout {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    gap: 10px !important;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.idkort-hendelser {
+    margin-bottom: 12px;
+}
+
+#idkortCustomizerApp {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.idkort-theme-section {
+    width: 200px;
+    flex: 0 0 200px;
+    margin-top: 0;
+}
+
+.idkort-theme-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    margin-top: 6px;
+    max-width: 200px;
+}
+
+.idkort-theme-card {
+    border: 1px solid #d0d0d0;
+    padding: 0;
+    background: #ffffff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.idkort-theme-card .idkort-theme-logo {
+    display: block;
+    height: auto;
+    border-radius: 3px;
+}
+
+.idkort-theme-card.is-selected {
+    border-color: #111111;
+    transform: translateY(-1px);
+}
+
+.idkort-theme-thumb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-height: 160px;
+    padding: 8px 4px 6px;
+    border-radius: 3px;
+    font-family: 'TWKBurns Ultra', Arial, sans-serif;
+    text-align: center;
+    overflow: visible;
+}
+
+.idkort-theme-thumb--orange {
+    background: #ff520e;
+    color: #15082a;
+}
+
+.idkort-theme-thumb--purple {
+    background: #ad83ff;
+    color: #15082a;
+}
+
+.idkort-theme-thumb--brown {
+    background: #a56800;
+    color: #15082a;
+}
+
+.idkort-theme-thumb--dark-brown {
+    background: #241211;
+    color: #ff520e;
+}
+
+.idkort-theme-logo {
+    width: 120%;
+    max-width: none;
+    height: auto;
+}
+
+.idkort-theme-name {
+    font-size: 10px;
+}
+
+.idkort-theme-role {
+    font-size: 8px;
+}
+
+.idkort-roller { 
+    max-width: 600px; margin: 18px 
+}
+
+.idkort-roller-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+
+.idkort-rolle-row {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) minmax(220px, 320px);
+    gap: 8px;
+    align-items: center;
+    padding: 8px 10px;
+    border: 1px solid #e2e2e2;
+    border-radius: 6px;
+    background: #ffffff;
+}
+
+.idkort-rolle-hendelse {
+    font-weight: 600;
+}
+
+</style>
+
+<script>
+    window.idkortPersoner = {{ idkortPersoner|default([])|json_encode|raw }};
+    window.idkortTheme = (document.getElementById('idkortThemeInput') && document.getElementById('idkortThemeInput').value) || 'purple';
+    window.idkortShowData = false;
+    window.idkortPreviewOnly = true;
+
+    (function() {
+        var input = document.getElementById('idkortThemeInput');
+        var cards = document.querySelectorAll('.idkort-theme-card');
+        if (!input || !cards.length) {
+            return;
+        }
+
+        var setTheme = function(theme) {
+            input.value = theme;
+            window.idkortTheme = theme;
+            cards.forEach(function(card) {
+                card.classList.toggle('is-selected', card.getAttribute('data-theme') === theme);
+            });
+            if (typeof window.idkortSetTheme === 'function') {
+                window.idkortSetTheme(theme);
+            }
+        };
+
+        cards.forEach(function(card) {
+            card.addEventListener('click', function() {
+                var theme = card.getAttribute('data-theme') || 'purple';
+                setTheme(theme);
+            });
+        });
+
+        setTheme(window.idkortTheme || 'purple');
+        if (typeof window.idkortSetShowData === 'function') {
+            window.idkortSetShowData(false);
+        }
+
+        var updateRoleRows = function() {
+            var rows = document.querySelectorAll('.idkort-rolle-row');
+            var anyVisible = false;
+            rows.forEach(function(row) {
+                var hendelseId = row.getAttribute('data-hendelse-id');
+                if (!hendelseId) {
+                    return;
+                }
+                var checkbox = document.getElementById('vis_hendelse_' + hendelseId);
+                if (!checkbox) {
+                    row.style.display = '';
+                    anyVisible = true;
+                    return;
+                }
+                row.style.display = checkbox.checked ? '' : 'none';
+                if (checkbox.checked) {
+                    anyVisible = true;
+                }
+            });
+            var roleSection = document.getElementById('idkort-roller-section');
+            if (roleSection) {
+                roleSection.style.display = anyVisible ? '' : 'none';
+            }
+        };
+
+        var hendelseInputs = document.querySelectorAll('[id^="vis_hendelse_"]');
+        hendelseInputs.forEach(function(hendelseInput) {
+            hendelseInput.addEventListener('change', updateRoleRows);
+        });
+        updateRoleRows();
+    })();
+</script>

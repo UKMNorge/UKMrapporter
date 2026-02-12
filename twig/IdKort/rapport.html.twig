@@ -1,0 +1,24 @@
+{% set _hasSelection = false %}
+{% if arrangement is defined and arrangement %}
+    {% for hendelse in arrangement.getProgram().getAbsoluteAll() %}
+        {% if config.show('hendelse_' ~ hendelse.getId()) %}
+            {% set _hasSelection = true %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% if kreverHendelse and not _hasSelection %}
+    <div class="alert alert-danger">
+        Denne rapporten krever at du velger en hendelse.
+        <button type="button" class="btn btn-default btn-xs showCustomizer">tilbake</button>
+    </div>
+{% else %}
+    <div id="idkortReportApp"></div>
+
+    <script>
+        window.idkortPersoner = {{ idkortPersoner|default([])|json_encode|raw }};
+        window.idkortTheme = "{{ config.get('idkort_theme')|default('purple')|e('js') }}";
+        window.idkortShowData = true;
+        window.idkortPreviewOnly = false;
+    </script>
+{% endif %}

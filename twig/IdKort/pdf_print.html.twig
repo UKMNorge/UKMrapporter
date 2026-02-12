@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        @page { size: 60mm 91.6mm; margin: 0; }
+        body { margin: 0; padding: 0; font-family: 'TWKBurns Ultra', Arial, sans-serif; font-weight: normal; }
+        * { font-family: 'TWKBurns Ultra', Arial, sans-serif; font-weight: normal; }
+
+        @font-face {
+            font-family: 'TWKBurns Ultra';
+            src: url('{{ fontPath }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .page {
+            width: 60mm;
+            height: 91.6mm;
+            background: {{ theme.background }};
+            color: {{ theme.textColor }};
+            box-sizing: border-box;
+            padding: 0;
+            position: relative;
+            page-break-after: always;
+        }
+
+        .card {
+            position: absolute;
+            width: 54mm;
+            height: 85.6mm;
+            padding: 2.5mm 1.5mm;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+
+        .crop {
+            position: absolute;
+            background: #000000;
+        }
+
+        .crop-h {
+            height: 0.5pt;
+        }
+
+        .crop-v {
+            width: 0.5pt;
+        }
+
+        .card-inner {
+            position: absolute;
+            top: 4mm;
+            left: 0;
+            right: 0;
+            bottom: 36mm;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .logo {
+            width: 125%;
+            max-width: 70mm;
+            height: auto;
+            margin-bottom: 2mm;
+        }
+
+        .name {
+            word-break: break-word;
+            white-space: normal;
+            line-height: 0.65;
+            margin: 0;
+        }
+
+        .role {
+            font-size: 30pt;
+            word-break: break-word;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 8mm;
+            margin: 0;
+            line-height: 1.05;
+        }
+    </style>
+</head>
+<body>
+{% set cardW = 54 %}
+{% set cardH = 85.6 %}
+{% set bleed = 3 %}
+{% set markLen = 3 %}
+{% set markOffset = 1.5 %}
+{% set pageW = cardW + (bleed * 2) %}
+{% set pageH = cardH + (bleed * 2) %}
+{% set left = bleed %}
+{% set top = bleed %}
+{% set bleedLeft = left - bleed %}
+{% set bleedTop = top - bleed %}
+{% set bleedW = cardW + (bleed * 2) %}
+{% set bleedH = cardH + (bleed * 2) %}
+
+{% for person in personer %}
+    <div class="page">
+        {% if person is not empty %}
+                {% set nameText = person.navn|default('') %}
+                {% set nameLen = nameText|length %}
+                {% set words = nameText|split(' ') %}
+                {% set wordCount = words|length %}
+                {% if wordCount >= 4 %}
+                    {% set nameSize = 18 %}
+                {% elseif wordCount == 3 %}
+                    {% set nameSize = 20 %}
+                {% elseif nameLen > 18 %}
+                    {% set nameSize = 20 %}
+                {% elseif nameLen > 14 %}
+                    {% set nameSize = 20 %}
+                {% else %}
+                    {% set nameSize = 20 %}
+                {% endif %}
+
+                {% set roleText = person.rolle|default('') %}
+                {% set roleWords = roleText|split(' ') %}
+                {% set roleWordCount = roleWords|length %}
+                {% set roleLen = roleText|length %}
+                {% if roleWordCount >= 3 %}
+                    {% set roleSize = 18 %}
+                {% elseif roleWordCount == 2 %}
+                    {% set roleSize = 20 %}
+                {% elseif roleLen > 12 %}
+                    {% set roleSize = 20 %}
+                {% elseif roleLen > 9 %}
+                    {% set roleSize = 22 %}
+                {% else %}
+                    {% set roleSize = 24 %}
+                {% endif %}
+
+                <div class="card" style="left: {{ left }}mm; top: {{ top }}mm;">
+                    <div class="card-inner">
+                        <img class="logo" src="{{ logoDataUri ? logoDataUri : logoPathRel }}" alt="UKM logo" />
+                        <div class="name" style="font-size: {{ nameSize }}pt;">{{ nameText }}</div>
+                    </div>
+                    <div class="role" style="font-size: {{ roleSize }}pt;">{{ roleText }}</div>
+                </div>
+
+                <div class="crop crop-h" style="left: {{ bleedLeft - markLen - markOffset }}mm; top: {{ bleedTop + markOffset }}mm; width: {{ markLen }}mm;"></div>
+                <div class="crop crop-v" style="left: {{ bleedLeft + markOffset }}mm; top: {{ bleedTop - markLen - markOffset }}mm; height: {{ markLen }}mm;"></div>
+                <div class="crop crop-h" style="left: {{ bleedLeft + bleedW + markOffset }}mm; top: {{ bleedTop + markOffset }}mm; width: {{ markLen }}mm;"></div>
+                <div class="crop crop-v" style="left: {{ bleedLeft + bleedW - markOffset }}mm; top: {{ bleedTop - markLen - markOffset }}mm; height: {{ markLen }}mm;"></div>
+
+                <div class="crop crop-h" style="left: {{ bleedLeft - markLen - markOffset }}mm; top: {{ bleedTop + bleedH - markOffset }}mm; width: {{ markLen }}mm;"></div>
+                <div class="crop crop-v" style="left: {{ bleedLeft + markOffset }}mm; top: {{ bleedTop + bleedH + markOffset }}mm; height: {{ markLen }}mm;"></div>
+                <div class="crop crop-h" style="left: {{ bleedLeft + bleedW + markOffset }}mm; top: {{ bleedTop + bleedH - markOffset }}mm; width: {{ markLen }}mm;"></div>
+                <div class="crop crop-v" style="left: {{ bleedLeft + bleedW - markOffset }}mm; top: {{ bleedTop + bleedH + markOffset }}mm; height: {{ markLen }}mm;"></div>
+        {% endif %}
+    </div>
+{% endfor %}
+</body>
+</html>

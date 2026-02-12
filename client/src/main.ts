@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import UKMrapporter from "./UKMrapporter.vue";
 import Singlerapport from "./SingleRapport.vue";
 import DiplomApp from "./DiplomApp.vue";
+import IdKortApp from "./IdKortApp.vue";
 
 import hljs from "highlight.js/lib/core";
 import javascript from "highlight.js/lib/languages/javascript";
@@ -60,9 +61,25 @@ const mountDiplomApp = (selector: string) => {
     diplomApp.mount(el);
 };
 
+const mountIdKortApp = (selector: string) => {
+    const el = document.querySelector(selector) as HTMLElement | null;
+    if (!el || (el as any).__vue_app__) {
+        return;
+    }
+
+    const idkortApp = createApp(IdKortApp);
+    idkortApp.use(hljsVuePlugin);
+    idkortApp.use(vuetify);
+    idkortApp.mount(el);
+};
+
 mountDiplomApp("#diplomCustomizerApp");
 mountDiplomApp("#diplomReportApp");
+mountIdKortApp("#idkortCustomizerApp");
+mountIdKortApp("#idkortReportApp");
 
 // Allow late-mounting after DOM updates or AJAX-rendered content loads
 (window as any).mountDiplomCustomizerApp = () => mountDiplomApp("#diplomCustomizerApp");
 (window as any).mountDiplomReportApp = () => mountDiplomApp("#diplomReportApp");
+(window as any).mountIdKortCustomizerApp = () => mountIdKortApp("#idkortCustomizerApp");
+(window as any).mountIdKortReportApp = () => mountIdKortApp("#idkortReportApp");
