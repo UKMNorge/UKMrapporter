@@ -63,6 +63,10 @@ var UKMrapporter = function(jQuery) {
             if (typeof window.mountDiplomCustomizerApp === 'function') {
                 window.mountDiplomCustomizerApp();
             }
+            if (typeof window.mountIdKortCustomizerApp === 'function') {
+                window.mountIdKortCustomizerApp();
+            }
+            jQuery('#idkortCustomizerApp').show();
             jQuery(generator.selector.container).hide();
             if (!loader.visible()) {
                 loader.show();
@@ -98,6 +102,10 @@ var UKMrapporter = function(jQuery) {
                         if (input.attr('data-radiobutton')) {
                             jQuery(customizer.selector + ' .radioButtons[data-name="' + key + '"] button[value="' + value + '"]').click();
                         }
+                        break;
+                    case 'text':
+                    case 'textarea':
+                        input.val(value);
                         break;
                     case 'radio':
                         jQuery(customizer.selector + ' input[name="' + key + '"][value="' + value + '"]').prop('checked', true);
@@ -435,6 +443,7 @@ var UKMrapporter = function(jQuery) {
                         jQuery(generator.selector.loading.html).show();
                         break;
                     case 'pdf':
+                    case 'pdf_print':
                     case 'excel':
                         jQuery(generator.selector.loading.download).show();
                         break;
@@ -462,6 +471,7 @@ var UKMrapporter = function(jQuery) {
                                 generator.showHTML(response);
                                 break;
                             case 'pdf':
+                            case 'pdf_print':
                             case 'excel':
                             case 'word':
                                 generator.showDownload(response);
@@ -475,8 +485,17 @@ var UKMrapporter = function(jQuery) {
         showHTML: function(response) {
             jQuery(generator.selector.content).html(response.html);
             jQuery(generator.selector.content).show();
+            var isIdKort = (loader.getId && loader.getId().toLowerCase && loader.getId().toLowerCase() === 'idkort');
+            if (isIdKort) {
+                jQuery('#idkortReportApp').hide();
+            } else {
+                jQuery('#idkortReportApp').show();
+            }
             if (typeof window.mountDiplomReportApp === 'function') {
                 window.mountDiplomReportApp();
+            }
+            if (typeof window.mountIdKortReportApp === 'function') {
+                window.mountIdKortReportApp();
             }
         },
         hideHTML: function() {
@@ -490,8 +509,14 @@ var UKMrapporter = function(jQuery) {
         },
         downloadPdf: function() {
             var isDiplom = (loader.getId && loader.getId().toLowerCase && loader.getId().toLowerCase() === 'diplom');
-            if (isDiplom) {
+            var isIdKort = (loader.getId && loader.getId().toLowerCase && loader.getId().toLowerCase() === 'idkort');
+            if (isDiplom || isIdKort) {
                 generator.hideHTML();
+                if (isIdKort) {
+                    jQuery(generator.selector.content).html('');
+                    jQuery('#idkortCustomizerApp').hide();
+                    jQuery('#idkortReportApp').hide();
+                }
                 generator.show('pdf');
                 return;
             }
@@ -798,6 +823,17 @@ var UKMrapporter = function(jQuery) {
                 proceed();
             }
         },
+        downloadPdfPrint: function() {
+            var isIdKort = (loader.getId && loader.getId().toLowerCase && loader.getId().toLowerCase() === 'idkort');
+            if (isIdKort) {
+                generator.hideHTML();
+                jQuery(generator.selector.content).html('');
+                jQuery('#idkortCustomizerApp').hide();
+                jQuery('#idkortReportApp').hide();
+                generator.show('pdf_print');
+                return;
+            }
+        },
         showDownload: function(response) {
             jQuery(generator.selector.download.link).attr('href', response.link);
             jQuery(generator.selector.download.gui).slideDown();
@@ -896,6 +932,9 @@ var UKMrapporter = function(jQuery) {
         downloadPdf: function() {
             generator.downloadPdf();
         },
+        downloadPdfPrint: function() {
+            generator.downloadPdfPrint();
+        },
         downloadWord: function() {
             generator.downloadWord();
         },
@@ -920,6 +959,7 @@ var UKMrapporter = function(jQuery) {
             jQuery(document).on('click', '.printReport', self.print);
             jQuery(document).on('click', '.downloadExcel', self.downloadExcel);
             jQuery(document).on('click', '.downloadPdf', self.downloadPdf);
+            jQuery(document).on('click', '.downloadPdfPrint', self.downloadPdfPrint);
             jQuery(document).on('click', '.downloadWord', self.downloadWord);
             jQuery(document).on('click', '.sendEmail', self.showEmail);
             jQuery(document).on('click', '.hideEmail', self.hideEmail);

@@ -64,33 +64,53 @@ elseif ($_POST['format'] == 'word') {
     );
 }
 // BRUKER SØKER PDF-UTGAVEN
-elseif ($_POST['format'] == 'pdf' && $rapport->getId() == 'Diplom') {
+elseif (in_array($_POST['format'], ['pdf', 'pdf_print']) && in_array($rapport->getId(), ['Diplom', 'IdKort'])) {
     if (!class_exists(Dompdf::class)) {
         throw new Exception('Dompdf er ikke tilgjengelig. Installer composer-avhengighetene.');
     }
 
     $config = $rapport->getConfig();
-    $themeKey = $config->har('diplom_theme') ? $config->get('diplom_theme')->getValue() : 'purple';
+    $isDiplom = $rapport->getId() == 'Diplom';
+    $isPrint = $_POST['format'] == 'pdf_print';
+    $themeKey = $config->har($isDiplom ? 'diplom_theme' : 'idkort_theme')
+        ? $config->get($isDiplom ? 'diplom_theme' : 'idkort_theme')->getValue()
+        : 'purple';
     $themes = [
         'dark' => [
             'background' => '#241211',
             'logoFile' => 'ukmlogolilla.svg',
-            'textColor' => '#f5eee4'
+            'textColor' => '#f5eee4',
+            'borderColor' => 'rgba(0, 0, 0, 0.35)'
         ],
         'purple' => [
             'background' => '#ad83ff',
             'logoFile' => 'ukmlogomorkbrun.svg',
-            'textColor' => '#15082a'
+            'textColor' => '#15082a',
+            'borderColor' => 'rgba(0, 0, 0, 0.35)'
         ],
         'orange' => [
             'background' => '#ff520e',
             'logoFile' => 'ukmlogomorkbrun.svg',
-            'textColor' => '#15082a'
+            'textColor' => '#15082a',
+            'borderColor' => 'rgba(0, 0, 0, 0.35)'
+        ],
+        'brown' => [
+            'background' => '#a56800',
+            'logoFile' => 'ukmlogomorkbrun.svg',
+            'textColor' => '#15082a',
+            'borderColor' => 'rgba(0, 0, 0, 0.35)'
+        ],
+        'dark_brown_orange' => [
+            'background' => '#241211',
+            'logoFile' => 'ukmlogoorange.svg',
+            'textColor' => '#ff520e',
+            'borderColor' => '#f5eee4'
         ],
         'dark_orange' => [
             'background' => '#241211',
             'logoFile' => 'ukmlogoorange.svg',
-            'textColor' => '#f5eee4'
+            'textColor' => '#f5eee4',
+            'borderColor' => 'rgba(0, 0, 0, 0.35)'
         ]
     ];
     $theme = array_key_exists($themeKey, $themes) ? $themes[$themeKey] : $themes['purple'];
@@ -107,54 +127,72 @@ elseif ($_POST['format'] == 'pdf' && $rapport->getId() == 'Diplom') {
 
     $fontPath = 'client/dist/assets/fonts/TWKBurns-Ultra.ttf';
 
-    $arrangement = $rapport->getArrangement();
-    $placeOverride = $config->har('diplom_place_override') ? $config->get('diplom_place_override')->getValue() : '';
-    $seasonOverride = $config->har('diplom_season_override') ? $config->get('diplom_season_override')->getValue() : '';
-
-    $placeLabel = $placeOverride;
-    if (!$placeLabel && $arrangement) {
-        $navn = $arrangement->getNavn();
-        $navnLower = mb_strtolower($navn, 'UTF-8');
-        if ($arrangement->getEierType() == 'kommune') {
-            $placeLabel = (strpos($navnLower, 'ukm') === 0) ? $navn : 'UKM ' . $navn;
-        } elseif ($arrangement->getEierType() == 'fylke') {
-            $placeLabel = (strpos($navnLower, 'fylkesfestival') === 0) ? $navn : 'Fylkesfestival ' . $navn;
-        } else {
-            $placeLabel = $navn;
-        }
-    }
-    if ($placeLabel) {
-        $placeLabel = preg_replace('/\b(19|20)\d{2}\b/u', '', $placeLabel);
-        $placeLabel = trim(preg_replace('/\s{2,}/', ' ', $placeLabel));
-        $placeLabel = preg_replace('/\s*[-\/|,]\s*$/', '', $placeLabel);
-    }
-
-    $seasonLabel = $seasonOverride;
-    if (!$seasonLabel && $arrangement) {
-        $seasonLabel = $arrangement->getSesong();
-    }
-
     $personer = [];
     if (method_exists(get_class($rapport), 'getCustomizerData')) {
         $data = $rapport->getCustomizerData();
-        if (is_array($data) && isset($data['diplomPersoner'])) {
+        if (is_array($data) && $isDiplom && isset($data['diplomPersoner'])) {
             $personer = $data['diplomPersoner'];
+        }
+        if (is_array($data) && !$isDiplom && isset($data['idkortPersoner'])) {
+            $personer = $data['idkortPersoner'];
         }
     }
 
-    $html = TWIG(
-        'Diplom/pdf.html.twig',
-        array_merge(UKMrapporter::getResponseData(), UKMrapporter::getViewData(), [
-            'personer' => $personer,
-            'theme' => $theme,
-            'logoDataUri' => $logoDataUri,
-            'logoPathRel' => $logoPathRel,
-            'fontPath' => $fontPath,
-            'placeLabel' => $placeLabel,
-            'seasonLabel' => $seasonLabel
-        ]),
-        UKMrapporter::getPluginPath()
-    );
+    if ($isDiplom) {
+        $arrangement = $rapport->getArrangement();
+        $placeOverride = $config->har('diplom_place_override') ? $config->get('diplom_place_override')->getValue() : '';
+        $seasonOverride = $config->har('diplom_season_override') ? $config->get('diplom_season_override')->getValue() : '';
+
+        $placeLabel = $placeOverride;
+        if (!$placeLabel && $arrangement) {
+            $navn = $arrangement->getNavn();
+            $navnLower = mb_strtolower($navn, 'UTF-8');
+            if ($arrangement->getEierType() == 'kommune') {
+                $placeLabel = (strpos($navnLower, 'ukm') === 0) ? $navn : 'UKM ' . $navn;
+            } elseif ($arrangement->getEierType() == 'fylke') {
+                $placeLabel = (strpos($navnLower, 'fylkesfestival') === 0) ? $navn : 'Fylkesfestival ' . $navn;
+            } else {
+                $placeLabel = $navn;
+            }
+        }
+        if ($placeLabel) {
+            $placeLabel = preg_replace('/\b(19|20)\d{2}\b/u', '', $placeLabel);
+            $placeLabel = trim(preg_replace('/\s{2,}/', ' ', $placeLabel));
+            $placeLabel = preg_replace('/\s*[-\/|,]\s*$/', '', $placeLabel);
+        }
+
+        $seasonLabel = $seasonOverride;
+        if (!$seasonLabel && $arrangement) {
+            $seasonLabel = $arrangement->getSesong();
+        }
+
+        $html = TWIG(
+            'Diplom/pdf.html.twig',
+            array_merge(UKMrapporter::getResponseData(), UKMrapporter::getViewData(), [
+                'personer' => $personer,
+                'theme' => $theme,
+                'logoDataUri' => $logoDataUri,
+                'logoPathRel' => $logoPathRel,
+                'fontPath' => $fontPath,
+                'placeLabel' => $placeLabel,
+                'seasonLabel' => $seasonLabel
+            ]),
+            UKMrapporter::getPluginPath()
+        );
+    } else {
+        $template = $isPrint ? 'IdKort/pdf_print.html.twig' : 'IdKort/pdf.html.twig';
+        $html = TWIG(
+            $template,
+            array_merge(UKMrapporter::getResponseData(), UKMrapporter::getViewData(), [
+                'personer' => $personer,
+                'theme' => $theme,
+                'logoDataUri' => $logoDataUri,
+                'logoPathRel' => $logoPathRel,
+                'fontPath' => $fontPath
+            ]),
+            UKMrapporter::getPluginPath()
+        );
+    }
 
     $upload = wp_upload_dir();
     $dompdfDir = $upload['basedir'] . '/ukmrapporter/dompdf';
@@ -188,7 +226,7 @@ elseif ($_POST['format'] == 'pdf' && $rapport->getId() == 'Diplom') {
         wp_mkdir_p($dir);
     }
 
-    $filename = 'diplom_' . date('Ymd_His') . '.pdf';
+    $filename = ($isDiplom ? 'diplom_' : ($isPrint ? 'idkort_trykk_' : 'idkort_')) . date('Ymd_His') . '.pdf';
     $path = $dir . '/' . $filename;
     file_put_contents($path, $dompdf->output());
 

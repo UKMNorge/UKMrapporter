@@ -98,6 +98,12 @@
                     <span class="dashicons dashicons-pdf"></span>
                     Last ned pdf-fil
                 </button>
+                {% if rapport.getId() == 'IdKort' %}
+                    <button type="button" class="btn btn-default btn-sm downloadPdfPrint">
+                        <span class="dashicons dashicons-pdf"></span>
+                        Last ned pdf (trykkeri)
+                    </button>
+                {% endif %}
             {% endif %}
             {% if rapport.harExcel() %}
                 <button type="button" class="btn btn-default btn-sm downloadExcel">

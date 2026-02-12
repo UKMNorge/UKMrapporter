@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        @page { size: A4 portrait; margin: 0; }
+        body { margin: 0; padding: 0; font-family: 'TWKBurns Ultra', Arial, sans-serif; font-weight: normal; }
+        * { font-family: 'TWKBurns Ultra', Arial, sans-serif; font-weight: normal; }
+
+        @font-face {
+            font-family: 'TWKBurns Ultra';
+            src: url('{{ fontPath }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background: {{ theme.background }};
+            color: {{ theme.textColor }};
+            box-sizing: border-box;
+            padding: 0;
+            position: relative;
+            page-break-after: always;
+        }
+
+        .card {
+            position: absolute;
+            width: 54mm;
+            height: 85.6mm;
+            padding: 2.5mm 1.5mm;
+            box-sizing: border-box;
+            text-align: center;
+            border: 1pt dashed {{ theme.borderColor|default('rgba(0, 0, 0, 0.35)') }};
+        }
+
+        .hole {
+            position: absolute;
+            top: 2.5mm;
+            left: 50%;
+            width: 16mm;
+            height: 4mm;
+            margin-left: -8mm;
+            background: #f5eee4;
+            border-radius: 2mm;
+        }
+
+        .card-inner {
+            position: absolute;
+            top: 4mm;
+            left: 0;
+            right: 0;
+            bottom: 26mm;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .logo {
+            width: 125%;
+            max-width: 70mm;
+            height: auto;
+            margin-bottom: 2mm;
+        }
+
+        .name {
+            word-break: break-word;
+            white-space: normal;
+            line-height: 0.65;
+            margin: 0;
+        }
+
+        .role {
+            font-size: 30pt;
+            word-break: break-word;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 2mm;
+            margin: 0;
+            line-height: 1.05;
+        }
+    </style>
+</head>
+<body>
+{% set marginX = 14 %}
+{% set marginY = 10.1 %}
+{% set cardW = 54 %}
+{% set cardH = 85.6 %}
+{% set gapX = 10 %}
+{% set gapY = 10 %}
+
+{% for page in personer|batch(9, []) %}
+    <div class="page">
+        {% for person in page %}
+            {% if person is not empty %}
+                {% set idx = loop.index0 %}
+                {% set row = (idx // 3) %}
+                {% set col = (idx % 3) %}
+                {% set left = marginX + col * (cardW + gapX) %}
+                {% set top = marginY + row * (cardH + gapY) %}
+
+                {% set nameText = person.navn|default('') %}
+                {% set nameLen = nameText|length %}
+                {% set words = nameText|split(' ') %}
+                {% set wordCount = words|length %}
+                {% if wordCount >= 4 %}
+                    {% set nameSize = 18 %}
+                {% elseif wordCount == 3 %}
+                    {% set nameSize = 20 %}
+                {% elseif nameLen > 18 %}
+                    {% set nameSize = 20 %}
+                {% elseif nameLen > 14 %}
+                    {% set nameSize = 20 %}
+                {% else %}
+                    {% set nameSize = 20 %}
+                {% endif %}
+
+                {% set roleText = person.rolle|default('') %}
+                {% set roleWords = roleText|split(' ') %}
+                {% set roleWordCount = roleWords|length %}
+                {% set roleLen = roleText|length %}
+                {% if roleWordCount >= 3 %}
+                    {% set roleSize = 18 %}
+                {% elseif roleWordCount == 2 %}
+                    {% set roleSize = 20 %}
+                {% elseif roleLen > 12 %}
+                    {% set roleSize = 20 %}
+                {% elseif roleLen > 9 %}
+                    {% set roleSize = 22 %}
+                {% else %}
+                    {% set roleSize = 24 %}
+                {% endif %}
+
+                <div class="card" style="left: {{ left }}mm; top: {{ top }}mm;">
+                    <div class="hole"></div>
+                    <div class="card-inner">
+                        <img class="logo" src="{{ logoDataUri ? logoDataUri : logoPathRel }}" alt="UKM logo" />
+                        <div class="name" style="font-size: {{ nameSize }}pt;">{{ nameText }}</div>
+                    </div>
+                    <div class="role" style="font-size: {{ roleSize }}pt;">{{ roleText }}</div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}
+</body>
+</html>
