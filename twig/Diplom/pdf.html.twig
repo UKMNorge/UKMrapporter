@@ -1,106 +1,153 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
-    <style>
-        @page { size: A4 portrait; margin: 0; }
-        body { margin: 0; padding: 0; font-family: 'TWKBurns Ultra', Arial, sans-serif; font-weight: normal; }
-        * { font-family: 'TWKBurns Ultra', Arial, sans-serif; font-weight: normal; }
+<meta charset="UTF-8" />
 
-        @font-face {
-            font-family: 'TWKBurns Ultra';
-            src: url('{{ fontPath }}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
+<style>
+@page {
+    size: A4 portrait;
+    margin: 0;
+}
 
-        .page {
-            width: 595pt;
-            height: 842pt;
-            background: {{ theme.background }};
-            color: {{ theme.textColor }};
-            box-sizing: border-box;
-            padding: 42pt 0 0 0;
-            position: relative;
-            overflow: hidden;
-        }
+html, body {
+    margin: 0;
+    padding: 0;
+}
 
-        .content {
-            font-size: 36px;
-            line-height: 1.1;
-            padding-left: 34pt;
-        }
+body {
+    font-family: 'TWKBurns Ultra', Arial, sans-serif;
+    font-weight: normal;
+}
 
-        .line { 
-            margin: 0;
-            font-size: 24px; 
-        }
+* {
+    font-family: 'TWKBurns Ultra', Arial, sans-serif;
+    font-weight: normal;
+    box-sizing: border-box;
+}
 
-        .name-line,
-        .place-line,
-        .season-line {
-            font-size: 44px;
-            margin-top: -12pt;
-        }
+@font-face {
+    font-family: 'TWKBurns Ultra';
+    src: url('{{ fontPath }}') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 
-        .logo-wrapper {
-            text-align: center;
-            padding: 0;
-            margin: -40pt 0 0 0;
-        }
+/* === A4 PAGE === */
+.page {
+    width: 210mm;
+    height: 297mm;
+    background: {{ theme.background }};
+    color: {{ theme.textColor }};
+    position: relative;
+    overflow: hidden;
+}
 
-        .logo {
-            width: 740pt;
-            height: auto;
-        }
+/* remove default paragraph margins (very important in Dompdf) */
+p {
+    margin: 0;
+}
 
-        .footer {
-            position: absolute;
-            bottom: 30pt;
-            left: 0;
-            right: 0;
-            font-family: 'TWKBurns Ultra', Arial, sans-serif;
-            font-weight: normal;
-            font-size: 200px;
-            text-align: center;
-        }
-    </style>
+/* === CONTENT === */
+.content {
+    padding-top: 20mm;
+    padding-left: 15mm;
+    font-size: 36px;
+    line-height: 1.1;
+}
+
+.line {
+    font-size: 24px;
+}
+
+.name-line,
+.place-line,
+.season-line {
+    font-size: 48px;
+    margin-top: -4mm;
+}
+
+/* === LOGO === */
+.logo-wrapper {
+    text-align: center;
+    margin-top: -20mm;
+}
+
+.logo {
+    width: 250mm;   /* nesten full bredde */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* === FOOTER === */
+.footer {
+    position: absolute;
+    bottom: 3mm;      /* lavere på siden */
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 50mm;  /* mindre enn før */
+    line-height: 0.9;
+}
+</style>
 </head>
+
 <body>
+
 {% for person in personer %}
+
     {% set nameLen = person.navn|length %}
-    {% set nameSize = 44 %}
-    {% if nameLen > 38 %}
-        {% set nameSize = 28 %}
-    {% elseif nameLen > 30 %}
+    {% set nameSize = 48 %}
+    {% if nameLen > 42 %}
         {% set nameSize = 32 %}
-    {% elseif nameLen > 22 %}
+    {% elseif nameLen > 34 %}
         {% set nameSize = 36 %}
+    {% elseif nameLen > 26 %}
+        {% set nameSize = 40 %}
     {% endif %}
 
     {% set placeLen = placeLabel|length %}
-    {% set placeSize = 44 %}
-    {% if placeLen > 38 %}
-        {% set placeSize = 28 %}
-    {% elseif placeLen > 30 %}
+    {% set placeSize = 48 %}
+    {% if placeLen > 42 %}
         {% set placeSize = 32 %}
-    {% elseif placeLen > 22 %}
+    {% elseif placeLen > 34 %}
         {% set placeSize = 36 %}
+    {% elseif placeLen > 26 %}
+        {% set placeSize = 40 %}
     {% endif %}
+
     <div class="page">
+
         <div class="content">
             <p class="line">Navn</p>
-            <p class="line name-line" style="font-size: {{ nameSize }}px;">{{ person.navn }}</p>
-            <p class="line">Sted</p>
-            <p class="line place-line" style="font-size: {{ placeSize }}px;">{{ placeLabel }}</p>
-            <p class="line">År</p>
-            <p class="line season-line">{{ seasonLabel }}</p>
+            <p class="name-line" style="font-size: {{ nameSize }}px;">
+                {{ person.navn }}
+            </p>
+
+            <p class="line" style="margin-top: 8mm;">Sted</p>
+            <p class="place-line" style="font-size: {{ placeSize }}px;">
+                {{ placeLabel }}
+            </p>
+
+            <p class="line" style="margin-top: 8mm;">År</p>
+            <p class="season-line" style="font-size: 52px;">
+                {{ seasonLabel }}
+            </p>
         </div>
+
         <div class="logo-wrapper">
-            <img class="logo" src="{{ logoDataUri ? logoDataUri : logoPathRel }}" alt="UKM logo" />
+            <img class="logo"
+                 src="{{ logoDataUri ? logoDataUri : logoPathRel }}"
+                 alt="UKM logo" />
         </div>
-        <div class="footer">Diplom</div>
+
+        <div class="footer">
+            Diplom
+        </div>
+
     </div>
+
 {% endfor %}
+
 </body>
 </html>
