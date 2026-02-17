@@ -21,7 +21,7 @@
             <ContactContacts ref="smsComponent" :repo="repo" :getAllContacts="getContacts" :send="sendSMS" :contactComponentName="'SMS'" />
             
             <!-- Send email to contacts -->
-            <ContactContacts ref="emailComponent" :repo="repo" :getAllContacts="getContacts" :send="sendEmail" :sendButton1="{name : 'Gå videre (Windows eller Oulook)', method : sendEmail}" :sendButton2="{name : 'Gå videre (Mac)', method : sendEmail}" :contactComponentName="'epost'" />
+            <ContactContacts ref="emailComponent" :repo="repo" :getAllContacts="getContacts" :send="sendEmail" :sendButton1="{name : 'Gå videre (Microsoft Outlook)', method : sendEmail}" :sendButton2="{name : 'Gå videre (Mac)', method : sendEmail}" :contactComponentName="'epost'" />
         </div>
         
     </div>
@@ -116,7 +116,7 @@ function sendEmail(activeContacts: Contact[], sendType? : string): void {
     if(sendType == undefined) {
         var separationChar = detectOS() == 'Windows' ? ';' : ',';
     } else {
-        var separationChar = sendType == 'Send (Windows eller Oulook)' ? ';' : ',';
+        var separationChar = sendType == 'Gå videre (Microsoft Outlook)' ? ';' : ',';
     }
     // Convert email contacts to a comma-separated string
     const emailContacts = activeContacts.map(contact => {
