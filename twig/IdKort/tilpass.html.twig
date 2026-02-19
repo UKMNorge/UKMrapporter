@@ -36,30 +36,42 @@
         <div class="idkort-theme-grid">
             <button type="button" class="idkort-theme-card" data-theme="orange">
                 <div class="idkort-theme-thumb idkort-theme-thumb--orange">
-                    <img class="idkort-theme-logo" src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogomorkbrun.svg" alt="UKM logo" />
-                    <div class="idkort-theme-name">Navn Navnesen</div>
-                    <div class="idkort-theme-role">Rolle</div>
+                    <div class="idkort-theme-preview-card">
+                        <div class="idkort-theme-hole"></div>
+                        <img class="idkort-theme-logo" src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogomorkbrun.svg" alt="UKM logo" />
+                        <div class="idkort-theme-name">Navn</div>
+                        <div class="idkort-theme-role">Rolle</div>
+                    </div>
                 </div>
             </button>
             <button type="button" class="idkort-theme-card" data-theme="purple">
                 <div class="idkort-theme-thumb idkort-theme-thumb--purple">
-                    <img class="idkort-theme-logo" src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogomorkbrun.svg" alt="UKM logo" />
-                    <div class="idkort-theme-name">Navn Navnesen</div>
-                    <div class="idkort-theme-role">Rolle</div>
+                    <div class="idkort-theme-preview-card">
+                        <div class="idkort-theme-hole"></div>
+                        <img class="idkort-theme-logo" src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogomorkbrun.svg" alt="UKM logo" />
+                        <div class="idkort-theme-name">Navn</div>
+                        <div class="idkort-theme-role">Rolle</div>
+                    </div>
                 </div>
             </button>
             <button type="button" class="idkort-theme-card" data-theme="brown">
                 <div class="idkort-theme-thumb idkort-theme-thumb--brown">
-                    <img class="idkort-theme-logo" src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogomorkbrun.svg" alt="UKM logo" />
-                    <div class="idkort-theme-name">Navn Navnesen</div>
-                    <div class="idkort-theme-role">Rolle</div>
+                    <div class="idkort-theme-preview-card">
+                        <div class="idkort-theme-hole"></div>
+                        <img class="idkort-theme-logo" src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogomorkbrun.svg" alt="UKM logo" />
+                        <div class="idkort-theme-name">Navn</div>
+                        <div class="idkort-theme-role">Rolle</div>
+                    </div>
                 </div>
             </button>
             <button type="button" class="idkort-theme-card" data-theme="dark_brown_orange">
                 <div class="idkort-theme-thumb idkort-theme-thumb--dark-brown">
-                    <img class="idkort-theme-logo" src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogoorange.svg" alt="UKM logo" />
-                    <div class="idkort-theme-name">Navn Navnesen</div>
-                    <div class="idkort-theme-role">Rolle</div>
+                    <div class="idkort-theme-preview-card">
+                        <div class="idkort-theme-hole"></div>
+                        <img class="idkort-theme-logo" src="/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogoorange.svg" alt="UKM logo" />
+                        <div class="idkort-theme-name">Navn</div>
+                        <div class="idkort-theme-role">Rolle</div>
+                    </div>
                 </div>
             </button>
         </div>
@@ -124,16 +136,34 @@
 
 .idkort-theme-thumb {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2px;
     min-height: 160px;
-    padding: 8px 4px 6px;
+    padding: 8px 4px;
     border-radius: 3px;
     font-family: 'TWKBurns Ultra', Arial, sans-serif;
-    text-align: center;
+    text-align: left;
     overflow: visible;
+}
+
+.idkort-theme-preview-card {
+    position: relative;
+    width: 74px;
+    height: 118px;
+    border: none;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.idkort-theme-hole {
+    position: absolute;
+    top: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 3px;
+    background: #f5eee4;
+    border-radius: 2px;
 }
 
 .idkort-theme-thumb--orange {
@@ -157,17 +187,35 @@
 }
 
 .idkort-theme-logo {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 120%;
     max-width: none;
     height: auto;
 }
 
 .idkort-theme-name {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 89px;
+    padding: 0 8px 0 5px;
     font-size: 10px;
+    line-height: 1.1;
+    word-break: break-word;
 }
 
 .idkort-theme-role {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 6px;
+    padding: 0 5px;
     font-size: 8px;
+    line-height: 1.1;
+    font-family: 'Inter', Arial, sans-serif;
 }
 
 .idkort-roller { 
@@ -199,8 +247,9 @@
 
 <script>
     window.idkortPersoner = {{ idkortPersoner|default([])|json_encode|raw }};
+    window.idkortPreviewRole = 'Rolle';
     window.idkortTheme = (document.getElementById('idkortThemeInput') && document.getElementById('idkortThemeInput').value) || 'purple';
-    window.idkortShowData = false;
+    window.idkortShowData = true;
     window.idkortPreviewOnly = true;
 
     (function() {
@@ -221,6 +270,78 @@
             }
         };
 
+        var findGlobalRoleInput = function() {
+            var selectors = [
+                'input[name="idkort_arrangor"]',
+                'input[name="idkort_arrangør"]',
+                'input[name="rolle"]',
+                'input[id="idkort_arrangor"]',
+                'input[id="idkort_arrangør"]',
+                'input[name*="arrangor"]',
+                'input[name*="arrangør"]',
+                'input[id*="arrangor"]',
+                'input[id*="arrangør"]',
+                'textarea[name="idkort_arrangor"]',
+                'textarea[name="idkort_arrangør"]',
+                'textarea[name="rolle"]',
+                'textarea[id="idkort_arrangor"]',
+                'textarea[id="idkort_arrangør"]',
+                'textarea[name*="arrangor"]',
+                'textarea[name*="arrangør"]',
+                'textarea[id*="arrangor"]',
+                'textarea[id*="arrangør"]'
+            ];
+            var found = document.querySelector(selectors.join(', '));
+            return found || null;
+        };
+
+        var syncRolesToPreview = function() {
+            var globalRoleInput = findGlobalRoleInput();
+            var globalRoleValue = globalRoleInput ? (globalRoleInput.value || '') : '';
+            var globalRoleTrimmed = (globalRoleValue || '').trim();
+
+            var roleMap = {};
+            var roleInputs = document.querySelectorAll('.idkort-rolle-input');
+            roleInputs.forEach(function(input) {
+                var row = input.closest('.idkort-rolle-row');
+                if (!row) {
+                    return;
+                }
+                var hendelseId = row.getAttribute('data-hendelse-id');
+                if (!hendelseId) {
+                    return;
+                }
+                roleMap[hendelseId] = input.value || '';
+            });
+
+            if (Array.isArray(window.idkortPersoner)) {
+                window.idkortPersoner.forEach(function(person) {
+                    var hendelseId = String(person && person.hendelseId ? person.hendelseId : '');
+                    if (globalRoleTrimmed) {
+                        person.rolle = globalRoleTrimmed;
+                    } else if (hendelseId && roleMap[hendelseId] !== undefined) {
+                        person.rolle = roleMap[hendelseId];
+                    }
+                });
+            }
+
+            var firstRoleFromMap = Object.values(roleMap).find(function(v) {
+                return (v || '').trim() !== '';
+            });
+            window.idkortPreviewRole = globalRoleTrimmed || firstRoleFromMap || window.idkortPreviewRole || 'Rolle';
+
+            if (typeof window.idkortSetParticipants === 'function') {
+                window.idkortSetParticipants(Array.isArray(window.idkortPersoner) ? [].concat(window.idkortPersoner) : []);
+            }
+            if (typeof window.idkortSetPreviewRole === 'function') {
+                window.idkortSetPreviewRole(window.idkortPreviewRole);
+            }
+            if (typeof window.idkortSetShowData === 'function') {
+                window.idkortSetShowData(true);
+            }
+            window.dispatchEvent(new CustomEvent('idkortParticipantsUpdated'));
+        };
+
         cards.forEach(function(card) {
             card.addEventListener('click', function() {
                 var theme = card.getAttribute('data-theme') || 'purple';
@@ -230,7 +351,7 @@
 
         setTheme(window.idkortTheme || 'purple');
         if (typeof window.idkortSetShowData === 'function') {
-            window.idkortSetShowData(false);
+            window.idkortSetShowData(true);
         }
 
         var updateRoleRows = function() {
@@ -262,6 +383,27 @@
         hendelseInputs.forEach(function(hendelseInput) {
             hendelseInput.addEventListener('change', updateRoleRows);
         });
+        var roleInputs = document.querySelectorAll('.idkort-rolle-input');
+        roleInputs.forEach(function(input) {
+            input.addEventListener('input', syncRolesToPreview);
+            input.addEventListener('change', syncRolesToPreview);
+        });
+        var globalRoleInputs = document.querySelectorAll('input[name="idkort_arrangor"], input[name="idkort_arrangør"], input[name="rolle"], input[id="idkort_arrangor"], input[id="idkort_arrangør"], input[name*="arrangor"], input[name*="arrangør"], input[id*="arrangor"], input[id*="arrangør"], textarea[name="idkort_arrangor"], textarea[name="idkort_arrangør"], textarea[name="rolle"], textarea[id="idkort_arrangor"], textarea[id="idkort_arrangør"], textarea[name*="arrangor"], textarea[name*="arrangør"], textarea[id*="arrangor"], textarea[id*="arrangør"]');
+        globalRoleInputs.forEach(function(input) {
+            input.addEventListener('input', syncRolesToPreview);
+            input.addEventListener('change', syncRolesToPreview);
+        });
+
+        document.addEventListener('input', function(event) {
+            var target = event && event.target;
+            if (!target || !target.matches) {
+                return;
+            }
+            if (target.matches('input, textarea')) {
+                syncRolesToPreview();
+            }
+        });
         updateRoleRows();
+        syncRolesToPreview();
     })();
 </script>

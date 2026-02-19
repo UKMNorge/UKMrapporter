@@ -18,14 +18,22 @@ export default {
             // Bruk binding for å unngå at bundleren prøver å importere filen
             logoPath: '/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogomorkbrun.svg',
             participants: (window as any).idkortPersoner || [],
+            previewRole: (window as any).idkortPreviewRole || 'Rolle',
             showData: (window as any).idkortShowData !== undefined ? Boolean((window as any).idkortShowData) : true,
             themeKey: (window as any).idkortTheme || 'purple',
-            previewOnly: Boolean((window as any).idkortPreviewOnly)
+            previewOnly: Boolean((window as any).idkortPreviewOnly),
+            participantsUpdateHandler: null as null | (() => void)
         };
     },
     mounted() {
         (window as any).idkortSetShowData = (value: boolean) => {
             this.showData = Boolean(value);
+        };
+        (window as any).idkortSetParticipants = (value: any[]) => {
+            this.participants = Array.isArray(value) ? [...value] : [];
+        };
+        (window as any).idkortSetPreviewRole = (value: string) => {
+            this.previewRole = (value || '').trim() || 'Rolle';
         };
         (window as any).idkortSetTheme = (value: string) => {
             this.themeKey = value || 'purple';
@@ -33,10 +41,22 @@ export default {
         (window as any).idkortSetPreviewOnly = (value: boolean) => {
             this.previewOnly = Boolean(value);
         };
+
+        this.participantsUpdateHandler = () => {
+            const source = (window as any).idkortPersoner;
+            this.participants = Array.isArray(source) ? [...source] : [];
+        };
+        window.addEventListener('idkortParticipantsUpdated', this.participantsUpdateHandler as EventListener);
     },
     beforeUnmount() {
         if ((window as any).idkortSetShowData) {
             delete (window as any).idkortSetShowData;
+        }
+        if ((window as any).idkortSetParticipants) {
+            delete (window as any).idkortSetParticipants;
+        }
+        if ((window as any).idkortSetPreviewRole) {
+            delete (window as any).idkortSetPreviewRole;
         }
         if ((window as any).idkortSetTheme) {
             delete (window as any).idkortSetTheme;
@@ -44,17 +64,24 @@ export default {
         if ((window as any).idkortSetPreviewOnly) {
             delete (window as any).idkortSetPreviewOnly;
         }
+        if (this.participantsUpdateHandler) {
+            window.removeEventListener('idkortParticipantsUpdated', this.participantsUpdateHandler as EventListener);
+            this.participantsUpdateHandler = null;
+        }
     },
     computed: {
         pagesToRender(): any[] {
             const itemsPerPage = 9;
+            const placeholders = Array.from({ length: itemsPerPage }, () => ({ navn: 'Navn Navnesen', rolle: this.previewRole || 'Rolle' }));
 
             if (!this.showData) {
-                const placeholders = Array.from({ length: itemsPerPage }, () => ({ navn: 'Navn Navnesen', rolle: 'Rolle' }));
                 return [{ key: 'preview', items: placeholders }];
             }
 
             const participants = Array.isArray(this.participants) ? this.participants : [];
+            if (participants.length === 0) {
+                return [{ key: 'preview-empty', items: placeholders }];
+            }
             const pages = [];
 
             for (let i = 0; i < participants.length; i += itemsPerPage) {
@@ -125,6 +152,24 @@ export default {
         }
     },
     methods: {
+        givenNameFromPerson(person: any): string {
+            const fornavn = (person?.fornavn || '').trim();
+            if (fornavn) {
+                return fornavn;
+            }
+
+            const rawName = (person?.navn || person?.name || person || '').trim();
+            if (!rawName) {
+                return '';
+            }
+
+            const parts = rawName.split(/\s+/).filter(Boolean);
+            if (parts.length <= 1) {
+                return rawName;
+            }
+
+            return parts.slice(0, -1).join(' ');
+        },
         getFontSizeFor(text: string, base: number): string {
             const normalized = (text || '').trim();
             const length = normalized.length;
@@ -142,24 +187,48 @@ export default {
             return `${base}px`;
         },
         nameStyle(text: string): { fontSize: string } {
-            return { fontSize: this.getFontSizeFor(text, 24) };
+            const length = (text || '').trim().length;
+
+            if (length > 30) {
+                return { fontSize: '12px' };
+            }
+            if (length > 26) {
+                return { fontSize: '13px' };
+            }
+            if (length > 22) {
+                return { fontSize: '14px' };
+            }
+            if (length > 19) {
+                return { fontSize: '15px' };
+            }
+            if (length > 16) {
+                return { fontSize: '16px' };
+            }
+            if (length > 13) {
+                return { fontSize: '17px' };
+            }
+            if (length > 10) {
+                return { fontSize: '18px' };
+            }
+
+            return { fontSize: '20px' };
         },
         roleStyle(text: string): { fontSize: string } {
             return { fontSize: this.getFontSizeFor(text, 18) };
         },
         displayName(person: any): string {
             if (this.showData) {
-                return person?.navn || person?.name || person || '';
+                return this.givenNameFromPerson(person);
             }
 
-            return 'Navn Navnesen';
+            return 'Navn';
         },
         displayRole(person: any): string {
             if (this.showData) {
-                return person?.rolle || person?.role || '';
+                return person?.rolle || person?.role || this.previewRole || 'Rolle';
             }
 
-            return 'Rolle';
+            return this.previewRole || 'Rolle';
         }
     }
 };
@@ -223,8 +292,8 @@ export default {
     position: absolute;
     top: 2.5mm;
     left: 50%;
-    width: 16mm;
-    height: 4mm;
+    width: 12mm;
+    height: 2mm;
     transform: translateX(-50%);
     background: #f5eee4;
     border-radius: 2mm;
@@ -239,14 +308,30 @@ export default {
 
 .name {
     font-size: 24px;
-    word-break: break-word;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: clip;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.2;
+    height: 14mm;
+    align-self: stretch;
+    text-align: left;
+    padding: 0.4mm 6mm 0 3mm;
+    margin-top: 12mm;
 }
 
 .role {
     font-size: 18px;
     word-break: break-word;
     position: relative;
-    bottom: -10mm;
+    bottom: -0mm;
     margin: 0;
+    align-self: stretch;
+    text-align: left;
+    padding: 0 3mm;
+    font-family: 'Inter', Arial, sans-serif;
 }
 </style>

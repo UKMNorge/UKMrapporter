@@ -22,6 +22,8 @@
             box-sizing: border-box;
             padding: 0;
             position: relative;
+            overflow: hidden;
+            page-break-inside: avoid;
             page-break-after: always;
         }
 
@@ -32,6 +34,7 @@
             padding: 2.5mm 1.5mm;
             box-sizing: border-box;
             text-align: center;
+            page-break-inside: avoid;
         }
 
 
@@ -68,21 +71,46 @@
         }
 
         .name {
-            word-break: break-word;
             white-space: normal;
-            line-height: 0.65;
+            overflow: hidden;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            line-height: 1.15;
             margin: 0;
+            position: relative;
+            text-align: left;
+            width: 100%;
+            padding: 0.4mm 8mm 0 4mm;
+            box-sizing: border-box;
+            height: 14mm;
+        }
+
+        .name-line {
+            display: block;
+            height: 7mm;
+            line-height: 1.18;
+            overflow: visible;
+        }
+
+        .text-block {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 2.5mm;
         }
 
         .role {
             font-size: 30pt;
             word-break: break-word;
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 8mm;
+            position: relative;
             margin: 0;
+            margin-top: 1.8mm;
             line-height: 1.05;
+            text-align: left;
+            width: 100%;
+            padding: 0 2.5mm 0 3.5mm;
+            box-sizing: border-box;
+            font-family: 'Inter', Arial, sans-serif;
         }
     </style>
 </head>
@@ -91,7 +119,7 @@
 {% set cardH = 85.6 %}
 {% set bleed = 3 %}
 {% set markLen = 3 %}
-{% set markOffset = 1.5 %}
+{% set markOffset = 0.8 %}
 {% set pageW = cardW + (bleed * 2) %}
 {% set pageH = cardH + (bleed * 2) %}
 {% set left = bleed %}
@@ -104,21 +132,44 @@
 {% for person in personer %}
     <div class="page">
         {% if person is not empty %}
-                {% set nameText = person.navn|default('') %}
-                {% set nameLen = nameText|length %}
-                {% set words = nameText|split(' ') %}
-                {% set wordCount = words|length %}
-                {% if wordCount >= 4 %}
-                    {% set nameSize = 18 %}
-                {% elseif wordCount == 3 %}
-                    {% set nameSize = 20 %}
-                {% elseif nameLen > 18 %}
-                    {% set nameSize = 20 %}
-                {% elseif nameLen > 14 %}
-                    {% set nameSize = 20 %}
+                {% set explicitGivenName = person.fornavn|default('')|trim %}
+                {% set fullName = person.navn|default('')|trim %}
+                {% set nameParts = fullName|split(' ') %}
+                {% if explicitGivenName %}
+                    {% set nameText = explicitGivenName %}
+                {% elseif nameParts|length > 1 %}
+                    {% set nameText = nameParts|slice(0, nameParts|length - 1)|join(' ') %}
                 {% else %}
-                    {% set nameSize = 20 %}
+                    {% set nameText = fullName %}
                 {% endif %}
+                {% if nameText is empty %}
+                    {% set nameText = fullName is empty ? 'Navn' : fullName %}
+                {% endif %}
+                {% set nameWords = nameText|split(' ') %}
+                {% if nameWords|length > 1 %}
+                    {% set splitIndex = (nameWords|length / 2)|round(0, 'ceil') %}
+                    {% set nameLine1 = nameWords|slice(0, splitIndex)|join(' ') %}
+                    {% set nameLine2 = nameWords|slice(splitIndex)|join(' ') %}
+                {% else %}
+                    {% set nameLine1 = nameText %}
+                    {% set nameLine2 = '' %}
+                {% endif %}
+                {% set nameLen = nameText|length %}
+                    {% if nameLen > 30 %}
+                        {% set nameSize = 10 %}
+                    {% elseif nameLen > 26 %}
+                        {% set nameSize = 11 %}
+                    {% elseif nameLen > 22 %}
+                        {% set nameSize = 12 %}
+                    {% elseif nameLen > 19 %}
+                        {% set nameSize = 13 %}
+                    {% elseif nameLen > 16 %}
+                        {% set nameSize = 14 %}
+                    {% elseif nameLen > 13 %}
+                        {% set nameSize = 15 %}
+                    {% else %}
+                        {% set nameSize = 16 %}
+                    {% endif %}
 
                 {% set roleText = person.rolle|default('') %}
                 {% set roleWords = roleText|split(' ') %}
@@ -139,20 +190,25 @@
                 <div class="card" style="left: {{ left }}mm; top: {{ top }}mm;">
                     <div class="card-inner">
                         <img class="logo" src="{{ logoDataUri ? logoDataUri : logoPathRel }}" alt="UKM logo" />
-                        <div class="name" style="font-size: {{ nameSize }}pt;">{{ nameText }}</div>
                     </div>
-                    <div class="role" style="font-size: {{ roleSize }}pt;">{{ roleText }}</div>
+                    <div class="text-block">
+                        <div class="name" style="font-size: {{ nameSize }}pt;">
+                            <span class="name-line">{{ nameLine1 }}</span>
+                            <span class="name-line">{% if nameLine2 %}{{ nameLine2 }}{% else %}&nbsp;{% endif %}</span>
+                        </div>
+                        <div class="role" style="font-size: {{ roleSize }}pt;">{{ roleText }}</div>
+                    </div>
                 </div>
 
-                <div class="crop crop-h" style="left: {{ bleedLeft - markLen - markOffset }}mm; top: {{ bleedTop + markOffset }}mm; width: {{ markLen }}mm;"></div>
-                <div class="crop crop-v" style="left: {{ bleedLeft + markOffset }}mm; top: {{ bleedTop - markLen - markOffset }}mm; height: {{ markLen }}mm;"></div>
-                <div class="crop crop-h" style="left: {{ bleedLeft + bleedW + markOffset }}mm; top: {{ bleedTop + markOffset }}mm; width: {{ markLen }}mm;"></div>
-                <div class="crop crop-v" style="left: {{ bleedLeft + bleedW - markOffset }}mm; top: {{ bleedTop - markLen - markOffset }}mm; height: {{ markLen }}mm;"></div>
+                <div class="crop crop-h" style="left: {{ markOffset }}mm; top: {{ markOffset }}mm; width: {{ markLen }}mm;"></div>
+                <div class="crop crop-v" style="left: {{ markOffset }}mm; top: {{ markOffset }}mm; height: {{ markLen }}mm;"></div>
+                <div class="crop crop-h" style="left: {{ pageW - markLen - markOffset }}mm; top: {{ markOffset }}mm; width: {{ markLen }}mm;"></div>
+                <div class="crop crop-v" style="left: {{ pageW - markOffset }}mm; top: {{ markOffset }}mm; height: {{ markLen }}mm;"></div>
 
-                <div class="crop crop-h" style="left: {{ bleedLeft - markLen - markOffset }}mm; top: {{ bleedTop + bleedH - markOffset }}mm; width: {{ markLen }}mm;"></div>
-                <div class="crop crop-v" style="left: {{ bleedLeft + markOffset }}mm; top: {{ bleedTop + bleedH + markOffset }}mm; height: {{ markLen }}mm;"></div>
-                <div class="crop crop-h" style="left: {{ bleedLeft + bleedW + markOffset }}mm; top: {{ bleedTop + bleedH - markOffset }}mm; width: {{ markLen }}mm;"></div>
-                <div class="crop crop-v" style="left: {{ bleedLeft + bleedW - markOffset }}mm; top: {{ bleedTop + bleedH + markOffset }}mm; height: {{ markLen }}mm;"></div>
+                <div class="crop crop-h" style="left: {{ markOffset }}mm; top: {{ pageH - markOffset }}mm; width: {{ markLen }}mm;"></div>
+                <div class="crop crop-v" style="left: {{ markOffset }}mm; top: {{ pageH - markLen - markOffset }}mm; height: {{ markLen }}mm;"></div>
+                <div class="crop crop-h" style="left: {{ pageW - markLen - markOffset }}mm; top: {{ pageH - markOffset }}mm; width: {{ markLen }}mm;"></div>
+                <div class="crop crop-v" style="left: {{ pageW - markOffset }}mm; top: {{ pageH - markLen - markOffset }}mm; height: {{ markLen }}mm;"></div>
         {% endif %}
     </div>
 {% endfor %}

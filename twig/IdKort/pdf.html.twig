@@ -39,8 +39,8 @@
             position: absolute;
             top: 2.5mm;
             left: 50%;
-            width: 16mm;
-            height: 4mm;
+            width: 12mm;
+            height: 2mm;
             margin-left: -8mm;
             background: #f5eee4;
             border-radius: 2mm;
@@ -62,25 +62,45 @@
             width: 125%;
             max-width: 70mm;
             height: auto;
+            margin-top: 10;
             margin-bottom: 2mm;
         }
 
         .name {
-            word-break: break-word;
             white-space: normal;
-            line-height: 0.65;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow-wrap: anywhere;
+            word-break: break-all;
+            line-height: 1.2;
             margin: 0;
+            position: relative;
+            text-align: left;
+            width: 100%;
+            padding: 0.4mm 6.5mm 0 4mm;
+            box-sizing: border-box;
+            min-height: 14mm;
+            max-height: 14mm;
+            margin-top: 10mm;
         }
 
         .role {
-            font-size: 30pt;
+            font-size: 18pt;
             word-break: break-word;
             position: absolute;
-            left: 0;
+            left: 2.0mm;
             right: 0;
             bottom: 2mm;
             margin: 0;
             line-height: 1.05;
+            text-align: left;
+            width: 100%;
+            padding: 0 2.5mm;
+            box-sizing: border-box;
+            font-family: 'Inter', Arial, sans-serif;
         }
     </style>
 </head>
@@ -102,21 +122,37 @@
                 {% set left = marginX + col * (cardW + gapX) %}
                 {% set top = marginY + row * (cardH + gapY) %}
 
-                {% set nameText = person.navn|default('') %}
-                {% set nameLen = nameText|length %}
-                {% set words = nameText|split(' ') %}
-                {% set wordCount = words|length %}
-                {% if wordCount >= 4 %}
-                    {% set nameSize = 18 %}
-                {% elseif wordCount == 3 %}
-                    {% set nameSize = 20 %}
-                {% elseif nameLen > 18 %}
-                    {% set nameSize = 20 %}
-                {% elseif nameLen > 14 %}
-                    {% set nameSize = 20 %}
+                {% set explicitGivenName = person.fornavn|default('')|trim %}
+                {% set fullName = person.navn|default('')|trim %}
+                {% set nameParts = fullName|split(' ') %}
+                {% if explicitGivenName %}
+                    {% set nameText = explicitGivenName %}
+                {% elseif nameParts|length > 1 %}
+                    {% set nameText = nameParts|slice(0, nameParts|length - 1)|join(' ') %}
                 {% else %}
-                    {% set nameSize = 20 %}
+                    {% set nameText = fullName %}
                 {% endif %}
+                {% if nameText is empty %}
+                    {% set nameText = fullName is empty ? 'Navn' : fullName %}
+                {% endif %}
+                {% set nameLen = nameText|length %}
+                    {% if nameLen > 30 %}
+                        {% set nameSize = 10 %}
+                    {% elseif nameLen > 26 %}
+                        {% set nameSize = 11 %}
+                    {% elseif nameLen > 22 %}
+                        {% set nameSize = 12 %}
+                    {% elseif nameLen > 19 %}
+                        {% set nameSize = 13 %}
+                    {% elseif nameLen > 16 %}
+                        {% set nameSize = 14 %}
+                    {% elseif nameLen > 13 %}
+                        {% set nameSize = 15 %}
+                    {% elseif nameLen > 10 %}
+                        {% set nameSize = 16 %}
+                    {% else %}
+                        {% set nameSize = 18 %}
+                    {% endif %}
 
                 {% set roleText = person.rolle|default('') %}
                 {% set roleWords = roleText|split(' ') %}
@@ -125,13 +161,13 @@
                 {% if roleWordCount >= 3 %}
                     {% set roleSize = 18 %}
                 {% elseif roleWordCount == 2 %}
-                    {% set roleSize = 20 %}
+                    {% set roleSize = 16 %}
                 {% elseif roleLen > 12 %}
-                    {% set roleSize = 20 %}
+                    {% set roleSize = 16 %}
                 {% elseif roleLen > 9 %}
-                    {% set roleSize = 22 %}
+                    {% set roleSize = 18 %}
                 {% else %}
-                    {% set roleSize = 24 %}
+                    {% set roleSize = 20 %}
                 {% endif %}
 
                 <div class="card" style="left: {{ left }}mm; top: {{ top }}mm;">

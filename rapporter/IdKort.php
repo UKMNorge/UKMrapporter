@@ -59,6 +59,7 @@ class IdKort extends Rapport
                     $personer[] = [
                         'id' => $hendelse->getId() . '-' . $person->getId(),
                         'navn' => $person->getNavn(),
+                        'fornavn' => method_exists($person, 'getFornavn') ? trim((string) $person->getFornavn()) : '',
                         'rolle' => $rolle,
                         'hendelseId' => $hendelse->getId(),
                         'hendelseNavn' => $hendelse->getNavn(),
