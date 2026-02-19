@@ -103,7 +103,19 @@ elseif (in_array($_POST['format'], ['pdf', 'pdf_print']) && in_array($rapport->g
         'dark_brown_orange' => [
             'background' => '#241211',
             'logoFile' => 'ukmlogoorange.svg',
-            'textColor' => '#ff520e',
+            'textColor' => '#f5eee4',
+            'borderColor' => '#f5eee4'
+        ],
+        'dark_brown_purple' => [
+            'background' => '#241211',
+            'logoFile' => 'ukmlogolilla.svg',
+            'textColor' => '#f5eee4',
+            'borderColor' => '#f5eee4'
+        ],
+        'dark_brown_morkbrun' => [
+            'background' => '#241211',
+            'logoFile' => 'ukmlogobrun.svg',
+            'textColor' => '#f5eee4',
             'borderColor' => '#f5eee4'
         ],
         'dark_orange' => [

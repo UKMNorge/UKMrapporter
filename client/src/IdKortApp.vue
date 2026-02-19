@@ -31,6 +31,10 @@ export default {
         };
         (window as any).idkortSetParticipants = (value: any[]) => {
             this.participants = Array.isArray(value) ? [...value] : [];
+            const nextPreviewRole = ((window as any).idkortPreviewRole || '').trim();
+            if (nextPreviewRole) {
+                this.previewRole = nextPreviewRole;
+            }
         };
         (window as any).idkortSetPreviewRole = (value: string) => {
             this.previewRole = (value || '').trim() || 'Rolle';
@@ -45,6 +49,10 @@ export default {
         this.participantsUpdateHandler = () => {
             const source = (window as any).idkortPersoner;
             this.participants = Array.isArray(source) ? [...source] : [];
+            const nextPreviewRole = ((window as any).idkortPreviewRole || '').trim();
+            if (nextPreviewRole) {
+                this.previewRole = nextPreviewRole;
+            }
         };
         window.addEventListener('idkortParticipantsUpdated', this.participantsUpdateHandler as EventListener);
     },
@@ -132,7 +140,19 @@ export default {
                 dark_brown_orange: {
                     background: '#241211',
                     logoPath: '/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogoorange.svg',
-                    textColor: '#ff520e',
+                    textColor: '#f5eee4',
+                    borderColor: '#f5eee4'
+                },
+                dark_brown_purple: {
+                    background: '#241211',
+                    logoPath: '/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogolilla.svg',
+                    textColor: '#f5eee4',
+                    borderColor: '#f5eee4'
+                },
+                dark_brown_morkbrun: {
+                    background: '#241211',
+                    logoPath: '/wp-content/plugins/UKMrapporter/client/dist/assets/logos/ukmlogobrun.svg',
+                    textColor: '#f5eee4',
                     borderColor: '#f5eee4'
                 },
                 dark_orange: {
@@ -186,35 +206,35 @@ export default {
 
             return `${base}px`;
         },
-        nameStyle(text: string): { fontSize: string } {
+        nameStyle(text: string): { fontSize: string; color: string } {
             const length = (text || '').trim().length;
 
             if (length > 30) {
-                return { fontSize: '12px' };
+                return { fontSize: '12px', color: this.theme.textColor };
             }
             if (length > 26) {
-                return { fontSize: '13px' };
+                return { fontSize: '13px', color: this.theme.textColor };
             }
             if (length > 22) {
-                return { fontSize: '14px' };
+                return { fontSize: '14px', color: this.theme.textColor };
             }
             if (length > 19) {
-                return { fontSize: '15px' };
+                return { fontSize: '15px', color: this.theme.textColor };
             }
             if (length > 16) {
-                return { fontSize: '16px' };
+                return { fontSize: '16px', color: this.theme.textColor };
             }
             if (length > 13) {
-                return { fontSize: '17px' };
+                return { fontSize: '17px', color: this.theme.textColor };
             }
             if (length > 10) {
-                return { fontSize: '18px' };
+                return { fontSize: '18px', color: this.theme.textColor };
             }
 
-            return { fontSize: '20px' };
+            return { fontSize: '20px', color: this.theme.textColor };
         },
-        roleStyle(text: string): { fontSize: string } {
-            return { fontSize: this.getFontSizeFor(text, 18) };
+        roleStyle(text: string): { fontSize: string; color: string } {
+            return { fontSize: this.getFontSizeFor(text, 18), color: this.theme.textColor };
         },
         displayName(person: any): string {
             if (this.showData) {
