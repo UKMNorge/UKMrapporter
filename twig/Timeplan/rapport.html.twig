@@ -1,14 +1,14 @@
-{% for aKey, value in fylker %}
+{% for aKey, value in omrader %}
     
-    {% for fylke_key, fylkeArr in value %}
-        <h1>{{ fylke_key }}</h1>
+    {% for omrade_key, omradeArr in value %}
+        <h1>{{ isFylkeArrangement ? 'Kommune' : 'Fylke' }}: {{ omrade_key }}</h1>
         {% if aKey > 0 %}
             <h2>Arrangement: {{ alleArrangementer[aKey].getNavn() }}</h2>
         {% endif %}
 
-        {% for dag_key, fylke in fylkeArr|sort((a, b) => dag_key|date('U') <=> dag_key|date('U')) %}
+        {% for dag_key, omrade in omradeArr|sort((a, b) => dag_key|date('U') <=> dag_key|date('U')) %}
             <h3>{{ dag_key|dato('l - d.m.Y')|capitalize }}</h3>
-            {% for hendelseId, innslags in fylke %}
+            {% for hendelseId, innslags in omrade %}
                 {% set hendelse = alleHendelser[hendelseId] %}
 
                 <h4 class="make-tab">{{ hendelse.getNavn() }}</h4>

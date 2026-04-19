@@ -2,6 +2,7 @@
 
 namespace UKMNorge\Rapporter;
 
+use Exception;
 use UKMNorge\Rapporter\Framework\Gruppe;
 use UKMNorge\Rapporter\Framework\Rapport;
 use UKMNorge\Geografi\Fylker;
@@ -24,23 +25,52 @@ class Timeplan extends Rapport
      */
     public function getCustomizerData()
     {
-        return ['alleFylker' => Fylker::getAll()];
+        try {
+            $arrangement = $this->getArrangement();
+            if ($arrangement->getEierType() == 'fylke') {
+                return [
+                    'isFylkeArrangement' => true,
+                    'alleKommuner' => $arrangement->getFylke()->getKommuner()->getAll()
+                ];
+            }
+        } catch (Exception $e) {
+            // Fallback for contexts where arrangement is unavailable.
+        }
+
+        return [
+            'isFylkeArrangement' => false,
+            'alleFylker' => Fylker::getAll()
+        ];
     }
     
     public function getTemplate() {
-        $selectedFylker = [];
+        $selectedOmrader = [];
+        $arrangement = $this->getArrangement();
+        $filtrerPaKommuner = $arrangement->getEierType() == 'fylke';
+
         foreach($this->getConfig()->getAll() as $selectedDag) {
-            $selectedFylker[] = $selectedDag->getId();
+            $selectedOmrader[] = $selectedDag->getId();
         }
+
         $alleArrangementer = [];
         $alleHendelser = [];
-        $arrangement = $this->getArrangement();
-        $fylker = [];
+        $omrader = [];
 
         foreach($arrangement->getProgram()->getAbsoluteAll() as $hendelse) {
             $hendelse->getInnslag()->getAll();
             foreach($hendelse->getInnslag()->getAll() as $innslag) {
-                if((count($selectedFylker) == 0) || ($selectedFylker[0] == 'vis_fylke_alle') || (in_array("vis_fylke_" . $innslag->getFylke()->getId(), $selectedFylker))) {
+                if ($filtrerPaKommuner) {
+                    $skalViseInnslag = (count($selectedOmrader) == 0) ||
+                        ($selectedOmrader[0] == 'vis_kommune_alle') ||
+                        in_array('vis_kommune_' . $innslag->getKommune()->getId(), $selectedOmrader);
+                }
+                else {
+                    $skalViseInnslag = (count($selectedOmrader) == 0) ||
+                        ($selectedOmrader[0] == 'vis_fylke_alle') ||
+                        in_array('vis_fylke_' . $innslag->getFylke()->getId(), $selectedOmrader);
+                }
+
+                if($skalViseInnslag) {
 
                     $fraArrangKey = 0; 
 
@@ -54,13 +84,15 @@ class Timeplan extends Rapport
                     }
                     
                     $alleHendelser[$hendelse->getId()] = $hendelse;
-                    $fylker[$fraArrangKey][$innslag->getFylke()->getNavn()][$hendelse->getStart()->format('d.m.Y')][$hendelse->getId()][] = $innslag;
+                    $omradeNavn = $filtrerPaKommuner ? $innslag->getKommune()->getNavn() : $innslag->getFylke()->getNavn();
+                    $omrader[$fraArrangKey][$omradeNavn][$hendelse->getStart()->format('d.m.Y')][$hendelse->getId()][] = $innslag;
                 }
             }
             
         }
 
-        UKMrapporter::addViewData('fylker', $fylker);
+        UKMrapporter::addViewData('omrader', $omrader);
+        UKMrapporter::addViewData('isFylkeArrangement', $filtrerPaKommuner);
         UKMrapporter::addViewData('alleArrangementer', $alleArrangementer);
         UKMrapporter::addViewData('alleHendelser', $alleHendelser);
 
